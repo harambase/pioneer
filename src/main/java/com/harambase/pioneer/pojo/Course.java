@@ -2,9 +2,6 @@ package com.harambase.pioneer.pojo;
 
 import com.harambase.pioneer.pojo.base.CourseBase;
 
-import javax.persistence.Entity;
-
-@Entity
 public class Course extends CourseBase {
 
     private Integer remain;

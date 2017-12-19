@@ -4,20 +4,17 @@ import com.harambase.common.HaramMessage;
 import com.harambase.common.constant.FlagDict;
 import com.harambase.pioneer.service.ReportService;
 
-import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.awt.*;
 import java.io.*;
-import java.util.Date;
+
 
 @RestController
 @RequestMapping(value = "/report")
 @CrossOrigin
-@Api(value = "/report", description = "报告服务接口")
 public class ReportController {
 
     private final ReportService reportService;

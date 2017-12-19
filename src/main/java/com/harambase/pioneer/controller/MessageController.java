@@ -2,7 +2,6 @@ package com.harambase.pioneer.controller;
 
 import com.harambase.common.HaramMessage;
 import com.harambase.common.Page;
-import com.harambase.common.Tags;
 import com.harambase.support.util.SessionUtil;
 import com.harambase.pioneer.pojo.base.MessageWithBLOBs;
 import com.harambase.pioneer.service.MessageService;
@@ -33,8 +32,6 @@ public class MessageController {
         this.messageService = messageService;
     }
 
-    @ApiOperation(value = "新增信息", notes = "权限：用户", response = Map.class, tags = {Tags.MESSAGE})
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "操作成功", response = Map.class)})
     @RequiresPermissions("user")
     @RequestMapping(produces = "application/json", method = RequestMethod.POST)
     public ResponseEntity create(@RequestBody MessageWithBLOBs message){
@@ -43,8 +40,6 @@ public class MessageController {
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "删除一个消息", notes = "权限：用户", response = Map.class, tags = {Tags.MESSAGE})
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "操作成功", response = Map.class)})
     @RequiresPermissions("user")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity delete(@PathVariable(value = "id") Integer id) {
@@ -52,8 +47,6 @@ public class MessageController {
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "更新消息", notes = "权限：用户", response = Map.class, tags = {Tags.MESSAGE})
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "操作成功", response = Map.class)})
     @RequiresPermissions("user")
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity update(@PathVariable(value = "id") Integer id,
@@ -62,8 +55,6 @@ public class MessageController {
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "获取一条消息", notes = "权限：用户", response = Map.class, tags = {Tags.MESSAGE})
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "操作成功", response = Map.class)})
     @RequiresPermissions("user")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity get(@RequestParam(value = "id") Integer id) {
@@ -71,8 +62,6 @@ public class MessageController {
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "计数", notes = "权限：用户", response = Map.class, tags = {Tags.MESSAGE})
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "操作成功", response = Map.class)})
     @RequiresPermissions("user")
     @RequestMapping(value = "/count", method = RequestMethod.GET)
     public ResponseEntity count(@RequestParam(value = "status") String status,
@@ -94,8 +83,6 @@ public class MessageController {
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "消息列表", notes = "权限：用户", response = Map.class, tags = {Tags.MESSAGE})
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "操作成功", response = Map.class)})
     @RequiresPermissions("user")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ResponseEntity list(@RequestParam(value = "start") Integer start,

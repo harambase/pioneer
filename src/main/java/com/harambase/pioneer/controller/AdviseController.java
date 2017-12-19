@@ -2,14 +2,9 @@ package com.harambase.pioneer.controller;
 
 import com.harambase.common.HaramMessage;
 import com.harambase.common.Page;
-import com.harambase.common.Tags;
 import com.harambase.support.util.SessionUtil;
 import com.harambase.pioneer.pojo.base.AdviseBase;
 import com.harambase.pioneer.service.AdviseService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,44 +29,34 @@ public class AdviseController {
 
     @RequiresPermissions({"admin", "teach"})
     @RequestMapping(produces = "application/json", method = RequestMethod.POST)
-    @ApiOperation(value = "新增导师关系", notes = "权限：管理员，教务", response = Map.class, tags = {Tags.ADVISE})
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "操作成功", response = Map.class)})
-    public ResponseEntity create(@ApiParam(value = "导师关系", required = true) @RequestBody AdviseBase advise) {
+    public ResponseEntity create(@RequestBody AdviseBase advise) {
         HaramMessage message = adviseService.assignMentor(advise);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     @RequiresPermissions({"admin", "teach"})
     @RequestMapping(value ="/{id}", method = RequestMethod.DELETE)
-    @ApiOperation(value = "删除导师关系", notes = "权限：管理员，教务", response = Map.class, tags = {Tags.ADVISE})
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "操作成功", response = Map.class)})
-    public ResponseEntity delete(@ApiParam(value = "关系ID", required = true) @PathVariable(value = "id") Integer id) {
+    public ResponseEntity delete(@PathVariable(value = "id") Integer id) {
         HaramMessage message = adviseService.removeMentor(id);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "更新导师关系", notes = "权限：管理员，教务", response = Map.class, tags = {Tags.ADVISE})
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "操作成功", response = Map.class)})
     @RequiresPermissions({"admin", "teach"})
     @RequestMapping(value = "/{id}", produces = "application/json", method = RequestMethod.PUT)
-    public ResponseEntity update(@ApiParam(value = "关系ID", required = true) @PathVariable Integer id,
-                                 @ApiParam(value = "学生ID", required = true) @RequestParam(value = "studentId") String studentId,
-                                 @ApiParam(value = "教师ID", required = true) @RequestParam(value = "facultyId") String facultyId){
+    public ResponseEntity update(@PathVariable Integer id,
+                                 @RequestParam(value = "studentId") String studentId,
+                                 @RequestParam(value = "facultyId") String facultyId){
         HaramMessage message = adviseService.updateAdvise(id, studentId, facultyId);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "获取导师关系信息", notes = "权限：管理员，教务，学生，老师", response = Map.class, tags = {Tags.ADVISE})
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "操作成功", response = Map.class)})
     @RequiresPermissions({"admin", "teach", "student", "faculty"})
     @RequestMapping(value ="/{id}", method = RequestMethod.GET)
-    public ResponseEntity get(@ApiParam(value = "关系ID", required = true) @RequestParam(value = "id") Integer id) {
+    public ResponseEntity get(@RequestParam(value = "id") Integer id) {
         HaramMessage message = adviseService.getMentor(id);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "导师关系列表", notes = "权限：管理员，教务，学生，老师", response = Map.class, tags = {Tags.ADVISE})
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "操作成功", response = Map.class)})
     @RequiresPermissions({"admin", "teach", "student", "faculty"})
     @RequestMapping(value = "/list", produces = "application/json", method = RequestMethod.GET)
     public ResponseEntity list(@RequestParam(value = "start") Integer start,

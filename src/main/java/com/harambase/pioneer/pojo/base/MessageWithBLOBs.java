@@ -1,6 +1,7 @@
 package com.harambase.pioneer.pojo.base;
 
 public class MessageWithBLOBs extends MessageBase {
+
     private String body;
     
     private String receiverid;

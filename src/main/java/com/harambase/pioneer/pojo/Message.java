@@ -2,10 +2,6 @@ package com.harambase.pioneer.pojo;
 
 import com.harambase.pioneer.pojo.base.MessageWithBLOBs;
 
-import javax.persistence.Entity;
-import java.io.Serializable;
-
-@Entity
 public class Message extends MessageWithBLOBs {
 
     private String pic;

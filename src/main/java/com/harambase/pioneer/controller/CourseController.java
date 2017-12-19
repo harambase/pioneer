@@ -2,12 +2,10 @@ package com.harambase.pioneer.controller;
 
 import com.harambase.common.HaramMessage;
 import com.harambase.common.Page;
-import com.harambase.common.Tags;
 import com.harambase.support.util.SessionUtil;
 import com.harambase.pioneer.pojo.base.CourseBase;
 import com.harambase.pioneer.pojo.dto.Option;
 import com.harambase.pioneer.service.CourseService;
-import io.swagger.annotations.*;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +18,6 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin
-@Api(value = "/course", description = "课程中心接口")
 @RequestMapping(value = "/course")
 public class CourseController {
     private final CourseService courseService;
@@ -30,26 +27,20 @@ public class CourseController {
         this.courseService = courseService;
     }
 
-    @ApiOperation(value = "新增课程", notes = "权限：管理员，教务", response = Map.class, tags = {Tags.COURSE})
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "操作成功", response = Map.class)})
     @RequiresPermissions({"admin", "teach"})
     @RequestMapping(produces = "application/json", method = RequestMethod.POST)
-    public ResponseEntity create(@ApiParam(value = "课程", required = true) @RequestBody CourseBase course) {
+    public ResponseEntity create(@RequestBody CourseBase course) {
         HaramMessage haramMessage = courseService.create(course);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "删除一个课程", notes = "权限：管理员，教务", response = Map.class, tags = {Tags.COURSE})
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "操作成功", response = Map.class)})
     @RequiresPermissions({"admin", "teach"})
     @RequestMapping(value = "/{crn}", method = RequestMethod.DELETE)
-    public ResponseEntity delete(@ApiParam(value = "课程CRN", required = true) @PathVariable(value = "crn") String crn) {
+    public ResponseEntity delete(@PathVariable(value = "crn") String crn) {
         HaramMessage haramMessage = courseService.delete(crn);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "更新课程", notes = "权限：管理员，教务", response = Map.class, tags = {Tags.COURSE})
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "操作成功", response = Map.class)})
     @RequiresPermissions({"admin", "teach"})
     @RequestMapping(produces = "application/json", method = RequestMethod.PUT)
     public ResponseEntity update(@RequestBody CourseBase course) {
@@ -57,8 +48,6 @@ public class CourseController {
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "获取课程信息", notes = "权限：用户", response = Map.class, tags = {Tags.COURSE})
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "操作成功", response = Map.class)})
     @RequiresPermissions("user")
     @RequestMapping(value = "/{crn}", method = RequestMethod.GET)
     public ResponseEntity get(@PathVariable("crn") String crn) {
@@ -66,8 +55,6 @@ public class CourseController {
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "课程列表", notes = "权限：用户", response = Map.class, tags = {Tags.COURSE})
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "操作成功", response = Map.class)})
     @RequiresPermissions("user")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ResponseEntity list(@RequestParam(value = "start") Integer start,
@@ -102,8 +89,6 @@ public class CourseController {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "课程Ztree列表", notes = "权限：用户", response = Map.class, tags = {Tags.COURSE})
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "操作成功", response = Map.class)})
     @RequiresPermissions("user")
     @RequestMapping(value = "/zTree/list", method = RequestMethod.GET)
     public ResponseEntity zTreeList(@RequestParam(value = "mode", required = false) String mode) {
@@ -120,8 +105,6 @@ public class CourseController {
     }
 
 
-    @ApiOperation(value = "搜索课程", notes = "权限：用户", response = Map.class, tags = {Tags.COURSE})
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "操作成功", response = Map.class)})
     @RequiresPermissions("user")
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public ResponseEntity search(@RequestParam("search") String search,
@@ -130,8 +113,6 @@ public class CourseController {
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "预选课程列表", notes = "权限：用户", response = Map.class, tags = {Tags.COURSE})
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "操作成功", response = Map.class)})
     @RequiresPermissions("user")
     @RequestMapping(value = "/{crn}/precourse", method = RequestMethod.GET)
     public ResponseEntity preCourseList(@PathVariable("crn") String crn) {
@@ -139,8 +120,6 @@ public class CourseController {
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "从课程中移除学生", notes = "权限：用户", response = Map.class, tags = {Tags.COURSE})
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "操作成功", response = Map.class)})
     @RequiresPermissions({"admin", "teach"})
     @RequestMapping(value = "/{crn}/student/{userId}", method = RequestMethod.DELETE)
     public ResponseEntity removeStuFromCourse(@PathVariable(value = "crn") String crn,
@@ -149,8 +128,6 @@ public class CourseController {
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "向课程添加学生", notes = "权限：用户", response = Map.class, tags = {Tags.COURSE})
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "操作成功", response = Map.class)})
     @RequiresPermissions({"admin", "teach"})
     @RequestMapping(value = "/{crn}/student/{userId}", method = RequestMethod.PUT)
     public ResponseEntity assignStu2Course(@PathVariable(value = "crn") String crn,
@@ -160,8 +137,6 @@ public class CourseController {
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "向课程分配老师", notes = "权限：用户", response = Map.class, tags = {Tags.COURSE})
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "操作成功", response = Map.class)})
     @RequiresPermissions({"admin", "teach"})
     @RequestMapping(value = "/{crn}/faculty/{userId}", produces = "application/json", method = RequestMethod.PUT)
     public ResponseEntity assignFac2Course(@PathVariable(value = "crn") String crn,
@@ -170,8 +145,6 @@ public class CourseController {
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "学生选课", notes = "权限：用户", response = Map.class, tags = {Tags.COURSE})
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "操作成功", response = Map.class)})
     @RequiresPermissions({"admin", "student"})
     @RequestMapping(value = "/choose", method = RequestMethod.POST)
     public ResponseEntity courseChoice(@RequestParam(value = "choiceList[]")String[] choices){

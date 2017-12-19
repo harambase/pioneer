@@ -1,14 +1,9 @@
 package com.harambase.pioneer.pojo;
 
-import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity
-@Table(name = "pin")
 public class Pin implements Serializable{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     private Integer pin;

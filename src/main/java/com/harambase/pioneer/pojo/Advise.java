@@ -2,9 +2,6 @@ package com.harambase.pioneer.pojo;
 
 import com.harambase.pioneer.pojo.base.AdviseBase;
 
-import javax.persistence.Entity;
-
-@Entity
 public class Advise extends AdviseBase {
 
     private String sname;
