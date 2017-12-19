@@ -23,7 +23,6 @@ import com.harambase.pioneer.security.helper.ShiroKit;
 import com.harambase.pioneer.security.entity.ShiroUser;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -32,7 +31,6 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Service
 @DependsOn("springContextHolder")
-@Transactional(readOnly = true)
 public class PermissionCheckFactory implements ICheck {
 
     public static ICheck me() {

@@ -1,7 +1,7 @@
 package com.harambase.pioneer.security.factory;
 
-import com.harambase.pioneer.dao.repository.PersonRepository;
-import com.harambase.pioneer.dao.repository.RoleRepository;
+import com.harambase.pioneer.server.PersonServer;
+import com.harambase.pioneer.server.RoleServer;
 import com.harambase.pioneer.pojo.Person;
 import com.harambase.pioneer.security.SpringContextHolder;
 import com.harambase.pioneer.security.helper.CollectionKit;
@@ -12,33 +12,31 @@ import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @DependsOn("springContextHolder")
-@Transactional(readOnly = true)
 public class ShiroServiceImpl implements ShiroService {
 
-    private final RoleRepository roleRepository;
-    private final PersonRepository personRepository;
+    private final RoleServer roleServer;
+    private final PersonServer personServer;
 
     public static ShiroService me() {
         return SpringContextHolder.getBean(ShiroService.class);
     }
 
     @Autowired
-    public ShiroServiceImpl(RoleRepository roleRepository, PersonRepository personRepository){
-        this.personRepository = personRepository;
-        this.roleRepository = roleRepository;
+    public ShiroServiceImpl(RoleServer roleServer, PersonServer personServer){
+        this.personServer = personServer;
+        this.roleServer = roleServer;
     }
     
     @Override
     public Person user(String userid) {
 
-        Person person = personRepository.findByUserid(userid);
+        Person person = personServer.findByUserid(userid);
 
         // 账号不存在
         if (person == null)
@@ -67,8 +65,8 @@ public class ShiroServiceImpl implements ShiroService {
 
         for (int roleId : roleArray) {
             roleList.add(roleId);
-            roleNameList.add(roleRepository.findRoleByRoleid(roleId).getRoleName());
-            roleCodeList.add(roleRepository.findRoleByRoleid(roleId).getRoleCode());
+            roleNameList.add(roleServer.findRoleByRoleid(roleId).getRoleName());
+            roleCodeList.add(roleServer.findRoleByRoleid(roleId).getRoleCode());
         }
 
         shiroUser.setRoleList(roleList);
@@ -80,7 +78,7 @@ public class ShiroServiceImpl implements ShiroService {
 
     @Override
     public String findRoleNameByRoleId(Integer roleId) {
-        return roleRepository.findRoleByRoleid(roleId).getRoleName();
+        return roleServer.findRoleByRoleid(roleId).getRoleName();
     }
 
     @Override
