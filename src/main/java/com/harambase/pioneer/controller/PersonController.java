@@ -15,9 +15,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by linsh on 7/12/2017.
- */
 @CrossOrigin
 @RestController
 @RequestMapping(value = "/user")
@@ -84,22 +81,13 @@ public class PersonController {
                                @RequestParam(value = "order[0][column]") String orderCol,
                                @RequestParam(value = "type", required = false) String type,
                                @RequestParam(value = "status", required = false) String status) {
-        Map<String, Object> map = new HashMap<>();
-        try {
-            HaramMessage message = personService.listUser(String.valueOf(start / length + 1), String.valueOf(length), search,
-                    order, orderCol, type, status);
-            map.put("draw", draw);
-            map.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
-            map.put("recordsFiltered", ((Page) message.get("page")).getTotalRows());
-            map.put("data", message.getData());
-        } catch (Exception e) {
-            e.printStackTrace();
-            map.put("draw", 1);
-            map.put("data", new ArrayList<>());
-            map.put("recordsTotal", 0);
-            map.put("recordsFiltered", 0);
-        }
-        return new ResponseEntity<>(map, HttpStatus.OK);
+
+        HaramMessage message = personService.listUser(String.valueOf(start / length + 1), String.valueOf(length), search,
+                order, orderCol, type, status);
+        message.put("draw", draw);
+        message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
+        message.put("recordsFiltered", ((Page) message.get("page")).getTotalRows());
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
     
 }

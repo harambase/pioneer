@@ -61,8 +61,8 @@ public class SystemController {
         Map<String, Integer> data = new HashMap<>();
         int course, student, faculty;
 
-        student = (Integer) personService.countPerson("s").getData();
-        faculty = (Integer) personService.countPerson("f").getData();
+        student = (Integer) personService.countPerson("1", "s").getData();
+        faculty = (Integer) personService.countPerson("1", "f").getData();
         course  = (Integer) courseService.countActiveCourse().getData();
 
         data.put("student",student);

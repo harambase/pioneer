@@ -3,12 +3,8 @@ package com.harambase.pioneer.controller;
 import com.harambase.common.HaramMessage;
 import com.harambase.common.Page;
 import com.harambase.support.util.SessionUtil;
-import com.harambase.pioneer.pojo.base.MessageWithBLOBs;
+import com.harambase.pioneer.pojo.Message;
 import com.harambase.pioneer.service.MessageService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +18,6 @@ import java.util.Map;
 @RestController
 @CrossOrigin
 @RequestMapping(value = "/message")
-@Api(value = "/message", description = "消息中心接口")
 public class MessageController {
 
     private final MessageService messageService;
@@ -34,7 +29,7 @@ public class MessageController {
 
     @RequiresPermissions("user")
     @RequestMapping(produces = "application/json", method = RequestMethod.POST)
-    public ResponseEntity create(@RequestBody MessageWithBLOBs message){
+    public ResponseEntity create(@RequestBody Message message){
         message.setSenderid(SessionUtil.getUserId());
         HaramMessage haramMessage = messageService.create(message);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
@@ -50,7 +45,7 @@ public class MessageController {
     @RequiresPermissions("user")
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity update(@PathVariable(value = "id") Integer id,
-                                 @RequestBody MessageWithBLOBs message) {
+                                 @RequestBody Message message) {
         HaramMessage haramMessage = messageService.update(id, message);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
@@ -106,22 +101,13 @@ public class MessageController {
             senderid = userid;
         }
 
-        Map<String, Object> map = new HashMap<>();
-        try {
-            HaramMessage message = messageService.list(String.valueOf(start / length + 1), String.valueOf(length), search,
-                    order, orderCol, receiverid, senderid, box);
-            map.put("draw", draw);
-            map.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
-            map.put("recordsFiltered", ((Page) message.get("page")).getTotalRows());
-            map.put("data", message.getData());
-        } catch (Exception e) {
-            e.printStackTrace();
-            map.put("draw", 1);
-            map.put("data", new ArrayList<>());
-            map.put("recordsTotal", 0);
-            map.put("recordsFiltered", 0);
-        }
-        return new ResponseEntity<>(map, HttpStatus.OK);
+        HaramMessage message = messageService.list(String.valueOf(start / length + 1), String.valueOf(length), search,
+                order, orderCol, receiverid, senderid, box);
+        message.put("draw", draw);
+        message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
+        message.put("recordsFiltered", ((Page) message.get("page")).getTotalRows());
+
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
 }

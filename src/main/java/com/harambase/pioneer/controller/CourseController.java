@@ -3,7 +3,7 @@ package com.harambase.pioneer.controller;
 import com.harambase.common.HaramMessage;
 import com.harambase.common.Page;
 import com.harambase.support.util.SessionUtil;
-import com.harambase.pioneer.pojo.base.CourseBase;
+import com.harambase.pioneer.pojo.Course;
 import com.harambase.pioneer.pojo.dto.Option;
 import com.harambase.pioneer.service.CourseService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -29,7 +29,7 @@ public class CourseController {
 
     @RequiresPermissions({"admin", "teach"})
     @RequestMapping(produces = "application/json", method = RequestMethod.POST)
-    public ResponseEntity create(@RequestBody CourseBase course) {
+    public ResponseEntity create(@RequestBody Course course) {
         HaramMessage haramMessage = courseService.create(course);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
@@ -43,7 +43,7 @@ public class CourseController {
 
     @RequiresPermissions({"admin", "teach"})
     @RequestMapping(produces = "application/json", method = RequestMethod.PUT)
-    public ResponseEntity update(@RequestBody CourseBase course) {
+    public ResponseEntity update(@RequestBody Course course) {
         HaramMessage haramMessage = courseService.update(course);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
