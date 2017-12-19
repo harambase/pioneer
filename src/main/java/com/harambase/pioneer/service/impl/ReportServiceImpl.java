@@ -44,9 +44,9 @@ public class ReportServiceImpl implements ReportService {
 
             StringBuilder exportInfoSb = new StringBuilder();
 
-            List<Transcript> transcriptViewList = transcriptServer.studentTranscripts(studentid);
-            Person student = personServer.selectByUserId(studentid);
-            Student studentView = studentServer.creditsDetail(studentid);
+            List<Transcript> transcriptViewList = new ArrayList<>();//transcriptServer.studentTranscripts(studentid);
+            Person student = new Person();//personServer.selectByUserId(studentid);
+            Student studentView = new Student();//studentServer.creditsDetail(studentid);
 
             if(transcriptViewList != null && transcriptViewList.size()>0) {
                 exportInfoSb.append("先锋学校学生成绩单\n")

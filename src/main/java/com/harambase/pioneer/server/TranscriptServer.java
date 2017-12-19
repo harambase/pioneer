@@ -32,4 +32,12 @@ public class TranscriptServer {
     public HaramMessage reg2Course(String ip, int port, String studentId, String[] choices) {
         return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
     }
+
+    public HaramMessage updateByPrimaryKey(String ip, int port, TranscriptBase transcript) {
+        return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
+    }
+
+    public HaramMessage transcriptList(String ip, int port, int currentIndex, int pageSize, String search, String order, String orderColumn, String studentId, String crn) {
+        return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
+    }
 }
