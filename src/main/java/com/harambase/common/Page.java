@@ -2,9 +2,6 @@ package com.harambase.common;
 
 import java.util.LinkedHashMap;
 
-/**
- * Created by Administrator on 2017/5/23.
- */
 public class Page {
     public int totalPages = 0;
     public int currentPage = -1;
