@@ -13,33 +13,12 @@
 
     <profiles>
         <profile>
-            <id>devTest</id>
-            <properties>
-                <database.ip>2.0.068.30.225</database.ip>
-                <database.port>3307</database.port>
-                <database.username>root</database.username>
-                <database.password>123456</database.password>
-            </properties>
-        </profile>
-        <profile>
             <id>dev</id>
             <properties>
-                <database.ip>localhost</database.ip>
-                <database.port>3306</database.port>
-                <database.username>root</database.username>
-                <database.password>123456</database.password>
+                <server.ip>localhost</server.ip>
+                <server.port>8080</server.port>
             </properties>
         </profile>
-        <profile>
-            <id>prod</id>
-            <properties>
-                <database.ip>localhost</database.ip>
-                <database.port>3306</database.port>
-                <database.username>root</database.username>
-                <database.password>1qaz@WSX</database.password>
-            </properties>
-        </profile>
-
     </profiles>
 
     <parent>
