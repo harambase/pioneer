@@ -1,6 +1,7 @@
 package com.harambase.pioneer.server;
 
 import com.harambase.common.HaramMessage;
+import com.harambase.pioneer.pojo.Role;
 import com.harambase.support.util.RestTemplateUtil;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
@@ -18,4 +19,9 @@ public class RoleServer {
     public HaramMessage getUserByAccount(String ip, int port, String account) {
         return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
     }
+
+    public HaramMessage findRoleByRoleid(String ip, int port, int roleId) {
+        return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
+    }
+
 }

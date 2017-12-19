@@ -1,11 +1,13 @@
 package com.harambase.pioneer.security.factory;
 
+import com.harambase.common.Config;
 import com.harambase.pioneer.server.PersonServer;
 import com.harambase.pioneer.server.RoleServer;
 import com.harambase.pioneer.pojo.Person;
 import com.harambase.pioneer.security.SpringContextHolder;
 import com.harambase.pioneer.security.helper.CollectionKit;
 import com.harambase.pioneer.security.entity.ShiroUser;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.shiro.authc.CredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
@@ -13,12 +15,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @Service
 @DependsOn("springContextHolder")
 public class ShiroServiceImpl implements ShiroService {
+
+    private final static String IP = Config.SERVER_IP;
+    private final static int PORT = Config.SERVER_PORT;
 
     private final RoleServer roleServer;
     private final PersonServer personServer;
@@ -34,17 +41,24 @@ public class ShiroServiceImpl implements ShiroService {
     }
     
     @Override
-    public Person user(String userid) {
+    public Person user(String userid){
 
-        Person person = personServer.findByUserid(userid);
+        LinkedHashMap<String, Object> personMap = (LinkedHashMap) personServer.get(IP, PORT, userid).getData();
 
         // 账号不存在
-        if (person == null)
+        if (personMap == null)
             throw new CredentialsException();
 
         // 账号被冻结
-        if (person.getStatus().equals("0")) {
+        if (personMap.get("status").equals("0")) {
             throw new LockedAccountException();
+        }
+        Person person = new Person();
+
+        try {
+            BeanUtils.populate(person, personMap);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return person;
@@ -65,8 +79,9 @@ public class ShiroServiceImpl implements ShiroService {
 
         for (int roleId : roleArray) {
             roleList.add(roleId);
-            roleNameList.add(roleServer.findRoleByRoleid(roleId).getRoleName());
-            roleCodeList.add(roleServer.findRoleByRoleid(roleId).getRoleCode());
+            LinkedHashMap<String, String> roleMap = (LinkedHashMap<String, String>) roleServer.findRoleByRoleid(IP, PORT, roleId).getData();
+            roleNameList.add(roleMap.get("roleName"));
+            roleCodeList.add(roleMap.get("roleCode"));
         }
 
         shiroUser.setRoleList(roleList);
@@ -78,7 +93,8 @@ public class ShiroServiceImpl implements ShiroService {
 
     @Override
     public String findRoleNameByRoleId(Integer roleId) {
-        return roleServer.findRoleByRoleid(roleId).getRoleName();
+        LinkedHashMap<String, String> roleMap = (LinkedHashMap<String, String>) roleServer.findRoleByRoleid(IP, PORT, roleId).getData();
+        return roleMap.get("roleName");
     }
 
     @Override
