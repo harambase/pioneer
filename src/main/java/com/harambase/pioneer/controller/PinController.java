@@ -29,21 +29,21 @@ public class PinController {
                                  @RequestParam(value = "role") int role,
                                  @RequestParam(value = "info") String info,
                                  @RequestParam(value = "remark") String remark){
-        HaramMessage haramMessage = pinService.generate(startTime, endTime, role, info, remark);
+        HaramMessage haramMessage = pinService.generateAll(startTime, endTime, role, info, remark);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
     @RequiresPermissions({"admin", "teach"})
     @RequestMapping(value = "/{pin}", method = RequestMethod.DELETE)
     public ResponseEntity delete(@PathVariable(value = "pin") String pin) {
-        HaramMessage haramMessage = pinService.delete(pin);
+        HaramMessage haramMessage = pinService.deleteSingleByPin(pin);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
     @RequiresPermissions({"admin", "teach"})
     @RequestMapping(value = "/all", method = RequestMethod.DELETE)
     public ResponseEntity deleteAll(@RequestParam(value = "info") String info) {
-        HaramMessage haramMessage = pinService.clearAll(info);
+        HaramMessage haramMessage = pinService.deleteAllByInfo(info);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
