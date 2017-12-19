@@ -4,9 +4,9 @@ import com.harambase.common.Config;
 import com.harambase.common.HaramMessage;
 import com.harambase.common.constant.FlagDict;
 import com.harambase.support.util.DateUtil;
-import com.harambase.pioneer.dao.mapper.PersonMapper;
-import com.harambase.pioneer.dao.mapper.StudentMapper;
-import com.harambase.pioneer.dao.mapper.TranscriptMapper;
+import com.harambase.pioneer.server.PersonServer;
+import com.harambase.pioneer.server.StudentServer;
+import com.harambase.pioneer.server.TranscriptServer;
 import com.harambase.pioneer.pojo.Person;
 import com.harambase.pioneer.pojo.Student;
 import com.harambase.pioneer.pojo.Transcript;
@@ -23,15 +23,15 @@ import java.util.List;
 @Service
 public class ReportServiceImpl implements ReportService {
 
-    private final TranscriptMapper transcriptMapper;
-    private final PersonMapper personMapper;
-    private final StudentMapper studentMapper;
+    private final TranscriptServer transcriptServer;
+    private final PersonServer personServer;
+    private final StudentServer studentServer;
 
     @Autowired
-    public ReportServiceImpl(TranscriptMapper transcriptMapper, PersonMapper personMapper, StudentMapper studentMapper){
-        this.transcriptMapper = transcriptMapper;
-        this.studentMapper = studentMapper;
-        this.personMapper = personMapper;
+    public ReportServiceImpl(TranscriptServer transcriptServer, PersonServer personServer, StudentServer studentServer){
+        this.transcriptServer = transcriptServer;
+        this.studentServer = studentServer;
+        this.personServer = personServer;
     }
 
     @Override
@@ -44,9 +44,9 @@ public class ReportServiceImpl implements ReportService {
 
             StringBuilder exportInfoSb = new StringBuilder();
 
-            List<Transcript> transcriptViewList = transcriptMapper.studentTranscripts(studentid);
-            Person student = personMapper.selectByUserId(studentid);
-            Student studentView = studentMapper.creditsDetail(studentid);
+            List<Transcript> transcriptViewList = transcriptServer.studentTranscripts(studentid);
+            Person student = personServer.selectByUserId(studentid);
+            Student studentView = studentServer.creditsDetail(studentid);
 
             if(transcriptViewList != null && transcriptViewList.size()>0) {
                 exportInfoSb.append("先锋学校学生成绩单\n")

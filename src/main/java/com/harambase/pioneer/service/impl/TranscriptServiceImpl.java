@@ -6,8 +6,8 @@ import com.harambase.common.constant.FlagDict;
 import com.harambase.pioneer.pojo.base.TranscriptBase;
 import com.harambase.support.util.DateUtil;
 import com.harambase.support.util.PageUtil;
-import com.harambase.pioneer.dao.mapper.CourseMapper;
-import com.harambase.pioneer.dao.mapper.TranscriptMapper;
+import com.harambase.pioneer.server.CourseServer;
+import com.harambase.pioneer.server.TranscriptServer;
 import com.harambase.pioneer.pojo.Person;
 import com.harambase.pioneer.service.TranscriptService;
 import org.apache.commons.lang3.StringUtils;
@@ -22,14 +22,14 @@ import java.util.Map;
 @Service
 public class TranscriptServiceImpl implements TranscriptService{
 
-    private final CourseMapper courseMapper;
-    private final TranscriptMapper transcriptMapper;
+    private final CourseServer courseServer;
+    private final TranscriptServer transcriptServer;
 
     @Autowired
-    public TranscriptServiceImpl(CourseMapper courseMapper,
-                                 TranscriptMapper transcriptMapper) {
-        this.courseMapper = courseMapper;
-        this.transcriptMapper = transcriptMapper;
+    public TranscriptServiceImpl(CourseServer courseServer,
+                                 TranscriptServer transcriptServer) {
+        this.courseServer = courseServer;
+        this.transcriptServer = transcriptServer;
     }
 
     @Override
@@ -37,7 +37,7 @@ public class TranscriptServiceImpl implements TranscriptService{
         HaramMessage message = new HaramMessage();
         try {
             transcript.setAssigntime(DateUtil.DateToStr(new Date()));
-            int ret = transcriptMapper.updateByPrimaryKey(transcript);
+            int ret = transcriptServer.updateByPrimaryKey(transcript);
             if (ret == 1) {
                 message.setData(transcript);
                 message.setMsg(FlagDict.SUCCESS.getM());
@@ -103,7 +103,7 @@ public class TranscriptServiceImpl implements TranscriptService{
             if (StringUtils.isEmpty(crn))
                 param.put("crn", null);
 
-            totalSize = transcriptMapper.getTranscriptCountByMapPageSearchOrdered(param); //startTime, endTime);
+            totalSize = transcriptServer.getTranscriptCountByMapPageSearchOrdered(param); //startTime, endTime);
 
             Page page = new Page();
             page.setCurrentPage(PageUtil.getcPg(currentPage));
@@ -116,7 +116,7 @@ public class TranscriptServiceImpl implements TranscriptService{
             param.put("orderColumn", orderColumn);
 
             //(int currentIndex, int pageSize, String search, String order, String orderColumn);
-            List<Person> msgs = transcriptMapper.getTranscriptByMapPageSearchOrdered(param);
+            List<Person> msgs = transcriptServer.getTranscriptByMapPageSearchOrdered(param);
 
             message.setData(msgs);
             message.put("page", page);

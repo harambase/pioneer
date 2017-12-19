@@ -11,51 +11,37 @@ import com.harambase.support.util.IDUtil;
 import com.harambase.support.util.PageUtil;
 import com.harambase.support.util.Pinyin4jUtil;
 import com.harambase.support.charts.StaticGexfGraph;
-import com.harambase.pioneer.dao.PersonDao;
-import com.harambase.pioneer.dao.mapper.*;
+import com.harambase.pioneer.server.*;
 import com.harambase.pioneer.pojo.*;
 import com.harambase.pioneer.pojo.Course;
-import com.harambase.pioneer.dao.repository.PersonRepository;
 import com.harambase.pioneer.service.PersonService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
 
 @Service
-@Transactional
 public class PersonServiceImpl implements PersonService {
 
-    private final PersonMapper personMapper;
-    private final StudentMapper studentMapper;
-    private final CourseMapper courseMapper;
-    private final TranscriptMapper transcriptMapper;
-    private final AdviseMapper adviseMapper;
-    private final MessageMapper messageMapper;
-    
-    private final PersonDao personDao;
+    private final PersonServer personServer;
+    private final StudentServer studentServer;
+    private final CourseServer courseServer;
+    private final TranscriptServer transcriptServer;
+    private final AdviseServer adviseServer;
+    private final MessageServer messageServer;
 
     @Autowired
-    public PersonRepository personRepository;
-
-    @Autowired
-    public PersonServiceImpl(PersonMapper personMapper, StudentMapper studentMapper,
-                             CourseMapper courseMapper, TranscriptMapper transcriptMapper,
-                             AdviseMapper adviseMapper, MessageMapper messageMapper,
-                             PersonDao personDao){
-        this.personMapper = personMapper;
-        this.studentMapper = studentMapper;
-        this.courseMapper = courseMapper;
-        this.transcriptMapper = transcriptMapper;
-        this.adviseMapper = adviseMapper;
-        this.messageMapper = messageMapper;
-        this.personDao = personDao;
+    public PersonServiceImpl(PersonServer personServer, StudentServer studentServer,
+                             CourseServer courseServer, TranscriptServer transcriptServer,
+                             AdviseServer adviseServer, MessageServer messageServer){
+        this.personServer = personServer;
+        this.studentServer = studentServer;
+        this.courseServer = courseServer;
+        this.transcriptServer = transcriptServer;
+        this.adviseServer = adviseServer;
+        this.messageServer = messageServer;
     }
 
     @Override
@@ -128,9 +114,9 @@ public class PersonServiceImpl implements PersonService {
                 StudentBase student = new StudentBase();
                 student.setStudentid(userid);
                 student.setMaxCredits(12);
-                studentMapper.insert(student);
+                studentServer.insert(student);
             }
-            int ret = personMapper.insert(person);
+            int ret = personServer.insert(person);
             if(ret == 1){
                 haramMessage.setCode(FlagDict.SUCCESS.getV());
                 haramMessage.setMsg(FlagDict.SUCCESS.getM());
@@ -149,7 +135,7 @@ public class PersonServiceImpl implements PersonService {
             message.setTag("work");
             message.setLabels("['inbox','important']");
 
-            ret = messageMapper.insertSelective(message);
+            ret = messageServer.insertSelective(message);
             if(ret <= 0)
                 throw new RuntimeException("MessageWithBLOBs 插入失败!");
 
@@ -226,7 +212,7 @@ public class PersonServiceImpl implements PersonService {
 //            if(StringUtils.isEmpty(search))
 //                param.put("search", null);
 
-//            totalSize = personMapper.getCountByMapPageSearchOrdered(param); //startTime, endTime);
+//            totalSize = personServer.getCountByMapPageSearchOrdered(param); //startTime, endTime);
 
             Page page = new Page();
             page.setCurrentPage(PageUtil.getcPg(currentPage));
@@ -239,7 +225,7 @@ public class PersonServiceImpl implements PersonService {
 //            param.put("orderColumn",  orderColumn);
 
             //(int currentIndex, int pageSize, String search, String order, String orderColumn);
-//            List<Person> msgs = personMapper.getByMapPageSearchOrdered(param);
+//            List<Person> msgs = personServer.getByMapPageSearchOrdered(param);
 
             Sort sort = new Sort(Sort.Direction.DESC, orderColumn);
             Pageable pageable = new PageRequest(page.getCurrentIndex(), page.getPageSize(), sort);
@@ -262,7 +248,7 @@ public class PersonServiceImpl implements PersonService {
     public HaramMessage getUser(String userid) {
         HaramMessage haramMessage = new HaramMessage();
         try {
-            Person user = personMapper.selectByPrimaryKey(userid);
+            Person user = personServer.selectByPrimaryKey(userid);
             if(user != null) {
                 haramMessage.setData(user);
                 haramMessage.setCode(FlagDict.SUCCESS.getV());
@@ -286,7 +272,7 @@ public class PersonServiceImpl implements PersonService {
         HaramMessage haramMessage = new HaramMessage();
         try {
             person.setUpdatetime(DateUtil.DateToStr(new Date()));
-            int ret = personMapper.updateByPrimaryKeySelective(person);
+            int ret = personServer.updateByPrimaryKeySelective(person);
             if(ret == 1) {
                 haramMessage.setData(person);
                 haramMessage.setCode(FlagDict.SUCCESS.getV());
@@ -333,9 +319,9 @@ public class PersonServiceImpl implements PersonService {
         Map<String, String> param = new HashMap<>();
         param.put("status", null);
 
-        int s = personMapper.countStudent(param);
-        int f = personMapper.countFaculty(param);
-        int a = personMapper.countAdmin();
+        int s = personServer.countStudent(param);
+        int f = personServer.countFaculty(param);
+        int a = personServer.countAdmin();
 
         data1.add(MapParam.pieChartValue(String.valueOf(s), "StudentBase"));
         data1.add(MapParam.pieChartValue(String.valueOf(f), "Faculty"));
@@ -344,8 +330,8 @@ public class PersonServiceImpl implements PersonService {
 
         //统计性别
         List<Map<String, String>> data2 = new ArrayList<>();
-        int male = personMapper.countMale();
-        int female = personMapper.countFemale();
+        int male = personServer.countMale();
+        int female = personServer.countFemale();
 
         data2.add(MapParam.pieChartValue(String.valueOf(male), "Male"));
         data2.add(MapParam.pieChartValue(String.valueOf(female), "Female"));
@@ -361,10 +347,10 @@ public class PersonServiceImpl implements PersonService {
         HaramMessage message = new HaramMessage();
         try {
 
-            List<Person> personList = personMapper.getAllUsers();
-            List<Course> courseList = courseMapper.getAllActiveCourses();
-            List<TranscriptBase> transcriptList = transcriptMapper.getAllTranscripts();
-            List<AdviseBase> adviseList = adviseMapper.getAllAdvise();
+            List<Person> personList = personServer.getAllUsers();
+            List<Course> courseList = courseServer.getAllActiveCourses();
+            List<TranscriptBase> transcriptList = transcriptServer.getAllTranscripts();
+            List<AdviseBase> adviseList = adviseServer.getAllAdvise();
 
             String xml = StaticGexfGraph.graphGenerator(personList, courseList, transcriptList, adviseList);
             message.setData(xml);
@@ -382,11 +368,11 @@ public class PersonServiceImpl implements PersonService {
         //统计用户种类
         switch (type){
             case "s":
-                int s = personMapper.countStudent(param);
+                int s = personServer.countStudent(param);
                 message.setData(s);
                 return message;
             case "f":
-                int f = personMapper.countFaculty(param);
+                int f = personServer.countFaculty(param);
                 message.setData(f);
                 return message;
         }
@@ -402,14 +388,14 @@ public class PersonServiceImpl implements PersonService {
         
         try {
             if(!userid.equals(IDUtil.ROOT)) {
-                Person p = personMapper.selectByPrimaryKey(userid);
+                Person p = personServer.selectByPrimaryKey(userid);
                 if (p != null) {
                     String type = p.getType();
                     if (type.contains("s")) {
-                        studentMapper.deleteByPrimaryKey(userid);
-                        transcriptMapper.deleteByStudentid(userid);
+                        studentServer.deleteByPrimaryKey(userid);
+                        transcriptServer.deleteByStudentid(userid);
                     } else if (type.contains("f")) {
-                        List<Course> courseViewList = courseMapper.getAllActiveCourses();
+                        List<Course> courseViewList = courseServer.getAllActiveCourses();
                         for (Course c : courseViewList) {
                             String facultyid = c.getFacultyid();
                             if (facultyid.equals(userid)) {
@@ -417,12 +403,12 @@ public class PersonServiceImpl implements PersonService {
                                 c.setFacultyid(IDUtil.ROOT);
                                 c.setComment(c.getFaculty() + "老师被删除, 删除时间：" + opTime);
                                 c.setUpdatetime(DateUtil.DateToStr(new Date()));
-                                courseMapper.updateByPrimaryKeySelective(c);
+                                courseServer.updateByPrimaryKeySelective(c);
                             }
                         }
                     }
-                    adviseMapper.deleteByUserID(userid);
-                    personMapper.deleteByPrimaryKey(userid);
+                    adviseServer.deleteByUserID(userid);
+                    personServer.deleteByPrimaryKey(userid);
                 }
                 message.setMsg(FlagDict.SUCCESS.getM());
                 message.setCode(FlagDict.SUCCESS.getV());

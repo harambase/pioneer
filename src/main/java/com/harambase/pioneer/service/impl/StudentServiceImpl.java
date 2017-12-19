@@ -6,8 +6,8 @@ import com.harambase.pioneer.pojo.base.CourseBase;
 import com.harambase.pioneer.pojo.base.StudentBase;
 import com.harambase.support.util.PageUtil;
 import com.harambase.common.constant.FlagDict;
-import com.harambase.pioneer.dao.mapper.StudentMapper;
-import com.harambase.pioneer.dao.mapper.TranscriptMapper;
+import com.harambase.pioneer.server.StudentServer;
+import com.harambase.pioneer.server.TranscriptServer;
 import com.harambase.pioneer.pojo.Person;
 import com.harambase.pioneer.pojo.Student;
 import com.harambase.pioneer.service.StudentService;
@@ -22,20 +22,20 @@ import java.util.Map;
 @Service
 public class StudentServiceImpl implements StudentService {
 
-    private final StudentMapper studentMapper;
-    private final TranscriptMapper transcriptMapper;
+    private final StudentServer studentServer;
+    private final TranscriptServer transcriptServer;
 
     @Autowired
-    public StudentServiceImpl(StudentMapper studentMapper, TranscriptMapper transcriptMapper){
-        this.transcriptMapper = transcriptMapper;
-        this.studentMapper = studentMapper;
+    public StudentServiceImpl(StudentServer studentServer, TranscriptServer transcriptServer){
+        this.transcriptServer = transcriptServer;
+        this.studentServer = studentServer;
     }
 
     @Override
     public HaramMessage transcriptDetail(String studentid) {
        HaramMessage haramMessage = new HaramMessage();
        try{
-           Student sv = studentMapper.creditsDetail(studentid);
+           Student sv = studentServer.creditsDetail(studentid);
            haramMessage.setData(sv);
            haramMessage.setCode(FlagDict.SUCCESS.getV());
            haramMessage.setMsg(FlagDict.SUCCESS.getM());
@@ -51,7 +51,7 @@ public class StudentServiceImpl implements StudentService {
     public HaramMessage update(StudentBase student) {
         HaramMessage haramMessage = new HaramMessage();
         try{
-            int ret = studentMapper.updateByPrimaryKey(student);
+            int ret = studentServer.updateByPrimaryKey(student);
             if(ret == 1) {
                 haramMessage.setData(student);
                 haramMessage.setCode(FlagDict.SUCCESS.getV());
@@ -107,7 +107,7 @@ public class StudentServiceImpl implements StudentService {
             if(StringUtils.isEmpty(search))
                 param.put("search", null);
 
-            totalSize = studentMapper.getStudentCountByMapPageSearchOrdered(param); //startTime, endTime);
+            totalSize = studentServer.getStudentCountByMapPageSearchOrdered(param); //startTime, endTime);
 
             Page page = new Page();
             page.setCurrentPage(PageUtil.getcPg(currentPage));
@@ -120,7 +120,7 @@ public class StudentServiceImpl implements StudentService {
             param.put("orderColumn",  orderColumn);
 
             //(int currentIndex, int pageSize, String search, String order, String orderColumn);
-            List<Person> msgs = studentMapper.getStudentByMapPageSearchOrdered(param);
+            List<Person> msgs = studentServer.getStudentByMapPageSearchOrdered(param);
 
             message.setData(msgs);
             message.put("page", page);
@@ -141,8 +141,8 @@ public class StudentServiceImpl implements StudentService {
         HaramMessage haramMessage = new HaramMessage();
         try{
             Map<String, Integer> creditInfo = new HashMap<>();
-            List<CourseBase> courseList = transcriptMapper.studentCourse(studentid);
-            Student sv = studentMapper.creditsDetail(studentid);
+            List<CourseBase> courseList = transcriptServer.studentCourse(studentid);
+            Student sv = studentServer.creditsDetail(studentid);
             int use_credits = 0;
             int ava_credits = 0;
             int tol_credits = sv.getMax_credits();

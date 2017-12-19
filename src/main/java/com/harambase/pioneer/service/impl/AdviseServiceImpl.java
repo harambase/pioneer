@@ -6,7 +6,7 @@ import com.harambase.common.constant.FlagDict;
 import com.harambase.support.util.DateUtil;
 import com.harambase.support.util.PageUtil;
 import com.harambase.support.util.SessionUtil;
-import com.harambase.pioneer.dao.mapper.AdviseMapper;
+import com.harambase.pioneer.server.AdviseServer;
 import com.harambase.pioneer.pojo.base.AdviseBase;
 import com.harambase.pioneer.pojo.Advise;
 import com.harambase.pioneer.service.AdviseService;
@@ -22,11 +22,11 @@ import java.util.Map;
 @Service
 public class AdviseServiceImpl implements AdviseService{
 
-    private final AdviseMapper adviseMapper;
+    private final AdviseServer AdviseServer;
 
     @Autowired
-    public AdviseServiceImpl(AdviseMapper adviseMapper){
-        this.adviseMapper = adviseMapper;
+    public AdviseServiceImpl(AdviseServer AdviseServer){
+        this.AdviseServer = AdviseServer;
     }
 
 
@@ -67,7 +67,7 @@ public class AdviseServiceImpl implements AdviseService{
             if(StringUtils.isEmpty(search))
                 param.put("search", null);
 
-            totalSize = adviseMapper.getAdvisingCountByMapPageSearchOrdered(param); //startTime, endTime);
+            totalSize = AdviseServer.getAdvisingCountByMapPageSearchOrdered(param); //startTime, endTime);
 
             Page page = new Page();
             page.setCurrentPage(PageUtil.getcPg(currentPage));
@@ -80,7 +80,7 @@ public class AdviseServiceImpl implements AdviseService{
             param.put("orderColumn",  orderColumn);
 
             //(int currentIndex, int pageSize, String search, String order, String orderColumn);
-            List<Advise> msgs = adviseMapper.getAdvisingByMapPageSearchOrdered(param);
+            List<Advise> msgs = AdviseServer.getAdvisingByMapPageSearchOrdered(param);
 
             message.setData(msgs);
             message.put("page", page);
@@ -107,7 +107,7 @@ public class AdviseServiceImpl implements AdviseService{
             advise.setStudentid(studentId);
             advise.setFacultyid(facultyId);
             advise.setUpdateTime(DateUtil.DateToStr(new Date()));
-            int ret = adviseMapper.updateByPrimaryKeySelective(advise);
+            int ret = AdviseServer.updateByPrimaryKeySelective(advise);
             if(ret == 1) {
                 haramMessage.setData(advise);
                 haramMessage.setCode(FlagDict.SUCCESS.getV());
@@ -132,13 +132,13 @@ public class AdviseServiceImpl implements AdviseService{
         try {
             advise.setOperator(SessionUtil.getUserId());
             advise.setUpdateTime(DateUtil.DateToStr(new Date()));
-            AdviseBase a = adviseMapper.selectByAdvise(advise);
+            AdviseBase a = AdviseServer.selectByAdvise(advise);
             if(a != null){
                 haramMessage.setCode(FlagDict.ADVISE_DUPLICATE.getV());
                 haramMessage.setMsg(FlagDict.ADVISE_DUPLICATE.getM());
                 return haramMessage;
             }
-            int ret = adviseMapper.insertSelective(advise);
+            int ret = AdviseServer.insertSelective(advise);
             if(ret == 1) {
                 haramMessage.setData(advise);
                 haramMessage.setCode(FlagDict.SUCCESS.getV());
@@ -161,7 +161,7 @@ public class AdviseServiceImpl implements AdviseService{
     public HaramMessage removeMentor(Integer id) {
         HaramMessage haramMessage = new HaramMessage();
         try {
-            int ret = adviseMapper.deleteByPrimaryKey(id);
+            int ret = AdviseServer.deleteByPrimaryKey(id);
             if(ret == 1) {
                 haramMessage.setCode(FlagDict.SUCCESS.getV());
                 haramMessage.setMsg(FlagDict.SUCCESS.getM());
@@ -183,7 +183,7 @@ public class AdviseServiceImpl implements AdviseService{
     public HaramMessage getMentor(Integer id) {
         HaramMessage haramMessage = new HaramMessage();
         try {
-            AdviseBase advise = adviseMapper.selectByPrimaryKey(id);
+            AdviseBase advise = AdviseServer.selectByPrimaryKey(id);
             haramMessage.setData(advise);
             haramMessage.setCode(FlagDict.SUCCESS.getV());
             haramMessage.setMsg(FlagDict.SUCCESS.getM());

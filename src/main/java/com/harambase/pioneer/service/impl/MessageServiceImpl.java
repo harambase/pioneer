@@ -5,8 +5,7 @@ import com.harambase.common.HaramMessage;
 import com.harambase.common.Page;
 import com.harambase.support.util.PageUtil;
 import com.harambase.common.constant.FlagDict;
-import com.harambase.pioneer.dao.MessageDao;
-import com.harambase.pioneer.dao.mapper.MessageMapper;
+import com.harambase.pioneer.server.MessageServer;
 import com.harambase.pioneer.pojo.base.MessageWithBLOBs;
 import com.harambase.pioneer.pojo.Message;
 import com.harambase.pioneer.service.MessageService;
@@ -19,14 +18,11 @@ import java.util.List;
 @Service
 public class MessageServiceImpl implements MessageService {
 
-    private final MessageMapper messageMapper;
-    private final MessageDao messageDao;
+    private final MessageServer messageServer;
 
     @Autowired
-    public MessageServiceImpl(MessageMapper messageMapper,
-                              MessageDao messageDao){
-        this.messageMapper = messageMapper;
-        this.messageDao = messageDao;
+    public MessageServiceImpl(MessageServer messageServer){
+        this.messageServer = messageServer;
     }
 
     @Override
@@ -80,7 +76,7 @@ public class MessageServiceImpl implements MessageService {
     public HaramMessage getMessageView(Integer id) {
         HaramMessage haramMessage = new HaramMessage();
         try{
-            Message messageView = messageMapper.selectViewByPrimaryKey(id);
+            Message messageView = messageServer.selectViewByPrimaryKey(id);
             haramMessage.setData(messageView);
             haramMessage.setMsg(FlagDict.SUCCESS.getM());
             haramMessage.setCode(FlagDict.SUCCESS.getV());
@@ -115,7 +111,7 @@ public class MessageServiceImpl implements MessageService {
         HaramMessage haramMessage = new HaramMessage();
         try{
             message.setId(id);
-            int ret = messageMapper.updateByPrimaryKeySelective(message);
+            int ret = messageServer.updateByPrimaryKeySelective(message);
             if(ret != 1)
                 throw new RuntimeException("更新失败");
             
@@ -135,7 +131,7 @@ public class MessageServiceImpl implements MessageService {
         HaramMessage haramMessage = new HaramMessage();
         try{
             message.setDate(DateUtil.DateToStr(new Date()));
-            int ret = messageMapper.insert(message);
+            int ret = messageServer.insert(message);
             if(ret != 1)
                 throw new RuntimeException("插入失败");
         
@@ -155,7 +151,7 @@ public class MessageServiceImpl implements MessageService {
     public HaramMessage delete(Integer id) {
         HaramMessage haramMessage = new HaramMessage();
         try{
-            int ret =  messageMapper.deleteByPrimaryKey(id);
+            int ret =  messageServer.deleteByPrimaryKey(id);
             if(ret != 1)
                 throw new RuntimeException("插入失败");
 

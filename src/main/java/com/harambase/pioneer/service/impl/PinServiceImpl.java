@@ -4,16 +4,15 @@ import com.harambase.pioneer.pojo.base.MessageWithBLOBs;
 import com.harambase.support.util.DateUtil;
 import com.harambase.common.HaramMessage;
 import com.harambase.common.constant.FlagDict;
-import com.harambase.pioneer.dao.mapper.AdviseMapper;
-import com.harambase.pioneer.dao.mapper.MessageMapper;
-import com.harambase.pioneer.dao.mapper.PersonMapper;
-import com.harambase.pioneer.dao.mapper.PinMapper;
+import com.harambase.pioneer.server.AdviseServer;
+import com.harambase.pioneer.server.MessageServer;
+import com.harambase.pioneer.server.PersonServer;
+import com.harambase.pioneer.server.PinServer;
 import com.harambase.common.helper.TimeValidate;
 import com.harambase.pioneer.pojo.*;
 import com.harambase.pioneer.service.PinService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -22,24 +21,24 @@ import java.util.Map;
 
 @Service
 public class PinServiceImpl implements PinService{
-    private final PinMapper pinMapper;
-    private final PersonMapper personMapper;
-    private final MessageMapper messageMapper;
-    private final AdviseMapper adviseMapper;
+    private final PinServer pinServer;
+    private final PersonServer personServer;
+    private final MessageServer messageServer;
+    private final AdviseServer adviseServer;
     
     @Autowired
-    public PinServiceImpl(PersonMapper personMapper, PinMapper pinMapper,
-                          MessageMapper messageMapper, AdviseMapper adviseMapper){
-        this.personMapper = personMapper;
-        this.pinMapper = pinMapper;
-        this.messageMapper = messageMapper;
-        this.adviseMapper = adviseMapper;
+    public PinServiceImpl(PersonServer personServer, PinServer pinServer,
+                          MessageServer messageServer, AdviseServer adviseServer){
+        this.personServer = personServer;
+        this.pinServer = pinServer;
+        this.messageServer = messageServer;
+        this.adviseServer = adviseServer;
     }
     @Override
     public HaramMessage validate(Integer pinNum) {
         HaramMessage haramMessage = new HaramMessage();
         try{
-            Pin pin = pinMapper.selectByPin(pinNum);
+            Pin pin = pinServer.selectByPin(pinNum);
             if(pin != null && TimeValidate.isPinValidate(pin)){
                 haramMessage.setCode(FlagDict.SUCCESS.getV());
                 haramMessage.setMsg(FlagDict.SUCCESS.getM());
@@ -59,7 +58,6 @@ public class PinServiceImpl implements PinService{
     }
     
     @Override
-    @Transactional
     public HaramMessage generate(String startTime, String endTime, int role, String info, String remark) {
         HaramMessage haramMessage = new HaramMessage();
         try{
@@ -79,7 +77,7 @@ public class PinServiceImpl implements PinService{
             }
             param.put("role", role);
 
-            Object intObject = pinMapper.countByInfo(param);
+            Object intObject = pinServer.countByInfo(param);
             count = 0;
             if(intObject != null)
                 count = (Integer) intObject;
@@ -90,14 +88,14 @@ public class PinServiceImpl implements PinService{
                 return haramMessage;
             }
             
-            List<Person> personList = personMapper.getUsersBySearch(param);
+            List<Person> personList = personServer.getUsersBySearch(param);
 
 
             for(Person person : personList){
                 do{
                     pinNum = (int)(Math.random() * (999999 - 100000 + 1) + 100000);
                     param.put("pin", pin);
-                    count = pinMapper.countByPin(pinNum);
+                    count = pinServer.countByPin(pinNum);
                 }while(count != 0);
 
                 pin.setPin(pinNum);
@@ -117,7 +115,7 @@ public class PinServiceImpl implements PinService{
                         break;
                 }
 
-                int ret = pinMapper.insert(pin);
+                int ret = pinServer.insert(pin);
                 if(ret != 1)
                     throw new RuntimeException("插入失败");
             }
@@ -144,7 +142,7 @@ public class PinServiceImpl implements PinService{
         try{
             Map<String, Object> param = new HashMap<>();
             param.put("info", info);
-            List<Pin> pinInfoList = pinMapper.listByInfo(param);
+            List<Pin> pinInfoList = pinServer.listByInfo(param);
             haramMessage.setData(pinInfoList);
         }catch (Exception e){
             e.printStackTrace();
@@ -157,14 +155,13 @@ public class PinServiceImpl implements PinService{
         return haramMessage;
     }
 
-    @Transactional
     @Override
     public HaramMessage sendFacultyPin(String info, String senderId){
         HaramMessage haramMessage = new HaramMessage();
         try{
             Map<String, Object> param = new HashMap<>();
             param.put("info", info);
-            List<Pin> pinInfoList = pinMapper.listByInfo(param);
+            List<Pin> pinInfoList = pinServer.listByInfo(param);
 
             String date = DateUtil.DateToStr(new Date());
             MessageWithBLOBs message = new MessageWithBLOBs();
@@ -184,7 +181,7 @@ public class PinServiceImpl implements PinService{
                             + pin.getStarttime() + "至" + pin.getEndtime();
                     message.setReceiverid(facultyId);
                     message.setBody(body);
-                    int ret = messageMapper.insert(message);
+                    int ret = messageServer.insert(message);
                     if(ret != 1)
                         throw new RuntimeException("插入失败!");
                 }
@@ -207,14 +204,13 @@ public class PinServiceImpl implements PinService{
         return null;
     }
 
-    @Transactional
     @Override
     public HaramMessage sendAdvisorPin(String info, String senderId){
         HaramMessage haramMessage = new HaramMessage();
         try{
             Map<String, Object> param = new HashMap<>();
             param.put("info", info);
-            List<Pin> pinInfoList = pinMapper.listByInfo(param);
+            List<Pin> pinInfoList = pinServer.listByInfo(param);
 
             String date = DateUtil.DateToStr(new Date());
             MessageWithBLOBs message = new MessageWithBLOBs();
@@ -235,15 +231,15 @@ public class PinServiceImpl implements PinService{
             for(Pin pin : pinInfoList){
                 if(pin.getRole() == 1){
                     studentId = pin.getStudentid();
-                    facultyId = adviseMapper.selectFacultyByStudent(studentId);
-                    student = personMapper.selectByPrimaryKey(studentId);
+                    facultyId = adviseServer.selectFacultyByStudent(studentId);
+                    student = personServer.selectByPrimaryKey(studentId);
                     studentName = student.getLastname() + ", " + student.getFirstname();
 
                     body = "您的辅导学生"+ studentName +"用于选课的PIN是：" + pin.getPin() + "，有效期为："
                             + pin.getStarttime() + "至" + pin.getEndtime() + "请及时告知，谢谢！";
                     message.setReceiverid(facultyId);
                     message.setBody(body);
-                    int ret = messageMapper.insert(message);
+                    int ret = messageServer.insert(message);
                     if(ret != 1)
                         throw new RuntimeException("插入失败!");
                 }
