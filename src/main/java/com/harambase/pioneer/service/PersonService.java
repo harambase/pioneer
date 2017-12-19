@@ -7,22 +7,22 @@ public interface PersonService {
 
     HaramMessage login(Person person);
 
-    HaramMessage addUser(Person person);
+    HaramMessage createPerson(Person person);
 
-    HaramMessage userList(String s, String s1, String search, String order, String orderCol, String type, String status);
+    HaramMessage deletePerson(String userid);
+
+    HaramMessage updatePerson(Person person);
 
     HaramMessage getUser(String userid);
 
-    HaramMessage update(Person person);
+    HaramMessage listUser(String s, String s1, String search, String order, String orderCol, String type, String status);
 
-    HaramMessage listUsers(String search, String type, String status);
+    HaramMessage searchPerson(String search, String type, String status);
 
-    HaramMessage userChart();
+    HaramMessage getUserChart();
 
     HaramMessage getRelationChart();
 
-    HaramMessage countActivePerson(String type);
-
-    HaramMessage removeUser(String userid);
+    HaramMessage countPerson(String status, String type);
 
 }

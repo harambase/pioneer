@@ -33,21 +33,21 @@ public class PersonController {
     @RequiresPermissions({"admin", "system"})
     @RequestMapping(produces = "application/json", method = RequestMethod.POST)
     public ResponseEntity create(@RequestBody Person person) {
-        HaramMessage message = personService.addUser(person);
+        HaramMessage message = personService.createPerson(person);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     @RequiresPermissions({"admin", "system"})
     @RequestMapping(value = "/{userId}", method = RequestMethod.DELETE)
     public ResponseEntity delete(@RequestParam("userId") String userid) {
-        HaramMessage message = personService.removeUser(userid);
+        HaramMessage message = personService.deletePerson(userid);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     @RequiresPermissions({"admin", "system"})
     @RequestMapping(produces = "application/json", method = RequestMethod.PUT)
     public ResponseEntity update(@RequestBody Person person) {
-        HaramMessage message = personService.update(person);
+        HaramMessage message = personService.updatePerson(person);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
@@ -70,7 +70,7 @@ public class PersonController {
     @RequiresPermissions("user")
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public ResponseEntity search(@RequestParam(value = "search") String search, @RequestParam(value = "type") String type, String status) {
-        HaramMessage message = personService.listUsers(search, type, status);
+        HaramMessage message = personService.searchPerson(search, type, status);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
@@ -86,7 +86,7 @@ public class PersonController {
                                @RequestParam(value = "status", required = false) String status) {
         Map<String, Object> map = new HashMap<>();
         try {
-            HaramMessage message = personService.userList(String.valueOf(start / length + 1), String.valueOf(length), search,
+            HaramMessage message = personService.listUser(String.valueOf(start / length + 1), String.valueOf(length), search,
                     order, orderCol, type, status);
             map.put("draw", draw);
             map.put("recordsTotal", ((Page) message.get("page")).getTotalRows());

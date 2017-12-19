@@ -118,7 +118,7 @@ public class JLRGenerator {
         } else if (!var2.isFile()) {
             throw new FileNotFoundException("The file " + var2.getAbsolutePath() + " does not exist or is not a file!");
         } else if (var3 != null && !var3.isDirectory() && !var3.mkdirs()) {
-            this.errorMessage = "Could not create directory: " + var3.getAbsolutePath();
+            this.errorMessage = "Could not createPerson directory: " + var3.getAbsolutePath();
             return false;
         } else if (!var4.isDirectory()) {
             throw new IOException("The directory " + var4.getAbsolutePath() + " does not exist or is not a directory!");

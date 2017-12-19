@@ -36,7 +36,7 @@ public class MessageController {
     @RequestMapping(produces = "application/json", method = RequestMethod.POST)
     public ResponseEntity create(@RequestBody MessageWithBLOBs message){
         message.setSenderid(SessionUtil.getUserId());
-        HaramMessage haramMessage = messageService.createMessage(message);
+        HaramMessage haramMessage = messageService.create(message);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
@@ -58,7 +58,7 @@ public class MessageController {
     @RequiresPermissions("user")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity get(@RequestParam(value = "id") Integer id) {
-        HaramMessage haramMessage = messageService.getMessageView(id);
+        HaramMessage haramMessage = messageService.get(id);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 

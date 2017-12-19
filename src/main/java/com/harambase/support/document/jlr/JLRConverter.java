@@ -61,7 +61,7 @@ public class JLRConverter {
 
     public boolean parse(String var1, File var2, String var3) throws UnsupportedEncodingException, IOException {
         if (var2.getParentFile() != null && !var2.getParentFile().isDirectory() && !var2.getParentFile().mkdirs()) {
-            this.errorMessage = "Could not create directory: " + var2.getParentFile().getAbsolutePath();
+            this.errorMessage = "Could not createPerson directory: " + var2.getParentFile().getAbsolutePath();
             return false;
         } else {
             BufferedReader var4 = new BufferedReader(new StringReader(var1));
@@ -90,7 +90,7 @@ public class JLRConverter {
 
     public boolean parse(File var1, File var2, String var3) throws UnsupportedEncodingException, IOException {
         if (var2.getParentFile() != null && !var2.getParentFile().isDirectory() && !var2.getParentFile().mkdirs()) {
-            this.errorMessage = "Could not create directory: " + var2.getParentFile().getAbsolutePath();
+            this.errorMessage = "Could not createPerson directory: " + var2.getParentFile().getAbsolutePath();
             return false;
         } else {
             BufferedWriter var4 = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(var2), var3));

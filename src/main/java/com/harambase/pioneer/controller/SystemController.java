@@ -61,8 +61,8 @@ public class SystemController {
         Map<String, Integer> data = new HashMap<>();
         int course, student, faculty;
 
-        student = (Integer) personService.countActivePerson("s").getData();
-        faculty = (Integer) personService.countActivePerson("f").getData();
+        student = (Integer) personService.countPerson("s").getData();
+        faculty = (Integer) personService.countPerson("f").getData();
         course  = (Integer) courseService.countActiveCourse().getData();
 
         data.put("student",student);
@@ -84,7 +84,7 @@ public class SystemController {
     @RequestMapping(value = "/user/count", method = RequestMethod.GET)
     @RequiresPermissions("user")
     public ResponseEntity userCount(){
-        HaramMessage haramMessage = personService.userChart();
+        HaramMessage haramMessage = personService.getUserChart();
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 

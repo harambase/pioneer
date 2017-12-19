@@ -79,5 +79,5 @@ public class PinController {
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    //todo:update,get
+    //todo:updatePerson,get
 }
