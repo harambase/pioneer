@@ -10,11 +10,11 @@ var uri = location.search.split("&");
 var id = uri[0].split("=")[1];
 var userid = uri[1].split("=")[1];
 var status = uri[2].split("=")[1];
-var createtime =  localStorage.getItem("createtime");
+var createtime = localStorage.getItem("createtime");
 var userJson = localStorage.getItem("user");
 
-if(status !== "0"){
-    $(' input').each(function(){
+if (status !== "0") {
+    $(' input').each(function () {
         $(this).prop("disabled", true);
     });
     $("#action").css({display: "none"});
@@ -26,14 +26,15 @@ if(status !== "0"){
 $("#decline").click(function () {
 
     var comment = $("#comments").val();
-    if(comment === "")
-        Showbo.Msg.alert("拒绝申请，必须填写备注！", function () {});
+    if (comment === "")
+        Showbo.Msg.alert("拒绝申请，必须填写备注！", function () {
+        });
     else
         updateTempUser("-1", comment, userid);
 });
 
 
-function updateTempUser(regStatus, comment, userid){
+function updateTempUser(regStatus, comment, userid) {
     user.comment = comment;
     var newUserJson = JSON.stringify(user);
 
@@ -50,12 +51,13 @@ function updateTempUser(regStatus, comment, userid){
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(tempUser),
         success: function (data) {
-            if(data.code === 2001){
+            if (data.code === 2001) {
                 Showbo.Msg.alert(data.msg, function () {
                     window.location.href = basePath + "/manage/user/request";
                 });
-            }else if (data.code !== 2001)
-                Showbo.Msg.alert(data.msg, function () {});
+            } else if (data.code !== 2001)
+                Showbo.Msg.alert(data.msg, function () {
+                });
         }
     });
 }
@@ -63,41 +65,41 @@ function updateTempUser(regStatus, comment, userid){
 var registerForm = $("#registerUserForm").validate({});
 
 //性别
-$("#male-div").click(function (){
-    if(status === "0") {
+$("#male-div").click(function () {
+    if (status === "0") {
         $("#female").prop("checked", false);
         $("#male").prop("checked", true);
     }
 });
-$("#female-div").click(function (){
-    if(status === "0") {
+$("#female-div").click(function () {
+    if (status === "0") {
         $("#male").prop("checked", false);
         $("#female").prop("checked", true);
     }
 });
 
 //角色
-$("#student-div").click(function(){
+$("#student-div").click(function () {
     $("#student1").prop("checked", !student);
     student = !student;
 });
-$("#faculty-div").click(function(){
+$("#faculty-div").click(function () {
     $("#faculty1").prop("checked", !faculty);
     faculty = !faculty;
 });
-$("#admin-div").click(function(){
+$("#admin-div").click(function () {
     $("#admin1").prop("checked", !admin);
     admin = !admin;
 });
 
 //确认
-$("#yes-div").click(function(){
+$("#yes-div").click(function () {
     $("#yes").prop("checked", !yes);
     yes = !yes;
 });
 
 
-$(function(){
+$(function () {
     user = JSON.parse(userJson);
 
     $("#userid").val(userid);
@@ -115,7 +117,7 @@ $(function(){
 
     password = user.password;
 
-    if(user.gender === "male")
+    if (user.gender === "male")
         $("#male").prop("checked", true);
     else
         $("#female").prop("checked", true);
@@ -123,8 +125,8 @@ $(function(){
 });
 
 //批准
-$("#approve").click(function (){
-    if(registerForm.form()) {
+$("#approve").click(function () {
+    if (registerForm.form()) {
         var gender = "";
         var type = "";
         var status = "";
@@ -158,7 +160,7 @@ $("#approve").click(function (){
         user.comment = comment;
         user.gender = gender;
         user.type = type;
-        user.status  = "1";
+        user.status = "1";
 
 
         $.ajax({
@@ -171,7 +173,8 @@ $("#approve").click(function (){
                     updateTempUser("1", comment, userid);
                 }
                 else
-                    Showbo.Msg.alert(data.msg, function () {});
+                    Showbo.Msg.alert(data.msg, function () {
+                    });
             }
         });
     }

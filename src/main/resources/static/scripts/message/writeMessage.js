@@ -1,18 +1,18 @@
 //发送
-$("#send").click(function(){
+$("#send").click(function () {
 
     var receiverList = $("#searchUser").val();
     var body = $("#write-body").val();
     var subject = $("#write-subject").val();
 
-    for(var i = 0; i<receiverList.length; i++){
+    for (var i = 0; i < receiverList.length; i++) {
         var message = {
-            receiverid : receiverList[i],
+            receiverid: receiverList[i],
             body: body,
             subject: subject,
             title: subject,
             tag: "重要",
-            status : "unread"
+            status: "unread"
         };
         $.ajax({
             url: basePath + "/message/create",
@@ -25,25 +25,26 @@ $("#send").click(function(){
                     resetWrite();
                 }
                 else
-                    Showbo.Msg.alert("发送失败", function () {});
+                    Showbo.Msg.alert("发送失败", function () {
+                    });
             }
         });
     }
 });
 //保存
-$("#save").click(function(){
+$("#save").click(function () {
     var receiverList = $("#searchUser").val();
     var body = $("#write-body").val();
     var subject = $("#write-subject").val();
 
-    for(var i = 0; i<receiverList.length; i++){
+    for (var i = 0; i < receiverList.length; i++) {
         var message = {
-            receiverid : receiverList[i],
+            receiverid: receiverList[i],
             body: body,
             subject: subject,
             title: subject,
             tag: "重要",
-            status : "unread"
+            status: "unread"
         };
         $.ajax({
             url: basePath + "/message/create",
@@ -56,19 +57,20 @@ $("#save").click(function(){
                     resetWrite();
                 }
                 else
-                    Showbo.Msg.alert("发送失败", function () {});
+                    Showbo.Msg.alert("发送失败", function () {
+                    });
             }
         });
     }
 });
-$("#close").click(function(){
-   resetWrite();
+$("#close").click(function () {
+    resetWrite();
 });
-$("#quit").click(function(){
+$("#quit").click(function () {
     resetWrite();
 });
 
-function resetWrite(){
+function resetWrite() {
     $("#writeMail").css({display: "none"});
     $("#write-subject").val("");
     $("#write-body").val("");
@@ -92,7 +94,7 @@ $("#searchUser").select2({
             for (var i = 0; i < data.data.length; i++) {
                 item = {
                     id: data.data[i].userid,
-                    text: data.data[i].lastname +", "+ data.data[i].firstname
+                    text: data.data[i].lastname + ", " + data.data[i].firstname
                 };
                 itemList.push(item);
             }
@@ -103,7 +105,7 @@ $("#searchUser").select2({
         },
         cache: true
     },
-    placeholder:"收件人",
+    placeholder: "收件人",
     language: "zh-CN",
     tags: false,//允许手动添加
     allowClear: true,//允许清空

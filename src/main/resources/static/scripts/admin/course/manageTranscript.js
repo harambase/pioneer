@@ -7,7 +7,7 @@ var nComplete = false;
 
 var editTranscriptForm = $("#editTranscriptForm").validate({});
 
-function edit(sid, crn, sname, cname, credits, grade, isComplete){
+function edit(sid, crn, sname, cname, credits, grade, isComplete) {
     $("#editTranscript").modal('show');
     $("#sid").val(sid);
     $("#crn").val(crn);
@@ -24,29 +24,29 @@ function edit(sid, crn, sname, cname, credits, grade, isComplete){
         $("#process").prop("checked", !inProgress);
         inProgress = !inProgress;
     }
-    else{
+    else {
         $("#nComplete").prop("checked", !nComplete);
-        nComplete =!nComplete;
+        nComplete = !nComplete;
     }
 }
 
-$("#complete-div").click(function(){
+$("#complete-div").click(function () {
     $("#complete").prop("checked", !complete);
     complete = !complete;
     $(this).off("click");
 });
-$("#process-div").click(function(){
+$("#process-div").click(function () {
     $("#process").prop("checked", !inProgress);
     inProgress = !inProgress;
     $(this).off("click");
 });
-$("#nComplete-div").click(function(){
+$("#nComplete-div").click(function () {
     $("#nComplete").prop("checked", !nComplete);
-    nComplete =!nComplete;
+    nComplete = !nComplete;
     $(this).off("click");
 });
 
-$("#overall").click(function(){
+$("#overall").click(function () {
     studentid = null;
     crn = null;
     transTable.draw();
@@ -65,8 +65,8 @@ $("#classTable").on("click", ".btn.btn-info", function () {
 });
 
 //更新成绩
-$("#confirm").click(function(){
-    if(editTranscriptForm.form()) {
+$("#confirm").click(function () {
+    if (editTranscriptForm.form()) {
         var valueOfComplete = "0";
         $('input[name="complete"]:checked').each(function () {
             valueOfComplete = $(this).val();
@@ -189,15 +189,17 @@ var classTable = $("#classTable").DataTable({
         {"data": "coulev", "title": "等级"},
         {"data": "cousec", "title": "班级"},
         {"data": "faculty", "title": "教师"},
-        {"data": "status", "title": "状态", "createdCell": function (nTd, rowData) {
-            if(rowData === "1")
+        {
+            "data": "status", "title": "状态", "createdCell": function (nTd, rowData) {
+            if (rowData === "1")
                 $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:black; ">未开始</p>');
-            else if(rowData === "0")
+            else if (rowData === "0")
                 $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:green; ">进行中</p>');
-            else if(rowData === "-1")
+            else if (rowData === "-1")
                 $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:red; ">已结课</p>');
 
-        }},
+        }
+        },
         {
             "data": null, "title": "操作", "createdCell": function (nTd) {
             $(nTd).html('<button class="btn btn-info layui-layer-btn" style="width:100%">选择</button>');
@@ -233,10 +235,10 @@ var transTable = $("#transTable").DataTable({
             "first": "首页"
         }
     },
-    "pagingType":   "full_numbers",
+    "pagingType": "full_numbers",
     "lengthMenu": [
-        [10,20,50],
-        [10,20,50]
+        [10, 20, 50],
+        [10, 20, 50]
     ],
     pageLength: 10,
     processing: true,
@@ -246,22 +248,24 @@ var transTable = $("#transTable").DataTable({
         url: basePath + "/teach/transcript/list",
         data: function (d) {
             d.studentid = studentid;
-            d.crn = crn;            }
+            d.crn = crn;
+        }
     },
     columns: [
-        {"data": "id", "title": "序号", "bVisible":false},
+        {"data": "id", "title": "序号", "bVisible": false},
         {"data": "studentid", "title": "学生ID"},
         {"data": "sname", "title": "姓名"},
         {"data": "crn", "title": "课码"},
         {"data": "coursename", "title": "课名"},
         {"data": "fname", "title": "授课人"},
         {"data": "grade", "title": "成绩"},
-        {"data": "complete", "title": "完成情况", "createdCell": function (nTd, rowData) {
-            if(rowData === "1")
+        {
+            "data": "complete", "title": "完成情况", "createdCell": function (nTd, rowData) {
+            if (rowData === "1")
                 $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:green; ">完成</p>');
-            else if(rowData === "0")
+            else if (rowData === "0")
                 $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">进行中</p>');
-            else if(rowData === "-1")
+            else if (rowData === "-1")
                 $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:red; ">挂科</p>');
         }
         },
@@ -269,8 +273,8 @@ var transTable = $("#transTable").DataTable({
         {
             "data": null, "title": "操作", "createdCell": function (nTd, rowData) {
             $(nTd).html('<button class="btn btn-edit" style="width: 100%" ' +
-                'onclick="edit(\'' + rowData.studentid + '\',\'' + rowData.crn + '\',\''+ rowData.sname + '\',\'' + rowData.coursename + '\',\''
-                + rowData.credits + '\',\'' + rowData.grade +'\',\'' +  rowData.complete + '\')" >修改</button>');
+                'onclick="edit(\'' + rowData.studentid + '\',\'' + rowData.crn + '\',\'' + rowData.sname + '\',\'' + rowData.coursename + '\',\''
+                + rowData.credits + '\',\'' + rowData.grade + '\',\'' + rowData.complete + '\')" >修改</button>');
         }, "width": "100px"
         }
     ],

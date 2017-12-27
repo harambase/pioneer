@@ -1,8 +1,8 @@
 package com.harambase.pioneer.service.impl;
 
 import com.harambase.common.Config;
-import com.harambase.common.Page;
 import com.harambase.common.HaramMessage;
+import com.harambase.common.Page;
 import com.harambase.pioneer.server.PinServer;
 import com.harambase.pioneer.service.PinService;
 import com.harambase.support.util.PageUtil;
@@ -40,16 +40,6 @@ public class PinServiceImpl implements PinService{
     @Override
     public HaramMessage deleteAllByInfo(String info) {
         return pinServer.deleteAllByInfo(IP, PORT, info);
-    }
-
-    @Override
-    public HaramMessage updateAllByInfo(String info) {
-        return pinServer.updateAllByInfo(IP, PORT, info);
-    }
-
-    @Override
-    public HaramMessage updateSingleByPin(String pin) {
-        return pinServer.updateSingleByPin(IP, PORT, pin);
     }
 
     @Override

@@ -1,16 +1,16 @@
 package com.harambase.common.constant;
 
-public enum Type {
+public enum UserType {
 
-    STUDENT("s",1),
-    FACULTY("f",2),
-    ADMINISTRATOR("a",3);
+    STUDENT("s", 1),
+    FACULTY("f", 2),
+    ADMINISTRATOR("a", 3);
 
     // 成员变量
     private String m;
     private int v;
 
-    Type(String m , int v){
+    UserType(String m, int v) {
         this.m = m;
         this.v = v;
     }

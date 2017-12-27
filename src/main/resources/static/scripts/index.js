@@ -1,10 +1,10 @@
-$(function(){
+$(function () {
     initUserChart();
     initRelationChart();
     initCounts();
 });
 
-function initUserChart(){
+function initUserChart() {
     /*调用echarts*/
     $.ajax({
         type: "GET",
@@ -17,17 +17,17 @@ function initUserChart(){
     });
 }
 
-function initRelationChart(){
+function initRelationChart() {
     $.ajax({
         type: "GET",
         url: basePath + "/system/relation",
         success: function (data) {
-            relation(data.data,"relationChart")
+            relation(data.data, "relationChart")
         }
     });
 }
 
-function initCounts(){
+function initCounts() {
     $.ajax({
         type: "GET",
         url: basePath + "/system/info",
@@ -40,7 +40,7 @@ function initCounts(){
     });
 }
 
-function exampleUserTop(divUrl,data1,data2) {
+function exampleUserTop(divUrl, data1, data2) {
     var myChart = echarts.init(document.getElementById(divUrl));
     var option = {
         // title : {
@@ -48,36 +48,36 @@ function exampleUserTop(divUrl,data1,data2) {
         //     subtext: 'Realtime',
         //     x:'center'
         // },
-        tooltip : {
+        tooltip: {
             trigger: 'item',
             formatter: "{a} <br/>{b} : {c} ({d}%)"
         },
         legend: {
-            x : 'center',
-            y : 'bottom',
-            data:['1','2','3','4','5','6','7','8']
+            x: 'center',
+            y: 'bottom',
+            data: ['1', '2', '3', '4', '5', '6', '7', '8']
         },
         toolbox: {
-            show : true,
-            feature : {
-                mark : {show: true},
-                dataView : {show: true, readOnly: false},
-                magicType : {
+            show: true,
+            feature: {
+                mark: {show: true},
+                dataView: {show: true, readOnly: false},
+                magicType: {
                     show: true,
                     type: ['pie', 'funnel']
                 },
-                restore : {show: true},
-                saveAsImage : {show: true}
+                restore: {show: true},
+                saveAsImage: {show: true}
             }
         },
-        calculable : true,
-        series : [
+        calculable: true,
+        series: [
             {
-                name:'User Counts',
-                type:'pie',
-                radius : [20, 135],
-                center : ['25%', '50%'],
-                roseType : 'radius',
+                name: 'User Counts',
+                type: 'pie',
+                radius: [20, 135],
+                center: ['25%', '50%'],
+                roseType: 'radius',
                 label: {
                     normal: {
                         show: true
@@ -94,15 +94,15 @@ function exampleUserTop(divUrl,data1,data2) {
                         show: true
                     }
                 },
-                data:data1
+                data: data1
             },
             {
-                name:'Gender Counts',
-                type:'pie',
-                radius : [30, 135],
-                center : ['75%', '50%'],
-                roseType : 'radius',
-                data:data2
+                name: 'Gender Counts',
+                type: 'pie',
+                radius: [30, 135],
+                center: ['75%', '50%'],
+                roseType: 'radius',
+                data: data2
             }
         ]
     };
@@ -114,15 +114,15 @@ function exampleUserTop(divUrl,data1,data2) {
 function relation(data, divUrl) {
     var myChart = echarts.init(document.getElementById(divUrl));
     myChart.showLoading();
-    if(data !== ""){
+    if (data !== "") {
         myChart.hideLoading();
 
         var graph = echarts.dataTool.gexf.parse(data);
-        var categories = [{name: '课程'},{name: '学生'},{name:'教师'}];
+        var categories = [{name: '课程'}, {name: '学生'}, {name: '教师'}];
 
         graph.nodes.forEach(function (node) {
             node.itemStyle = null;
-            node.value = (node.symbolSize-10)/5;
+            node.value = (node.symbolSize - 10) / 5;
             node.label = {
                 normal: {
                     show: node.symbolSize > 10
@@ -145,16 +145,16 @@ function relation(data, divUrl) {
                 })
             }],
             toolbox: {
-                show : true,
-                feature : {
-                    mark : {show: true},
-                    dataView : {show: true, readOnly: false},
-                    magicType : {
+                show: true,
+                feature: {
+                    mark: {show: true},
+                    dataView: {show: true, readOnly: false},
+                    magicType: {
                         show: true,
                         type: ['pie', 'funnel']
                     },
-                    restore : {show: true},
-                    saveAsImage : {show: true}
+                    restore: {show: true},
+                    saveAsImage: {show: true}
                 }
             },
             animationDurationUpdate: 1500,

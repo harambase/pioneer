@@ -1,4 +1,3 @@
-
 $("#courseTable").on("click", ".btn.btn-info", function () {
     crn = $(this).parents("tr").find("td").eq(0).html();
     window.location.href = basePath + "/faculty/teach/edit?crn=" + crn;
@@ -26,10 +25,10 @@ var logTable = $("#courseTable").DataTable({
             "first": "首页"
         }
     },
-    "pagingType":   "full_numbers",
+    "pagingType": "full_numbers",
     "lengthMenu": [
-        [5,10,15,20],
-        [5,10,15,20]
+        [5, 10, 15, 20],
+        [5, 10, 15, 20]
     ],
     pageLength: 10,
     processing: true,
@@ -49,15 +48,17 @@ var logTable = $("#courseTable").DataTable({
         {"data": "cousec", "title": "班级"},
         {"data": "capa", "title": "容量"},
         {"data": "remain", "title": "剩余"},
-        {"data": "status", "title": "状态", "createdCell": function (nTd, rowData) {
-            if(rowData === "1")
+        {
+            "data": "status", "title": "状态", "createdCell": function (nTd, rowData) {
+            if (rowData === "1")
                 $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">未开始</p>');
-            else if(rowData === "0")
+            else if (rowData === "0")
                 $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:green; ">进行中</p>');
-            else if(rowData === "-1")
+            else if (rowData === "-1")
                 $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:red; ">已结课</p>');
 
-        }},
+        }
+        },
         {"data": "date", "title": "起止时间"},
         {"data": "time", "title": "上课时间"},
         {"data": "day", "title": "星期"},
@@ -79,13 +80,13 @@ var logTable = $("#courseTable").DataTable({
 });
 
 //移除课程
-$("#courseTable").on("click", ".btn.btn-danger", function() {
+$("#courseTable").on("click", ".btn.btn-danger", function () {
     crn = $(this).parents("tr").find("td").eq(0).html();
-    Showbo.Msg.confirm("确认删除该课程？",function(){
-        if($(".btnfocus").val() !== "取消"){
+    Showbo.Msg.confirm("确认删除该课程？", function () {
+        if ($(".btnfocus").val() !== "取消") {
             /*删除操作*/
             $.ajax({
-                url: basePath + "/teach/remove?crn="+crn,
+                url: basePath + "/teach/remove?crn=" + crn,
                 type: "DELETE",
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {

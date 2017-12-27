@@ -1,6 +1,6 @@
 var coursePath;
 var courseZtreeObj;
-var courseZtreeRootNodes = [{id: 0, name: "课程列表", info:"", isParent: true, createTime: ""}];
+var courseZtreeRootNodes = [{id: 0, name: "课程列表", info: "", isParent: true, createTime: ""}];
 var courseZtreeSetting = {
     async: {
         enable: true,
@@ -28,6 +28,7 @@ var courseZtreeSetting = {
     }
 };
 var clickNode;
+
 function courseZtreeOnClick(event, treeId, treeNode) {
     clickNode = treeNode;
     courseZtreeObj.expandNode(treeNode, true, false, true);//展开当前节点
@@ -42,21 +43,21 @@ function courseZtreeFilter(treeId, parentNode, childNodes) {
 
     if (!childNodes) return null;
     var length = childLists.length;
-    for (var i = 0;i < length; i++) {
+    for (var i = 0; i < length; i++) {
 
         if (childLists[i].node === "true") {
             childNode = {
-                isParent : true,
-                id : childLists[i].info,
-                name : childLists[i].info,
-                pId : 0
+                isParent: true,
+                id: childLists[i].info,
+                name: childLists[i].info,
+                pId: 0
             };
-        }else{
+        } else {
             childNode = {
-                isParent : false,
-                name : childLists[i].name,
-                pId : childLists[i].info,
-                crn : childLists[i].crn
+                isParent: false,
+                name: childLists[i].name,
+                pId: childLists[i].info,
+                crn: childLists[i].crn
             };
         }
         retChildNodes.push(childNode);

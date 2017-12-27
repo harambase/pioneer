@@ -1,15 +1,17 @@
-function removeStuFromCourse(studentid, crn){
+function removeStuFromCourse(studentid, crn) {
     $.ajax({
-        url: basePath + "/teach/student/remove?studentid="+studentid+"&crn="+crn,
+        url: basePath + "/teach/student/remove?studentid=" + studentid + "&crn=" + crn,
         type: "DELETE",
-        async:false,
+        async: false,
         contentType: "application/json; charset=utf-8",
         success: function (data) {
-            Showbo.Msg.alert(data.msg, function () {});
+            Showbo.Msg.alert(data.msg, function () {
+            });
             return data;
         }
     });
 }
+
 // 字符验证，只能包含中文、英文、数字、下划线等字符。
 jQuery.validator.addMethod("stringCheck", function (value, element) {
     return this.optional(element) || /^[a-zA-Z0-9\u4e00-\u9fa5-_]+$/.test(value);
@@ -22,7 +24,7 @@ jQuery.validator.addMethod("checkOpPwd", function (value, element) {
     return this.optional(element) || /^[448aabae4a1dc89b48fdfba10d3e2d3f]+$/.test(hex_md5(value));
 }, "操作密码错误");
 
-$(document).on("show.bs.modal", ".modal", function(){
+$(document).on("show.bs.modal", ".modal", function () {
     $(this).draggable({
         handle: ".panel-heading"   // 只能点击头部拖动
     });
@@ -42,7 +44,7 @@ $(function () {
     sliderActive(window.sliderFirstNav);//,window.sliderSecondNav);
 });
 
-function sliderActive(first,second) {
+function sliderActive(first, second) {
     $("#openNav>li").eq(first).addClass('active-menu');
     $("#closeNav>li").eq(first).addClass('active-menu');
     // if(second){

@@ -17,7 +17,7 @@ public class RestTemplateUtil {
         HttpHeaders httpHeaders = new HttpHeaders();
         Map map= (Map) SecurityUtils.getSubject().getSession().getAttribute("user");
         httpHeaders.set("user", JSON.toJSONString(map));
-        httpHeaders.set("Content-Type", "application/json;charset=UTF-8");
+        httpHeaders.set("Content-UserType", "application/json;charset=UTF-8");
         HttpEntity httpEntity = new HttpEntity<>(body, httpHeaders);
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<HaramMessage> responseEntity = restTemplate.exchange(url, method, httpEntity, HaramMessage.class);
@@ -29,7 +29,7 @@ public class RestTemplateUtil {
         Map map= (Map) SecurityUtils.getSubject().getSession().getAttribute("user");
         httpHeaders.set("user", JSON.toJSONString(map));
         httpHeaders.set("owner", owner);
-        httpHeaders.set("Content-Type", "application/json;charset=UTF-8");
+        httpHeaders.set("Content-UserType", "application/json;charset=UTF-8");
         HttpEntity httpEntity = new HttpEntity<>(body, httpHeaders);
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<HaramMessage> responseEntity = restTemplate.exchange(url, method, httpEntity, HaramMessage.class);
@@ -47,7 +47,7 @@ public class RestTemplateUtil {
         String requestUrl = url + "?runengine=" + type.toLowerCase();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set("token", token);
-        httpHeaders.set("Content-Type", "application/json;charset=UTF-8");
+        httpHeaders.set("Content-UserType", "application/json;charset=UTF-8");
         HttpEntity httpEntity = new HttpEntity<>(json, httpHeaders);
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<HaramMessage> response = restTemplate.exchange(requestUrl, HttpMethod.POST, httpEntity, HaramMessage.class);
@@ -68,7 +68,7 @@ public class RestTemplateUtil {
         Map map= (Map) SecurityUtils.getSubject().getSession().getAttribute("user");
         httpHeaders.set("user", JSON.toJSONString(map));
         httpHeaders.set("owner", (String)map.get("account"));
-        httpHeaders.set("Content-Type", "application/json;charset=UTF-8");
+        httpHeaders.set("Content-UserType", "application/json;charset=UTF-8");
         HttpEntity httpEntity = new HttpEntity<>(body, httpHeaders);
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<HaramMessage> responseEntity = restTemplate.exchange(url, method, httpEntity, HaramMessage.class);

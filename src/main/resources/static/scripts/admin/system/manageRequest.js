@@ -1,19 +1,19 @@
-$(function(){
+$(function () {
     var id, userJson, viewStatus = "";
 
-    $("#general").click(function(){
+    $("#general").click(function () {
         viewStatus = "";
         userReg.draw();
     });
-    $("#active").click(function(){
+    $("#active").click(function () {
         viewStatus = "0";
         userReg.draw();
     });
-    $("#declined").click(function(){
+    $("#declined").click(function () {
         viewStatus = "-1";
         userReg.draw();
     });
-    $("#approved").click(function(){
+    $("#approved").click(function () {
         viewStatus = "1";
         userReg.draw();
     });
@@ -33,11 +33,10 @@ $(function(){
         localStorage.setItem("createtune", createtime);
 
 
-
         rowIndex = $(this).parents("tr").index();
         var status = $("#userReg").DataTable().row(rowIndex).data().status;
 
-        window.location.href = basePath + "/manage/user/request/detail?id=" + id + "&userid=" + userid +"&status="+status;
+        window.location.href = basePath + "/manage/user/request/detail?id=" + id + "&userid=" + userid + "&status=" + status;
     });
 
     var userReg = $("#userReg").DataTable({
@@ -61,10 +60,10 @@ $(function(){
                 "first": "首页"
             }
         },
-        "pagingType":   "full_numbers",
+        "pagingType": "full_numbers",
         "lengthMenu": [
-            [5,10],
-            [5,10]
+            [5, 10],
+            [5, 10]
         ],
         pageLength: 10,
         processing: true,
@@ -79,22 +78,26 @@ $(function(){
 
         },
         columns: [
-            {"data": "id", "title": "序列号", "width" : "100px"},
+            {"data": "id", "title": "序列号", "width": "100px"},
             {"data": "userid", "title": "分配ID"},
-            {"data": "userJson", "title": "姓, 名","createdCell": function (nTd, rowData){
+            {
+                "data": "userJson", "title": "姓, 名", "createdCell": function (nTd, rowData) {
                 var user = JSON.parse(rowData);
                 $(nTd).html(user.lastname + ", " + user.firstname);
-            }},
-            {"data": "createtime", "title": "申请时间"},
-            {"data": "status", "title": "申请状态", "createdCell": function (nTd, rowData) {
-                    if(rowData === "0") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">申请中</p>');
-                    else if(rowData === "1") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0;color:green; ">已批准</p>');
-                    else if(rowData === "-1") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0;color:red; ">已拒绝</p>');
-                }
+            }
             },
-            {"data": null, "title": "操作", "createdCell": function (nTd) {
+            {"data": "createtime", "title": "申请时间"},
+            {
+                "data": "status", "title": "申请状态", "createdCell": function (nTd, rowData) {
+                if (rowData === "0") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">申请中</p>');
+                else if (rowData === "1") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0;color:green; ">已批准</p>');
+                else if (rowData === "-1") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0;color:red; ">已拒绝</p>');
+            }
+            },
+            {
+                "data": null, "title": "操作", "createdCell": function (nTd) {
                 $(nTd).html('<button class="btn btn-edit btn-warning">查看详情</button>');
-                }, "width": "100px"
+            }, "width": "100px"
             }
         ],
         "columnDefs": [{

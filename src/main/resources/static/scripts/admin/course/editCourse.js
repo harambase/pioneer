@@ -1,49 +1,53 @@
 //添加课程
 var createCourseForm = $("#createCourseForm").validate({});
 
-var m = false; var t = false; var w = false;
-var tr = false; var f = false; var sa = false;
-var s = false; var yes = false;
+var m = false;
+var t = false;
+var w = false;
+var tr = false;
+var f = false;
+var sa = false;
+var s = false;
+var yes = false;
 
 
-
-$('#yes-div').click(function(){
-  $("#yes").prop("checked", !yes);
-  yes = !yes;
+$('#yes-div').click(function () {
+    $("#yes").prop("checked", !yes);
+    yes = !yes;
 });
 
-$("#mon").click(function(){
+$("#mon").click(function () {
     $("#m").prop("checked", !m);
     m = !m;
 });
-$("#tue").click(function(){
+$("#tue").click(function () {
     $("#t").prop("checked", !t);
     t = !t;
 });
-$("#wed").click(function(){
+$("#wed").click(function () {
     $("#w").prop("checked", !w);
     w = !w;
 });
-$("#thr").click(function(){
+$("#thr").click(function () {
     $("#tr").prop("checked", !tr);
     tr = !tr;
 });
-$("#fri").click(function(){
+$("#fri").click(function () {
     $("#f").prop("checked", !f);
     f = !f;
 });
-$("#sat").click(function(){
+$("#sat").click(function () {
     $("#sa").prop("checked", !sa);
     sa = !sa;
 });
-$("#sun").click(function(){
+$("#sun").click(function () {
     $("#s").prop("checked", !s);
     s = !s;
 });
 
 var uri = location.search.split("&");
 var crn = uri[0].split("=")[1];
-$(function(){
+$(function () {
     getCourse(crn);
     getPreCourse(crn);
     var curStuTable = $("#studentTable").DataTable({
@@ -67,7 +71,7 @@ $(function(){
                 "first": "首页"
             }
         },
-        "pagingType":   "full_numbers",
+        "pagingType": "full_numbers",
         "lengthMenu": [
             [5],
             [5]
@@ -126,10 +130,10 @@ $(function(){
                 "first": "首页"
             }
         },
-        "pagingType":   "full_numbers",
+        "pagingType": "full_numbers",
         "lengthMenu": [
-            [5,10,15],
-            [5,10,15]
+            [5, 10, 15],
+            [5, 10, 15]
         ],
         pageLength: 5,
         processing: true,
@@ -145,12 +149,13 @@ $(function(){
             {"data": "studentid", "title": "学生ID"},
             {"data": "sname", "title": "学生名"},
             {"data": "grade", "title": "学生成绩"},
-            {"data": "complete", "title": "完成情况", "createdCell": function (nTd, rowData) {
-                if(rowData === "1")
+            {
+                "data": "complete", "title": "完成情况", "createdCell": function (nTd, rowData) {
+                if (rowData === "1")
                     $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:green; ">完成</p>');
-                else if(rowData === "0")
+                else if (rowData === "0")
                     $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">进行中</p>');
-                else if(rowData === "-1")
+                else if (rowData === "-1")
                     $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:red; ">挂科</p>');
             }
             },
@@ -172,8 +177,8 @@ $(function(){
     //移除学生
     $("#studentList").on("click", ".btn.btn-danger", function () {
         var studentid = $(this).parents("tr").find("td").eq(0).html();
-        Showbo.Msg.confirm("确认删除该学生？",function(){
-            if($(".btnfocus").val() !== "取消"){
+        Showbo.Msg.confirm("确认删除该学生？", function () {
+            if ($(".btnfocus").val() !== "取消") {
                 removeStuFromCourse(studentid, crn);
                 $("#student").css({display: "block"});
                 stuListTable.draw();
@@ -198,14 +203,14 @@ $(function(){
         });
 
         var formdata = {
-            prereq  :pre,
-            time : time,
-            capacity :capacity,
-            studentid :studentid,
+            prereq: pre,
+            time: time,
+            capacity: capacity,
+            studentid: studentid,
             crn: crn
         };
         $.ajax({
-            url:basePath+"/teach/add/student",
+            url: basePath + "/teach/add/student",
             type: "POST",
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(formdata),
@@ -215,7 +220,8 @@ $(function(){
                         curStuTable.draw();
                     });
                 else
-                    Showbo.Msg.alert(data.msg, function () {});
+                    Showbo.Msg.alert(data.msg, function () {
+                    });
             }
         })
     });
@@ -223,29 +229,30 @@ $(function(){
 });
 var credits;
 
-function getPreCourse(crn){
+function getPreCourse(crn) {
     $.ajax({
-        url : basePath+"/teach/list/precourse?crn="+crn,
-        type : "GET",
+        url: basePath + "/teach/list/precourse?crn=" + crn,
+        type: "GET",
         success: function (result) {
             var preCourseList = result.data;
             $("#selectC").css({display: "none"});
             console.log(preCourseList.length);
-            if(preCourseList.length > 0) {
+            if (preCourseList.length > 0) {
                 var preCourseListStr = "";
-                for(var i = 0; i<preCourseList.length; i++)
+                for (var i = 0; i < preCourseList.length; i++)
                     preCourseListStr += preCourseList[i].name + ",";
                 $("#preCourseInfo").text(preCourseListStr);
                 //教师列表
-            }else
+            } else
                 $("#preCourseInfo").text("当前无预选课程");
         }
     });
 }
-function getCourse(crn){
+
+function getCourse(crn) {
     $.ajax({
-        url : basePath+"/teach/list/search?search="+crn,
-        type : "GET",
+        url: basePath + "/teach/list/search?search=" + crn,
+        type: "GET",
         success: function (result) {
             var course = result.data[0];
             $("#crn").val(course.crn);
@@ -271,19 +278,19 @@ function getCourse(crn){
     });
 }
 
-$("#update").click(function(){
+$("#update").click(function () {
     $("#selectF").css({display: "block"});
     $("#faculty").css({display: "none"});
 });
-$(".cancel").click(function(){
+$(".cancel").click(function () {
     $("#selectF").css({display: "none"});
     $("#faculty").css({display: "block"});
 });
-$("#updateC").click(function(){
+$("#updateC").click(function () {
     $("#selectC").css({display: "block"});
     $("#teach").css({display: "none"});
 });
-$("#cancel").click(function(){
+$("#cancel").click(function () {
     $("#selectC").css({display: "none"});
     $("#teach").css({display: "block"});
 });
@@ -305,7 +312,7 @@ $("#searchFValue").select2({
             for (var i = 0; i < data.data.length; i++) {
                 item = {
                     id: data.data[i].userid,
-                    text: data.data[i].lastname +", "+ data.data[i].firstname
+                    text: data.data[i].lastname + ", " + data.data[i].firstname
                 };
                 itemList.push(item);
             }
@@ -365,8 +372,8 @@ $("#searchCValue").select2({
 });
 
 
-$("#registerBtn").click(function (){
-    if(createCourseForm.form()) {
+$("#registerBtn").click(function () {
+    if (createCourseForm.form()) {
         var name = $("#name").val();
         var credits = $("#credits").val();
         var coulev = $("#coulev").val();
@@ -378,8 +385,8 @@ $("#registerBtn").click(function (){
         var capa = $("#capa").val();
         var day = "";
         var info = $("#year-semester").val();
-        var classroom  = $("#classroom").val();
-        var comment  = $("#comment").val();
+        var classroom = $("#classroom").val();
+        var comment = $("#comment").val();
         var facultyid = $("#searchFValue").val();
         var precrnArray = $("#searchCValue").val();
         var precrn = "/";
@@ -388,7 +395,7 @@ $("#registerBtn").click(function (){
             day += $(this).val() + "/";
         });
 
-        for(var i = 0; i<precrnArray.length; i++){
+        for (var i = 0; i < precrnArray.length; i++) {
             precrn += precrnArray[i] + "/";
         }
 
@@ -407,7 +414,7 @@ $("#registerBtn").click(function (){
             info: info,
             precrn: precrn,
             classroom: classroom,
-            comment : comment
+            comment: comment
         };
 
 
@@ -423,17 +430,17 @@ $("#registerBtn").click(function (){
                     });
                 }
                 else
-                    Showbo.Msg.alert(data.msg, function () {});
+                    Showbo.Msg.alert(data.msg, function () {
+                    });
             }
         })
     }
 });
 
 
-
 $("#transcript").css({"display": "none"});
 
-$("#studentList").on("click", ".btn.btn-success", function(){
+$("#studentList").on("click", ".btn.btn-success", function () {
     $("#transcript").css({"display": "block"});
     $("#sid").val($(this).parents("tr").find("td").eq(0).html());
     $("#crn2").val(crn);

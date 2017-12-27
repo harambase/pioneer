@@ -1,37 +1,42 @@
-var m = false; var t = false; var w = false;
-var tr = false; var f = false; var sa = false;
-var s = false; var yes = false;
+var m = false;
+var t = false;
+var w = false;
+var tr = false;
+var f = false;
+var sa = false;
+var s = false;
+var yes = false;
 
-$('#yes-div').click(function(){
-  $("#yes").prop("checked", !yes);
-  yes = !yes;
+$('#yes-div').click(function () {
+    $("#yes").prop("checked", !yes);
+    yes = !yes;
 });
 
-$("#mon").click(function(){
+$("#mon").click(function () {
     $("#m").prop("checked", !m);
     m = !m;
 });
-$("#tue").click(function(){
+$("#tue").click(function () {
     $("#t").prop("checked", !t);
     t = !t;
 });
-$("#wed").click(function(){
+$("#wed").click(function () {
     $("#w").prop("checked", !w);
     w = !w;
 });
-$("#thr").click(function(){
+$("#thr").click(function () {
     $("#tr").prop("checked", !tr);
     tr = !tr;
 });
-$("#fri").click(function(){
+$("#fri").click(function () {
     $("#f").prop("checked", !f);
     f = !f;
 });
-$("#sat").click(function(){
+$("#sat").click(function () {
     $("#sa").prop("checked", !sa);
     sa = !sa;
 });
-$("#sun").click(function(){
+$("#sun").click(function () {
     $("#s").prop("checked", !s);
     s = !s;
 });
@@ -40,14 +45,14 @@ var uri = location.search.split("&");
 var crn = uri[0].split("=")[1];
 var credits;
 
-$(function(){
+$(function () {
     getCourse(crn);
 });
 
-function getCourse(crn){
+function getCourse(crn) {
     $.ajax({
-        url : basePath+"/teach/list/search?search="+crn,
-        type : "GET",
+        url: basePath + "/teach/list/search?search=" + crn,
+        type: "GET",
         success: function (result) {
             var course = result.data[0];
             $("#crn").val(course.crn);

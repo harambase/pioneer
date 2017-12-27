@@ -5,7 +5,7 @@ $(function () {
     init();
 });
 
-function init(){
+function init() {
     $("#courseChooseForm").css({display: "none"});
     $.ajax({
         url: basePath + "/pin/session/verify",
@@ -20,11 +20,11 @@ function init(){
     });
 }
 
-$("#pinValidate").click(function(){
-    if(pinNumForm.form()){
+$("#pinValidate").click(function () {
+    if (pinNumForm.form()) {
         /*删除操作*/
         $.ajax({
-            url: basePath + "/pin/validate?pin="+$("#pin").val(),
+            url: basePath + "/pin/validate?pin=" + $("#pin").val(),
             type: "GET",
             success: function (data) {
                 validate(data.code);
@@ -33,17 +33,18 @@ $("#pinValidate").click(function(){
     }
 });
 
-function validate(code){
+function validate(code) {
     if (code === 2001) {
         initStudentInfo();
         courseTable.draw();
         $("#courseChooseForm").css({display: "block"});
     }
     else
-        Showbo.Msg.alert("验证失败!", function () {});
+        Showbo.Msg.alert("验证失败!", function () {
+        });
 }
 
-function initStudentInfo(){
+function initStudentInfo() {
 
     $.ajax({
         url: basePath + "/admin/get/current",
@@ -53,28 +54,30 @@ function initStudentInfo(){
         }
     });
 }
+
 var tol_credits = 0;
 var use_credits = 0;
 var ava_credits = 0;
 
-function initStudent(studentid){
+function initStudent(studentid) {
     $.ajax({
-        url: basePath + "/student/available/credit?studentid="+studentid,
+        url: basePath + "/student/available/credit?studentid=" + studentid,
         type: "GET",
         success: function (data) {
-            if(data.code === 2001){
+            if (data.code === 2001) {
                 tol_credits = data.data.tol_credits;
-                use_credits = data.data.use_credits ;
+                use_credits = data.data.use_credits;
                 ava_credits = data.data.ava_credits;
                 setCredits();
             }
             else
-                Showbo.Msg.alert("获取学生信息失败!", function () {});
+                Showbo.Msg.alert("获取学生信息失败!", function () {
+                });
         }
     });
 }
 
-function setCredits(){
+function setCredits() {
     $("#tol_credits").val(tol_credits);
     $("#ava_credits").val(ava_credits);
     $("#use_credits").val(use_credits);
@@ -101,7 +104,7 @@ var courseTable = $("#newCourseTable").DataTable({
             "first": "首页"
         }
     },
-    "pagingType":   "full_numbers",
+    "pagingType": "full_numbers",
     "lengthMenu": [
         [5],
         [5]
@@ -119,21 +122,27 @@ var courseTable = $("#newCourseTable").DataTable({
     columns: [
         {"data": "crn", "title": "编号"},
         {"data": "name", "title": "课名"},
-        {"data": null, "title": "等级-班级", "createdCell": function(nTd, rowData){
+        {
+            "data": null, "title": "等级-班级", "createdCell": function (nTd, rowData) {
             $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; font-size:8px; color:blue; ">' + rowData.coulev + "-" + rowData.cousec + '</p>');
-        }},
+        }
+        },
         {"data": "credits", "title": "学分"},
-        {"data": null, "title": "容量/剩余","createdCell": function(nTd, rowData){
+        {
+            "data": null, "title": "容量/剩余", "createdCell": function (nTd, rowData) {
             $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; font-size:8px; color:blue; ">' + rowData.capa + "/" + rowData.remain + '</p>');
-        }},
-        {"data": "status", "title": "状态", "createdCell": function (nTd, rowData) {
-            if(rowData === "1")
+        }
+        },
+        {
+            "data": "status", "title": "状态", "createdCell": function (nTd, rowData) {
+            if (rowData === "1")
                 $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; font-size:8px; color:blue; ">未开始</p>');
-            else if(rowData === "0")
+            else if (rowData === "0")
                 $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; font-size:8px; color:green; ">进行中</p>');
-            else if(rowData === "-1")
+            else if (rowData === "-1")
                 $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; font-size:8px; color:red; ">已结课</p>');
-        }},
+        }
+        },
         {"data": "date", "title": "起止时间"},
         {"data": "time", "title": "上课时间"},
         {"data": "day", "title": "星期"},
@@ -144,12 +153,12 @@ var courseTable = $("#newCourseTable").DataTable({
                 '<i href="#" style="color: black;" class="fa fa-search" title="详情">' +
                 '   <span style="cursor: pointer" class="info" onclick="showInfo(\'' + rowData.crn + '\')">详情</span>' +
                 '</i>' +
-                '<br/>'+
+                '<br/>' +
                 '<i href="#" style="margin-top:5px; color: green;" class="fa fa-plus" title="添入工作表">' +
-                '   <span style="cursor: pointer" class="info" onclick="addToWorkSheet(\''+ rowData.crn+ '\',\''+ rowData.credits +'\')">添入工作表</span>' +
+                '   <span style="cursor: pointer" class="info" onclick="addToWorkSheet(\'' + rowData.crn + '\',\'' + rowData.credits + '\')">添入工作表</span>' +
                 '</i>'
             );
-        },"width":"80px"
+        }, "width": "80px"
         }
     ],
     "columnDefs": [{
@@ -168,11 +177,13 @@ var crnList = [];
 function showInfo(crn) {
     window.location.href = basePath + "/student/teach/view?crn=" + crn;
 }
-function isAvaCreditsEnough(credits){
+
+function isAvaCreditsEnough(credits) {
     return (tol_credits - use_credits - credits) >= 0;//true:enough, false:not enough
 }
-function isSelectAgain(crn){
-    var newId = "input_"+crn;
+
+function isSelectAgain(crn) {
+    var newId = "input_" + crn;
     var input = document.getElementById(newId);
     return input !== null; //true:again, false:not again
 }
@@ -188,20 +199,20 @@ function addToWorkSheet(crn, credits) {
         });
         return;
     }
-    counter ++;
+    counter++;
     crnList.push(crn);
 
     var worksheet = $("#worksheet").html() +
-        '<div id="form_'+crn+'" class="form-group">' +
+        '<div id="form_' + crn + '" class="form-group">' +
         '   <div class="col-sm-1">' +
-        '       <i id="remove_'+crn+'" class="fa fa-minus-circle fa-3x" style="color: red; cursor: pointer; margin-top: 3px;" ' +
-        '          onclick="removeFromWorkSheet(\''+crn + '\',\''+ credits +'\')"></i>' +
+        '       <i id="remove_' + crn + '" class="fa fa-minus-circle fa-3x" style="color: red; cursor: pointer; margin-top: 3px;" ' +
+        '          onclick="removeFromWorkSheet(\'' + crn + '\',\'' + credits + '\')"></i>' +
         '   </div>' +
         '   <div class="col-sm-4">' +
-        '       <label for="input_'+ crn +'" class="control-label" style="width:100%;">已选课程:</label>' +
+        '       <label for="input_' + crn + '" class="control-label" style="width:100%;">已选课程:</label>' +
         '   </div>' +
         '   <div class="col-sm-6" style="width: 58%;">' +
-        '        <input name="course_choose" id="input_'+ crn +'" class="form-control" minlength="6" maxlength="6" value="'+crn+'" required disabled/>' +
+        '        <input name="course_choose" id="input_' + crn + '" class="form-control" minlength="6" maxlength="6" value="' + crn + '" required disabled/>' +
         '   </div>' +
         '</div>';
 
@@ -214,37 +225,37 @@ function addToWorkSheet(crn, credits) {
     $("#worksheet").html(worksheet);
 }
 
-function removeFromWorkSheet(crn, credits){
-    var newId = "#form_"+crn;
+function removeFromWorkSheet(crn, credits) {
+    var newId = "#form_" + crn;
     $(newId).remove();
     use_credits -= parseInt(credits);
     ava_credits = tol_credits - use_credits;
     setCredits();
 }
 
-$("#reset").click(function(){
+$("#reset").click(function () {
     $("#worksheet").html("");
     initStudentInfo();
 });
 
-$("#submit").click(function(){
+$("#submit").click(function () {
     var choiceList = [];
-    if(crnList.length === 0) {
+    if (crnList.length === 0) {
         Showbo.Msg.alert("没有选择任何课程!", function () {
         });
         return;
     }
-   for(var i = 0; i < crnList.length; i++){
-       var newId = "input_"+crnList[i];
-       var input = document.getElementById(newId);
-       if(input !== null){
-           choiceList.push(crnList[i]);
-       }
-   }
-   sendChoiceListAjax(choiceList);
+    for (var i = 0; i < crnList.length; i++) {
+        var newId = "input_" + crnList[i];
+        var input = document.getElementById(newId);
+        if (input !== null) {
+            choiceList.push(crnList[i]);
+        }
+    }
+    sendChoiceListAjax(choiceList);
 });
 
-function sendChoiceListAjax(choiceList){
+function sendChoiceListAjax(choiceList) {
     $.ajax({
         url: basePath + "/teach/choose",
         type: "POST",
@@ -253,15 +264,15 @@ function sendChoiceListAjax(choiceList){
         },
         success: function (data) {
             var failList = data.data.failList;
-            if(failList.length === 0)
+            if (failList.length === 0)
                 Showbo.Msg.alert("全部注册成功!", function () {
                     $("#worksheet").html("");
                     initStudentInfo();
                 });
             else {
                 var html = '<table style="text-align: left">';
-                for(var i = 0; i<failList.length; i++){
-                    html += '<tr><td>'+ failList[i] +'</td></tr>';
+                for (var i = 0; i < failList.length; i++) {
+                    html += '<tr><td>' + failList[i] + '</td></tr>';
                 }
                 var input = '<p style="color: red">课程注册失败详情</p>' + html + '</table>';
                 Showbo.Msg.show({

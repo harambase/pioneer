@@ -1,17 +1,17 @@
 var loginForm = $("#loginForm").validate({});
-$("#btnLogin").click(function(){
+$("#btnLogin").click(function () {
     login();
 });
 
-$(function(){
+$(function () {
     var event = arguments.callee.caller.arguments[0] || window.event;
-    if(event.keyCode === 13){//判断是否按了回车，enter的keycode代码是13，想看其他代码请猛戳这里。
+    if (event.keyCode === 13) {//判断是否按了回车，enter的keycode代码是13，想看其他代码请猛戳这里。
         login();
     }
 });
 
-function login(){
-    if(loginForm.form()) {
+function login() {
+    if (loginForm.form()) {
         var userid = $("#userid").val();
         var password = hex_md5($("#password").val());
         var person = {
@@ -27,7 +27,8 @@ function login(){
                 if (data.code === 2001)
                     window.location.href = basePath + "/index";
                 else
-                    Showbo.Msg.alert("登录失败", function () {});
+                    Showbo.Msg.alert("登录失败", function () {
+                    });
             }
         });
     }

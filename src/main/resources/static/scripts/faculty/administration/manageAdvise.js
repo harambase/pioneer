@@ -19,8 +19,8 @@ var adviseTable = $("#transTable").DataTable({
         }
     },
     "lengthMenu": [
-        [10,20,50],
-        [10,20,50]
+        [10, 20, 50],
+        [10, 20, 50]
     ],
     pageLength: 10,
     processing: true,
@@ -39,7 +39,7 @@ var adviseTable = $("#transTable").DataTable({
         {"data": "oname", "title": "操作人"},
         {
             "data": null, "title": "操作", "createdCell": function (nTd, rowData) {
-            var htmlStr =  '<button class="btn btn-info" style="width:50%" onclick="viewReport(\'' +rowData.studentid+ '\')">查看学生报告</button>';
+            var htmlStr = '<button class="btn btn-info" style="width:50%" onclick="viewReport(\'' + rowData.studentid + '\')">查看学生报告</button>';
             $(nTd).html(htmlStr);
 
         }, "width": "200px"

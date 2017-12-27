@@ -1,18 +1,17 @@
 package com.harambase.pioneer.server;
 
 import com.harambase.common.HaramMessage;
-import com.harambase.pioneer.pojo.Advise;
 import com.harambase.pioneer.pojo.base.AdviseBase;
 import com.harambase.support.util.RestTemplateUtil;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Component
 public class AdviseServer {
+
     private StringBuilder requestUrl = new StringBuilder();
     Map params = new HashMap();
     public HaramMessage advisingList(String ip, int port, int currentIndex, int pageSize, String search, String order, String orderColumn, String studentid, String facultyid) {

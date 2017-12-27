@@ -3,7 +3,6 @@ package com.harambase.pioneer.controller;
 import com.harambase.common.HaramMessage;
 import com.harambase.common.constant.FlagDict;
 import com.harambase.pioneer.service.ReportService;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -427,7 +426,7 @@ public class ReportController {
 //            Scanner sc = new Scanner(fl);
 //            String[] info = new String[1000];
 //            int i = 1, j = 0, total = 0;
-//            info[0] = "Format:,Person's ID, Person's Name, Person's Type, Person's Activation Status";
+//            info[0] = "Format:,Person's ID, Person's Name, Person's UserType, Person's Activation Status";
 //            while(sc.hasNext()){
 //                String line = sc.nextLine();
 //                String[] split = new String[5];
@@ -527,7 +526,7 @@ public class ReportController {
 //            Scanner sc = new Scanner(fl);
 //            String[] info = new String[1000];
 //            int i = 1, j = 0, total = 0;
-//            info[0] = "Format:,Person's ID, Person's Name, Person's Type, Person's Activation Status";
+//            info[0] = "Format:,Person's ID, Person's Name, Person's UserType, Person's Activation Status";
 //            while(sc.hasNext()){
 //                String line = sc.nextLine();
 //                String[] split = new String[5];

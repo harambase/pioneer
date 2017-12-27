@@ -12,7 +12,7 @@
             /*MENU 
             ------------------------------------*/
             $('#main-menu').metisMenu();
-			
+
             $(window).bind("load resize", function () {
                 if ($(this).width() < 768) {
                     $('div.sidebar-collapse').addClass('collapse')
@@ -20,8 +20,7 @@
                     $('div.sidebar-collapse').removeClass('collapse')
                 }
             });
-			
- 
+
 
             /* MORRIS BAR CHART
 			-----------------------------------------*/
@@ -183,8 +182,8 @@
                 hideHover: 'auto',
                 resize: true
             });
-           
-     
+
+
         },
 
         initialization: function () {

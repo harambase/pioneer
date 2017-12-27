@@ -20,8 +20,8 @@ var adviseTable = $("#transTable").DataTable({
         }
     },
     "lengthMenu": [
-        [10,20,50],
-        [10,20,50]
+        [10, 20, 50],
+        [10, 20, 50]
     ],
     pageLength: 10,
     processing: true,
@@ -37,7 +37,8 @@ var adviseTable = $("#transTable").DataTable({
     columns: [
         {"data": "sname", "title": "学生姓名"},
         {"data": "fname", "title": "教师姓名"},
-        {"data": "status", "title": "状态", "createdCell": function (nTd, rowData) {
+        {
+            "data": "status", "title": "状态", "createdCell": function (nTd, rowData) {
             if (rowData === "1")
                 $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:green; ">正常</p>');
             else if (rowData === "0")
@@ -48,11 +49,11 @@ var adviseTable = $("#transTable").DataTable({
         {"data": "oname", "title": "操作人"},
         {
             "data": null, "title": "操作", "createdCell": function (nTd, rowData) {
-            var htmlStr =  '<button class="btn btn-info" style="width:50%" onclick="deleteAdvise(\'' +rowData.id+ '\')">删除辅导关系</button>';
-            if(rowData.status === "0")
-                htmlStr += '<button class="btn btn-success" style="width:50%" onclick="updateStatus(\'' +rowData.id+'\',\'' + "1" + '\')">启用辅导关系</button>';
+            var htmlStr = '<button class="btn btn-info" style="width:50%" onclick="deleteAdvise(\'' + rowData.id + '\')">删除辅导关系</button>';
+            if (rowData.status === "0")
+                htmlStr += '<button class="btn btn-success" style="width:50%" onclick="updateStatus(\'' + rowData.id + '\',\'' + "1" + '\')">启用辅导关系</button>';
             else
-                htmlStr += '<button class="btn btn-danger " style="width:50%" onclick="updateStatus(\'' +rowData.id+'\',\'' + "0" + '\')">停止辅导关系</button>';
+                htmlStr += '<button class="btn btn-danger " style="width:50%" onclick="updateStatus(\'' + rowData.id + '\',\'' + "0" + '\')">停止辅导关系</button>';
             $(nTd).html(htmlStr);
 
         }, "width": "200px"
@@ -71,11 +72,11 @@ var addAdviseForm = $("#addAdviseForm").validate({});
 
 //移除关系
 function deleteAdvise(id) {
-    Showbo.Msg.confirm("确认删除该关系？",function(){
-        if($(".btnfocus").val() !== "取消"){
+    Showbo.Msg.confirm("确认删除该关系？", function () {
+        if ($(".btnfocus").val() !== "取消") {
             /*删除操作*/
             $.ajax({
-                url: basePath + "/admin/advise/remove?id="+id,
+                url: basePath + "/admin/advise/remove?id=" + id,
                 type: "DELETE",
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
@@ -84,20 +85,22 @@ function deleteAdvise(id) {
                             adviseTable.draw();
                         });
                     else
-                        Showbo.Msg.alert(data.msg, function () {});
+                        Showbo.Msg.alert(data.msg, function () {
+                        });
                 }
             });
         }
     });
 }
+
 //更新状态
-function updateStatus(id, status){
+function updateStatus(id, status) {
     var formdata = {
-        id :  id,
-        status : status
+        id: id,
+        status: status
     };
     $.ajax({
-        url:basePath+"/admin/advise/update",
+        url: basePath + "/admin/advise/update",
         type: "POST",
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(formdata),
@@ -107,18 +110,20 @@ function updateStatus(id, status){
                     adviseTable.draw();
                 });
             else
-                Showbo.Msg.alert(data.msg, function () {});
+                Showbo.Msg.alert(data.msg, function () {
+                });
         }
     });
 }
+
 //添加关系
-$("#addNew").click(function(){
-   $("#searchFValue").empty();
-   $("#searchSValue").empty();
-   $("#addAdvise").modal('show');
+$("#addNew").click(function () {
+    $("#searchFValue").empty();
+    $("#searchSValue").empty();
+    $("#addAdvise").modal('show');
 });
-$("#confirm").click(function(){
-    if(addAdviseForm.form()) {
+$("#confirm").click(function () {
+    if (addAdviseForm.form()) {
         var formdata = {
             studentid: $("#searchSValue").val(),
             facultyid: $("#searchFValue").val(),
@@ -162,7 +167,7 @@ $("#searchFValue").select2({
             for (var i = 0; i < data.data.length; i++) {
                 item = {
                     id: data.data[i].userid,
-                    text: data.data[i].lastname +", "+ data.data[i].firstname
+                    text: data.data[i].lastname + ", " + data.data[i].firstname
                 };
                 itemList.push(item);
             }
@@ -201,7 +206,7 @@ $("#searchSValue").select2({
             for (var i = 0; i < data.data.length; i++) {
                 item = {
                     id: data.data[i].userid,
-                    text: data.data[i].lastname +", "+ data.data[i].firstname
+                    text: data.data[i].lastname + ", " + data.data[i].firstname
                 };
                 itemList.push(item);
             }

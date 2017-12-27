@@ -9,26 +9,28 @@ $(function () {
         assginAdvise(studentid, facultyid)
     });
     $("#facultyTable").on("click", ".btn.btn-info", function () {
-        var studentid= userid;
+        var studentid = userid;
         var facultyid = $(this).parents("tr").find("td").eq(1).html();
         assginAdvise(studentid, facultyid)
     });
 
-    function assginAdvise(studentid, facultyid){
+    function assginAdvise(studentid, facultyid) {
         var formdata = {
-            facultyid : facultyid,
-            studentid : studentid
+            facultyid: facultyid,
+            studentid: studentid
         };
         $.ajax({
-            url:basePath+"/admin/advise/assign",
+            url: basePath + "/admin/advise/assign",
             type: "POST",
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(formdata),
             success: function (data) {
                 if (data.code === 2001)
-                    Showbo.Msg.alert("添加成功!", function () {});
+                    Showbo.Msg.alert("添加成功!", function () {
+                    });
                 else
-                    Showbo.Msg.alert(data.msg, function () {});
+                    Showbo.Msg.alert(data.msg, function () {
+                    });
             }
         })
     }
@@ -54,10 +56,10 @@ $(function () {
                 "first": "首页"
             }
         },
-        "pagingType":   "full_numbers",
+        "pagingType": "full_numbers",
         "lengthMenu": [
-            [5,10],
-            [5,10]
+            [5, 10],
+            [5, 10]
         ],
         pageLength: 10,
         processing: true,
@@ -78,15 +80,17 @@ $(function () {
             {"data": "lastname", "title": "姓"},
             {"data": "firstname", "title": "名"},
             {"data": "type", "title": "账户类型"},
-            {"data": "status", "title": "状态", "createdCell": function (nTd, rowData) {
-                if(rowData === "1") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:green;">已启用</p>');
-                else if(rowData === "0")$(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:red; ">已禁用</p>')
-            }},
+            {
+                "data": "status", "title": "状态", "createdCell": function (nTd, rowData) {
+                if (rowData === "1") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:green;">已启用</p>');
+                else if (rowData === "0") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:red; ">已禁用</p>')
+            }
+            },
             {"data": "updatetime", "title": "更新时间"},
             {
                 "data": null, "title": "操作", "createdCell": function (nTd) {
                 $(nTd).html('<button class="btn btn-info">删除用户</button><button class="btn btn-edit">编辑用户</button>');
-                }, "width": "180px"
+            }, "width": "180px"
             }
         ],
         "columnDefs": [{
@@ -133,7 +137,7 @@ $(function () {
             }
         },
         columns: [
-            {"data": "id", "title": "序列号","width":"45px"},
+            {"data": "id", "title": "序列号", "width": "45px"},
             {"data": "userid", "title": "用户ID"},
             {"data": "firstname", "title": "名"},
             {"data": "lastname", "title": "姓"},
@@ -188,7 +192,7 @@ $(function () {
             }
         },
         columns: [
-            {"data": "id", "title": "序列号","width":"45px"},
+            {"data": "id", "title": "序列号", "width": "45px"},
             {"data": "userid", "title": "用户ID"},
             {"data": "firstname", "title": "名"},
             {"data": "lastname", "title": "姓"},
@@ -208,13 +212,13 @@ $(function () {
     });
 
     //移除用户
-    $("#userTable").on("click", ".btn.btn-info", function() {
+    $("#userTable").on("click", ".btn.btn-info", function () {
         userid = $(this).parents("tr").find("td").eq(1).html();
-        Showbo.Msg.confirm("确认删除该用户？",function(){
-            if($(".btnfocus").val() !== "取消"){
+        Showbo.Msg.confirm("确认删除该用户？", function () {
+            if ($(".btnfocus").val() !== "取消") {
                 /*删除操作*/
                 $.ajax({
-                    url: basePath + "/admin/remove/user?userid="+userid,
+                    url: basePath + "/admin/remove/user?userid=" + userid,
                     type: "DELETE",
                     contentType: "application/json; charset=utf-8",
                     success: function (data) {
@@ -223,7 +227,8 @@ $(function () {
                                 logTable.draw();
                             });
                         else
-                            Showbo.Msg.alert(data.msg, function () {});
+                            Showbo.Msg.alert(data.msg, function () {
+                            });
                     }
                 });
             }

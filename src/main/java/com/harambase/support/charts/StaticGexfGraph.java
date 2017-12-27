@@ -1,15 +1,11 @@
 package com.harambase.support.charts;
 
-import com.harambase.common.constant.Type;
+import com.harambase.common.constant.UserType;
 import com.harambase.pioneer.pojo.Course;
-import com.harambase.pioneer.pojo.base.AdviseBase;
 import com.harambase.pioneer.pojo.Person;
+import com.harambase.pioneer.pojo.base.AdviseBase;
 import com.harambase.pioneer.pojo.base.TranscriptBase;
-import it.uniroma1.dis.wsngroup.gexf4j.core.EdgeType;
-import it.uniroma1.dis.wsngroup.gexf4j.core.Gexf;
-import it.uniroma1.dis.wsngroup.gexf4j.core.Graph;
-import it.uniroma1.dis.wsngroup.gexf4j.core.Mode;
-import it.uniroma1.dis.wsngroup.gexf4j.core.Node;
+import it.uniroma1.dis.wsngroup.gexf4j.core.*;
 import it.uniroma1.dis.wsngroup.gexf4j.core.data.Attribute;
 import it.uniroma1.dis.wsngroup.gexf4j.core.data.AttributeClass;
 import it.uniroma1.dis.wsngroup.gexf4j.core.data.AttributeList;
@@ -59,24 +55,24 @@ public class StaticGexfGraph {
 			if(p.getType().contains("s")) {
 				pNode.getAttributeValues()
 						.addValue(attID, p.getUserid())
-						.addValue(attType, String.valueOf(Type.STUDENT.getV()))
+						.addValue(attType, String.valueOf(UserType.STUDENT.getV()))
 						.addValue(attValue, p.getInfo());
-				type = Type.STUDENT.getV();
+				type = UserType.STUDENT.getV();
 			}
 			else if(p.getType().contains("f")) {
 				pNode.getAttributeValues()
 						.addValue(attID, p.getUserid())
-						.addValue(attType, String.valueOf(Type.FACULTY.getV()))
+						.addValue(attType, String.valueOf(UserType.FACULTY.getV()))
 						.addValue(attValue, p.getInfo());
-				type = Type.FACULTY.getV();
+				type = UserType.FACULTY.getV();
 			}
 			else if(p.getType().contains("a")) {
 				pNode.getAttributeValues()
 						.addValue(attID, p.getUserid())
-						.addValue(attType, String.valueOf(Type.ADMINISTRATOR.getV()))
+						.addValue(attType, String.valueOf(UserType.ADMINISTRATOR.getV()))
 						.addValue(attValue, p.getInfo());
 				pNode.setSize(0);
-				type = Type.ADMINISTRATOR.getV();
+				type = UserType.ADMINISTRATOR.getV();
 			}
 
 			pNode.getShapeEntity().setNodeShape(NodeShape.DIAMOND);

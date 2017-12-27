@@ -5,4 +5,5 @@ function getRoot() {
     var protocol = location.protocol;
     return protocol + "//" + hostname + ":" + port;
 }
+
 var basePath = getRoot();

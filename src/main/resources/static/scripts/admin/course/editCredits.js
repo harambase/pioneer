@@ -5,7 +5,7 @@ function edit(sid, sname, max_credits) {
     $("#credits").val(max_credits);
 }
 
-$("#confirm").click(function(){
+$("#confirm").click(function () {
     var formdata = {
         studentid: $("#sid").val(),
         maxCredits: $("#credits").val()
@@ -22,7 +22,8 @@ $("#confirm").click(function(){
                     curStuTable.draw();
                 });
             else
-                Showbo.Msg.alert(data.msg, function () {});
+                Showbo.Msg.alert(data.msg, function () {
+                });
         }
     });
 });
@@ -48,10 +49,10 @@ var curStuTable = $("#studentTable").DataTable({
             "first": "首页"
         }
     },
-    "pagingType":   "full_numbers",
+    "pagingType": "full_numbers",
     "lengthMenu": [
-        [10,20,50],
-        [10,20,50]
+        [10, 20, 50],
+        [10, 20, 50]
     ],
     pageLength: 10,
     processing: true,
@@ -74,7 +75,7 @@ var curStuTable = $("#studentTable").DataTable({
         {"data": "incomplete", "title": "未完成"},
         {
             "data": null, "title": "操作", "createdCell": function (nTd, rowData) {
-                var sname = rowData.lastname+", "+ rowData.firstname;
+            var sname = rowData.lastname + ", " + rowData.firstname;
             $(nTd).html('<button style="width: 100%" class="btn btn-info" ' +
                 'onclick="edit(\'' + rowData.studentid + '\',\'' + sname + '\',\'' + rowData.max_credits + '\')">修改上限</button>');
         }, "width": "100px"

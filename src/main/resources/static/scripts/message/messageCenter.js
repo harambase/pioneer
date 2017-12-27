@@ -1,45 +1,45 @@
 var box = "inbox";
 
-$("#write").click(function(){
-   $("#writeMail").css({display:"block"});
+$("#write").click(function () {
+    $("#writeMail").css({display: "block"});
 });
 
-$("#detail").css({display:"none"});
-$("#writeMail").css({display:"none"});
-$("#refresh").click(function(){
+$("#detail").css({display: "none"});
+$("#writeMail").css({display: "none"});
+$("#refresh").click(function () {
     messageTable.draw();
 });
-$("#back").click(function(){
-    $("#detail").css({display:"none"});
-    $("#table").css({display:"block"});
+$("#back").click(function () {
+    $("#detail").css({display: "none"});
+    $("#table").css({display: "block"});
     messageTable.draw();
 });
 
-$("#inbox").click(function(){
+$("#inbox").click(function () {
     box = "inbox";
     $(this).addClass("active").siblings().removeClass("active");
     messageTable.draw();
 });
 
-$("#sent").click(function(){
+$("#sent").click(function () {
     box = "sent";
     $(this).addClass("active").siblings().removeClass("active");
     messageTable.draw();
 });
 
-$("#draft").click(function(){
+$("#draft").click(function () {
     box = "draft";
     $(this).addClass("active").siblings().removeClass("active");
     messageTable.draw();
 });
 
-$("#important").click(function(){
+$("#important").click(function () {
     box = "important";
     $(this).addClass("active").siblings().removeClass("active");
     messageTable.draw();
 });
 
-$("#trash").click(function(){
+$("#trash").click(function () {
     box = "trash";
     $(this).addClass("active").siblings().removeClass("active");
     messageTable.draw();
@@ -67,7 +67,7 @@ var messageTable = $("#messageTable").DataTable({
             "first": "首页"
         }
     },
-    "pagingType":   "full_numbers",
+    "pagingType": "full_numbers",
     "lengthMenu": [
         [5, 10, 25, 50],
         [5, 10, 25, 50]
@@ -84,61 +84,66 @@ var messageTable = $("#messageTable").DataTable({
         }
     },
     columns: [
-        {"data": null, "title":"选择", "createdCell": function(nTd){
+        {
+            "data": null, "title": "选择", "createdCell": function (nTd) {
             var htmlStr =
-                '<div class="check-td mail-checkbox">'+
+                '<div class="check-td mail-checkbox">' +
                 '     <label class="checkbox-inline custom-checkbox nowrap">' +
                 '       <input type="checkbox">' +
                 '       <span></span>' +
                 '     </label>' +
                 '</div>';
             $(nTd).html(htmlStr);
-        }},
-        {"data": null, "title": "发件人", "createdCell": function(nTd, rowData){
+        }
+        },
+        {
+            "data": null, "title": "发件人", "createdCell": function (nTd, rowData) {
             var htmlStr = '<div style="float: left">' +
                 '<img style="border-radius: 23px; margin: 7px 0 7px 7px;" class="photo-td little-human little-human-picture" ' +
-                '   src="'+ rowData.pic + '">' +
+                '   src="' + rowData.pic + '">' +
                 '</div>';
             htmlStr +=
                 '<div class="name-container" style="margin-top: 5%;float: right">' +
                 '   <div>' +
-                '       <span class="name">'+ rowData.sender +'</span>' +
+                '       <span class="name">' + rowData.sender + '</span>' +
                 '   </div>' +
                 '   <div>' +
-                '       <span class="tag label label-primary friend">' + rowData.tag +'</span>' +
+                '       <span class="tag label label-primary friend">' + rowData.tag + '</span>' +
                 '   </div>' +
                 '</div>';
             $(nTd).html(htmlStr);
-        }, "width":"250px"},
+        }, "width": "250px"
+        },
         {"data": "subject", "title": "主题"},
         {"data": "body", "title": "内容"},
         {"data": "date", "title": "发送时间"},
-        {"data": null, "title": "操作", "createdCell": function (nTd, rowData) {
-            if(rowData.status.toLowerCase() === "unread"){
+        {
+            "data": null, "title": "操作", "createdCell": function (nTd, rowData) {
+            if (rowData.status.toLowerCase() === "unread") {
                 $(nTd).html('' +
                     '<button class="btn btn-primary btn-info" style="width: 50%" onclick="viewDetail(\'' + rowData.id + '\')">查看消息</button>' +
                     '<button class="btn btn-primary btn-danger" style="width: 50%" onclick="markAsRead(\'' + rowData.id + '\')">标为已读</button>');
             }
-            if(rowData.status.toLowerCase() === "read"){
+            if (rowData.status.toLowerCase() === "read") {
                 $(nTd).html('' +
                     '<button class="btn btn-primary btn-info" style="width: 50%" onclick="viewDetail(\'' + rowData.id + '\')">查看消息</button>' +
                     '<button class="btn btn-primary btn-edit" style="width: 50%" onclick="markAsUnread(\'' + rowData.id + '\')">标为未读</button>');
             }
-            if(rowData.status.toLowerCase() === "saved"){
+            if (rowData.status.toLowerCase() === "saved") {
                 $(nTd).html('' +
                     '<button class="btn btn-primary btn-info" style="width: 50%" onclick="viewDraft(\'' + rowData.id + '\')">查看消息</button>');
             }
-            if(rowData.status.toLowerCase() === "trashed"){
+            if (rowData.status.toLowerCase() === "trashed") {
                 $(nTd).html('' +
                     '<button class="btn btn-primary btn-info" style="width: 50%" onclick="viewDetail(\'' + rowData.id + '\')">查看消息</button>' +
                     '<button class="btn btn-primary btn-danger" style="width: 50%" onclick="markAsRead(\'' + rowData.id + '\')">永久删除</button>');
             }
-            if(rowData.status.toLowerCase() === "sent"){
+            if (rowData.status.toLowerCase() === "sent") {
                 $(nTd).html('' +
                     '<button class="btn btn-primary btn-info" style="width: 50%" onclick="viewDetail(\'' + rowData.id + '\')">查看消息</button>');
             }
 
-            }, "width": "300px"
+        }, "width": "300px"
         }
     ],
     "columnDefs": [{
@@ -150,25 +155,25 @@ var messageTable = $("#messageTable").DataTable({
 });
 
 
-function viewDraft(id){
+function viewDraft(id) {
 
 }
 
-function viewDetail(id){
+function viewDetail(id) {
     markAsRead(id);
     $.ajax({
         url: basePath + "/message/view?id=" + id,
         type: "GET",
         success: function (data) {
-            if (data.code === 2001){
+            if (data.code === 2001) {
                 var message = data.data;
-                $("#detail").css({display:"block"});
-                $("#table").css({display:"none"});
+                $("#detail").css({display: "block"});
+                $("#table").css({display: "none"});
                 var senderInfo =
-                    '<img class="human-picture" src="'+ message.pic +'">'+
+                    '<img class="human-picture" src="' + message.pic + '">' +
                     '   <div class="name"><h2 class="name-h ng-binding">发件人：' + message.sender + '</h2>' +
                     '       <div>' +
-                    '           <span class="mail-tag tag label family">'+message.tag+'</span>' +
+                    '           <span class="mail-tag tag label family">' + message.tag + '</span>' +
                     '       </div>' +
                     '   </div>';
                 $("#senderInfo").html(senderInfo);
@@ -177,11 +182,11 @@ function viewDetail(id){
                     '<div class="contact-info phone-email">' +
                     '    <div>' +
                     '       <i class="fa fa-phone-square fa-2x"></i> ' +
-                    '       <span class="phone"> '+ message.tel +'</span>' +
+                    '       <span class="phone"> ' + message.tel + '</span>' +
                     '    </div>' +
                     '    <div>' +
                     '       <i class="fa fa-envelope-square fa-2x"></i> ' +
-                    '       <span class="email"> '+ message.email +'</span>' +
+                    '       <span class="email"> ' + message.email + '</span>' +
                     '    </div>' +
                     '</div>';
                 $("#contactInfo").html(contactInfo);
@@ -198,105 +203,119 @@ function viewDetail(id){
                     '   </div>' +
                     '</div>';
                 $("#roleInfo").html(roleInfo);
-                
-                var subject = 
-                    '<span class="subject ng-binding">'+ message.subject +'</span>' +
-                    '<span class="date ng-binding">• '+ message.date +' </span>';
+
+                var subject =
+                    '<span class="subject ng-binding">' + message.subject + '</span>' +
+                    '<span class="date ng-binding">• ' + message.date + ' </span>';
                 $("#subject").html(subject);
 
-                var body = '<p>'+ message.body + '</p>';
+                var body = '<p>' + message.body + '</p>';
                 $("#body").html(body);
             }
             else
-                Showbo.Msg.alert("消息获取失败", function () {});
+                Showbo.Msg.alert("消息获取失败", function () {
+                });
         }
     });
 }
 
-function markAsUnread(id){
+function markAsUnread(id) {
     var status = "unread";
     sendStatusUpdateAjax(id, status);
 }
-function markAsRead(id){
+
+function markAsRead(id) {
     var status = "read";
     sendStatusUpdateAjax(id, status);
 }
-function sendStatusUpdateAjax(id, status){
+
+function sendStatusUpdateAjax(id, status) {
     $.ajax({
-        url: basePath + "/message/update/status?id="+id+"&status="+status,
+        url: basePath + "/message/update/status?id=" + id + "&status=" + status,
         type: "PUT",
         success: function (data) {
-            if (data.code === 2001){
+            if (data.code === 2001) {
                 init();
-                messageTable.draw();            }
+                messageTable.draw();
+            }
             else
-                Showbo.Msg.alert("消息更新失败!", function () {});
+                Showbo.Msg.alert("消息更新失败!", function () {
+                });
         }
     });
 }
 
-$(function(){
+$(function () {
     init();
 });
-function init(){
+
+function init() {
     initUnread();
     initDraft();
     initTrash();
     initImportant();
 }
-function initImportant(){
+
+function initImportant() {
     $.ajax({
         url: basePath + "/message/count?status=unread&box=important",
         type: "GET",
         async: false,
         success: function (data) {
-            if (data.code === 2001){
+            if (data.code === 2001) {
                 $("#importantCount").text(data.data);
             }
             else
-                Showbo.Msg.alert("消息获取失败", function () {});
+                Showbo.Msg.alert("消息获取失败", function () {
+                });
         }
     });
 }
-function initUnread(){
+
+function initUnread() {
     $.ajax({
         url: basePath + "/message/count?status=unread&box=inbox",
         type: "GET",
         async: false,
         success: function (data) {
-            if (data.code === 2001){
+            if (data.code === 2001) {
                 $("#inboxCount").text(data.data);
             }
             else
-                Showbo.Msg.alert("消息获取失败", function () {});
+                Showbo.Msg.alert("消息获取失败", function () {
+                });
         }
     });
 }
-function initDraft(){
+
+function initDraft() {
     $.ajax({
         url: basePath + "/message/count?status=saved&box=draft",
         type: "GET",
         async: false,
         success: function (data) {
-            if (data.code === 2001){
+            if (data.code === 2001) {
                 $("#draftCount").text(data.data);
             }
             else
-                Showbo.Msg.alert("消息获取失败", function () {});
+                Showbo.Msg.alert("消息获取失败", function () {
+                });
         }
     });
 }
-function initTrash(){
+
+function initTrash() {
     $.ajax({
         url: basePath + "/message/count?status=trashed&box=trash",
         type: "GET",
         async: false,
         success: function (data) {
-            if (data.code === 2001){
+            if (data.code === 2001) {
                 $("#trashCount").text(data.data);
             }
             else
-                Showbo.Msg.alert("消息获取失败", function () {});
+                Showbo.Msg.alert("消息获取失败", function () {
+                });
         }
     });
 }

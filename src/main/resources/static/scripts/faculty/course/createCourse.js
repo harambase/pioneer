@@ -1,40 +1,45 @@
 //添加课程
 var createCourseForm = $("#createCourseForm").validate({});
 
-var m = false; var t = false; var w = false;
-var tr = false; var f = false; var sa = false;
-var s = false; var yes = false;
+var m = false;
+var t = false;
+var w = false;
+var tr = false;
+var f = false;
+var sa = false;
+var s = false;
+var yes = false;
 
-$('#yes-div').click(function(){
-  $("#yes").prop("checked", !yes);
-  yes = !yes;
+$('#yes-div').click(function () {
+    $("#yes").prop("checked", !yes);
+    yes = !yes;
 });
 
-$("#mon").click(function(){
+$("#mon").click(function () {
     $("#m").prop("checked", !m);
     m = !m;
 });
-$("#tue").click(function(){
+$("#tue").click(function () {
     $("#t").prop("checked", !t);
     t = !t;
 });
-$("#wed").click(function(){
+$("#wed").click(function () {
     $("#w").prop("checked", !w);
     w = !w;
 });
-$("#thr").click(function(){
+$("#thr").click(function () {
     $("#tr").prop("checked", !tr);
     tr = !tr;
 });
-$("#fri").click(function(){
+$("#fri").click(function () {
     $("#f").prop("checked", !f);
     f = !f;
 });
-$("#sat").click(function(){
+$("#sat").click(function () {
     $("#sa").prop("checked", !sa);
     sa = !sa;
 });
-$("#sun").click(function(){
+$("#sun").click(function () {
     $("#s").prop("checked", !s);
     s = !s;
 });
@@ -58,7 +63,7 @@ $(".js-example-basic-single").select2({
             for (var i = 0; i < data.data.length; i++) {
                 item = {
                     id: data.data[i].userid,
-                    text: data.data[i].lastname +", "+ data.data[i].firstname
+                    text: data.data[i].lastname + ", " + data.data[i].firstname
                 };
                 itemList.push(item);
             }
@@ -119,8 +124,8 @@ $('.js-example-basic-multiple').select2({
     templateSelection: formatRepoSelection
 });
 
-$("#registerBtn").click(function (){
-    if(createCourseForm.form()) {
+$("#registerBtn").click(function () {
+    if (createCourseForm.form()) {
         var name = $("#name").val();
         var credits = $("#credits").val();
         var coulev = $("#coulev").val();
@@ -132,8 +137,8 @@ $("#registerBtn").click(function (){
         var capa = $("#capa").val();
         var day = "";
         var info = $("#year-semester").val();
-        var classroom  = $("#classroom").val();
-        var comment  = $("#comment").val();
+        var classroom = $("#classroom").val();
+        var comment = $("#comment").val();
         var facultyid = $("#searchFValue").val();
         var precrnArray = $("#searchCValue").val();
         var precrn = "/";
@@ -142,7 +147,7 @@ $("#registerBtn").click(function (){
             day += $(this).val() + "/";
         });
 
-        for(var i = 0; i<precrnArray.length; i++){
+        for (var i = 0; i < precrnArray.length; i++) {
             precrn += precrnArray[i] + "/";
         }
 
@@ -161,7 +166,7 @@ $("#registerBtn").click(function (){
             info: info,
             precrn: precrn,
             classroom: classroom,
-            comment : comment
+            comment: comment
         };
 
 
@@ -177,12 +182,12 @@ $("#registerBtn").click(function (){
                     });
                 }
                 else
-                    Showbo.Msg.alert(data.msg, function () {});
+                    Showbo.Msg.alert(data.msg, function () {
+                    });
             }
         })
     }
 });
-
 
 
 function formatRepoSelection(repo) {
