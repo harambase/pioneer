@@ -5,7 +5,7 @@ import com.harambase.pioneer.pojo.base.AdviseBase;
 
 public interface AdviseService {
 
-    HaramMessage advisingList(String s, String s1, String search, String order, String orderCol, String studentid, String facultyid);
+    HaramMessage advisingList(int start, int length, String search, String order, String orderCol, String studentId, String facultyId);
 
     HaramMessage updateAdvise(Integer id, String studentId, String facultyId);
 

@@ -6,7 +6,6 @@ import com.harambase.common.Page;
 import com.harambase.pioneer.pojo.Course;
 import com.harambase.pioneer.pojo.dto.Option;
 import com.harambase.pioneer.server.CourseServer;
-import com.harambase.pioneer.server.TranscriptServer;
 import com.harambase.pioneer.service.CourseService;
 import com.harambase.support.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +22,10 @@ public class CourseServiceImpl implements CourseService {
     private final static int PORT = Config.SERVER_PORT;
 
     private final CourseServer courseServer;
-    private final TranscriptServer transcriptServer;
 
     @Autowired
-    public CourseServiceImpl(CourseServer courseServer,
-                             TranscriptServer transcriptServer) {
+    public CourseServiceImpl(CourseServer courseServer) {
         this.courseServer = courseServer;
-        this.transcriptServer = transcriptServer;
     }
 
     @Override
@@ -43,8 +39,8 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public HaramMessage update(Course course) {
-        return courseServer.update(IP, PORT, course);
+    public HaramMessage update(String crn, Course course) {
+        return courseServer.update(IP, PORT, crn, course);
     }
 
     @Override
@@ -53,16 +49,13 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public HaramMessage courseList(String currentPage, String pageSize, String search, String order, String orderColumn, String facultyid, String info) {
-        Page page = new Page();
-        page.setCurrentPage(PageUtil.getcPg(currentPage));
-        page.setPageSize(PageUtil.getLimit(pageSize));
-        return courseServer.courseList(IP, PORT, page.getCurrentIndex(), page.getPageSize(), search, order, orderColumn, facultyid, info);
+    public HaramMessage courseList(int start, int length, String search, String order, String orderColumn, String facultyid, String info) {
+        return courseServer.courseList(IP, PORT, start, length, search, order, orderColumn, facultyid, info);
     }
 
     @Override
     public HaramMessage courseTreeList(String facultyid, String info) {
-        return courseServer.courseList(IP, PORT, 0, Integer.MAX_VALUE, "", "desc", "id", facultyid, info);
+        return courseServer.courseTreeList(IP, PORT, facultyid, info);
     }
 
     @Override
@@ -87,16 +80,16 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public HaramMessage addStu2Cou(String crn, String studentId, Option option) {
-        return transcriptServer.addStu2Cou(IP, PORT, crn, studentId, option);
+        return courseServer.addStu2Cou(IP, PORT, crn, studentId, option);
     }
 
     @Override
     public HaramMessage removeStuFromCou(String crn, String studentId) {
-        return transcriptServer.removeStuFromCou(IP, PORT, crn, studentId);
+        return courseServer.removeStuFromCou(IP, PORT, crn, studentId);
     }
 
     @Override
     public HaramMessage reg2Course(String studentId, String[] choices) {
-        return transcriptServer.reg2Course(IP, PORT, studentId, choices);
+        return courseServer.reg2Course(IP, PORT, studentId, choices);
     }
 }

@@ -2,19 +2,15 @@ package com.harambase.pioneer.controller;
 
 import com.harambase.common.HaramMessage;
 import com.harambase.common.Page;
-import com.harambase.support.util.SessionUtil;
 import com.harambase.pioneer.pojo.Course;
 import com.harambase.pioneer.pojo.dto.Option;
 import com.harambase.pioneer.service.CourseService;
+import com.harambase.support.util.SessionUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -23,7 +19,7 @@ public class CourseController {
     private final CourseService courseService;
 
     @Autowired
-    public CourseController(CourseService courseService){
+    public CourseController(CourseService courseService) {
         this.courseService = courseService;
     }
 
@@ -42,9 +38,9 @@ public class CourseController {
     }
 
     @RequiresPermissions({"admin", "teach"})
-    @RequestMapping(produces = "application/json", method = RequestMethod.PUT)
-    public ResponseEntity update(@RequestBody Course course) {
-        HaramMessage haramMessage = courseService.update(course);
+    @RequestMapping(value = "/{crn}", produces = "application/json", method = RequestMethod.PUT)
+    public ResponseEntity update(@PathVariable String crn, @RequestBody Course course) {
+        HaramMessage haramMessage = courseService.update(crn, course);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
@@ -64,29 +60,18 @@ public class CourseController {
                                @RequestParam(value = "order[0][dir]") String order,
                                @RequestParam(value = "order[0][column]") String orderCol,
                                @RequestParam(value = "mode", required = false) String mode) {
-        Map<String, Object> map = new HashMap<>();
-        try {
-            String facultyid = "";
-            String info = "";
-            if (mode != null && mode.equals("faculty"))
-                facultyid = SessionUtil.getUserId();
-            if (mode != null && mode.equals("choose"))
-                info = SessionUtil.getPin().getInfo();
+        String facultyid = "";
+        String info = "";
+        if (mode != null && mode.equals("faculty"))
+            facultyid = SessionUtil.getUserId();
+        if (mode != null && mode.equals("choose"))
+            info = SessionUtil.getPin().getInfo();
 
-            HaramMessage message = courseService.courseList(String.valueOf(start / length + 1), String.valueOf(length),
-                    search, order, orderCol, facultyid, info);
-            map.put("draw", draw);
-            map.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
-            map.put("recordsFiltered", ((Page) message.get("page")).getTotalRows());
-            map.put("data", message.getData());
-        } catch (Exception e) {
-            e.printStackTrace();
-            map.put("draw", 1);
-            map.put("data", new ArrayList<>());
-            map.put("recordsTotal", 0);
-            map.put("recordsFiltered", 0);
-        }
-        return new ResponseEntity<>(map, HttpStatus.OK);
+        HaramMessage message = courseService.courseList(start, length, search, order, orderCol, facultyid, info);
+        message.put("draw", draw);
+        message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
+        message.put("recordsFiltered", ((Page) message.get("page")).getTotalRows());
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     @RequiresPermissions("user")
@@ -123,7 +108,7 @@ public class CourseController {
     @RequiresPermissions({"admin", "teach"})
     @RequestMapping(value = "/{crn}/student/{userId}", method = RequestMethod.DELETE)
     public ResponseEntity removeStuFromCourse(@PathVariable(value = "crn") String crn,
-                                              @PathVariable(value = "userId") String studentId){
+                                              @PathVariable(value = "userId") String studentId) {
         HaramMessage haramMessage = courseService.removeStuFromCou(crn, studentId);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
@@ -147,7 +132,7 @@ public class CourseController {
 
     @RequiresPermissions({"admin", "student"})
     @RequestMapping(value = "/choose", method = RequestMethod.POST)
-    public ResponseEntity courseChoice(@RequestParam(value = "choiceList[]")String[] choices){
+    public ResponseEntity courseChoice(@RequestParam(value = "choiceList[]") String[] choices) {
         HaramMessage message = courseService.reg2Course(SessionUtil.getUserId(), choices);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }

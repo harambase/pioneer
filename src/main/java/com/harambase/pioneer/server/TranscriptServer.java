@@ -20,19 +20,6 @@ public class TranscriptServer {
     private StringBuilder requestUrl = new StringBuilder();
     Map params = new HashMap();
 
-
-    public HaramMessage addStu2Cou(String ip, int port, String crn, String studentId, Option option) {
-        return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
-    }
-
-    public HaramMessage removeStuFromCou(String ip, int port, String crn, String studentId) {
-        return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
-    }
-
-    public HaramMessage reg2Course(String ip, int port, String studentId, String[] choices) {
-        return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
-    }
-
     public HaramMessage updateByPrimaryKey(String ip, int port, TranscriptBase transcript) {
         return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
     }

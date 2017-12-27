@@ -26,26 +26,19 @@ public class AdviseServiceImpl implements AdviseService{
 
     private final AdviseServer adviseServer;
 
-
     @Autowired
     public AdviseServiceImpl(AdviseServer adviseServer){
         this.adviseServer = adviseServer;
     }
 
-
     @Override
-    public HaramMessage advisingList(String currentPage, String pageSize, String search, String order, String orderColumn,
-                                     String studentid, String facultyid) {
-        Page page = new Page();
-        page.setCurrentPage(PageUtil.getcPg(currentPage));
-        page.setPageSize(PageUtil.getLimit(pageSize));
-
-        return adviseServer.advisingList(IP, PORT, page.getCurrentIndex(), page.getPageSize(), search, order, orderColumn, studentid, facultyid);
+    public HaramMessage advisingList(int start, int length, String search, String order, String orderColumn, String studentId, String facultyId) {
+        return adviseServer.advisingList(IP, PORT, start, length, search, order, orderColumn, studentId, facultyId);
     }
 
     @Override
     public HaramMessage updateAdvise(Integer id, String studentId, String facultyId) {
-        return adviseServer.updateAdvise(IP, PORT, studentId, facultyId);
+        return adviseServer.updateAdvise(IP, PORT, id, studentId, facultyId);
     }
 
     @Override

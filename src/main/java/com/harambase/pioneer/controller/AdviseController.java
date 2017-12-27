@@ -68,24 +68,14 @@ public class AdviseController {
                                @RequestParam(value = "studentid", required = false) String studentid,
                                @RequestParam(value = "facultyid", required = false) String facultyid,
                                @RequestParam(value = "mode", required = false) String mode) {
-        Map<String, Object> map = new HashMap<>();
-        try {
-            if(mode != null && mode.equals("faculty"))
-                facultyid = SessionUtil.getUserId();
-            HaramMessage message = adviseService.advisingList(String.valueOf(start / length + 1), String.valueOf(length), search,
-                    order, orderCol, studentid, facultyid);
-            map.put("draw", draw);
-            map.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
-            map.put("recordsFiltered", ((Page) message.get("page")).getTotalRows());
-            map.put("data", message.getData());
-        } catch (Exception e) {
-            e.printStackTrace();
-            map.put("draw", 1);
-            map.put("data", new ArrayList<>());
-            map.put("recordsTotal", 0);
-            map.put("recordsFiltered", 0);
-        }
-        return new ResponseEntity<>(map, HttpStatus.OK);
+
+        if(mode != null && mode.equals("faculty"))
+            facultyid = SessionUtil.getUserId();
+        HaramMessage message = adviseService.advisingList(start, length, search, order, orderCol, studentid, facultyid);
+        message.put("draw", draw);
+        message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
+        message.put("recordsFiltered", ((Page) message.get("page")).getTotalRows());
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
 }
