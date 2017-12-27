@@ -4,6 +4,7 @@ import com.harambase.common.HaramMessage;
 import com.harambase.common.constant.FlagDict;
 import com.harambase.pioneer.pojo.Person;
 import com.harambase.pioneer.service.CourseService;
+import com.harambase.pioneer.service.MonitorService;
 import com.harambase.pioneer.service.PersonService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -22,13 +23,13 @@ import java.util.Map;
 @RequestMapping("/system")
 public class SystemController {
 
-    private final CourseService courseService;
+    private final MonitorService monitorService;
     private final PersonService personService;
     
     @Autowired
-    public SystemController(CourseService courseService,
+    public SystemController(MonitorService monitorService,
                             PersonService personService){
-        this.courseService = courseService;
+        this.monitorService = monitorService;
         this.personService = personService;
     }
 
@@ -56,20 +57,7 @@ public class SystemController {
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     @RequiresPermissions("user")
     public ResponseEntity systemInfo(){
-        HaramMessage message = new HaramMessage();
-
-        Map<String, Integer> data = new HashMap<>();
-        int course, student, faculty;
-
-        student = (Integer) personService.countPerson("1", "s").getData();
-        faculty = (Integer) personService.countPerson("1", "f").getData();
-        course  = (Integer) courseService.countActiveCourse().getData();
-
-        data.put("student",student);
-        data.put("faculty",faculty);
-        data.put("course", course);
-
-        message.setData(data);
+        HaramMessage message = monitorService.systemInfo();
         return new ResponseEntity<>(message, HttpStatus.OK);
 
     }
@@ -77,14 +65,14 @@ public class SystemController {
     @RequestMapping(value = "/relation", method = RequestMethod.GET)
     @RequiresPermissions("user")
     public ResponseEntity relationChart(){
-        HaramMessage haramMessage = personService.getRelationChart();
+        HaramMessage haramMessage = monitorService.getRelationChart();
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/user/count", method = RequestMethod.GET)
     @RequiresPermissions("user")
     public ResponseEntity userCount(){
-        HaramMessage haramMessage = personService.getUserChart();
+        HaramMessage haramMessage = monitorService.getUserChart();
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
