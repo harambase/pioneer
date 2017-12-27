@@ -29,14 +29,6 @@ public class PinServer {
         return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
     }
 
-    public HaramMessage updateAllByInfo(String ip, int port, String info) {
-        return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
-    }
-
-    public HaramMessage updateSingleByPin(String ip, int port, String pin) {
-        return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
-    }
-
     public HaramMessage validate(String ip, int port, Integer pinNum) {
         return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
     }
