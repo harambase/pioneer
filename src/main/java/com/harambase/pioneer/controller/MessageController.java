@@ -62,19 +62,7 @@ public class MessageController {
     public ResponseEntity count(@RequestParam(value = "status") String status,
                                 @RequestParam(value = "box") String box){
         String userid = SessionUtil.getUserId();
-        String receiverid = null;
-        String senderid = null;
-
-        if(box.contains("inbox") || box.contains("important"))
-            receiverid = userid;
-        if(box.contains("sent") || box.contains("draft"))
-            senderid = userid;
-        if(box.contains("trash")) {
-            receiverid =userid;
-            senderid = userid;
-        }
-
-        HaramMessage haramMessage = messageService.countMessageByStatus(receiverid, senderid, box.toLowerCase(), status.toLowerCase());
+        HaramMessage haramMessage = messageService.countMessageByStatus(userid, box.toLowerCase(), status.toLowerCase());
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
@@ -89,24 +77,10 @@ public class MessageController {
                                @RequestParam(value = "box") String box) {
 
         String userid = SessionUtil.getUserId();
-        String receiverid = null;
-        String senderid = null;
-
-        if(box.contains("inbox") || box.contains("important"))
-            receiverid = userid;
-        if(box.contains("sent") || box.contains("draft"))
-            senderid = userid;
-        if(box.contains("trash")) {
-            receiverid =userid;
-            senderid = userid;
-        }
-
-        HaramMessage message = messageService.list(String.valueOf(start / length + 1), String.valueOf(length), search,
-                order, orderCol, receiverid, senderid, box);
+        HaramMessage message = messageService.list(start, length, search, order, orderCol, userid, box);
         message.put("draw", draw);
         message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         message.put("recordsFiltered", ((Page) message.get("page")).getTotalRows());
-
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 

@@ -15,14 +15,8 @@ public interface PersonService {
 
     HaramMessage getUser(String userid);
 
-    HaramMessage listUser(String s, String s1, String search, String order, String orderCol, String type, String status);
+    HaramMessage listUser(int start, int length, String search, String order, String orderCol, String type, String status);
 
     HaramMessage searchPerson(String search, String type, String status);
-
-    HaramMessage getUserChart();
-
-    HaramMessage getRelationChart();
-
-    HaramMessage countPerson(String status, String type);
 
 }

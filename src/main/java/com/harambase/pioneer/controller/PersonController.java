@@ -81,9 +81,7 @@ public class PersonController {
                                @RequestParam(value = "order[0][column]") String orderCol,
                                @RequestParam(value = "type", required = false) String type,
                                @RequestParam(value = "status", required = false) String status) {
-
-        HaramMessage message = personService.listUser(String.valueOf(start / length + 1), String.valueOf(length), search,
-                order, orderCol, type, status);
+        HaramMessage message = personService.listUser(start, length, search, order, orderCol, type, status);
         message.put("draw", draw);
         message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         message.put("recordsFiltered", ((Page) message.get("page")).getTotalRows());

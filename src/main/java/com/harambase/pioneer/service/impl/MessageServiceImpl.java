@@ -44,17 +44,13 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public HaramMessage list(String currentPage, String pageSize, String search, String order, String orderColumn,
-                             String receiverid, String senderid, String box) {
-        Page page = new Page();
-        page.setCurrentPage(PageUtil.getcPg(currentPage));
-        page.setPageSize(PageUtil.getLimit(pageSize));
-        return messageServer.messageList(IP, PORT, page.getCurrentIndex(), page.getPageSize(), search, order, orderColumn, receiverid, senderid, box);
+    public HaramMessage list(int start, int length, String search, String order, String orderColumn, String userId, String box) {
+        return messageServer.messageList(IP, PORT, start, length, search, order, orderColumn, userId, box);
     }
 
     @Override
-    public HaramMessage countMessageByStatus(String receiverId, String senderId, String box, String status) {
-        return messageServer.countMessageByStatus(IP, PORT, receiverId, senderId, box, status);
+    public HaramMessage countMessageByStatus(String userId, String box, String status) {
+        return messageServer.countMessageByStatus(IP, PORT, userId, box, status);
     }
 
 }

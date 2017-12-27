@@ -26,7 +26,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public HaramMessage login(Person person) {
-        return personServer.login(IP, PORT, person.getUserid());
+        return personServer.login(IP, PORT, person);
     }
 
     @Override
@@ -50,32 +50,14 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public HaramMessage listUser(String currentPage, String pageSize, String search, String order, String orderColumn,
+    public HaramMessage listUser(int start, int length, String search, String order, String orderColumn,
                                  String type, String status) {
-        Page page = new Page();
-        page.setCurrentPage(PageUtil.getcPg(currentPage));
-        page.setPageSize(PageUtil.getLimit(pageSize));
-        return personServer.list(IP, PORT, page.getCurrentIndex(), page.getPageSize(), search, order, orderColumn, type, status);
+        return personServer.list(IP, PORT, start,length, search, order, orderColumn, type, status);
     }
 
     @Override
     public HaramMessage searchPerson(String search, String type, String status) {
-        return personServer.getPersonBySearch(IP, PORT, 0, Integer.MAX_VALUE, search, "desc", "id", type, status);
-    }
-
-    @Override
-    public HaramMessage getUserChart() {
-        return personServer.userChart(IP, PORT);
-    }
-
-    @Override
-    public HaramMessage getRelationChart() {
-        return personServer.relationChart(IP, PORT);
-    }
-
-    @Override
-    public HaramMessage countPerson(String status, String type) {
-        return personServer.countPerson(IP, PORT, status, type);
+        return personServer.getPersonBySearch(IP, PORT, search, type, status);
     }
 
 }
