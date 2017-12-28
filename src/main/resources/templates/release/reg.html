@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,131 +18,152 @@
 <main class="auth-main">
     <div class="auth-block">
         <h1>申请加入先锋</h1>
-        <a href="/index" class="auth-link">已有先锋账号？点击登录!</a>
+        <a href="/" class="auth-link">已有先锋账号？点击登录!</a>
 
-        <form id="regForm" class="form-horizontal" onclick="return false">
+        <form id="regForm" class="form-horizontal">
             <div class="form-group">
-                <label for="inputName3" class="col-sm-2 control-label"><span style="color: red">*</span>姓</label>
+                <label for="lastName" class="col-sm-2 control-label"><span style="color: red">*</span>姓</label>
 
                 <div class="col-sm-10">
-                    <input class="form-control" id="inputName3" stringCheck="true" placeholder="*姓" minlength="1" maxlength="20" value="" required>
+                    <input class="form-control" id="lastName" stringCheck="true" placeholder="*姓" minlength="1"
+                           maxlength="20" value="" required v-model="user.lastName">
                 </div>
             </div>
             <div class="form-group">
-                <label for="inputName3" class="col-sm-2 control-label"><span style="color: red">*</span>名</label>
+                <label for="lastName" class="col-sm-2 control-label"><span style="color: red">*</span>名</label>
 
                 <div class="col-sm-10">
-                    <input class="form-control" id="firstName" stringCheck="true" placeholder="*名" minlength="1" maxlength="20" value="" required>
+                    <input class="form-control" id="firstName" stringCheck="true" placeholder="*名" minlength="1"
+                           maxlength="20" value="" required v-model="user.firstName">
                 </div>
             </div>
             <div class="form-group">
-                <label for="inputName3" class="col-sm-2 control-label"><span style="color: red">*</span>生日</label>
+                <label for="birthday" class="col-sm-2 control-label"><span style="color: red">*</span>生日</label>
                 <div class="col-sm-10">
-                    <input  class="form-control" id="birthday" placeholder="*生日" value="">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="inputEmail3" class="col-sm-2 control-label"><span style="color: red">*</span>邮箱</label>
-                <div class="col-sm-10">
-                    <input type="email" class="form-control" id="inputEmail3" placeholder="*邮件">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="inputPassword3" class="col-sm-2 control-label"><span style="color: red">*</span>密码</label>
-
-                <div class="col-sm-10">
-                    <input type="password" class="form-control" id="inputPassword3" placeholder="*密码" minlength="6" maxlength="16" required>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="inputName3" class="col-sm-2 control-label"><span style="color: red">*</span>QQ</label>
-                <div class="col-sm-10">
-                    <input  class="form-control" id="qq" isDigits="true" placeholder="*QQ号" minlength="6" maxlength="16" required>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="inputName3" class="col-sm-2 control-label"><span style="color: red">*</span>电话</label>
-
-                <div class="col-sm-10">
-                    <input class="form-control" id="tel" isDigits="true" placeholder="*电话号码" minlength="8" maxlength="11" required>
+                    <input class="form-control" id="birthday" placeholder="*生日" v-model="user.birthday">
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="inputName3" class="col-sm-2 control-label">注册学期</label>
+                <label for="email" class="col-sm-2 control-label">
+                    <span style="color: red">*</span>邮箱
+                </label>
+                <div class="col-sm-10">
+                    <input type="email" class="form-control" id="email" placeholder="*邮件" v-model="user.email">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password" class="col-sm-2 control-label">
+                    <span style="color: red">*</span>密码</label>
+
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" id="password" placeholder="*密码" minlength="6"
+                           maxlength="16" required v-model="user.password">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="lastName" class="col-sm-2 control-label"><span style="color: red">*</span>QQ</label>
+                <div class="col-sm-10">
+                    <input class="form-control" id="qq" isDigits="true" placeholder="*QQ号" minlength="6" maxlength="16"
+                           required v-model="user.qq">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="lastName" class="col-sm-2 control-label"><span style="color: red">*</span>电话</label>
+
+                <div class="col-sm-10">
+                    <input class="form-control" id="tel" isDigits="true" placeholder="*电话号码" minlength="8"
+                           maxlength="11" required v-model="user.tel">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="lastName" class="col-sm-2 control-label">注册学期</label>
                 <div class="col-md-3">
-                    <label id="newStudent" class="radio-inline custom-radio nowrap">
-                        <input type="radio" name="radio" id="new" value="2017-02">
+                    <label class="radio-inline custom-radio nowrap">
+                        <input type="radio" name="radio" v-on:click="infoChange">
                         <span>本学期加入</span>
                     </label>
                 </div>
                 <div class="col-md-3">
-                    <label id="retStudent" class="radio-inline custom-radio nowrap">
-                        <input type="radio" name="radio" id="return">
+                    <label class="radio-inline custom-radio nowrap">
+                        <input type="radio" name="radio" v-on:click="isReturn=true">
                         <span>返回成员</span>
                     </label>
                 </div>
-                <div class="col-md-3">
-                    <input style="width: 137px;" class="form-control" id="info" stringCheck="true"
-                           value="2017-02" minlength="7" maxlength="7" disabled required>
+                <div class="col-md-3" v-if="isReturn">
+                    <input style="width: 137px;" class="form-control" id="info" stringCheck="true" minlength="7"
+                           maxlength="7" required v-model="user.info">
                 </div>
             </div>
             <div class="form-group">
-                <label for="inputName3" class="col-sm-2 control-label">性别</label>
+                <label for="lastName" class="col-sm-2 control-label">性别</label>
                 <div class="col-md-4">
                     <label id="male1" class="radio-inline custom-radio nowrap">
-                        <input type="radio" name="radio2" id="male" value="m">
+                        <input type="radio" name="gender" id="male" value="m" v-model="user.gender">
                         <span>男</span>
                     </label>
                     <label id="female1" class="radio-inline custom-radio nowrap">
-                        <input type="radio" name="radio2" id="female" value="f">
+                        <input type="radio" name="gender" id="female" value="f" v-model="user.gender">
                         <span>女</span>
                     </label>
-                    <input id="gender" hidden>
-                    <!--<label id="undecided1" class="radio-inline custom-radio nowrap">-->
-                        <!--<input type="radio" name="radio" id="undecided" value="f" checked>-->
-                        <!--<span>!未指定性别</span>-->
-                    <!--</label>-->
                 </div>
-                <!--</div>-->
-                <!--</div>-->
             </div>
 
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                    <button id="submit" type="submit" class="btn btn-default btn-auth">提交申请</button>
+                    <button type="submit" class="btn btn-default btn-auth" v-on:click="doReg">提交申请</button>
                 </div>
             </div>
         </form>
     </div>
-
 </main>
-<script src="/static/plugins/jquery/jquery-1.12.3.min.js"></script>
-<script src="/static/plugins/bootstrap/js/bootstrap.min.js"></script>
-<script src="/static/plugins/confirm/confirm.js"></script>
-<script src="/static/plugins/jquery-validate/jquery.validate.min.js"></script>
-<script src="/static/plugins/jquery-validate/messages_zh.js"></script>
-<script src="/static/plugins/layer/laydate/laydate.js"></script>
-<script src="/static/plugins/md5/md5.js"></script>
-<script src="/static/scripts/common/basePath.js"></script>
-<script src="/static/scripts/register.js"></script>
-<!--<script src="/scripts/vendor-b82c564ee5.js"></script>-->
-<!--<script src="/scripts/app-0a586e05f6.js"></script>-->
+<div th:include="/release/common/js :: load_js(false,false,false)"></div>
+
 <script>
-    laydate.render({
-        elem: '#birthday',
-        theme: '#393D49', showBottom: false//指定元素
+    new Vue({
+        el: '#regForm',
+        data: {
+            user: {
+                info: "",
+                lastName: "",
+                firstName: "",
+                email: "",
+                password: "",
+                qq: "",
+                tel: "",
+                birthday: "",
+                gender: ""
+            },
+            isReturn: false
+        },
+        mounted: function(){
+            laydate.render({
+                elem: '#birthday',
+                theme: '#393D49',
+                showBottom: false
+            });
+        },
+        methods: {
+            doReg: function () {
+                const regUser = this.user;
+                regUser.password = hex_md5(this.user.password);
+                axios.post("/system/login", regUser).then(function (response) {
+                    if (response.data.code === 2001)
+                        Showbo.Msg.alert("成功！请等待管理员审核。", function () {
+                            window.location.href = basePath + "/login";
+                        });
+                    else
+                        Showbo.Msg.alert(data.msg, function () {
+                        });
+                });
+            },
+            infoChange: function () {
+                this.user.info = "2017-02";
+                this.isReturn = false;
+            }
+        }
     });
 </script>
-<script>
-    // 字符验证，只能包含中文、英文、数字、下划线等字符。
-    jQuery.validator.addMethod("stringCheck", function (value, element) {
-        return this.optional(element) || /^[a-zA-Z0-9\u4e00-\u9fa5-_]+$/.test(value);
-    }, "只能包含中文、英文、数字、下划线等字符");
-    // 只能输入[0-9]数字
-    jQuery.validator.addMethod("isDigits", function (value, element) {
-        return this.optional(element) || /^\d+$/.test(value);
-    }, "只能输入0-9数字");
-</script>
 </body>
+</html>
