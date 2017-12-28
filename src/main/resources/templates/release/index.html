@@ -30,7 +30,7 @@
                         <div class="panel panel-primary">
                             <div class="number">
                                 <h3>
-                                    <span id="studentNum">{{studentNum}}</span><br/>
+                                    <span>{{studentNum}}</span><br/>
                                     <small>当前学生总数</small>
                                 </h3>
                             </div>
@@ -46,7 +46,7 @@
                         <div class="panel panel-primary">
                             <div class="number">
                                 <h3>
-                                    <span id="facultyNum">{{facultyNum}}</span><br/>
+                                    <span>{{facultyNum}}</span><br/>
                                     <small>当前教师总数</small>
                                 </h3>
                             </div>
@@ -63,7 +63,7 @@
                         <div class="panel panel-primary">
                             <div class="number">
                                 <h3>
-                                    <span id="courseNum">{{courseNum}}</span><br/>
+                                    <span>{{courseNum}}</span><br/>
                                     <small>当前课程总数</small>
                                 </h3>
                             </div>
@@ -133,11 +133,10 @@
             facultyNum: 0,
             courseNum: 0
         },
-        created: function () {
+        beforeCreate: function () {
             initUserChart();
             initRelationChart();
             initCounts();
-
         }
     });
 
@@ -158,11 +157,10 @@
     function initCounts() {
         axios("/system/info").then(function (response) {
             const result = response.data.data;
-            console.log(Vue.$data);
-            Vue.$set(data,result.student,result.faculty,result.course );
+            v.$data.studentNum = result.student;
+            v.$data.facultyNum = result.faculty;
+            v.$data.courseNum  = result.course;
         })
-
-
     }
 
 </script>
