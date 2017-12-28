@@ -19,18 +19,18 @@ public class ReportController {
     private final ReportService reportService;
 
     @Autowired
-    public ReportController(ReportService reportService){
+    public ReportController(ReportService reportService) {
         this.reportService = reportService;
     }
 
     @RequestMapping(value = "/{studentId}/transcript", method = RequestMethod.GET)
-    public void studentTranscriptReport(@PathVariable(value = "studentId") String studentId, HttpServletResponse response){
+    public void studentTranscriptReport(@PathVariable(value = "studentId") String studentId, HttpServletResponse response) {
         HaramMessage haramMessage = reportService.studentTranscriptReport(studentId);
         ReportControllerInner.download(studentId + "_transcript_report.pdf", haramMessage, response);
     }
 
-    private static class ReportControllerInner{
-        private static void download(String fileName, HaramMessage haramMessage, HttpServletResponse response){
+    private static class ReportControllerInner {
+        private static void download(String fileName, HaramMessage haramMessage, HttpServletResponse response) {
             String filePath = (String) haramMessage.getData();
             File file = null;
             if (StringUtils.isNotEmpty(filePath)) {

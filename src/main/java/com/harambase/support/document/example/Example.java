@@ -17,7 +17,7 @@ public class Example {
 
         File template = new File(workingDirectory.getAbsolutePath() + File.separator + "invoiceTemplate.tex");
 
-        File tempDir = new File( File.separator + "temp");
+        File tempDir = new File(File.separator + "temp");
 
         if (!tempDir.isDirectory()) {
             tempDir.mkdir();
@@ -81,7 +81,7 @@ public class Example {
             converter.replace("services", services);
             converter.parse(template, invoice2);
 
-            File desktop = new File(System.getProperty("user.home")	+ File.separator + "Desktop");
+            File desktop = new File(System.getProperty("user.home") + File.separator + "Desktop");
 
             JLRGenerator pdfGen = new JLRGenerator();
 

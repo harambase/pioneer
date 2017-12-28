@@ -2,8 +2,8 @@ package com.harambase.pioneer.controller;
 
 import com.harambase.common.HaramMessage;
 import com.harambase.common.constant.FlagDict;
-import com.harambase.support.util.SessionUtil;
 import com.harambase.pioneer.service.PinService;
+import com.harambase.support.util.SessionUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.*;
 public class PinController {
 
     private final PinService pinService;
-    
+
     @Autowired
-    public PinController(PinService pinService){
+    public PinController(PinService pinService) {
         this.pinService = pinService;
     }
 
@@ -28,7 +28,7 @@ public class PinController {
                                  @RequestParam(value = "endTime") String endTime,
                                  @RequestParam(value = "role") int role,
                                  @RequestParam(value = "info") String info,
-                                 @RequestParam(value = "remark") String remark){
+                                 @RequestParam(value = "remark") String remark) {
         HaramMessage haramMessage = pinService.generateAll(startTime, endTime, role, info, remark);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
@@ -51,7 +51,7 @@ public class PinController {
     @RequestMapping(value = "/{pin}", method = RequestMethod.GET)
     public ResponseEntity validate(@PathVariable(value = "pin") Integer pin) {
         HaramMessage haramMessage = pinService.validate(pin);
-        if(haramMessage.getCode() == FlagDict.SUCCESS.getV())
+        if (haramMessage.getCode() == FlagDict.SUCCESS.getV())
             SessionUtil.setPin(haramMessage.getData());
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
@@ -60,21 +60,21 @@ public class PinController {
     @RequestMapping(value = "/session", method = RequestMethod.GET)
     public ResponseEntity sessionValidate() {
         HaramMessage haramMessage = pinService.validate(SessionUtil.getPin().getPin());
-        if(haramMessage.getCode() == FlagDict.SUCCESS.getV())
+        if (haramMessage.getCode() == FlagDict.SUCCESS.getV())
             SessionUtil.setPin(haramMessage.getData());
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
     @RequiresPermissions({"admin", "teach"})
     @RequestMapping(value = "/send/faculty/{info}", method = RequestMethod.GET)
-    public ResponseEntity sendFacultyPin(@PathVariable(value = "info") String info){
+    public ResponseEntity sendFacultyPin(@PathVariable(value = "info") String info) {
         HaramMessage haramMessage = pinService.sendFacultyPin(info, SessionUtil.getUserId());
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
     @RequiresPermissions({"admin", "teach"})
     @RequestMapping(value = "/send/advisor/{info}", method = RequestMethod.GET)
-    public ResponseEntity sendAdvisorPin(@PathVariable(value = "info") String info){
+    public ResponseEntity sendAdvisorPin(@PathVariable(value = "info") String info) {
         HaramMessage haramMessage = pinService.sendAdvisorPin(info, SessionUtil.getUserId());
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }

@@ -2,28 +2,25 @@ package com.harambase.pioneer.controller;
 
 import com.harambase.common.HaramMessage;
 import com.harambase.common.Page;
-import com.harambase.support.util.SessionUtil;
 import com.harambase.pioneer.pojo.base.TranscriptBase;
 import com.harambase.pioneer.service.TranscriptService;
+import com.harambase.support.util.SessionUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 @CrossOrigin
 @RequestMapping(value = "/transcript")
 public class TranscriptController {
-    
+
     private final TranscriptService transcriptService;
-    
+
     @Autowired
-    public TranscriptController(TranscriptService transcriptService){
+    public TranscriptController(TranscriptService transcriptService) {
         this.transcriptService = transcriptService;
     }
 
@@ -36,7 +33,7 @@ public class TranscriptController {
     }
 
     @RequiresPermissions({"admin", "teach", "student", "faculty"})
-    @RequestMapping(value = {"/{studentId}/course","/{crn}/student"}, produces = "application/json", method = RequestMethod.GET)
+    @RequestMapping(value = {"/{studentId}/course", "/{crn}/student"}, produces = "application/json", method = RequestMethod.GET)
     public ResponseEntity list(@RequestParam(value = "start") Integer start,
                                @RequestParam(value = "length") Integer length,
                                @RequestParam(value = "draw") Integer draw,

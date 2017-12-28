@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 public class ResourceController extends WebMvcConfigurerAdapter {
 
     @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry){
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
         registry.addResourceHandler("/static/styles/**").addResourceLocations("classpath:/static/styles/");
         registry.addResourceHandler("/static/fonts/**").addResourceLocations("classpath:/static/fonts/");

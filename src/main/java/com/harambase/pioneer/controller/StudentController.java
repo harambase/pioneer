@@ -2,18 +2,14 @@ package com.harambase.pioneer.controller;
 
 import com.harambase.common.HaramMessage;
 import com.harambase.common.Page;
-import com.harambase.support.util.SessionUtil;
 import com.harambase.pioneer.pojo.Student;
 import com.harambase.pioneer.service.StudentService;
+import com.harambase.support.util.SessionUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by linsh on 7/12/2017.
@@ -26,7 +22,7 @@ public class StudentController {
     private final StudentService studentService;
 
     @Autowired
-    public StudentController(StudentService studentService){
+    public StudentController(StudentService studentService) {
         this.studentService = studentService;
     }
 
@@ -39,14 +35,14 @@ public class StudentController {
 
     @RequiresPermissions({"admin", "student", "teach"})
     @RequestMapping(value = "/{studentId}/available/credit", method = RequestMethod.GET)
-    public ResponseEntity getAvailableCredit(@PathVariable(value = "studentId") String studentId){
+    public ResponseEntity getAvailableCredit(@PathVariable(value = "studentId") String studentId) {
         HaramMessage haramMessage = studentService.getAvailableCredit(studentId, SessionUtil.getPin().getInfo());
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
     @RequiresPermissions({"admin", "student"})
     @RequestMapping(value = "/{studentId}", method = RequestMethod.PUT)
-    public ResponseEntity update(@PathVariable String studentId, @RequestBody Student student){
+    public ResponseEntity update(@PathVariable String studentId, @RequestBody Student student) {
         HaramMessage haramMessage = studentService.update(studentId, student);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }

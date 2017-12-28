@@ -6,17 +6,11 @@
 
 package com.harambase.support.document.jlr;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+
+import java.io.*;
+import java.nio.charset.Charset;
 
 public class JLRConverter {
     private String errorMessage;

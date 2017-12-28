@@ -52,9 +52,9 @@ public class CourseServer {
                 .append("&search=")
                 .append(search)
                 .append("&order=").append(order).append("orderCol=").append(orderColumn);
-        if(StringUtils.isNotEmpty(facultyId))
+        if (StringUtils.isNotEmpty(facultyId))
             requestUrl.append("&facultyId=").append(facultyId);
-        if(StringUtils.isNotEmpty(info))
+        if (StringUtils.isNotEmpty(info))
             requestUrl.append("&info=").append(info);
         Map params = new HashMap();
         return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
@@ -63,9 +63,9 @@ public class CourseServer {
     public HaramMessage getCourseBySearch(String ip, int port, String search, String status) {
         String remotePath = "/course?search=";
         StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
-        if(StringUtils.isNotEmpty(search))
+        if (StringUtils.isNotEmpty(search))
             requestUrl.append(search);
-        if(StringUtils.isNotEmpty(status))
+        if (StringUtils.isNotEmpty(status))
             requestUrl.append("&status=").append(status);
         Map params = new HashMap();
         return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
@@ -95,9 +95,9 @@ public class CourseServer {
     public HaramMessage courseTreeList(String ip, int port, String facultyId, String info) {
         String remotePath = "/course?facultyId=";
         StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
-        if(StringUtils.isNotEmpty(facultyId))
+        if (StringUtils.isNotEmpty(facultyId))
             requestUrl.append(facultyId);
-        if(StringUtils.isNotEmpty(info))
+        if (StringUtils.isNotEmpty(info))
             requestUrl.append("&info=").append(info);
         Map params = new HashMap();
         return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);

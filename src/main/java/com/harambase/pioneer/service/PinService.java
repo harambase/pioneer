@@ -3,9 +3,9 @@ package com.harambase.pioneer.service;
 import com.harambase.common.HaramMessage;
 
 public interface PinService {
-    
+
     HaramMessage validate(Integer pin);
-    
+
     HaramMessage generateAll(String startTime, String endTime, int role, String info, String remark);
 
     HaramMessage generateOne(String startTime, String endTime, int role, String info, String remark, String userId);

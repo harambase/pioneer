@@ -2,11 +2,9 @@ package com.harambase.pioneer.service.impl;
 
 import com.harambase.common.Config;
 import com.harambase.common.HaramMessage;
-import com.harambase.common.Page;
 import com.harambase.pioneer.pojo.Person;
 import com.harambase.pioneer.server.PersonServer;
 import com.harambase.pioneer.service.PersonService;
-import com.harambase.support.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,7 +50,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public HaramMessage listUser(int start, int length, String search, String order, String orderColumn,
                                  String type, String status) {
-        return personServer.list(IP, PORT, start,length, search, order, orderColumn, type, status);
+        return personServer.list(IP, PORT, start, length, search, order, orderColumn, type, status);
     }
 
     @Override

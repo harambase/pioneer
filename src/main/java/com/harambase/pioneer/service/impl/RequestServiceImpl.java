@@ -1,12 +1,12 @@
 package com.harambase.pioneer.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.harambase.common.*;
-import com.harambase.support.util.PageUtil;
+import com.harambase.common.Config;
+import com.harambase.common.HaramMessage;
+import com.harambase.pioneer.pojo.TempUser;
 import com.harambase.pioneer.server.MessageServer;
 import com.harambase.pioneer.server.TempCourseServer;
 import com.harambase.pioneer.server.TempUserServer;
-import com.harambase.pioneer.pojo.TempUser;
 import com.harambase.pioneer.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ public class RequestServiceImpl implements RequestService {
     @Autowired
     public RequestServiceImpl(TempUserServer tempUserServer,
                               TempCourseServer tempCourseServer,
-                              MessageServer messageServer){
+                              MessageServer messageServer) {
         this.tempCourseServer = tempCourseServer;
         this.tempUserServer = tempUserServer;
         this.messageServer = messageServer;

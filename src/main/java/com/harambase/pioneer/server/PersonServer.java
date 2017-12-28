@@ -57,9 +57,9 @@ public class PersonServer {
                 .append("&search=")
                 .append(search)
                 .append("&order=").append(order).append("orderCol=").append(orderColumn);
-        if(StringUtils.isNotEmpty(type))
+        if (StringUtils.isNotEmpty(type))
             requestUrl.append("&type=").append(type);
-        if(StringUtils.isNotEmpty(status))
+        if (StringUtils.isNotEmpty(status))
             requestUrl.append("&status=").append(status);
         Map params = new HashMap();
         return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
@@ -68,11 +68,11 @@ public class PersonServer {
     public HaramMessage getPersonBySearch(String ip, int port, String search, String type, String status) {
         String remotePath = "/user/search?search=";
         StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
-        if(StringUtils.isNotEmpty(search))
+        if (StringUtils.isNotEmpty(search))
             requestUrl.append(search);
-        if(StringUtils.isNotEmpty(type))
+        if (StringUtils.isNotEmpty(type))
             requestUrl.append("&type=").append(type);
-        if(StringUtils.isNotEmpty(status))
+        if (StringUtils.isNotEmpty(status))
             requestUrl.append("&status=").append(status);
         Map params = new HashMap();
         return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);

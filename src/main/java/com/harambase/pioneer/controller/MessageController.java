@@ -2,18 +2,14 @@ package com.harambase.pioneer.controller;
 
 import com.harambase.common.HaramMessage;
 import com.harambase.common.Page;
-import com.harambase.support.util.SessionUtil;
 import com.harambase.pioneer.pojo.Message;
 import com.harambase.pioneer.service.MessageService;
+import com.harambase.support.util.SessionUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -23,13 +19,13 @@ public class MessageController {
     private final MessageService messageService;
 
     @Autowired
-    public MessageController(MessageService messageService){
+    public MessageController(MessageService messageService) {
         this.messageService = messageService;
     }
 
     @RequiresPermissions("user")
     @RequestMapping(produces = "application/json", method = RequestMethod.POST)
-    public ResponseEntity create(@RequestBody Message message){
+    public ResponseEntity create(@RequestBody Message message) {
         message.setSenderid(SessionUtil.getUserId());
         HaramMessage haramMessage = messageService.create(message);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
@@ -60,7 +56,7 @@ public class MessageController {
     @RequiresPermissions("user")
     @RequestMapping(value = "/count", method = RequestMethod.GET)
     public ResponseEntity count(@RequestParam(value = "status") String status,
-                                @RequestParam(value = "box") String box){
+                                @RequestParam(value = "box") String box) {
         String userid = SessionUtil.getUserId();
         HaramMessage haramMessage = messageService.countMessageByStatus(userid, box.toLowerCase(), status.toLowerCase());
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);

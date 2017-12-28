@@ -11,38 +11,44 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin
 public class WebController {
-    
+
     //不需要login
-    @RequestMapping({"/","/login"})
-    public String login(){
+    @RequestMapping({"/", "/login"})
+    public String login() {
         return "release/login";
     }
+
     @RequestMapping("/reg")
-    public String signUp(){
+    public String signUp() {
         return "release/reg";
     }
+
     @RequestMapping("/403")
-    public String authError(){
+    public String authError() {
         return "release/web/403";
     }
+
     @RequestMapping("/404")
-    public String pageNotFound(){
+    public String pageNotFound() {
         return "release/web/404";
     }
 
     //只需要用户权限
     @RequestMapping("/index")
-    public String welcome(){
+    public String welcome() {
         return "release/index";
     }
+
     @RequestMapping("/message")
-    public String message(){
+    public String message() {
         return "release/web/message";
     }
+
     @RequestMapping("/profile")
     public String profile() {
         return "release/web/profile";
     }
+
     @RequestMapping("/myCourse")
     public String myCourse() {
         return "release/teach/myCourse";
@@ -51,45 +57,53 @@ public class WebController {
 
     //系统设置
     @RequestMapping("/system/user/create")
-    public String createUser(){
+    public String createUser() {
         return "release/system/createUser";
     }
+
     @RequestMapping("/system/user/view")
-    public String viewUser(){
+    public String viewUser() {
         return "release/system/viewUser";
     }
+
     @RequestMapping("/system/user/detail")
-    public String editUser(){
+    public String editUser() {
         return "release/system/editUser";
     }
+
     @RequestMapping("/system/user/request")
-    public String viewRegister(){
+    public String viewRegister() {
         return "release/system/viewRegister";
     }
+
     @RequestMapping("/system/user/request/detail")
-    public String userRegisterDetail(){
+    public String userRegisterDetail() {
         return "release/system/userRegisterDetail";
     }
 
     //教务系统
     @RequestMapping("/teach/create")
-    public String createCourse(){
+    public String createCourse() {
         return "release/teach/createCourse";
     }
+
     @RequestMapping("/teach/view")
-    public String viewCourse(){
+    public String viewCourse() {
         return "release/teach/viewCourse";
     }
+
     @RequestMapping("/teach/edit")
-    public String editCourse(){
+    public String editCourse() {
         return "release/teach/editCourse";
     }
+
     @RequestMapping("/teach/choose")
-    public String courseChoose(){
+    public String courseChoose() {
         return "release/teach/courseChoose";
     }
+
     @RequestMapping("/teach/pin")
-    public String pinInfo(){
+    public String pinInfo() {
         return "release/teach/pin";
     }
 //    @RequestMapping("/teach/advise")
@@ -98,37 +112,43 @@ public class WebController {
 //    }
 
     @RequestMapping("/student/course/view")
-    public String sViewCourse(){
+    public String sViewCourse() {
         return "release/student/teach/viewCourse";
     }
+
     @RequestMapping("/student/transcript/view")
-    public String sViewTranscript(){
+    public String sViewTranscript() {
         return "release/student/teach/viewTranscript";
     }
+
     @RequestMapping("/manage/transcript/view")
-    public String viewTranscript(){
+    public String viewTranscript() {
         return "release/admin/teach/viewTranscript";
     }
+
     @RequestMapping("/manage/transcript/edit")
-    public String editTranscript(){
+    public String editTranscript() {
         return "release/admin/teach/editTranscript";
     }
+
     @RequestMapping("/manage/student/credit")
-    public String setCredit(){
+    public String setCredit() {
         return "release/admin/teach/setCredit";
     }
+
     @RequestMapping("/manage/course/request")
-    public String viewCourseRequest(){
+    public String viewCourseRequest() {
         return "release/admin/teach/viewCourseRequest";
     }
 
     //后勤管理
     @RequestMapping("/logistic/leave")
-    public String viewLeave(){
+    public String viewLeave() {
         return "release/logistic/viewLeave";
     }
+
     @RequestMapping("/logistic/dorm")
-    public String viewDorm(){
+    public String viewDorm() {
         return "release/logistic/viewDorm";
     }
 

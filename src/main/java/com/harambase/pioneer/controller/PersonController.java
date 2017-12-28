@@ -2,28 +2,24 @@ package com.harambase.pioneer.controller;
 
 import com.harambase.common.HaramMessage;
 import com.harambase.common.Page;
-import com.harambase.support.util.SessionUtil;
 import com.harambase.pioneer.pojo.Person;
 import com.harambase.pioneer.service.PersonService;
+import com.harambase.support.util.SessionUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 @CrossOrigin
 @RestController
 @RequestMapping(value = "/user")
 public class PersonController {
-    
+
     private final PersonService personService;
 
     @Autowired
-    public PersonController(PersonService personService){
+    public PersonController(PersonService personService) {
         this.personService = personService;
     }
 
@@ -58,7 +54,7 @@ public class PersonController {
 
     @RequiresPermissions("user")
     @RequestMapping(value = "/current", method = RequestMethod.GET)
-    public ResponseEntity getCurrentUser(){
+    public ResponseEntity getCurrentUser() {
         HaramMessage message = new HaramMessage();
         message.setData(SessionUtil.getUser());
         return new ResponseEntity<>(message, HttpStatus.OK);
@@ -87,5 +83,5 @@ public class PersonController {
         message.put("recordsFiltered", ((Page) message.get("page")).getTotalRows());
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
-    
+
 }

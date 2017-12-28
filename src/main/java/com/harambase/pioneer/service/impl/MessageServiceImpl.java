@@ -2,11 +2,9 @@ package com.harambase.pioneer.service.impl;
 
 import com.harambase.common.Config;
 import com.harambase.common.HaramMessage;
-import com.harambase.common.Page;
 import com.harambase.pioneer.pojo.Message;
 import com.harambase.pioneer.server.MessageServer;
 import com.harambase.pioneer.service.MessageService;
-import com.harambase.support.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +13,11 @@ public class MessageServiceImpl implements MessageService {
 
     private final static String IP = Config.SERVER_IP;
     private final static int PORT = Config.SERVER_PORT;
-    
+
     private final MessageServer messageServer;
 
     @Autowired
-    public MessageServiceImpl(MessageServer messageServer){
+    public MessageServiceImpl(MessageServer messageServer) {
         this.messageServer = messageServer;
     }
 

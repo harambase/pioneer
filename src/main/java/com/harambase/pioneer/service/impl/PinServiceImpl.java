@@ -2,23 +2,21 @@ package com.harambase.pioneer.service.impl;
 
 import com.harambase.common.Config;
 import com.harambase.common.HaramMessage;
-import com.harambase.common.Page;
 import com.harambase.pioneer.server.PinServer;
 import com.harambase.pioneer.service.PinService;
-import com.harambase.support.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PinServiceImpl implements PinService{
+public class PinServiceImpl implements PinService {
 
     private final static String IP = Config.SERVER_IP;
     private final static int PORT = Config.SERVER_PORT;
 
     private final PinServer pinServer;
-    
+
     @Autowired
-    public PinServiceImpl(PinServer pinServer){
+    public PinServiceImpl(PinServer pinServer) {
         this.pinServer = pinServer;
     }
 
@@ -46,19 +44,19 @@ public class PinServiceImpl implements PinService{
     public HaramMessage validate(Integer pinNum) {
         return pinServer.validate(IP, PORT, pinNum);
     }
-    
+
     @Override
     public HaramMessage listByInfo(int start, int length, String search, String order, String orderColumn, String info) {
         return pinServer.listByInfo(IP, PORT, start, length, search, order, orderColumn, info);
     }
 
     @Override
-    public HaramMessage sendFacultyPin(String info, String senderId){
+    public HaramMessage sendFacultyPin(String info, String senderId) {
         return pinServer.sendFacultyPin(IP, PORT, info, senderId);
     }
 
     @Override
-    public HaramMessage sendAdvisorPin(String info, String senderId){
+    public HaramMessage sendAdvisorPin(String info, String senderId) {
         return pinServer.sendAdvisorPin(IP, PORT, info, senderId);
     }
 }

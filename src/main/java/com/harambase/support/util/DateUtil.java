@@ -13,6 +13,7 @@ public class DateUtil {
 
     /**
      * 日期转换成字符串
+     *
      * @param date
      * @return str
      */
@@ -25,6 +26,7 @@ public class DateUtil {
 
     /**
      * 字符串转换成日期
+     *
      * @param str
      * @return date
      */
@@ -42,6 +44,7 @@ public class DateUtil {
 
     /**
      * 字符串转换成日期
+     *
      * @param str
      * @return date
      */
@@ -59,6 +62,7 @@ public class DateUtil {
 
     /**
      * 字符串转换成日期
+     *
      * @param str
      * @return date
      */
@@ -77,11 +81,12 @@ public class DateUtil {
 
     /**
      * 获取日期
+     *
      * @param timeType 时间类型，譬如：Calendar.DAY_OF_YEAR
      * @param timenum  时间数字，譬如：-1 昨天，0 今天，1 明天
      * @return 日期
      */
-    public static String getDateFromNow(int timeType, int timenum){
+    public static String getDateFromNow(int timeType, int timenum) {
 
         Calendar cld = Calendar.getInstance();
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

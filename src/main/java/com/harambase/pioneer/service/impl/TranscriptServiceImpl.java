@@ -2,17 +2,11 @@ package com.harambase.pioneer.service.impl;
 
 import com.harambase.common.Config;
 import com.harambase.common.HaramMessage;
-import com.harambase.common.Page;
-import com.harambase.pioneer.pojo.Person;
 import com.harambase.pioneer.pojo.base.TranscriptBase;
-import com.harambase.pioneer.server.CourseServer;
 import com.harambase.pioneer.server.TranscriptServer;
 import com.harambase.pioneer.service.TranscriptService;
-import com.harambase.support.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class TranscriptServiceImpl implements TranscriptService {

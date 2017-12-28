@@ -25,9 +25,9 @@ public class AdviseServer {
                 .append("&search=")
                 .append(search)
                 .append("&order=").append(order).append("orderCol=").append(orderColumn);
-        if(StringUtils.isNotEmpty(studentId))
+        if (StringUtils.isNotEmpty(studentId))
             requestUrl.append("&studentId=").append(studentId);
-        if(StringUtils.isNotEmpty(facultyId))
+        if (StringUtils.isNotEmpty(facultyId))
             requestUrl.append("&facultyId=").append(facultyId);
         Map params = new HashMap();
         return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);

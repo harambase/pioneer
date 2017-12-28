@@ -6,13 +6,10 @@
 
 package com.harambase.support.document.jlr;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 
 public class JLRGenerator {
+    private static String newline = System.getProperty("line.separator");
     private String errorMessage = "No errors occurred!";
     private String outputStream = "";
     private File inputFile = null;
@@ -22,7 +19,6 @@ public class JLRGenerator {
     private boolean deleteTempTex = false;
     private boolean deleteAux = false;
     private boolean deleteLog = false;
-    private static String newline = System.getProperty("line.separator");
 
     public JLRGenerator() {
     }
@@ -71,7 +67,7 @@ public class JLRGenerator {
             var11.redirectErrorStream(true);
             var11.directory(var5);
 
-            for(int var12 = 1; var12 <= var2; ++var12) {
+            for (int var12 = 1; var12 <= var2; ++var12) {
                 Process var13 = var11.start();
                 InputStreamReader var14 = new InputStreamReader(var13.getInputStream());
                 BufferedReader var15 = new BufferedReader(var14);
@@ -79,7 +75,7 @@ public class JLRGenerator {
                 String var17 = null;
 
                 try {
-                    while((var17 = var15.readLine()) != null) {
+                    while ((var17 = var15.readLine()) != null) {
                         var16.append(var17 + newline);
                     }
                 } finally {

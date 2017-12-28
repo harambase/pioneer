@@ -2,11 +2,8 @@ package com.harambase.pioneer.server;
 
 import com.harambase.common.HaramMessage;
 import com.harambase.pioneer.pojo.Message;
-import com.harambase.pioneer.pojo.base.MessageBase;
-import com.harambase.pioneer.pojo.base.MessageWithBLOBs;
 import com.harambase.support.util.BuildUrlUtil;
 import com.harambase.support.util.RestTemplateUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 
@@ -15,8 +12,8 @@ import java.util.Map;
 
 @Component
 public class MessageServer {
-   
-    
+
+
     public HaramMessage create(String ip, int port, Message message) {
         String remotePath = "/message";
         StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);

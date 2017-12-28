@@ -21,20 +21,20 @@ public class SystemController {
 
     private final MonitorService monitorService;
     private final PersonService personService;
-    
+
     @Autowired
     public SystemController(MonitorService monitorService,
-                            PersonService personService){
+                            PersonService personService) {
         this.monitorService = monitorService;
         this.personService = personService;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity login(@RequestBody Person person){
+    public ResponseEntity login(@RequestBody Person person) {
         HaramMessage message = personService.login(person);
-        if(message.getCode() == 2001) {
-            person = (Person)message.getData();
-            UsernamePasswordToken token = new UsernamePasswordToken(person.getUserid(),person.getPassword().toCharArray()) ;
+        if (message.getCode() == 2001) {
+            person = (Person) message.getData();
+            UsernamePasswordToken token = new UsernamePasswordToken(person.getUserid(), person.getPassword().toCharArray());
             Subject subject = SecurityUtils.getSubject();
             subject.login(token); //完成登录
         }
@@ -42,7 +42,7 @@ public class SystemController {
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
-    public ResponseEntity logout(){
+    public ResponseEntity logout() {
         HaramMessage message = new HaramMessage();
         SecurityUtils.getSubject().logout();
         message.setCode(FlagDict.SUCCESS.getV());
@@ -52,21 +52,21 @@ public class SystemController {
 
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     @RequiresPermissions("user")
-    public ResponseEntity systemInfo(){
+    public ResponseEntity systemInfo() {
         HaramMessage message = monitorService.systemInfo();
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/relation", method = RequestMethod.GET)
     @RequiresPermissions("user")
-    public ResponseEntity relationChart(){
+    public ResponseEntity relationChart() {
         HaramMessage haramMessage = monitorService.getRelationChart();
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/user/count", method = RequestMethod.GET)
     @RequiresPermissions("user")
-    public ResponseEntity userCount(){
+    public ResponseEntity userCount() {
         HaramMessage haramMessage = monitorService.getUserChart();
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }

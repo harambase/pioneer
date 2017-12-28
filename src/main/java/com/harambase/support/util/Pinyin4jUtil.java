@@ -1,15 +1,15 @@
 package com.harambase.support.util;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
-
 import net.sourceforge.pinyin4j.PinyinHelper;
 import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
 import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
 import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
+
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
 
 public class Pinyin4jUtil {
     /**
@@ -53,7 +53,7 @@ public class Pinyin4jUtil {
         // return pinyinName.toString();
         return parseTheChineseByObject(discountTheChinese(pinyinName.toString()));
     }
-    
+
     /**
      * 汉字转换位汉语全拼，英文字符不变，特殊字符丢失
      * 支持多音字，生成方式如（重当参:zhongdangcen,zhongdangcan,chongdangcen
@@ -93,7 +93,7 @@ public class Pinyin4jUtil {
         // return pinyinName.toString();
         return parseTheChineseByObject(discountTheChinese(pinyinName.toString()));
     }
-    
+
     /**
      * 去除多音字重复数据
      *
@@ -125,7 +125,7 @@ public class Pinyin4jUtil {
         }
         return mapList;
     }
-    
+
     /**
      * 解析并组合拼音，对象合并方案
      *
@@ -174,8 +174,8 @@ public class Pinyin4jUtil {
         }
         return returnStr;
     }
-    
-    
+
+
     public static void main(String[] args) {
         String str = "长沙市长";
         String pinyin = Pinyin4jUtil.converterToSpell(str);
@@ -183,6 +183,6 @@ public class Pinyin4jUtil {
         pinyin = Pinyin4jUtil.converterToFirstSpell(str);
         System.out.println(str + " short pin yin ：" + pinyin);
     }
-    
+
 }
 
