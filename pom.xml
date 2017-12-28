@@ -149,16 +149,13 @@
 
     <build>
         <finalName>pioneer</finalName>
+        <sourceDirectory>src/main/java</sourceDirectory>
         <resources>
             <resource>
                 <directory>src/main/java</directory>
                 <includes>
                     <include>**/*.properties</include>
                 </includes>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                    <exclude>**/*.xml</exclude>
-                </excludes>
                 <filtering>true</filtering>
             </resource>
             <resource>

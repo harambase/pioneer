@@ -1,48 +1,6 @@
-$(function () {
-    initUserChart();
-    initRelationChart();
-    initCounts();
-});
-
-function initUserChart() {
-    /*调用echarts*/
-    $.ajax({
-        type: "GET",
-        url: basePath + "/system/user/count",
-        success: function (result) {
-            var dataBeast = result.dataBeast;
-            var xAxisData = result.xAxisData;
-            exampleUserTop("exampleChart", dataBeast, xAxisData);
-        }
-    });
-}
-
-function initRelationChart() {
-    $.ajax({
-        type: "GET",
-        url: basePath + "/system/relation",
-        success: function (data) {
-            relation(data.data, "relationChart")
-        }
-    });
-}
-
-function initCounts() {
-    $.ajax({
-        type: "GET",
-        url: basePath + "/system/info",
-        success: function (data) {
-            var result = data.data;
-            $("#studentNum").html(result.student);
-            $("#facultyNum").html(result.faculty);
-            $("#courseNum").html(result.course);
-        }
-    });
-}
-
 function exampleUserTop(divUrl, data1, data2) {
-    var myChart = echarts.init(document.getElementById(divUrl));
-    var option = {
+    const myChart = echarts.init(document.getElementById(divUrl));
+    const option = {
         // title : {
         //     text: 'Pioneer User Chart',
         //     subtext: 'Realtime',
@@ -112,13 +70,13 @@ function exampleUserTop(divUrl, data1, data2) {
 }
 
 function relation(data, divUrl) {
-    var myChart = echarts.init(document.getElementById(divUrl));
+    const myChart = echarts.init(document.getElementById(divUrl));
     myChart.showLoading();
     if (data !== "") {
         myChart.hideLoading();
 
-        var graph = echarts.dataTool.gexf.parse(data);
-        var categories = [{name: '课程'}, {name: '学生'}, {name: '教师'}];
+        const graph = echarts.dataTool.gexf.parse(data);
+        const categories = [{name: '课程'}, {name: '学生'}, {name: '教师'}];
 
         graph.nodes.forEach(function (node) {
             node.itemStyle = null;
@@ -130,7 +88,7 @@ function relation(data, divUrl) {
             };
             node.category = node.attributes.type;
         });
-        var option = {
+        const option = {
             // title: {
             //     text: 'Pioneer SFC Relations',
             //     subtext: 'Student-Faculty-Course',

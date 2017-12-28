@@ -24,13 +24,13 @@
         </div>
         <div id="page-inner">
             <!-- /. ROW  -->
-            <div class="row">
+            <div class="row" id="counts">
                 <div class="col-md-4 col-sm-12 col-xs-12">
                     <div class="board">
                         <div class="panel panel-primary">
                             <div class="number">
                                 <h3>
-                                    <span id="studentNum"></span><br/>
+                                    <span id="studentNum">{{studentNum}}</span><br/>
                                     <small>当前学生总数</small>
                                 </h3>
                             </div>
@@ -46,7 +46,7 @@
                         <div class="panel panel-primary">
                             <div class="number">
                                 <h3>
-                                    <span id="facultyNum"></span><br/>
+                                    <span id="facultyNum">{{facultyNum}}</span><br/>
                                     <small>当前教师总数</small>
                                 </h3>
                             </div>
@@ -63,7 +63,7 @@
                         <div class="panel panel-primary">
                             <div class="number">
                                 <h3>
-                                    <span id="courseNum"></span><br/>
+                                    <span id="courseNum">{{courseNum}}</span><br/>
                                     <small>当前课程总数</small>
                                 </h3>
                             </div>
@@ -121,10 +121,49 @@
 </body>
 <script>
     window.sliderFirstNav = "0";
-    //    window.sliderSecondNav = "1";
 </script>
 
 <div th:include="/release/common/js :: load_js(true,true,false)"></div>
 <script src="/static/scripts/index.js"></script>
+<script>
+    var v = new Vue({
+        el: '#counts',
+        data: {
+            studentNum: 0,
+            facultyNum: 0,
+            courseNum: 0
+        },
+        created: function () {
+            initUserChart();
+            initRelationChart();
+            initCounts();
 
+        }
+    });
+
+    function initUserChart() {
+        axios("/system/user/count").then(function (response) {
+            const dataBeast = response.data.dataBeast;
+            const xAxisData = response.data.xAxisData;
+            exampleUserTop("exampleChart", dataBeast, xAxisData);
+        })
+    }
+
+    function initRelationChart() {
+        axios("/system/relation").then(function (response) {
+            relation(response.data.data, "relationChart")
+        })
+    }
+
+    function initCounts() {
+        axios("/system/info").then(function (response) {
+            const result = response.data.data;
+            console.log(Vue.$data);
+            Vue.$set(data,result.student,result.faculty,result.course );
+        })
+
+
+    }
+
+</script>
 </html>
