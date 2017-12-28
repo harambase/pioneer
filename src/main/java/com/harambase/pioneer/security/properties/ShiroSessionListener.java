@@ -1,12 +1,12 @@
 package com.harambase.pioneer.security.properties;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.SessionListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 public class ShiroSessionListener implements SessionListener {
@@ -17,19 +17,19 @@ public class ShiroSessionListener implements SessionListener {
     @Override
     public void onStart(Session session) {
         sessionCount.incrementAndGet();
-        logger.info("Session Increment, current active session: "+sessionCount.get());
+        logger.info("Session Increment, current active session: " + sessionCount.get());
     }
 
     @Override
     public void onStop(Session session) {
         sessionCount.decrementAndGet();
-        logger.info("Session decrement, current active session = "+sessionCount.get());
+        logger.info("Session decrement, current active session = " + sessionCount.get());
     }
 
     @Override
     public void onExpiration(Session session) {
         sessionCount.decrementAndGet();
-        logger.info("Session expire, current active session"+sessionCount.get());
+        logger.info("Session expire, current active session" + sessionCount.get());
 
     }
 }

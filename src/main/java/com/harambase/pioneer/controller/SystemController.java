@@ -55,7 +55,6 @@ public class SystemController {
     public ResponseEntity systemInfo(){
         HaramMessage message = monitorService.systemInfo();
         return new ResponseEntity<>(message, HttpStatus.OK);
-
     }
 
     @RequestMapping(value = "/relation", method = RequestMethod.GET)

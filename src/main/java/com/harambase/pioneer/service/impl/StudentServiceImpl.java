@@ -29,17 +29,14 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public HaramMessage update(Student student) {
-        return studentServer.updateByPrimaryKey(IP, PORT, student);
+    public HaramMessage update(String studentId, Student student) {
+        return studentServer.updateByPrimaryKey(IP, PORT, studentId, student);
     }
 
     @Override
-    public HaramMessage studentList(String currentPage, String pageSize, String search, String order, String orderColumn,
+    public HaramMessage studentList(int start, int length, String search, String order, String orderColumn,
                                     String type, String status) {
-        Page page = new Page();
-        page.setCurrentPage(PageUtil.getcPg(currentPage));
-        page.setPageSize(PageUtil.getLimit(pageSize));
-        return studentServer.studentList(IP, PORT, page.getCurrentIndex(), page.getPageSize(), search, order, orderColumn, type, status);
+        return studentServer.studentList(IP, PORT, start, length, search, order, orderColumn, type, status);
     }
 
     @Override

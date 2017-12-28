@@ -28,15 +28,12 @@ public class TranscriptServiceImpl implements TranscriptService {
     }
 
     @Override
-    public HaramMessage updateGrade(TranscriptBase transcript) {
-        return transcriptServer.updateByPrimaryKey(IP, PORT, transcript);
+    public HaramMessage updateGrade(int id, TranscriptBase transcript) {
+        return transcriptServer.updateByPrimaryKey(IP, PORT, id, transcript);
     }
 
     @Override
-    public HaramMessage transcriptList(String currentPage, String pageSize, String search, String order, String orderColumn, String studentId, String crn) {
-        Page page = new Page();
-        page.setCurrentPage(PageUtil.getcPg(currentPage));
-        page.setPageSize(PageUtil.getLimit(pageSize));
-        return transcriptServer.transcriptList(IP, PORT, page.getCurrentIndex(), page.getPageSize(), search, order, orderColumn, studentId, crn);
+    public HaramMessage transcriptList(int start, int length, String search, String order, String orderColumn, String studentId, String crn) {
+        return transcriptServer.transcriptList(IP, PORT, start, length, search, order, orderColumn, studentId, crn);
     }
 }

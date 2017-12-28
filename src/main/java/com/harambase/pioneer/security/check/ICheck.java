@@ -17,12 +17,13 @@ package com.harambase.pioneer.security.check;
 
 
 /**
- *  检查用接口
+ * 检查用接口
  */
 public interface ICheck {
 
     /**
      * 检查指定角色
+     *
      * @param permissions
      * @return boolean
      */
@@ -30,6 +31,7 @@ public interface ICheck {
 
     /**
      * 检查全体角色
+     *
      * @return boolean
      */
     boolean checkAll();

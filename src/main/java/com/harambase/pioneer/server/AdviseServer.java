@@ -36,7 +36,7 @@ public class AdviseServer {
     public HaramMessage updateAdvise(String ip, int port, Integer id, String studentId, String facultyId) {
         String remotePath = "/advise/" + id;
         StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
-        requestUrl.append("&studentId=").append(studentId).append("&facultyId=").append(facultyId);
+        requestUrl.append("?studentId=").append(studentId).append("&facultyId=").append(facultyId);
         Map params = new HashMap();
         return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.PUT, params);
     }

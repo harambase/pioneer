@@ -20,7 +20,7 @@ public class CollectionKit {
 
     public static Integer[] toIntArray(String split, String str) {
         if (StringUtils.isEmpty(str)) {
-            return new Integer[] {};
+            return new Integer[]{};
         }
         String[] arr = str.split(split);
         Integer[] ints = new Integer[arr.length];

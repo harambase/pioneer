@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MonitorServiceImpl implements MonitorService{
+
     private final static String IP = Config.SERVER_IP;
     private final static int PORT = Config.SERVER_PORT;
 

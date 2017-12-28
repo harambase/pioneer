@@ -4,8 +4,6 @@ import com.harambase.pioneer.pojo.Person;
 import com.harambase.pioneer.security.entity.ShiroUser;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 
-import java.lang.reflect.InvocationTargetException;
-
 
 public interface ShiroService {
 

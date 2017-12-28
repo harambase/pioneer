@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 public class HttpKit {
     /**
      * 获取 包装防Xss Sql注入的 HttpServletRequest
+     *
      * @return request
      */
     public static HttpServletRequest getRequest() {

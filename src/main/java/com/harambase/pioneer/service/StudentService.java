@@ -10,9 +10,9 @@ public interface StudentService {
 
     HaramMessage transcriptDetail(String studentid);
 
-    HaramMessage update(Student student);
+    HaramMessage update(String studentId, Student student);
 
-    HaramMessage studentList(String s, String s1, String search, String order, String orderCol, String type, String status);
+    HaramMessage studentList(int start, int length, String search, String order, String orderCol, String type, String status);
 
     HaramMessage getAvailableCredit(String studentid, String info);
 }

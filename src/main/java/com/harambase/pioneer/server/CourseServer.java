@@ -61,10 +61,10 @@ public class CourseServer {
     }
 
     public HaramMessage getCourseBySearch(String ip, int port, String search, String status) {
-        String remotePath = "/course";
+        String remotePath = "/course?search=";
         StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
         if(StringUtils.isNotEmpty(search))
-            requestUrl.append("&search=").append(search);
+            requestUrl.append(search);
         if(StringUtils.isNotEmpty(status))
             requestUrl.append("&status=").append(status);
         Map params = new HashMap();
@@ -93,10 +93,10 @@ public class CourseServer {
     }
 
     public HaramMessage courseTreeList(String ip, int port, String facultyId, String info) {
-        String remotePath = "/course";
+        String remotePath = "/course?facultyId=";
         StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
         if(StringUtils.isNotEmpty(facultyId))
-            requestUrl.append("&facultyId=").append(facultyId);
+            requestUrl.append(facultyId);
         if(StringUtils.isNotEmpty(info))
             requestUrl.append("&info=").append(info);
         Map params = new HashMap();

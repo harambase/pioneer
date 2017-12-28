@@ -5,8 +5,8 @@ import com.harambase.pioneer.pojo.base.TranscriptBase;
 
 public interface TranscriptService {
 
-    HaramMessage updateGrade(TranscriptBase transcript);
+    HaramMessage updateGrade(int id, TranscriptBase transcript);
 
-    HaramMessage transcriptList(String s, String s1, String search, String order, String orderCol, String studentId, String crn);
+    HaramMessage transcriptList(int start, int length, String search, String order, String orderCol, String studentId, String crn);
 
 }

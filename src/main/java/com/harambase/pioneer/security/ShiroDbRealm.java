@@ -5,7 +5,10 @@ import com.harambase.pioneer.security.entity.ShiroUser;
 import com.harambase.pioneer.security.factory.ShiroService;
 import com.harambase.pioneer.security.factory.ShiroServiceImpl;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.AuthenticationInfo;
+import org.apache.shiro.authc.AuthenticationToken;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
@@ -50,8 +53,8 @@ public class ShiroDbRealm extends AuthorizingRealm {
             }
         }
 
-        if(roles != null){
-            for (String role : roles){
+        if (roles != null) {
+            for (String role : roles) {
                 if (StringUtils.isNotEmpty(role)) {
                     roleNameSet.add(role);
                 }

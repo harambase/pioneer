@@ -28,8 +28,8 @@ public class PinServiceImpl implements PinService{
     }
 
     @Override
-    public HaramMessage generateOne(String startTime, String endTime, int role, String info, String remark) {
-        return pinServer.generateOne(IP, PORT, startTime, endTime, role, info, remark);
+    public HaramMessage generateOne(String startTime, String endTime, int role, String info, String remark, String userId) {
+        return pinServer.generateOne(IP, PORT, startTime, endTime, role, info, remark, userId);
     }
 
     @Override
@@ -48,11 +48,8 @@ public class PinServiceImpl implements PinService{
     }
     
     @Override
-    public HaramMessage listByInfo(String currentPage, String pageSize, String search, String order, String orderColumn, String info) {
-        Page page = new Page();
-        page.setCurrentPage(PageUtil.getcPg(currentPage));
-        page.setPageSize(PageUtil.getLimit(pageSize));
-        return pinServer.listByInfo(IP, PORT, page.getCurrentIndex(), page.getPageSize(), search, order, orderColumn, info);
+    public HaramMessage listByInfo(int start, int length, String search, String order, String orderColumn, String info) {
+        return pinServer.listByInfo(IP, PORT, start, length, search, order, orderColumn, info);
     }
 
     @Override

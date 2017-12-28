@@ -45,9 +45,9 @@ public class StudentController {
     }
 
     @RequiresPermissions({"admin", "student"})
-    @RequestMapping(method = RequestMethod.PUT)
-    public ResponseEntity update(@RequestBody Student student){
-        HaramMessage haramMessage = studentService.update(student);
+    @RequestMapping(value = "/{studentId}", method = RequestMethod.PUT)
+    public ResponseEntity update(@PathVariable String studentId, @RequestBody Student student){
+        HaramMessage haramMessage = studentService.update(studentId, student);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
@@ -62,8 +62,7 @@ public class StudentController {
                                @RequestParam(value = "type", required = false) String type,
                                @RequestParam(value = "status", required = false) String status) {
 
-        HaramMessage message = studentService.studentList(String.valueOf(start / length + 1), String.valueOf(length), search,
-                order, orderCol, type, status);
+        HaramMessage message = studentService.studentList(start, length, search, order, orderCol, type, status);
         message.put("draw", draw);
         message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         message.put("recordsFiltered", ((Page) message.get("page")).getTotalRows());

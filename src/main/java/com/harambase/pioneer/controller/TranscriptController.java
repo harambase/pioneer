@@ -28,10 +28,10 @@ public class TranscriptController {
     }
 
     @RequiresPermissions({"admin", "teach"})
-    @RequestMapping(produces = "application/json", method = RequestMethod.PUT)
-    public ResponseEntity update(@RequestBody TranscriptBase transcript) {
+    @RequestMapping(value = "/{id}", produces = "application/json", method = RequestMethod.PUT)
+    public ResponseEntity update(@PathVariable Integer id, @RequestBody TranscriptBase transcript) {
         transcript.setOperator(SessionUtil.getUserId());
-        HaramMessage haramMessage = transcriptService.updateGrade(transcript);
+        HaramMessage haramMessage = transcriptService.updateGrade(id, transcript);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
@@ -45,26 +45,12 @@ public class TranscriptController {
                                @RequestParam(value = "order[0][column]") String orderCol,
                                @PathVariable(value = "studentId") String studentId,
                                @PathVariable(value = "crn") String crn) {
-        Map<String, Object> map = new HashMap<>();
-        try {
-            HaramMessage message = transcriptService.transcriptList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderCol, studentId, crn);
-            map.put("draw", draw);
-            map.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
-            map.put("recordsFiltered", ((Page) message.get("page")).getTotalRows());
-            map.put("data", message.getData());
-        } catch (Exception e) {
-            e.printStackTrace();
-            map.put("draw", 1);
-            map.put("recordsTotal", 0);
-            map.put("recordsFiltered", 0);
-            map.put("data", new ArrayList<>());
-        }
-        return new ResponseEntity<>(map, HttpStatus.OK);
+
+        HaramMessage message = transcriptService.transcriptList(start, length, search, order, orderCol, studentId, crn);
+        message.put("draw", draw);
+        message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
+        message.put("recordsFiltered", ((Page) message.get("page")).getTotalRows());
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
-    
-//    @RequiresPermissions({"admin", "teach", "advisor", "student"})
-//    @RequestMapping(value = "/{studentId}/report", method = RequestMethod.GET)
-//    public void getStudentReport(@PathVariable(value = "studentId") String studentId, HttpServletResponse httpServletResponse){
-//
-//    }
+
 }

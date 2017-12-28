@@ -41,16 +41,13 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public HaramMessage updateTempUser(TempUser tempUser) {
-        return tempUserServer.updateTempUser(IP, PORT, tempUser);
+    public HaramMessage updateTempUser(Integer id, TempUser tempUser) {
+        return tempUserServer.updateTempUser(IP, PORT, id, tempUser);
     }
 
     @Override
-    public HaramMessage tempUserList(String currentPage, String pageSize, String search, String order, String orderColumn, String viewStatus) {
-        Page page = new Page();
-        page.setCurrentPage(PageUtil.getcPg(currentPage));
-        page.setPageSize(PageUtil.getLimit(pageSize));
-        return tempUserServer.tempUserList(IP, PORT, page.getCurrentIndex(), page.getPageSize(), search, order, orderColumn, viewStatus);
+    public HaramMessage tempUserList(int start, int length, String search, String order, String orderColumn, String viewStatus) {
+        return tempUserServer.tempUserList(IP, PORT, start, length, search, order, orderColumn, viewStatus);
     }
 
 }

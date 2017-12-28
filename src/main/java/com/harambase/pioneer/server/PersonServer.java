@@ -66,10 +66,10 @@ public class PersonServer {
     }
 
     public HaramMessage getPersonBySearch(String ip, int port, String search, String type, String status) {
-        String remotePath = "/user/search";
+        String remotePath = "/user/search?search=";
         StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
         if(StringUtils.isNotEmpty(search))
-            requestUrl.append("&search=").append(search);
+            requestUrl.append(search);
         if(StringUtils.isNotEmpty(type))
             requestUrl.append("&type=").append(type);
         if(StringUtils.isNotEmpty(status))

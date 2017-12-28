@@ -1,12 +1,12 @@
 package com.harambase.pioneer.security.factory;
 
 import com.harambase.common.Config;
-import com.harambase.pioneer.server.PersonServer;
-import com.harambase.pioneer.server.RoleServer;
 import com.harambase.pioneer.pojo.Person;
 import com.harambase.pioneer.security.SpringContextHolder;
-import com.harambase.pioneer.security.helper.CollectionKit;
 import com.harambase.pioneer.security.entity.ShiroUser;
+import com.harambase.pioneer.security.helper.CollectionKit;
+import com.harambase.pioneer.server.PersonServer;
+import com.harambase.pioneer.server.RoleServer;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.shiro.authc.CredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -30,18 +29,18 @@ public class ShiroServiceImpl implements ShiroService {
     private final RoleServer roleServer;
     private final PersonServer personServer;
 
+    @Autowired
+    public ShiroServiceImpl(RoleServer roleServer, PersonServer personServer) {
+        this.personServer = personServer;
+        this.roleServer = roleServer;
+    }
+
     public static ShiroService me() {
         return SpringContextHolder.getBean(ShiroService.class);
     }
 
-    @Autowired
-    public ShiroServiceImpl(RoleServer roleServer, PersonServer personServer){
-        this.personServer = personServer;
-        this.roleServer = roleServer;
-    }
-    
     @Override
-    public Person user(String userid){
+    public Person user(String userid) {
 
         LinkedHashMap<String, Object> personMap = (LinkedHashMap) personServer.get(IP, PORT, userid).getData();
 
@@ -103,7 +102,7 @@ public class ShiroServiceImpl implements ShiroService {
         // 密码加盐处理
         String source = user.getPassword();
         //ByteSource credentialsSalt = new Md5Hash(source);
-        return new SimpleAuthenticationInfo(shiroUser,source,realmName);
+        return new SimpleAuthenticationInfo(shiroUser, source, realmName);
     }
 
 }
