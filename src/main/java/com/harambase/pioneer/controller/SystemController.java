@@ -44,6 +44,8 @@ public class SystemController {
                 BeanUtils.populate(person, (LinkedHashMap) message.getData());
                 UsernamePasswordToken token = new UsernamePasswordToken(person.getUserId(), person.getPassword().toCharArray());
                 Subject subject = SecurityUtils.getSubject();
+                //将用户信息放入session中
+                subject.getSession().setAttribute("user", person);
                 subject.login(token); //完成登录
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
