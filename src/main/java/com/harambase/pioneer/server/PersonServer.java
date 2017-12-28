@@ -1,12 +1,16 @@
 package com.harambase.pioneer.server;
 
 import com.harambase.common.HaramMessage;
-import com.harambase.pioneer.pojo.Person;
+import com.harambase.pioneer.pojo.base.Person;
 import com.harambase.support.util.BuildUrlUtil;
 import com.harambase.support.util.RestTemplateUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,9 +19,18 @@ import java.util.Map;
 public class PersonServer {
 
     public HaramMessage login(String ip, int port, Person person) {
+
         String remotePath = "/user/login";
         StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
-        return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.POST, person);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.set("Content-UserType", "application/json;charset=UTF-8");
+        HttpEntity httpEntity = new HttpEntity<>(person, httpHeaders);
+
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<HaramMessage> responseMessage = restTemplate.exchange(requestUrl.toString(), HttpMethod.POST, httpEntity, HaramMessage.class);
+
+        return responseMessage.getBody();
     }
 
     public HaramMessage create(String ip, int port, Person person) {
@@ -43,7 +56,14 @@ public class PersonServer {
         String remotePath = "/user/" + userid;
         StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
         Map params = new HashMap();
-        return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.set("Content-UserType", "application/json;charset=UTF-8");
+        HttpEntity httpEntity = new HttpEntity<>(params, httpHeaders);
+
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<HaramMessage> responseMessage = restTemplate.exchange(requestUrl.toString(), HttpMethod.GET, httpEntity, HaramMessage.class);
+
+        return responseMessage.getBody();
     }
 
     public HaramMessage list(String ip, int port, int start, int length, String search, String order,

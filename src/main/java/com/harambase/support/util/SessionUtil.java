@@ -1,6 +1,6 @@
 package com.harambase.support.util;
 
-import com.harambase.pioneer.pojo.Person;
+import com.harambase.pioneer.pojo.base.Person;
 import com.harambase.pioneer.pojo.Pin;
 import org.apache.shiro.SecurityUtils;
 
@@ -11,7 +11,7 @@ public class SessionUtil {
     }
 
     public static String getUserId() {
-        return ((Person) SecurityUtils.getSubject().getSession().getAttribute("user")).getUserid();
+        return ((Person) SecurityUtils.getSubject().getSession().getAttribute("user")).getUserId();
     }
 
     public static Pin getPin() {

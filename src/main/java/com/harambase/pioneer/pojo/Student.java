@@ -1,5 +1,7 @@
 package com.harambase.pioneer.pojo;
 
+import com.harambase.pioneer.pojo.base.Person;
+
 import java.io.Serializable;
 
 public class Student extends Person implements Serializable{

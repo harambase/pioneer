@@ -2,7 +2,7 @@ package com.harambase.pioneer.service.impl;
 
 import com.harambase.common.Config;
 import com.harambase.common.HaramMessage;
-import com.harambase.pioneer.pojo.Person;
+import com.harambase.pioneer.pojo.base.Person;
 import com.harambase.pioneer.server.PersonServer;
 import com.harambase.pioneer.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;

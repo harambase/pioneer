@@ -3,7 +3,7 @@ package com.harambase.pioneer.service.impl;
 import com.harambase.common.Config;
 import com.harambase.common.HaramMessage;
 import com.harambase.common.constant.FlagDict;
-import com.harambase.pioneer.pojo.Person;
+import com.harambase.pioneer.pojo.base.Person;
 import com.harambase.pioneer.pojo.Student;
 import com.harambase.pioneer.pojo.Transcript;
 import com.harambase.pioneer.server.PersonServer;
@@ -52,7 +52,7 @@ public class ReportServiceImpl implements ReportService {
                         .append("生成时间:" + DateUtil.DateToStr(new Date()) + "\n")
                         .append("---------------------------------------------\n")
                         .append("学生信息")
-                        .append("姓名：" + student.getLastname() + ", " + student.getFirstname() + "\n")
+                        .append("姓名：" + student.getLastName() + ", " + student.getFirstName() + "\n")
                         .append("生日：" + student.getBirthday() + "\n")
                         .append("----------------------------------------------\n")
                         .append("成绩信息");

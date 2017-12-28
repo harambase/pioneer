@@ -1,18 +1,16 @@
-package com.harambase.pioneer.pojo;
+package com.harambase.pioneer.pojo.base;
 
 import java.io.Serializable;
 
 public class Person implements Serializable {
 
-    private Integer id;
-
-    private String userid;
+    private String userId;
 
     private String username;
 
-    private String firstname;
+    private String firstName;
 
-    private String lastname;
+    private String lastName;
 
     private String password;
 
@@ -26,15 +24,15 @@ public class Person implements Serializable {
 
     private String qq;
 
-    private String wechat;
+    private String weChat;
 
     private String dorm;
 
     private String gender;
 
-    private String createtime;
+    private String createTime;
 
-    private String updatetime;
+    private String updateTime;
 
     private String status;
 
@@ -47,6 +45,8 @@ public class Person implements Serializable {
     private String roleId;
 
     private String userInfo;
+
+    private String address;
 
     public String getUserInfo() {
         return userInfo;
@@ -64,28 +64,20 @@ public class Person implements Serializable {
         this.roleId = roleId;
     }
 
-    public String getProfile(){
+    public String getProfile() {
         return profile;
     }
 
-    public void setProfile(String profile){
+    public void setProfile(String profile) {
         this.profile = profile == null ? null : profile.trim();
     }
 
-    public Integer getId() {
-        return id;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getUserid() {
-        return userid;
-    }
-
-    public void setUserid(String userid) {
-        this.userid = userid == null ? null : userid.trim();
+    public void setUserId(String userId) {
+        this.userId = userId == null ? null : userId.trim();
     }
 
     public String getUsername() {
@@ -96,20 +88,20 @@ public class Person implements Serializable {
         this.username = username == null ? null : username.trim();
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname == null ? null : firstname.trim();
+    public void setFirstName(String firstName) {
+        this.firstName = firstName == null ? null : firstName.trim();
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname == null ? null : lastname.trim();
+    public void setLastName(String lastName) {
+        this.lastName = lastName == null ? null : lastName.trim();
     }
 
     public String getPassword() {
@@ -160,12 +152,12 @@ public class Person implements Serializable {
         this.qq = qq == null ? null : qq.trim();
     }
 
-    public String getWechat() {
-        return wechat;
+    public String getWeChat() {
+        return weChat;
     }
 
-    public void setWechat(String wechat) {
-        this.wechat = wechat == null ? null : wechat.trim();
+    public void setWeChat(String weChat) {
+        this.weChat = weChat == null ? null : weChat.trim();
     }
 
     public String getDorm() {
@@ -184,20 +176,20 @@ public class Person implements Serializable {
         this.gender = gender == null ? null : gender.trim();
     }
 
-    public String getCreatetime() {
-        return createtime;
+    public String getCreateTime() {
+        return createTime;
     }
 
-    public void setCreatetime(String createtime) {
-        this.createtime = createtime == null ? null : createtime.trim();
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime == null ? null : createTime.trim();
     }
 
-    public String getUpdatetime() {
-        return updatetime;
+    public String getUpdateTime() {
+        return updateTime;
     }
 
-    public void setUpdatetime(String updatetime) {
-        this.updatetime = updatetime == null ? null : updatetime.trim();
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime == null ? null : updateTime.trim();
     }
 
     public String getStatus() {
@@ -224,31 +216,11 @@ public class Person implements Serializable {
         this.comment = comment == null ? null : comment.trim();
     }
 
-    @Override
-    public String toString() {
-        return "Person{" +
-                "id=" + id +
-                ", userid='" + userid + '\'' +
-                ", username='" + username + '\'' +
-                ", firstname='" + firstname + '\'' +
-                ", lastname='" + lastname + '\'' +
-                ", password='" + password + '\'' +
-                ", info='" + info + '\'' +
-                ", birthday='" + birthday + '\'' +
-                ", email='" + email + '\'' +
-                ", tel='" + tel + '\'' +
-                ", qq='" + qq + '\'' +
-                ", wechat='" + wechat + '\'' +
-                ", dorm='" + dorm + '\'' +
-                ", gender='" + gender + '\'' +
-                ", createtime='" + createtime + '\'' +
-                ", updatetime='" + updatetime + '\'' +
-                ", status='" + status + '\'' +
-                ", type='" + type + '\'' +
-                ", comment='" + comment + '\'' +
-                ", profile='" + profile + '\'' +
-                ", roleId='" + roleId + '\'' +
-                ", userInfo='" + userInfo + '\'' +
-                '}';
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

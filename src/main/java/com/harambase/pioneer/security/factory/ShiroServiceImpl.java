@@ -1,7 +1,7 @@
 package com.harambase.pioneer.security.factory;
 
 import com.harambase.common.Config;
-import com.harambase.pioneer.pojo.Person;
+import com.harambase.pioneer.pojo.base.Person;
 import com.harambase.pioneer.security.SpringContextHolder;
 import com.harambase.pioneer.security.entity.ShiroUser;
 import com.harambase.pioneer.security.helper.CollectionKit;
@@ -67,7 +67,7 @@ public class ShiroServiceImpl implements ShiroService {
     public ShiroUser shiroUser(Person user) {
         ShiroUser shiroUser = new ShiroUser();
 
-        shiroUser.setUserId(user.getUserid());    // 用户id
+        shiroUser.setUserId(user.getUserId());    // 用户id
         shiroUser.setUsername(user.getUsername());// 用户名
 
         Integer[] roleArray = CollectionKit.toIntArray("/", user.getRoleId());// 角色集

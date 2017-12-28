@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -30,13 +30,15 @@
                         <form method="post" id="loginForm">
                             <div id="formsAuthenticationArea">
                                 <div id="userNameArea">
-                                    <input id="userid"   class="text fullWidth" placeholder="用户ID" minlength="10" maxlength="10" isDigits="true" required>
+                                    <input id="userid" v-model="user.userId" class="text fullWidth" placeholder="用户ID"
+                                           minlength="10" maxlength="10" isDigits="true" required>
                                 </div>
                                 <div id="passwordArea">
-                                    <input id="password" class="text fullWidth" placeholder="密码" type="password"  minlength="6" required>
+                                    <input id="password" v-model="user.password" class="text fullWidth" placeholder="密码"
+                                           type="password" minlength="6" required>
                                 </div>
                                 <div id="submissionArea" class="submitMargin">
-                                    <span id="btnLogin" class="submit">登录</span>
+                                    <span id="btnLogin" class="submit" v-on:click="doLogin">登录</span>
                                 </div>
                             </div>
                             <input id="optionForms" type="hidden" name="AuthMethod" value="FormsAuthentication">
@@ -50,7 +52,7 @@
                 </div>
             </div>
             <div id="footerPlaceholder">
-                <div id = footerPlaceholder">
+                <div id=footerPlaceholder">
                     <div th:include="/release/common/footer :: copy" id="copyright"></div>
                 </div>
             </div>
@@ -60,5 +62,27 @@
 
 </body>
 <div th:include="/release/common/js :: load_js(false,false,false)"></div>
-<script src="/static/scripts/login.js"></script>
+<script src="/static/plugins/vue/vue.js"></script>
+<script src="/static/plugins/axios/axios.min.js"></script>
+<script>
+    new Vue({
+        el: '#loginForm',
+        data: {
+            user: {
+                userId: null,
+                password: null
+            }
+        },
+        methods: {
+            doLogin: function () {
+                var loginUser = this.user;
+                loginUser.password = hex_md5(this.user.password);
+                axios.post('/system/login', loginUser).then(function (response) {
+                    console.log(response);
+                });
+
+            }
+        }
+    });
+</script>
 </html>
