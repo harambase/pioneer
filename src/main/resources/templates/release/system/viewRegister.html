@@ -207,14 +207,14 @@
                                                     <label for="qq" class="col-sm-12 control-label">*性别:</label>
                                                 </div>
                                                 <div class="col-sm-3">
-                                                    <div class="radio3 radio-check radio-success radio-inline"
-                                                         id="male-div">
-                                                        <input type="radio" id="male" name="gender" value="male">
+                                                    <div class="radio3 radio-check radio-success radio-inline">
+                                                        <input type="radio" id="male" name="gender" value="male"
+                                                               v-model="regUser.gender">
                                                         <label for="male">男</label>
                                                     </div>
-                                                    <div class="radio3 radio-check radio-success radio-inline"
-                                                         id="female-div">
-                                                        <input type="radio" id="female" name="gender" value="female">
+                                                    <div class="radio3 radio-check radio-success radio-inline">
+                                                        <input type="radio" id="female" name="gender" value="female"
+                                                               v-model="regUser.gender">
                                                         <label for="female">女</label>
                                                     </div>
                                                 </div>
@@ -228,34 +228,58 @@
                                 <div id="type" class="col-md-12 col-sm-4">
                                     <div class="panel panel-success">
                                         <div class="panel-heading">
-                                            分配用户属性
+                                            分配用户角色与权限
                                         </div>
                                         <div class="panel-body">
                                             <div class="form-group">
                                                 <div class="col-sm-2">
-                                                    <label class="col-sm-12 control-label">*角色:</label>
+                                                    <label class="col-sm-12 control-label">*基础角色:</label>
                                                 </div>
                                                 <div class="col-sm-3">
-                                                    <div id="student-div"
-                                                         class="checkbox3 checkbox-danger checkbox-inline checkbox-check  checkbox-circle checkbox-light">
-                                                        <input type="checkbox" id="student1" name="type" value="s">
-                                                        <label for="student1">学生</label>
+                                                    <div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
+                                                        <input type="checkbox" id="s" value="s" v-model="regType">
+                                                        <label for="s">学生</label>
                                                     </div>
-                                                    <div id="faculty-div"
-                                                         class="checkbox3 checkbox-danger checkbox-inline checkbox-check  checkbox-circle checkbox-light">
-                                                        <input type="checkbox" id="faculty1" name="type" value="f">
-                                                        <label for="faculty1">教师</label>
+                                                    <div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
+                                                        <input type="checkbox" id="f" value="f" v-model="regType">
+                                                        <label for="f">教师</label>
                                                     </div>
-                                                    <div id="admin-div"
-                                                         class="checkbox3 checkbox-danger checkbox-inline checkbox-check  checkbox-circle checkbox-light">
-                                                        <input type="checkbox" id="admin1" name="type" value="a">
-                                                        <label for="admin1">系统管理员</label>
+                                                    <div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
+                                                        <input type="checkbox" id="a" value="a" v-model="regType">
+                                                        <label for="a">职员</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-sm-2">
+                                                    <label class="col-sm-12 control-label">*高级权限:</label>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
+                                                        <input type="checkbox" id="teach" value="teach"
+                                                               v-model="regRole">
+                                                        <label for="teach">教务</label>
+                                                    </div>
+                                                    <div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
+                                                        <input type="checkbox" id="system" value="system"
+                                                               v-model="regRole">
+                                                        <label for="system">系统</label>
+                                                    </div>
+                                                    <div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
+                                                        <input type="checkbox" id="logistic" value="logistic"
+                                                               v-model="regRole">
+                                                        <label for="logistic">后勤</label>
+                                                    </div>
+                                                    <div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
+                                                        <input type="checkbox" id="admin" value="admin"
+                                                               v-model="regRole">
+                                                        <label for="admin" color="red">超级管理员</label>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="panel-footer">
-                                            注意：1.此处为角色，为用户的属性含权限。
+                                            注意：1.基础角色包含对应的权限。2.选择超级管理员可不选其他的权限
                                         </div>
                                     </div>
                                 </div>
@@ -266,10 +290,9 @@
                                                 <div class="col-sm-2">
                                                     <label for="password" class="col-sm-12 control-label">备注信息:</label>
                                                 </div>
-
                                                 <div class="col-sm-8">
-                                                    <textarea style="resize: none;" class="form-control" id="comments"
-                                                              rows="3"></textarea>
+                                                    <textarea style="resize: none;" class="form-control" rows="3"
+                                                              v-model="regUser.comment"></textarea>
                                                 </div>
                                             </div>
                                             <div id="action" class="form-group">
@@ -281,7 +304,7 @@
                                                     <div id="yes-div"
                                                          class="checkbox3 checkbox-danger checkbox-inline checkbox-check  checkbox-circle checkbox-light">
                                                         <input type="checkbox" id="yes" name="confirm" required><label
-                                                            for="admin1">确认</label>
+                                                            for="yes">确认</label>
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-2">
@@ -297,9 +320,14 @@
                                                             class="btn btn-primary btn-success" id="approve">
                                                         批准申请
                                                     </button>
-                                                    <button style="width:150px;" class="btn btn-primary btn-danger"
+                                                    <button style="margin-bottom: 10px;width:150px;"
+                                                            class="btn btn-primary btn-danger"
                                                             id="decline">
                                                         拒绝申请
+                                                    </button>
+                                                    <button style="width:150px;" class="btn btn-primary btn-info"
+                                                            v-on:click="showRegTable">
+                                                        <i class="fa fa-arrow-left"></i> 返回列表
                                                     </button>
                                                 </div>
                                             </div>
@@ -343,8 +371,11 @@
                 tel: "",
                 birthday: "",
                 gender: "",
-                userId: ""
+                userId: "",
+                comment: ""
             },
+            regType: [],
+            regRole: [],
             regTempDetail: {
                 id: "",
                 status: "",
