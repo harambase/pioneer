@@ -2,13 +2,11 @@ package com.harambase.pioneer.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.harambase.common.HaramMessage;
-import com.harambase.common.Page;
 import com.harambase.pioneer.pojo.TempUser;
 import com.harambase.pioneer.service.RequestService;
 import com.harambase.support.util.SessionUtil;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,13 +27,15 @@ public class RequestController {
         this.requestService = requestService;
     }
 
-    @RequestMapping(value = "/user/{id}", produces = "application/json", method = RequestMethod.PUT)
+    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT)
     public ResponseEntity updateRequest(@PathVariable Integer id, @RequestBody TempUser tempUser) {
-        tempUser.setOperator(SessionUtil.getUserId());
+        tempUser.setOperatorId(SessionUtil.getUserId());
         HaramMessage message = requestService.updateTempUser(id, tempUser);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
+    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
     @RequestMapping(value = "/user/register", method = RequestMethod.POST)
     public ResponseEntity register(@RequestBody JSONObject jsonObject) {
         HaramMessage haramMessage = requestService.register(jsonObject);

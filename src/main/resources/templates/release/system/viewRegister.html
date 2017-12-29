@@ -22,7 +22,7 @@
             <ol class="breadcrumb">
                 <li><a href="/index">主页</a></li>
                 <li><a href="#">系统管理</a></li>
-                <li class="active">用户申请</li>
+                <li class="showActive">用户申请</li>
             </ol>
 
         </div>
@@ -44,25 +44,25 @@
                                     <div class="panel-body">
                                         <div class="form-group">
                                             <div class="col-sm-3">
-                                                <button v-on:click="general" id="general" style="width: 100%"
+                                                <button v-on:click="showGeneral" id="showGeneral" style="width: 100%"
                                                         class="btn btn-primary btn-warning">
                                                     查看所有申请
                                                 </button>
                                             </div>
                                             <div class="col-sm-3">
-                                                <button v-on:click="active" id="active" style="width: 100%"
+                                                <button v-on:click="showActive" id="showActive" style="width: 100%"
                                                         class="btn btn-primary">
                                                     只查看申请中
                                                 </button>
                                             </div>
                                             <div class="col-sm-3">
-                                                <button v-on:click="approved" id="approved"
+                                                <button v-on:click="showApproved" id="showApproved"
                                                         style="width: 100%" class="btn btn-primary btn-success">
                                                     只查看已批准
                                                 </button>
                                             </div>
                                             <div class="col-sm-3">
-                                                <button v-on:click="declined" id="declined"
+                                                <button v-on:click="showDeclined" id="showDeclined"
                                                         style="width: 100%" class="btn btn-primary btn-danger">
                                                     只查看已拒绝
                                                 </button>
@@ -112,11 +112,11 @@
                                                            v-model="regUser.info">
                                                 </div>
                                                 <div class="col-sm-2">
-                                                    <label for="userid" class="col-sm-12 control-label">*用户ID:</label>
+                                                    <label for="userId" class="col-sm-12 control-label">*用户ID:</label>
                                                 </div>
                                                 <div class="col-sm-3">
-                                                    <input id="userid" class="form-control" required disabled
-                                                           v-model="regUser.userId"/>
+                                                    <input id="userId" class="form-control" required disabled
+                                                           v-model="regTempDetail.userId"/>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -125,7 +125,8 @@
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <input id="username" class="form-control" minlength="4"
-                                                           maxlength="20" required v-model="regUser.username"/>
+                                                           maxlength="20" required v-model="regUser.username"
+                                                           :disabled="regTempDetail.status==='0'?false:true"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -146,14 +147,16 @@
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <input class="form-control" minlength="1" maxlength="20" required
-                                                           v-model="regUser.lastName"/>
+                                                           v-model="regUser.lastName"
+                                                           :disabled="regTempDetail.status==='0'?false:true"/>
                                                 </div>
                                                 <div class="col-sm-2">
                                                     <label class="col-sm-12 control-label">*名:</label>
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <input class="form-control" minlength="1" maxlength="20" required
-                                                           v-model="regUser.firstName"/>
+                                                           v-model="regUser.firstName"
+                                                           :disabled="regTempDetail.status==='0'?false:true"/>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -162,14 +165,16 @@
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <input id="birthday" class="form-control" minlength="10"
-                                                           maxlength="10" required v-model="regUser.birthday">
+                                                           maxlength="10" required v-model="regUser.birthday"
+                                                           :disabled="regTempDetail.status==='0'?false:true">
                                                 </div>
                                                 <div class="col-sm-2">
                                                     <label for="email" class="col-sm-12 control-label">*邮箱:</label>
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <input id="email" type="email" class="form-control" required
-                                                           v-model="regUser.email"/>
+                                                           v-model="regUser.email"
+                                                           :disabled="regTempDetail.status==='0'?false:true"/>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -178,13 +183,15 @@
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <input id="tel" isDigits="true" class="form-control" minlength="8"
-                                                           maxlength="11" required v-model="regUser.tel"/>
+                                                           maxlength="11" required v-model="regUser.tel"
+                                                           :disabled="regTempDetail.status==='0'?false:true"/>
                                                 </div>
                                                 <div class="col-sm-2">
                                                     <label for="dorm" class="col-sm-12 control-label">宿舍号:</label>
                                                 </div>
                                                 <div class="col-sm-3">
-                                                    <input id="dorm" class="form-control" v-model="regUser.dorm"/>
+                                                    <input id="dorm" class="form-control" v-model="regUser.dorm"
+                                                           :disabled="regTempDetail.status==='0'?false:true"/>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -193,13 +200,15 @@
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <input id="qq" isDigits="true" class="form-control"
-                                                           v-model="regUser.qq"/>
+                                                           v-model="regUser.qq"
+                                                           :disabled="regTempDetail.status==='0'?false:true"/>
                                                 </div>
                                                 <div class="col-sm-2">
                                                     <label for="weChat" class="col-sm-12 control-label">微信号:</label>
                                                 </div>
                                                 <div class="col-sm-3">
-                                                    <input id="weChat" class="form-control" v-model="regUser.weChat"/>
+                                                    <input id="weChat" class="form-control" v-model="regUser.weChat"
+                                                           :disabled="regTempDetail.status==='0'?false:true"/>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -209,12 +218,14 @@
                                                 <div class="col-sm-3">
                                                     <div class="radio3 radio-check radio-success radio-inline">
                                                         <input type="radio" id="male" name="gender" value="male"
-                                                               v-model="regUser.gender">
+                                                               v-model="regUser.gender"
+                                                               :disabled="regTempDetail.status==='0'?false:true">
                                                         <label for="male">男</label>
                                                     </div>
                                                     <div class="radio3 radio-check radio-success radio-inline">
                                                         <input type="radio" id="female" name="gender" value="female"
-                                                               v-model="regUser.gender">
+                                                               v-model="regUser.gender"
+                                                               :disabled="regTempDetail.status==='0'?false:true">
                                                         <label for="female">女</label>
                                                     </div>
                                                 </div>
@@ -225,7 +236,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div id="type" class="col-md-12 col-sm-4">
+                                <div class="col-md-12 col-sm-4" v-show="regTempDetail.status==='0'">
                                     <div class="panel panel-success">
                                         <div class="panel-heading">
                                             分配用户角色与权限
@@ -283,61 +294,68 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-12 col-sm-4">
-                                    <div class="panel panel-default">
-                                        <div class="panel-body">
-                                            <div class="form-group">
-                                                <div class="col-sm-2">
-                                                    <label for="password" class="col-sm-12 control-label">备注信息:</label>
-                                                </div>
-                                                <div class="col-sm-8">
-                                                    <textarea style="resize: none;" class="form-control" rows="3"
-                                                              v-model="regUser.comment"></textarea>
-                                                </div>
+                            </form>
+                            <div class="col-md-12 col-sm-4">
+                                <div class="panel panel-default">
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            <div class="col-sm-2">
+                                                <label for="password" class="col-sm-12 control-label">备注信息:</label>
                                             </div>
-                                            <div id="action" class="form-group">
-                                                <div class="col-sm-2">
-                                                    <label for="password"
-                                                           class="col-sm-12 control-label">*请确认上述信息正确无误:</label>
-                                                </div>
-                                                <div class="col-sm-3">
-                                                    <div id="yes-div"
-                                                         class="checkbox3 checkbox-danger checkbox-inline checkbox-check  checkbox-circle checkbox-light">
-                                                        <input type="checkbox" id="yes" name="confirm" required><label
-                                                            for="yes">确认</label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-2">
-                                                    <label for="password"
-                                                           class="col-sm-12 control-label">*管理员操作密码:</label>
-                                                </div>
-                                                <div class="col-sm-3">
-                                                    <input type="password" id="password" class="form-control"
-                                                           minlength="6" maxlength="16" checkOpPwd="true" required/>
-                                                </div>
-                                                <div class="col-sm-2">
-                                                    <button style="margin-bottom: 10px;width:150px;"
-                                                            class="btn btn-primary btn-success" id="approve">
-                                                        批准申请
-                                                    </button>
-                                                    <button style="margin-bottom: 10px;width:150px;"
-                                                            class="btn btn-primary btn-danger"
-                                                            id="decline">
-                                                        拒绝申请
-                                                    </button>
-                                                    <button style="width:150px;" class="btn btn-primary btn-info"
-                                                            v-on:click="showRegTable">
-                                                        <i class="fa fa-arrow-left"></i> 返回列表
-                                                    </button>
-                                                </div>
+                                            <div class="col-sm-10">
+                                                    <textarea style="resize: none;" class="form-control" rows="3"
+                                                              value=""
+                                                              v-model="regUser.comment"
+                                                              :disabled="regTempDetail.status==='0'?false:true"></textarea>
                                             </div>
                                         </div>
-                                        <div class="panel-footer">
-                                            注意：操作密码不是登录密码
+
+                                        <div id="action" class="form-group" v-if="regTempDetail.status==='0'">
+                                            <div class="col-sm-2">
+                                                <label for="password"
+                                                       class="col-sm-12 control-label">*请确认上述信息正确无误:</label>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div id="yes-div"
+                                                     class="checkbox3 checkbox-danger checkbox-inline checkbox-check  checkbox-circle checkbox-light">
+                                                    <input type="checkbox" id="yes" name="confirm"
+                                                           required><label
+                                                        for="yes">确认</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <label for="password"
+                                                       class="col-sm-12 control-label">*管理员操作密码:</label>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <input type="password" id="password" class="form-control"
+                                                       minlength="6" maxlength="16" checkOpPwd="true" required/>
+                                            </div>
+
+                                            <div class="col-sm-2">
+                                                <button style="margin-bottom: 10px;width:150px;"
+                                                        class="btn btn-primary btn-success"
+                                                        v-on:click="approve">
+                                                    批准申请
+                                                </button>
+                                                <button style="margin-bottom: 10px;width:150px;"
+                                                        class="btn btn-primary btn-danger"
+                                                        v-on:click="decline">
+                                                    拒绝申请
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
+                                    <div class="panel-footer">
+                                        <button style="width:150px;"
+                                                class="btn btn-primary btn-info"
+                                                v-on:click="showRegTable">
+                                            <i class="fa fa-arrow-left"></i> 返回列表
+                                        </button>
+                                    </div>
                                 </div>
-                            </form>
+                            </div>
+
 
                         </div>
                     </div>
@@ -371,13 +389,13 @@
                 tel: "",
                 birthday: "",
                 gender: "",
-                userId: "",
                 comment: ""
             },
             regType: [],
             regRole: [],
             regTempDetail: {
                 id: "",
+                userId: "",
                 status: "",
                 createTime: ""
             },
@@ -395,25 +413,63 @@
             });
         },
         methods: {
-            general: function () {
+            approve: function () {
+                this.regTempDetail.status = "1";
+            },
+            decline: function () {
+                this.regTempDetail.status = "-1";
+                let regUser = this.regUser;
+                let tempUser =  this.regTempDetail;
+                if (regUser.comment === "" || regUser.comment === undefined) {
+                    Showbo.Msg.alert("必须填写备注！", function () {
+                    });
+                } else {
+
+                    let type, role;
+                    for (let i = 1; i < this.regType.length; i++)
+                        type += this.regType[i] + "/";
+                    for (let i = 1; i < this.regRole.length; i++)
+                        role += this.regRole[i] + "/";
+
+                    this.$set(regUser, 'type', type);
+                    this.$set(regUser, 'role', role);
+
+                    this.$set(tempUser, 'userJson', JSON.stringify(regUser));
+
+                    axios.put("/request/user/" + this.regTempDetail.id, tempUser).then(function (response) {
+                        console.log(response);
+                        if (response.data.code === 2001)
+                            Showbo.Msg.alert(response.data.msg, function () {
+                                this.regTable = true;
+                                this.regDetail = false;
+                                userRegTable.draw();
+                            });
+                        else
+                            Showbo.Msg.alert(response.data.msg, function () {
+                            });
+                    });
+                }
+            },
+            showGeneral: function () {
                 status = "";
                 userRegTable.draw();
             },
-            active: function () {
+            showActive: function () {
                 status = "0";
                 userRegTable.draw();
             },
-            declined: function () {
+            showDeclined: function () {
                 status = "-1";
                 userRegTable.draw();
             },
-            approved: function () {
+            showApproved: function () {
                 status = "1";
                 userRegTable.draw();
             },
             showRegTable: function () {
                 this.regTable = true;
                 this.regDetail = false;
+                userRegTable.draw();
             }
         }
     });
@@ -421,7 +477,7 @@
     function detail(col, id, userId, createTime, status) {
 
         regVue.$data.regUser = regVue.$data.regUserList[col];
-        regVue.$data.regUser.userId = userId;
+        regVue.$data.regTempDetail.userId = userId;
         regVue.$data.regTempDetail.createTime = createTime;
         regVue.$data.regTempDetail.status = status;
         regVue.$data.regTempDetail.id = id;
