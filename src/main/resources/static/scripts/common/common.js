@@ -39,17 +39,13 @@ function formatRepo(repo) {
     return repo.text
 }
 
-$(function () {
-    /*导航*/
-    sliderActive(window.sliderFirstNav);//,window.sliderSecondNav);
+$("#logout").click(function () {
+    $.ajax({
+        url: basePath + "/system/logout",
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        success: function () {
+            window.location.href = basePath + "/login";
+        }
+    })
 });
-
-function sliderActive(first, second) {
-    $("#openNav>li").eq(first).addClass('active-menu');
-    $("#closeNav>li").eq(first).addClass('active-menu');
-    // if(second){
-    //     $("#openNav>li").eq(first).find('i.fa').prop("class","fa fa-angle-down");
-    //     $("#openNav>li").eq(first).find(".subMenu>li").eq(second).addClass('active');
-    // }
-}
-
