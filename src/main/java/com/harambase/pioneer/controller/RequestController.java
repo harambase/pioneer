@@ -6,11 +6,15 @@ import com.harambase.common.Page;
 import com.harambase.pioneer.pojo.TempUser;
 import com.harambase.pioneer.service.RequestService;
 import com.harambase.support.util.SessionUtil;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.LinkedHashMap;
 
 @RestController
 @CrossOrigin
@@ -38,7 +42,7 @@ public class RequestController {
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @RequiresPermissions({"admin", "system"})
+    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
     @RequestMapping(value = "/user/list", produces = "application/json", method = RequestMethod.GET)
     public ResponseEntity userList(@RequestParam(value = "start") Integer start,
                                    @RequestParam(value = "length") Integer length,
@@ -50,8 +54,8 @@ public class RequestController {
 
         HaramMessage message = requestService.tempUserList(start, length, search, order, orderCol, viewStatus);
         message.put("draw", draw);
-        message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
-        message.put("recordsFiltered", ((Page) message.get("page")).getTotalRows());
+        message.put("recordsTotal", ((LinkedHashMap) message.get("page")).get("totalRows"));
+        message.put("recordsFiltered", ((LinkedHashMap) message.get("page")).get("totalRows"));
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 

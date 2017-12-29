@@ -6,8 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>注册</title>
 
-    <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900italic,900&subset=latin,greek,greek-ext,vietnamese,cyrillic-ext,latin-ext,cyrillic'
-          rel='stylesheet' type='text/css'>
     <link href="/static/plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
     <link href="/static/plugins/confirm/confirm.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/plugins/blur-admin/vendor-dddc8eebb5.css">
@@ -25,7 +23,7 @@
                 <label for="lastName" class="col-sm-2 control-label"><span style="color: red">*</span>姓</label>
                 <div class="col-sm-10">
                     <input class="form-control" id="lastName" stringCheck="true" placeholder="*姓" minlength="1"
-                           maxlength="20" value="" required v-model="user.lastName">
+                           maxlength="20" value="" required v-model="regUser.lastName">
                 </div>
             </div>
             <div class="form-group">
@@ -33,13 +31,13 @@
 
                 <div class="col-sm-10">
                     <input class="form-control" id="firstName" stringCheck="true" placeholder="*名" minlength="1"
-                           maxlength="20" value="" required v-model="user.firstName">
+                           maxlength="20" value="" required v-model="regUser.firstName">
                 </div>
             </div>
             <div class="form-group">
                 <label for="birthday" class="col-sm-2 control-label"><span style="color: red">*</span>生日</label>
                 <div class="col-sm-10">
-                    <input class="form-control" id="birthday" placeholder="*生日" v-model="user.birthday">
+                    <input class="form-control" id="birthday" placeholder="*生日" v-model="regUser.birthday">
                 </div>
             </div>
 
@@ -48,7 +46,7 @@
                     <span style="color: red">*</span>邮箱
                 </label>
                 <div class="col-sm-10">
-                    <input type="email" class="form-control" id="email" placeholder="*邮件" v-model="user.email">
+                    <input type="email" class="form-control" id="email" placeholder="*邮件" v-model="regUser.email">
                 </div>
             </div>
             <div class="form-group">
@@ -57,14 +55,14 @@
 
                 <div class="col-sm-10">
                     <input type="password" class="form-control" id="password" placeholder="*密码" minlength="6"
-                           maxlength="16" required v-model="user.password">
+                           maxlength="16" required v-model="regUser.password">
                 </div>
             </div>
             <div class="form-group">
                 <label for="lastName" class="col-sm-2 control-label"><span style="color: red">*</span>QQ</label>
                 <div class="col-sm-10">
                     <input class="form-control" id="qq" isDigits="true" placeholder="*QQ号" minlength="6" maxlength="16"
-                           required v-model="user.qq">
+                           required v-model="regUser.qq">
                 </div>
             </div>
             <div class="form-group">
@@ -72,7 +70,7 @@
 
                 <div class="col-sm-10">
                     <input class="form-control" id="tel" isDigits="true" placeholder="*电话号码" minlength="8"
-                           maxlength="11" required v-model="user.tel">
+                           maxlength="11" required v-model="regUser.tel">
                 </div>
             </div>
 
@@ -92,26 +90,25 @@
                 </div>
                 <div class="col-md-3" v-if="isReturn">
                     <input style="width: 137px;" class="form-control" id="info" stringCheck="true" minlength="7"
-                           maxlength="7" required v-model="user.info">
+                           maxlength="7" required v-model="regUser.info">
                 </div>
             </div>
             <div class="form-group">
                 <label for="lastName" class="col-sm-2 control-label">性别</label>
                 <div class="col-md-4">
                     <label id="male1" class="radio-inline custom-radio nowrap">
-                        <input type="radio" name="gender" id="male" value="m" v-model="user.gender">
+                        <input type="radio" name="gender" id="male" value="m" v-model="regUser.gender">
                         <span>男</span>
                     </label>
                     <label id="female1" class="radio-inline custom-radio nowrap">
-                        <input type="radio" name="gender" id="female" value="f" v-model="user.gender">
+                        <input type="radio" name="gender" id="female" value="f" v-model="regUser.gender">
                         <span>女</span>
                     </label>
                 </div>
             </div>
-
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-10">
-                    <button type="submit" class="btn btn-default btn-auth" v-on:click="doReg">提交申请</button>
+                    <button type="button" class="btn btn-default btn-auth" v-on:click="doReg">提交申请</button>
                 </div>
             </div>
         </form>
@@ -123,7 +120,7 @@
     new Vue({
         el: '#regForm',
         data: {
-            user: {
+            regUser: {
                 info: "",
                 lastName: "",
                 firstName: "",
@@ -136,21 +133,21 @@
             },
             isReturn: false
         },
-        mounted: function(){
+        mounted: function () {
             laydate.render({
                 elem: '#birthday',
                 theme: '#393D49',
                 showBottom: false,
                 done: (value) => {
-                    this.user.birthday = value
+                    this.regUser.birthday = value
                 }
             });
         },
         methods: {
             doReg: function () {
-                const regUser = this.user;
-                regUser.password = hex_md5(this.user.password);
-                axios.post("/system/login", regUser).then(function (response) {
+                const regUser = this.regUser;
+                regUser.password = hex_md5(this.regUser.password);
+                axios.post("/request/user/register", regUser).then(function (response) {
                     if (response.data.code === 2001)
                         Showbo.Msg.alert("成功！请等待管理员审核。", function () {
                             window.location.href = basePath + "/login";
@@ -161,7 +158,7 @@
                 });
             },
             infoChange: function () {
-                this.user.info = "2017-02";
+                this.regUser.info = "2017-02";
                 this.isReturn = false;
             }
         }

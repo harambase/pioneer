@@ -14,9 +14,9 @@ public class WebController {
         return "release/login";
     }
 
-    @RequestMapping("/reg")
+    @RequestMapping("/register")
     public String signUp() {
-        return "release/reg";
+        return "release/register";
     }
 
     @RequestMapping("/403")

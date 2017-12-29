@@ -15,7 +15,7 @@
         <div class="header">
             <h1 class="page-header">
                 先锋OA系统
-                <!--<small id="name" th:text="'欢迎回来'+${session.user.lastname}+', '+${session.user.firstname}"></small>-->
+                <small id="name" th:text="'Welcome back '+${session.user.lastName}+', '+${session.user.firstName} + '!'"></small>
             </h1>
             <ol class="breadcrumb">
                 <li class="active"><a href="/index">主页</a></li>
@@ -126,7 +126,7 @@
 <div th:include="/release/common/js :: load_js(true,true,false)"></div>
 <script src="/static/scripts/index.js"></script>
 <script>
-    var v = new Vue({
+    const v = new Vue({
         el: '#counts',
         data: {
             studentNum: 0,
@@ -139,6 +139,16 @@
             initCounts();
         }
     });
+
+    function initCounts() {
+       axios("/system/info").then(function (response) {
+
+            const result = response.data.data;
+            v.$data.studentNum = result.student;
+            v.$data.facultyNum = result.faculty;
+            v.$data.courseNum  = result.course;
+        })
+    }
 
     function initUserChart() {
         axios("/system/user/count").then(function (response) {
@@ -154,14 +164,7 @@
         })
     }
 
-    function initCounts() {
-        axios("/system/info").then(function (response) {
-            const result = response.data.data;
-            v.$data.studentNum = result.student;
-            v.$data.facultyNum = result.faculty;
-            v.$data.courseNum  = result.course;
-        })
-    }
+
 
 </script>
 </html>
