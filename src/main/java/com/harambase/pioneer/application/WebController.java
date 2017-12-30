@@ -69,12 +69,7 @@ public class WebController {
 
     @RequestMapping("/system/user/request")
     public String viewRegister() {
-        return "release/system/viewRegister";
-    }
-
-    @RequestMapping("/system/user/request/detail")
-    public String userRegisterDetail() {
-        return "release/system/userRegisterDetail";
+        return "release/system/registration";
     }
 
     //教务系统

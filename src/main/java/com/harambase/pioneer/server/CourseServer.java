@@ -45,13 +45,11 @@ public class CourseServer {
                                    String order, String orderColumn, String facultyId, String info) {
         String remotePath = "/course";
         StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
-        requestUrl.append("?start=")
-                .append(start)
-                .append("&length=")
-                .append(length)
-                .append("&search=")
-                .append(search)
-                .append("&order=").append(order).append("orderCol=").append(orderColumn);
+        requestUrl.append("?start=").append(start)
+                .append("&length=").append(length)
+                .append("&search=").append(search)
+                .append("&order=").append(order)
+                .append("&orderCol=").append(orderColumn);
         if (StringUtils.isNotEmpty(facultyId))
             requestUrl.append("&facultyId=").append(facultyId);
         if (StringUtils.isNotEmpty(info))

@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedHashMap;
+
 @RestController
 @CrossOrigin
 @RequestMapping(value = "/message")
@@ -75,8 +77,8 @@ public class MessageController {
         String userid = SessionUtil.getUserId();
         HaramMessage message = messageService.list(start, length, search, order, orderCol, userid, box);
         message.put("draw", draw);
-        message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
-        message.put("recordsFiltered", ((Page) message.get("page")).getTotalRows());
+        message.put("recordsTotal", ((LinkedHashMap) message.get("page")).get("totalRows"));
+        message.put("recordsFiltered", ((LinkedHashMap) message.get("page")).get("totalRows"));
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 

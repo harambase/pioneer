@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedHashMap;
+
 @Controller
 @CrossOrigin
 @RequestMapping(value = "/transcript")
@@ -45,8 +47,8 @@ public class TranscriptController {
 
         HaramMessage message = transcriptService.transcriptList(start, length, search, order, orderCol, studentId, crn);
         message.put("draw", draw);
-        message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
-        message.put("recordsFiltered", ((Page) message.get("page")).getTotalRows());
+        message.put("recordsTotal", ((LinkedHashMap) message.get("page")).get("totalRows"));
+        message.put("recordsFiltered", ((LinkedHashMap) message.get("page")).get("totalRows"));
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 

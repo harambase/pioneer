@@ -25,13 +25,11 @@ public class TranscriptServer {
                                        String search, String order, String orderColumn, String studentId, String crn) {
         String remotePath = "/transcript";
         StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
-        requestUrl.append("?start=")
-                .append(start)
-                .append("&length=")
-                .append(length)
-                .append("&search=")
-                .append(search)
-                .append("&order=").append(order).append("orderCol=").append(orderColumn);
+        requestUrl.append("?start=").append(start)
+                .append("&length=").append(length)
+                .append("&search=").append(search)
+                .append("&order=").append(order)
+                .append("&orderCol=").append(orderColumn);
         if (StringUtils.isNotEmpty(studentId))
             requestUrl.append("&studentId=").append(studentId);
         if (StringUtils.isNotEmpty(crn))

@@ -112,11 +112,11 @@
                                                            v-model="regUser.info">
                                                 </div>
                                                 <div class="col-sm-2">
-                                                    <label for="userId" class="col-sm-12 control-label">*用户ID:</label>
+                                                    <label for="userId" class="col-sm-12 control-label">*临时用户ID:</label>
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <input id="userId" class="form-control" required disabled
-                                                           v-model="regTempDetail.userId"/>
+                                                           v-model="regTempUser.userId"/>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -126,7 +126,7 @@
                                                 <div class="col-sm-3">
                                                     <input id="username" class="form-control" minlength="4"
                                                            maxlength="20" required v-model="regUser.username"
-                                                           :disabled="regTempDetail.status==='0'?false:true"/>
+                                                           :disabled="regTempUser.status==='0'?false:true"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -148,7 +148,7 @@
                                                 <div class="col-sm-3">
                                                     <input class="form-control" minlength="1" maxlength="20" required
                                                            v-model="regUser.lastName"
-                                                           :disabled="regTempDetail.status==='0'?false:true"/>
+                                                           :disabled="regTempUser.status==='0'?false:true"/>
                                                 </div>
                                                 <div class="col-sm-2">
                                                     <label class="col-sm-12 control-label">*名:</label>
@@ -156,7 +156,7 @@
                                                 <div class="col-sm-3">
                                                     <input class="form-control" minlength="1" maxlength="20" required
                                                            v-model="regUser.firstName"
-                                                           :disabled="regTempDetail.status==='0'?false:true"/>
+                                                           :disabled="regTempUser.status==='0'?false:true"/>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -166,7 +166,7 @@
                                                 <div class="col-sm-3">
                                                     <input id="birthday" class="form-control" minlength="10"
                                                            maxlength="10" required v-model="regUser.birthday"
-                                                           :disabled="regTempDetail.status==='0'?false:true">
+                                                           :disabled="regTempUser.status==='0'?false:true">
                                                 </div>
                                                 <div class="col-sm-2">
                                                     <label for="email" class="col-sm-12 control-label">*邮箱:</label>
@@ -174,7 +174,7 @@
                                                 <div class="col-sm-3">
                                                     <input id="email" type="email" class="form-control" required
                                                            v-model="regUser.email"
-                                                           :disabled="regTempDetail.status==='0'?false:true"/>
+                                                           :disabled="regTempUser.status==='0'?false:true"/>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -184,14 +184,14 @@
                                                 <div class="col-sm-3">
                                                     <input id="tel" isDigits="true" class="form-control" minlength="8"
                                                            maxlength="11" required v-model="regUser.tel"
-                                                           :disabled="regTempDetail.status==='0'?false:true"/>
+                                                           :disabled="regTempUser.status==='0'?false:true"/>
                                                 </div>
                                                 <div class="col-sm-2">
                                                     <label for="dorm" class="col-sm-12 control-label">宿舍号:</label>
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <input id="dorm" class="form-control" v-model="regUser.dorm"
-                                                           :disabled="regTempDetail.status==='0'?false:true"/>
+                                                           :disabled="regTempUser.status==='0'?false:true"/>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -201,14 +201,14 @@
                                                 <div class="col-sm-3">
                                                     <input id="qq" isDigits="true" class="form-control"
                                                            v-model="regUser.qq"
-                                                           :disabled="regTempDetail.status==='0'?false:true"/>
+                                                           :disabled="regTempUser.status==='0'?false:true"/>
                                                 </div>
                                                 <div class="col-sm-2">
                                                     <label for="weChat" class="col-sm-12 control-label">微信号:</label>
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <input id="weChat" class="form-control" v-model="regUser.weChat"
-                                                           :disabled="regTempDetail.status==='0'?false:true"/>
+                                                           :disabled="regTempUser.status==='0'?false:true"/>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -219,13 +219,13 @@
                                                     <div class="radio3 radio-check radio-success radio-inline">
                                                         <input type="radio" id="male" name="gender" value="male"
                                                                v-model="regUser.gender"
-                                                               :disabled="regTempDetail.status==='0'?false:true">
+                                                               :disabled="regTempUser.status==='0'?false:true">
                                                         <label for="male">男</label>
                                                     </div>
                                                     <div class="radio3 radio-check radio-success radio-inline">
                                                         <input type="radio" id="female" name="gender" value="female"
                                                                v-model="regUser.gender"
-                                                               :disabled="regTempDetail.status==='0'?false:true">
+                                                               :disabled="regTempUser.status==='0'?false:true">
                                                         <label for="female">女</label>
                                                     </div>
                                                 </div>
@@ -236,7 +236,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-12 col-sm-4" v-show="regTempDetail.status==='0'">
+                                <div class="col-md-12 col-sm-4" v-show="regTempUser.status==='0'">
                                     <div class="panel panel-success">
                                         <div class="panel-heading">
                                             分配用户角色与权限
@@ -259,6 +259,7 @@
                                                         <input type="checkbox" id="a" value="a" v-model="regType">
                                                         <label for="a">职员</label>
                                                     </div>
+                                                    <span>{{regType}}</span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -267,22 +268,22 @@
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
-                                                        <input type="checkbox" id="teach" value="teach"
+                                                        <input type="checkbox" id="teach" value="2"
                                                                v-model="regRole">
                                                         <label for="teach">教务</label>
                                                     </div>
                                                     <div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
-                                                        <input type="checkbox" id="system" value="system"
+                                                        <input type="checkbox" id="system" value="4"
                                                                v-model="regRole">
                                                         <label for="system">系统</label>
                                                     </div>
                                                     <div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
-                                                        <input type="checkbox" id="logistic" value="logistic"
+                                                        <input type="checkbox" id="logistic" value="3"
                                                                v-model="regRole">
                                                         <label for="logistic">后勤</label>
                                                     </div>
                                                     <div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
-                                                        <input type="checkbox" id="admin" value="admin"
+                                                        <input type="checkbox" id="admin" value="1"
                                                                v-model="regRole">
                                                         <label for="admin" color="red">超级管理员</label>
                                                     </div>
@@ -303,14 +304,14 @@
                                                 <label for="password" class="col-sm-12 control-label">备注信息:</label>
                                             </div>
                                             <div class="col-sm-10">
-                                                    <textarea style="resize: none;" class="form-control" rows="3"
-                                                              value=""
+                                                    <textarea style="resize: none; width: 79.5%" class="form-control"
+                                                              rows="3"
                                                               v-model="regUser.comment"
-                                                              :disabled="regTempDetail.status==='0'?false:true"></textarea>
+                                                              :disabled="regTempUser.status==='0'?false:true"></textarea>
                                             </div>
                                         </div>
 
-                                        <div id="action" class="form-group" v-if="regTempDetail.status==='0'">
+                                        <div class="form-group" v-if="regTempUser.status==='0'" style="margin-top: 6%">
                                             <div class="col-sm-2">
                                                 <label for="password"
                                                        class="col-sm-12 control-label">*请确认上述信息正确无误:</label>
@@ -375,7 +376,7 @@
 <script>
     let userRegTable;
     let status = "";
-    const regVue = new Vue({
+    let regVue = new Vue({
         el: '#regPage',
         data: {
             regUserList: [],
@@ -393,11 +394,12 @@
             },
             regType: [],
             regRole: [],
-            regTempDetail: {
+            regTempUser: {
                 id: "",
                 userId: "",
                 status: "",
-                createTime: ""
+                createTime: "",
+                userJson: ""
             },
             regTable: true,
             regDetail: false
@@ -414,40 +416,34 @@
         },
         methods: {
             approve: function () {
-                this.regTempDetail.status = "1";
+
+                let type = "";
+                let roleId = "0/";
+                for (let i = 0; i < this.regType.length; i++)
+                    type += this.regType[i] + "/";
+                for (let i = 0; i < this.regRole.length; i++)
+                    roleId += this.regRole[i] + "/";
+
+                if (type.indexOf("s") !== -1)
+                    roleId += "5/";
+                if (type.indexOf("f") !== -1)
+                    roleId += "6/7/";
+
+                this.$set(this.regUser, 'type', type);
+                this.$set(this.regUser, 'roleId', roleId);
+                this.regTempUser.status = "1";
+                this.regTempUser.userJson = JSON.stringify(this.regUser);
+                update();
             },
             decline: function () {
-                this.regTempDetail.status = "-1";
-                let regUser = this.regUser;
-                let tempUser =  this.regTempDetail;
-                if (regUser.comment === "" || regUser.comment === undefined) {
+
+                if (this.regUser.comment === "" || this.regUser.comment === undefined) {
                     Showbo.Msg.alert("必须填写备注！", function () {
                     });
                 } else {
-
-                    let type, role;
-                    for (let i = 1; i < this.regType.length; i++)
-                        type += this.regType[i] + "/";
-                    for (let i = 1; i < this.regRole.length; i++)
-                        role += this.regRole[i] + "/";
-
-                    this.$set(regUser, 'type', type);
-                    this.$set(regUser, 'role', role);
-
-                    this.$set(tempUser, 'userJson', JSON.stringify(regUser));
-
-                    axios.put("/request/user/" + this.regTempDetail.id, tempUser).then(function (response) {
-                        console.log(response);
-                        if (response.data.code === 2001)
-                            Showbo.Msg.alert(response.data.msg, function () {
-                                this.regTable = true;
-                                this.regDetail = false;
-                                userRegTable.draw();
-                            });
-                        else
-                            Showbo.Msg.alert(response.data.msg, function () {
-                            });
-                    });
+                    this.regTempUser.status = "-1";
+                    this.regTempUser.userJson = JSON.stringify(this.regUser);
+                    update();
                 }
             },
             showGeneral: function () {
@@ -469,18 +465,31 @@
             showRegTable: function () {
                 this.regTable = true;
                 this.regDetail = false;
-                userRegTable.draw();
             }
         }
     });
 
+    function update() {
+        axios.put("/request/user/" + regVue.$data.regTempUser.id, regVue.$data.regTempUser).then(function (response) {
+            if (response.data.code === 2001)
+                Showbo.Msg.alert(response.data.msg, function () {
+                    regVue.$data.regTable = true;
+                    regVue.$data.regDetail = false;
+                    userRegTable.draw();
+                });
+            else
+                Showbo.Msg.alert(response.data.msg, function () {
+                });
+        });
+    }
+
     function detail(col, id, userId, createTime, status) {
 
         regVue.$data.regUser = regVue.$data.regUserList[col];
-        regVue.$data.regTempDetail.userId = userId;
-        regVue.$data.regTempDetail.createTime = createTime;
-        regVue.$data.regTempDetail.status = status;
-        regVue.$data.regTempDetail.id = id;
+        regVue.$data.regTempUser.userId = userId;
+        regVue.$data.regTempUser.createTime = createTime;
+        regVue.$data.regTempUser.status = status;
+        regVue.$data.regTempUser.id = id;
 
         regVue.$data.regTable = false;
         regVue.$data.regDetail = true;

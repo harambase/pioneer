@@ -70,13 +70,11 @@ public class PersonServer {
                              String orderColumn, String type, String status) {
         String remotePath = "/user";
         StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
-        requestUrl.append("?start=")
-                .append(start)
-                .append("&length=")
-                .append(length)
-                .append("&search=")
-                .append(search)
-                .append("&order=").append(order).append("orderCol=").append(orderColumn);
+        requestUrl.append("?start=").append(start)
+                .append("&length=").append(length)
+                .append("&search=").append(search)
+                .append("&order=").append(order)
+                .append("&orderCol=").append(orderColumn);
         if (StringUtils.isNotEmpty(type))
             requestUrl.append("&type=").append(type);
         if (StringUtils.isNotEmpty(status))

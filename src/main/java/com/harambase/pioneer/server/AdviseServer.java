@@ -18,13 +18,11 @@ public class AdviseServer {
                                      String studentId, String facultyId) {
         String remotePath = "/advise";
         StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
-        requestUrl.append("?start=")
-                .append(start)
-                .append("&length=")
-                .append(length)
-                .append("&search=")
-                .append(search)
-                .append("&order=").append(order).append("orderCol=").append(orderColumn);
+        requestUrl.append("?start=").append(start)
+                .append("&length=").append(length)
+                .append("&search=").append(search)
+                .append("&order=").append(order)
+                .append("&orderCol=").append(orderColumn);
         if (StringUtils.isNotEmpty(studentId))
             requestUrl.append("&studentId=").append(studentId);
         if (StringUtils.isNotEmpty(facultyId))

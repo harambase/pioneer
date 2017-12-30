@@ -48,7 +48,7 @@ public class MessageServer {
                 .append("&length=").append(length)
                 .append("&search=").append(search)
                 .append("&order=").append(order)
-                .append("orderCol=").append(orderColumn)
+                .append("&orderCol=").append(orderColumn)
                 .append("&userId=").append(userId)
                 .append("&box=").append(box);
         Map params = new HashMap();

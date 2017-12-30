@@ -63,13 +63,11 @@ public class PinServer {
                                    String orderColumn, String info) {
         String remotePath = "/pin";
         StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
-        requestUrl.append("?start=")
-                .append(start)
-                .append("&length=")
-                .append(length)
-                .append("&search=")
-                .append(search)
-                .append("&order=").append(order).append("orderCol=").append(orderColumn);
+        requestUrl.append("?start=").append(start)
+                .append("&length=").append(length)
+                .append("&search=").append(search)
+                .append("&order=").append(order)
+                .append("&orderCol=").append(orderColumn);
         if (StringUtils.isNotEmpty(info))
             requestUrl.append("&info=").append(info);
         Map params = new HashMap();

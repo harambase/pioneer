@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedHashMap;
+
 /**
  * Created by linsh on 7/12/2017.
  */
@@ -60,8 +62,8 @@ public class StudentController {
 
         HaramMessage message = studentService.studentList(start, length, search, order, orderCol, type, status);
         message.put("draw", draw);
-        message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
-        message.put("recordsFiltered", ((Page) message.get("page")).getTotalRows());
+        message.put("recordsTotal", ((LinkedHashMap) message.get("page")).get("totalRows"));
+        message.put("recordsFiltered", ((LinkedHashMap) message.get("page")).get("totalRows"));
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
