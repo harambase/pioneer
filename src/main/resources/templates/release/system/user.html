@@ -78,7 +78,8 @@
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <input id="username" class="form-control" minlength="4"
-                                                           maxlength="20" required v-model="user.username" v-if="pageMode==='view'"/>
+                                                           maxlength="20" required v-model="user.username"
+                                                           v-if="pageMode==='view'"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -399,6 +400,7 @@
                 this.table = true;
                 this.detail = false;
             },
+
             update: function () {
                 let type = "";
                 let roleId = "";
@@ -433,6 +435,7 @@
                         });
                 });
             },
+
             create: function () {
                 let type = "";
                 let roleId = "";

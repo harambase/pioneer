@@ -1,7 +1,10 @@
 package com.harambase.pioneer.server;
 
+import com.harambase.common.Config;
 import com.harambase.common.HaramMessage;
 import com.harambase.support.util.BuildUrlUtil;
+import com.harambase.support.util.RestTemplateUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -30,4 +33,14 @@ public class RoleServer {
         return responseMessage.getBody();
     }
 
+    public HaramMessage list(String search, String order, String orderCol) {
+        String remotePath = "/role";
+        StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, Config.SERVER_IP, Config.SERVER_PORT);
+        requestUrl.append("?order=").append(order)
+                .append("&orderCol=").append(orderCol);
+        if(StringUtils.isNotEmpty(search))
+            requestUrl.append("&search=").append(search);
+        Map params = new HashMap();
+        return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
+    }
 }

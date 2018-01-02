@@ -54,12 +54,17 @@ public class WebController {
     //系统设置
     @RequestMapping("/system/user/manage")
     public String createUser() {
-        return "release/system/userManage";
+        return "release/system/user";
     }
 
     @RequestMapping("/system/user/request")
     public String viewRegister() {
         return "release/system/registration";
+    }
+
+    @RequestMapping("/system/role")
+    public String viewRole() {
+        return "release/system/role";
     }
 
     //教务系统
