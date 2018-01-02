@@ -1,8 +1,7 @@
 package com.harambase.pioneer.controller;
 
 import com.harambase.common.HaramMessage;
-import com.harambase.common.Page;
-import com.harambase.pioneer.pojo.base.TranscriptBase;
+import com.harambase.pioneer.pojo.Transcript;
 import com.harambase.pioneer.service.TranscriptService;
 import com.harambase.support.util.SessionUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -28,7 +27,7 @@ public class TranscriptController {
 
     @RequiresPermissions({"admin", "teach"})
     @RequestMapping(value = "/{id}", produces = "application/json", method = RequestMethod.PUT)
-    public ResponseEntity update(@PathVariable Integer id, @RequestBody TranscriptBase transcript) {
+    public ResponseEntity update(@PathVariable Integer id, @RequestBody Transcript transcript) {
         transcript.setOperator(SessionUtil.getUserId());
         HaramMessage haramMessage = transcriptService.updateGrade(id, transcript);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);

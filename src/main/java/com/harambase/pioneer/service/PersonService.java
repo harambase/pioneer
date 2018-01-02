@@ -1,7 +1,7 @@
 package com.harambase.pioneer.service;
 
 import com.harambase.common.HaramMessage;
-import com.harambase.pioneer.pojo.base.Person;
+import com.harambase.pioneer.pojo.Person;
 
 public interface PersonService {
 
@@ -9,11 +9,11 @@ public interface PersonService {
 
     HaramMessage createPerson(Person person);
 
-    HaramMessage deletePerson(String userid);
+    HaramMessage deletePerson(String userId);
 
-    HaramMessage updatePerson(Person person);
+    HaramMessage updatePerson(String userId, Person person);
 
-    HaramMessage getUser(String userid);
+    HaramMessage getUser(String userId);
 
     HaramMessage listUser(int start, int length, String search, String order, String orderCol, String type, String status);
 

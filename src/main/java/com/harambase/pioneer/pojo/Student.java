@@ -1,17 +1,41 @@
 package com.harambase.pioneer.pojo;
 
-import com.harambase.pioneer.pojo.base.Person;
 
 import java.io.Serializable;
 
-public class Student extends Person implements Serializable{
+public class Student implements Serializable {
+
 
     private String studentid;
-    private int max_credits;
+
+    private String sname;
+
+    private String status;
+
+    private int maxCredits;
+
     private int complete;
+
     private int progress;
+
     private int incomplete;
-    
+
+    public String getSname() {
+        return sname;
+    }
+
+    public void setSname(String sname) {
+        this.sname = sname;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public String getStudentid() {
         return studentid;
     }
@@ -20,14 +44,6 @@ public class Student extends Person implements Serializable{
         this.studentid = studentid;
     }
 
-    public int getMax_credits() {
-        return max_credits;
-    }
-
-    public void setMax_credits(int max_credits) {
-        this.max_credits = max_credits;
-    }
-    
     public int getComplete() {
         return complete;
     }
@@ -51,4 +67,14 @@ public class Student extends Person implements Serializable{
     public void setIncomplete(int incomplete) {
         this.incomplete = incomplete;
     }
+
+    public int getMaxCredits() {
+        return maxCredits;
+    }
+
+    public void setMaxCredits(int maxCredits) {
+        this.maxCredits = maxCredits;
+    }
+
+
 }

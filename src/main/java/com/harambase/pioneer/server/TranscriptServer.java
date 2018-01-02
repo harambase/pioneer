@@ -1,7 +1,7 @@
 package com.harambase.pioneer.server;
 
 import com.harambase.common.HaramMessage;
-import com.harambase.pioneer.pojo.base.TranscriptBase;
+import com.harambase.pioneer.pojo.Transcript;
 import com.harambase.support.util.BuildUrlUtil;
 import com.harambase.support.util.RestTemplateUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -15,7 +15,7 @@ import java.util.Map;
 public class TranscriptServer {
 
 
-    public HaramMessage updateByPrimaryKey(String ip, int port, int id, TranscriptBase transcript) {
+    public HaramMessage updateByPrimaryKey(String ip, int port, int id, Transcript transcript) {
         String remotePath = "/transcript/" + id;
         StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
         return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.PUT, transcript);

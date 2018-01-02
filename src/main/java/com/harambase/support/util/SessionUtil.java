@@ -1,6 +1,6 @@
 package com.harambase.support.util;
 
-import com.harambase.pioneer.pojo.base.Person;
+import com.harambase.pioneer.pojo.Person;
 import com.harambase.pioneer.pojo.Pin;
 import org.apache.shiro.SecurityUtils;
 

@@ -44,8 +44,8 @@
                 <ul class="nav nav-second-level">
                     <li><a href="#">用户管理<span class="fa arrow"></span></a>
                         <ul class="nav nav-third-level">
-                            <li shiro:hasAnyPermissions="admin, system"><a href="/system/user/create">创建新用户</a></li>
-                            <li shiro:hasAnyPermissions="admin, system"><a href="/system/user/view">查看已有用户</a></li>
+                            <li shiro:hasAnyPermissions="admin, system"><a href="/system/user/manage?mode=create">创建新用户</a></li>
+                            <li shiro:hasAnyPermissions="admin, system"><a href="/system/user/manage?mode=view">查看已有用户</a></li>
                         </ul>
                     </li>
                     <li shiro:hasAnyPermissions="admin, system"><a href="/system/user/role">用户权限管理</a></li>

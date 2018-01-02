@@ -52,19 +52,9 @@ public class WebController {
 
 
     //系统设置
-    @RequestMapping("/system/user/create")
+    @RequestMapping("/system/user/manage")
     public String createUser() {
-        return "release/system/createUser";
-    }
-
-    @RequestMapping("/system/user/view")
-    public String viewUser() {
-        return "release/system/viewUser";
-    }
-
-    @RequestMapping("/system/user/detail")
-    public String editUser() {
-        return "release/system/editUser";
+        return "release/system/userManage";
     }
 
     @RequestMapping("/system/user/request")

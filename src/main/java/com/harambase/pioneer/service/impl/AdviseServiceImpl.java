@@ -2,7 +2,7 @@ package com.harambase.pioneer.service.impl;
 
 import com.harambase.common.Config;
 import com.harambase.common.HaramMessage;
-import com.harambase.pioneer.pojo.base.AdviseBase;
+import com.harambase.pioneer.pojo.Advise;
 import com.harambase.pioneer.server.AdviseServer;
 import com.harambase.pioneer.service.AdviseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class AdviseServiceImpl implements AdviseService {
     }
 
     @Override
-    public HaramMessage assignMentor(AdviseBase advise) {
+    public HaramMessage assignMentor(Advise advise) {
         return adviseServer.assignMentor(IP, PORT, advise);
     }
 

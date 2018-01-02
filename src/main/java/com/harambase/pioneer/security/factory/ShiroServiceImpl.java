@@ -1,7 +1,7 @@
 package com.harambase.pioneer.security.factory;
 
 import com.harambase.common.Config;
-import com.harambase.pioneer.pojo.base.Person;
+import com.harambase.pioneer.pojo.Person;
 import com.harambase.pioneer.security.SpringContextHolder;
 import com.harambase.pioneer.security.entity.ShiroUser;
 import com.harambase.pioneer.security.helper.CollectionKit;

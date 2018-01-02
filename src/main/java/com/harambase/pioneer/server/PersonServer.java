@@ -1,7 +1,7 @@
 package com.harambase.pioneer.server;
 
 import com.harambase.common.HaramMessage;
-import com.harambase.pioneer.pojo.base.Person;
+import com.harambase.pioneer.pojo.Person;
 import com.harambase.support.util.BuildUrlUtil;
 import com.harambase.support.util.RestTemplateUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -46,8 +46,8 @@ public class PersonServer {
         return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.DELETE, params);
     }
 
-    public HaramMessage update(String ip, int port, Person person) {
-        String remotePath = "/user";
+    public HaramMessage update(String ip, int port, String userId, Person person) {
+        String remotePath = "/user/" + userId;
         StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
         return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.PUT, person);
     }

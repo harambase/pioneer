@@ -2,7 +2,7 @@ package com.harambase.pioneer.service.impl;
 
 import com.harambase.common.Config;
 import com.harambase.common.HaramMessage;
-import com.harambase.pioneer.pojo.base.TranscriptBase;
+import com.harambase.pioneer.pojo.Transcript;
 import com.harambase.pioneer.server.TranscriptServer;
 import com.harambase.pioneer.service.TranscriptService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class TranscriptServiceImpl implements TranscriptService {
     }
 
     @Override
-    public HaramMessage updateGrade(int id, TranscriptBase transcript) {
+    public HaramMessage updateGrade(int id, Transcript transcript) {
         return transcriptServer.updateByPrimaryKey(IP, PORT, id, transcript);
     }
 

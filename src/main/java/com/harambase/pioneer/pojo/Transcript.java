@@ -1,28 +1,97 @@
 package com.harambase.pioneer.pojo;
 
-import com.harambase.pioneer.pojo.base.TranscriptBase;
 
 import java.io.Serializable;
 
-public class Transcript extends TranscriptBase implements Serializable {
-    
-    private String coursename;
+public class Transcript implements Serializable {
 
-    private String facultyid;
+    private Integer id;
+
+    private String studentId;
+
+    private String crn;
+
+    private String grade;
+
+    private String complete;
+
+    private String assignTime;
+
+    private String operator;
+
+    private String cname;
+
+    private String facultyId;
 
     private Integer credits;
-    
+
     private String day;
 
     private String time;
 
     private String date;
-    
+
     private String sname;
-    
+
     private String fname;
 
     private String info;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getOperator() {
+        return operator;
+    }
+
+    public void setOperator(String operator) {
+        this.operator = operator;
+    }
+
+    public String getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(String studentId) {
+        this.studentId = studentId == null ? null : studentId.trim();
+    }
+
+    public String getCrn() {
+        return crn;
+    }
+
+    public void setCrn(String crn) {
+        this.crn = crn == null ? null : crn.trim();
+    }
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade == null ? null : grade.trim();
+    }
+
+    public String getComplete() {
+        return complete;
+    }
+
+    public void setComplete(String complete) {
+        this.complete = complete == null ? null : complete.trim();
+    }
+
+    public String getAssignTime() {
+        return assignTime;
+    }
+
+    public void setAssignTime(String assignTime) {
+        this.assignTime = assignTime == null ? null : assignTime.trim();
+    }
 
     public String getInfo() {
         return info;
@@ -35,19 +104,19 @@ public class Transcript extends TranscriptBase implements Serializable {
     public String getSname() {
         return sname;
     }
-    
+
     public void setSname(String sname) {
         this.sname = sname;
     }
-    
+
     public String getFname() {
         return fname;
     }
-    
+
     public void setFname(String fname) {
         this.fname = fname;
     }
-    
+
     public String getDay() {
         return day;
     }
@@ -79,21 +148,21 @@ public class Transcript extends TranscriptBase implements Serializable {
     public void setCredits(Integer credits) {
         this.credits = credits;
     }
-    
-    public String getCoursename() {
-        return coursename;
+
+    public String getCname() {
+        return cname;
     }
 
-    public void setCoursename(String coursename) {
-        this.coursename = coursename;
+    public void setCname(String cname) {
+        this.cname = cname;
     }
 
-    public String getFacultyid() {
-        return facultyid;
+    public String getFacultyId() {
+        return facultyId;
     }
 
-    public void setFacultyid(String facultyid) {
-        this.facultyid = facultyid;
+    public void setFacultyId(String facultyId) {
+        this.facultyId = facultyId;
     }
-    
+
 }

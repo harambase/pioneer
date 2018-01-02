@@ -87,7 +87,7 @@
 
                     </div>
                 </div>
-                <div class="col-md-12" v-show="regDetail">
+                <div class="col-md-12" v-if="regDetail">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <button class="btn btn-primary btn-info" type="button" v-on:click="showRegTable">
@@ -259,7 +259,6 @@
                                                         <input type="checkbox" id="a" value="a" v-model="regType">
                                                         <label for="a">职员</label>
                                                     </div>
-                                                    <span>{{regType}}</span>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -416,13 +415,14 @@
         },
         methods: {
             approve: function () {
-
                 let type = "";
                 let roleId = "0/";
                 for (let i = 0; i < this.regType.length; i++)
-                    type += this.regType[i] + "/";
+                    if (this.regType[i] !== "")
+                        type += this.regType[i] + "/";
                 for (let i = 0; i < this.regRole.length; i++)
-                    roleId += this.regRole[i] + "/";
+                    if (this.regRole[i] !== "")
+                        roleId += this.regRole[i] + "/";
 
                 if (type.indexOf("s") !== -1)
                     roleId += "5/";
@@ -483,7 +483,7 @@
         });
     }
 
-    function detail(col, id, userId, createTime, status) {
+    function regDetail(col, id, userId, createTime, status) {
 
         regVue.$data.regUser = regVue.$data.regUserList[col];
         regVue.$data.regTempUser.userId = userId;
@@ -534,30 +534,30 @@
             columns: [
                 {  //行号
                     "data": null, "title": "ROW", "render": function (data, type, row, meta) {
-                        return meta.settings._iDisplayStart + meta.row + 1;
-                    }
+                    return meta.settings._iDisplayStart + meta.row + 1;
+                }
                 },
                 {"data": "id", "title": "序列号", "width": "100px"},
                 {"data": "userId", "title": "分配ID"},
                 {
                     "data": "userJson", "title": "姓, 名", "createdCell": function (nTd, rowData) {
-                        let user = JSON.parse(rowData);
-                        $(nTd).html(user.lastName + ", " + user.firstName);
-                        regVue.$data.regUserList.push(user);
-                    }
+                    let user = JSON.parse(rowData);
+                    $(nTd).html(user.lastName + ", " + user.firstName);
+                    regVue.$data.regUserList.push(user);
+                }
                 },
                 {"data": "createTime", "title": "申请时间"},
                 {
                     "data": "status", "title": "申请状态", "createdCell": function (nTd, rowData) {
-                        if (rowData === "0") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">申请中</p>');
-                        else if (rowData === "1") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0;color:green; ">已批准</p>');
-                        else if (rowData === "-1") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0;color:red; ">已拒绝</p>');
-                    }
+                    if (rowData === "0") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">申请中</p>');
+                    else if (rowData === "1") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0;color:green; ">已批准</p>');
+                    else if (rowData === "-1") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0;color:red; ">已拒绝</p>');
+                }
                 },
                 {
                     "data": null, "title": "操作", "createdCell": function (nTd, rowData, row, col) {
-                        $(nTd).html('<button class="btn btn-edit btn-warning" onclick="detail(\'' + col + '\',\'' + rowData.id + '\',\'' + rowData.userId + '\',\'' + rowData.createTime + '\',\'' + rowData.status + '\')">查看详情</button>');
-                    }, "width": "100px"
+                    $(nTd).html('<button class="btn btn-edit btn-warning" onclick="regDetail(\'' + col + '\',\'' + rowData.id + '\',\'' + rowData.userId + '\',\'' + rowData.createTime + '\',\'' + rowData.status + '\')">查看详情</button>');
+                }, "width": "100px"
                 }
             ],
             "columnDefs": [{

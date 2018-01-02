@@ -2,7 +2,7 @@ package com.harambase.pioneer.controller;
 
 import com.harambase.common.HaramMessage;
 import com.harambase.common.constant.FlagDict;
-import com.harambase.pioneer.pojo.base.Person;
+import com.harambase.pioneer.pojo.Person;
 import com.harambase.pioneer.service.MonitorService;
 import com.harambase.pioneer.service.PersonService;
 import org.apache.commons.beanutils.BeanUtils;

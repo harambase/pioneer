@@ -1,7 +1,6 @@
 package com.harambase.pioneer.controller;
 
 import com.harambase.common.HaramMessage;
-import com.harambase.common.Page;
 import com.harambase.pioneer.pojo.Message;
 import com.harambase.pioneer.service.MessageService;
 import com.harambase.support.util.SessionUtil;
@@ -28,7 +27,7 @@ public class MessageController {
     @RequiresPermissions("user")
     @RequestMapping(produces = "application/json", method = RequestMethod.POST)
     public ResponseEntity create(@RequestBody Message message) {
-        message.setSenderid(SessionUtil.getUserId());
+        message.setSenderId(SessionUtil.getUserId());
         HaramMessage haramMessage = messageService.create(message);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }

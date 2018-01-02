@@ -1,7 +1,7 @@
 package com.harambase.pioneer.server;
 
 import com.harambase.common.HaramMessage;
-import com.harambase.pioneer.pojo.base.AdviseBase;
+import com.harambase.pioneer.pojo.Advise;
 import com.harambase.support.util.BuildUrlUtil;
 import com.harambase.support.util.RestTemplateUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -39,7 +39,7 @@ public class AdviseServer {
         return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.PUT, params);
     }
 
-    public HaramMessage assignMentor(String ip, int port, AdviseBase advise) {
+    public HaramMessage assignMentor(String ip, int port, Advise advise) {
         String remotePath = "/advise";
         StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
         return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.POST, advise);

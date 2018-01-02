@@ -3,7 +3,7 @@ package com.harambase.pioneer.service.impl;
 import com.harambase.common.Config;
 import com.harambase.common.HaramMessage;
 import com.harambase.common.constant.FlagDict;
-import com.harambase.pioneer.pojo.base.Person;
+import com.harambase.pioneer.pojo.Person;
 import com.harambase.pioneer.pojo.Student;
 import com.harambase.pioneer.pojo.Transcript;
 import com.harambase.pioneer.server.PersonServer;
@@ -72,7 +72,7 @@ public class ReportServiceImpl implements ReportService {
                     for (Transcript transcriptView : transcriptViewList) {
                         if (transcriptView.getInfo().equals(info)) {
                             semeterInfo += transcriptView.getCrn() + ","
-                                    + transcriptView.getCoursename() + ","
+                                    + transcriptView.getCname() + ","
                                     + transcriptView.getFname() + ","
                                     + transcriptView.getGrade() + ","
                                     + transcriptView.getCredits() + ","

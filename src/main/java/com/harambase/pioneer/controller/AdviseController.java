@@ -1,8 +1,7 @@
 package com.harambase.pioneer.controller;
 
 import com.harambase.common.HaramMessage;
-import com.harambase.common.Page;
-import com.harambase.pioneer.pojo.base.AdviseBase;
+import com.harambase.pioneer.pojo.Advise;
 import com.harambase.pioneer.service.AdviseService;
 import com.harambase.support.util.SessionUtil;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -27,7 +26,7 @@ public class AdviseController {
 
     @RequiresPermissions({"admin", "teach"})
     @RequestMapping(produces = "application/json", method = RequestMethod.POST)
-    public ResponseEntity create(@RequestBody AdviseBase advise) {
+    public ResponseEntity create(@RequestBody Advise advise) {
         HaramMessage message = adviseService.assignMentor(advise);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }

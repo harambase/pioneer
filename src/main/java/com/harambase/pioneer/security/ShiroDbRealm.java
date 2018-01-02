@@ -1,6 +1,6 @@
 package com.harambase.pioneer.security;
 
-import com.harambase.pioneer.pojo.base.Person;
+import com.harambase.pioneer.pojo.Person;
 import com.harambase.pioneer.security.entity.ShiroUser;
 import com.harambase.pioneer.security.factory.ShiroService;
 import com.harambase.pioneer.security.factory.ShiroServiceImpl;

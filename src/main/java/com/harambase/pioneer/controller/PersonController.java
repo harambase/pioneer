@@ -1,8 +1,7 @@
 package com.harambase.pioneer.controller;
 
 import com.harambase.common.HaramMessage;
-import com.harambase.common.Page;
-import com.harambase.pioneer.pojo.base.Person;
+import com.harambase.pioneer.pojo.Person;
 import com.harambase.pioneer.service.PersonService;
 import com.harambase.support.util.SessionUtil;
 import org.apache.shiro.authz.annotation.Logical;
@@ -42,14 +41,13 @@ public class PersonController {
     }
 
     @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
-    @RequestMapping(produces = "application/json", method = RequestMethod.PUT)
-    public ResponseEntity update(@RequestBody Person person) {
-        HaramMessage message = personService.updatePerson(person);
+    @RequestMapping(value = "/{userId}", produces = "application/json", method = RequestMethod.PUT)
+    public ResponseEntity update(@PathVariable("userId") String userid, @RequestBody Person person) {
+        HaramMessage message = personService.updatePerson(userid, person);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-
-    @RequiresAuthentication
+    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
     @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
     public ResponseEntity get(@PathVariable(value = "userId") String userId) {
         HaramMessage haramMessage = personService.getUser(userId);
@@ -63,14 +61,14 @@ public class PersonController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @RequiresAuthentication
+    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public ResponseEntity search(@RequestParam(value = "search") String search, @RequestParam(value = "type") String type, String status) {
         HaramMessage message = personService.searchPerson(search, type, status);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @RequiresAuthentication
+    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity list(@RequestParam(value = "start") Integer start,
                                @RequestParam(value = "length") Integer length,
