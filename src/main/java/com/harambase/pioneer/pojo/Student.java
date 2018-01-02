@@ -6,11 +6,13 @@ import java.io.Serializable;
 public class Student implements Serializable {
 
 
-    private String studentid;
+    private String studentId;
 
     private String sname;
 
     private String status;
+
+    private String updaeTime;
 
     private int maxCredits;
 
@@ -36,12 +38,12 @@ public class Student implements Serializable {
         this.status = status;
     }
 
-    public String getStudentid() {
-        return studentid;
+    public String getStudentId() {
+        return studentId;
     }
 
-    public void setStudentid(String studentid) {
-        this.studentid = studentid;
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
     }
 
     public int getComplete() {
@@ -77,4 +79,11 @@ public class Student implements Serializable {
     }
 
 
+    public String getUpdaeTime() {
+        return updaeTime;
+    }
+
+    public void setUpdaeTime(String updaeTime) {
+        this.updaeTime = updaeTime;
+    }
 }
