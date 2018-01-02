@@ -53,7 +53,7 @@ public class CourseController {
     }
 
     @RequiresPermissions("user")
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity list(@RequestParam(value = "start") Integer start,
                                @RequestParam(value = "length") Integer length,
                                @RequestParam(value = "draw") Integer draw,

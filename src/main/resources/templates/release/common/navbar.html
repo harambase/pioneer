@@ -8,7 +8,7 @@
             <li><a href="#"><i class="fa fa-desktop"></i>教务系统<span class="fa arrow"></span></a>
 
                 <ul class="nav nav-second-level">
-                    <li shiro:hasAnyPermissions="user"><a href="/student/course/view">查看所有课程</a></li>
+                    <li shiro:hasAnyPermissions="user"><a href="/teach/view">查看所有课程</a></li>
                     <li shiro:hasAnyPermissions="admin, faculty"><a href="#">新课程申请<span class="fa arrow"></span></a>
                         <ul class="nav nav-third-level">
                             <li><a href="/teach/create">新课程申请</a></li>
@@ -17,8 +17,8 @@
                     </li>
                     <li shiro:hasAnyPermissions="admin, teach"><a href="#">课程管理<span class="fa arrow"></span></a>
                         <ul class="nav nav-third-level">
-                            <li><a href="/course/create">创建新课程</a></li>
-                            <li><a href="/course/request">新课程申请管理</a></li>
+                            <li><a href="/teach/create">创建新课程</a></li>
+                            <li><a href="/teach/request">新课程申请管理</a></li>
                         </ul>
                     </li>
 

@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.LinkedHashMap;
+
 @CrossOrigin
 @Controller
 @RequestMapping("/role")
@@ -32,6 +34,9 @@ public class RoleController {
                                @RequestParam(value = "order[0][dir]") String order,
                                @RequestParam(value = "order[0][column]") String orderCol) {
         HaramMessage message = roleServer.list(search, order, orderCol);
+        message.put("draw", draw);
+        message.put("recordsTotal", ((LinkedHashMap) message.get("page")).get("totalRows"));
+        message.put("recordsFiltered", ((LinkedHashMap) message.get("page")).get("totalRows"));
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }

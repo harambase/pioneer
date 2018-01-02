@@ -70,17 +70,17 @@ public class WebController {
     //教务系统
     @RequestMapping("/teach/create")
     public String createCourse() {
-        return "release/teach/createCourse";
+        return "release/teach/course";
     }
 
     @RequestMapping("/teach/view")
     public String viewCourse() {
-        return "release/teach/viewCourse";
+        return "release/teach/course";
     }
 
     @RequestMapping("/teach/edit")
     public String editCourse() {
-        return "release/teach/editCourse";
+        return "release/teach/course";
     }
 
     @RequestMapping("/teach/choose")

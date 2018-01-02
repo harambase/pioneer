@@ -38,7 +38,7 @@ public class RoleServer {
         StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, Config.SERVER_IP, Config.SERVER_PORT);
         requestUrl.append("?order=").append(order)
                 .append("&orderCol=").append(orderCol);
-        if(StringUtils.isNotEmpty(search))
+        if (StringUtils.isNotEmpty(search))
             requestUrl.append("&search=").append(search);
         Map params = new HashMap();
         return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
