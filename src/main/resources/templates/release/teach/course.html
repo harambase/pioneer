@@ -629,7 +629,7 @@
             serverSide: true,
 
             ajax: {
-                url: basePath + "/" + courseVue.$data.course.crn + "/student",
+                url: basePath + "/transcript/" + courseVue.$data.course.crn + "/student",
             },
             columns: [
                 {"data": "studentId", "title": "学生ID"},
@@ -737,7 +737,6 @@
         });
 
         userTable = $("#userTable").DataTable({
-
             "language": {
                 "aria": {
                     "sortAscending": ": activate to sort column ascending",
@@ -768,7 +767,6 @@
 
             ajax: {
                 url: basePath + "/student",
-
                 data: function (d) {
                     d.status = "1";
                 }
@@ -776,7 +774,7 @@
             columns: [
                 {"data": "studentId", "title": "学生ID"},
                 {"data": "sname", "title": "姓名"},
-                {"data": "max_credits", "title": "学分上限"},
+                {"data": "maxCredits", "title": "学分上限"},
                 {"data": "complete", "title": "已完成"},
                 {"data": "progress", "title": "进行中"},
                 {"data": "incomplete", "title": "未完成"},
