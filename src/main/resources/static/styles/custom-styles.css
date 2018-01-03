@@ -881,6 +881,18 @@ label.error:after {
 .active > i > .fa.down:before {
     content: "\f106";
 }
+
+img{
+    border: 2px solid #f95f7a;
+}
+
+.file input {
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+}
 /*.modal.dataCenterModal .modal-body {*/
     /*padding: 50px 80px;*/
 /*}*/
