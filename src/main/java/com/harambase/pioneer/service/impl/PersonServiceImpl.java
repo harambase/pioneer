@@ -75,13 +75,13 @@ public class PersonServiceImpl implements PersonService {
         Map<String, Object> map = new HashMap<>();
 
         try {
-
             LinkedHashMap personMap = (LinkedHashMap) personServer.get(IP, PORT, userId).getData();
             Person person = new Person();
             BeanUtils.populate(person, personMap);
             String name = file.getOriginalFilename();
 
             String fileUri;
+
             switch (mode) {
                 case "p":
                     String oldProfile = person.getProfile();
@@ -100,6 +100,7 @@ public class PersonServiceImpl implements PersonService {
 
                     person.setProfile(fileUri);
                     break;
+
                 case "f":
                     String oldInfo = person.getInfo();
 
@@ -108,15 +109,14 @@ public class PersonServiceImpl implements PersonService {
                         oldfile.delete();
                     }
 
-                    fileUri = UploadFile.uploadFileToPath(file, "/static/upload/document/user_info");
+                    fileUri = UploadFile.uploadFileToPath(file, "/static/upload/document/userInfo");
 
                     map.put("name", name);
                     map.put("size", file.getSize());
                     map.put("type", name.substring(name.lastIndexOf(".") + 1));
                     map.put("path", fileUri);
 
-                    person.setProfile(fileUri);
-
+                    person.setInfo(fileUri);
                     break;
             }
 
