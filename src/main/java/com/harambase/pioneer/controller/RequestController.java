@@ -59,7 +59,7 @@ public class RequestController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-//    @RequestMapping(value = "/teach/listUser", produces = "application/json", method = RequestMethod.GET)
+//    @RequestMapping(value = "/teach/list", produces = "application/json", method = RequestMethod.GET)
 //    public ResponseEntity courseList(@RequestParam(value = "start") Integer start,
 //                                     @RequestParam(value = "length") Integer length,
 //                                     @RequestParam(value = "draw") Integer draw,

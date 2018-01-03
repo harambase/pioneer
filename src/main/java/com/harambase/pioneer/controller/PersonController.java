@@ -5,7 +5,6 @@ import com.harambase.pioneer.pojo.Person;
 import com.harambase.pioneer.service.PersonService;
 import com.harambase.support.util.SessionUtil;
 import org.apache.shiro.authz.annotation.Logical;
-import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,8 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.xml.ws.Response;
 import java.util.LinkedHashMap;
 
 @CrossOrigin
@@ -53,7 +50,7 @@ public class PersonController {
     @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
     @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
     public ResponseEntity get(@PathVariable(value = "userId") String userId) {
-        HaramMessage haramMessage = personService.getUser(userId);
+        HaramMessage haramMessage = personService.get(userId);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
@@ -67,7 +64,7 @@ public class PersonController {
     @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public ResponseEntity search(@RequestParam(value = "search") String search, @RequestParam(value = "type") String type, String status) {
-        HaramMessage message = personService.searchPerson(search, type, status);
+        HaramMessage message = personService.search(search, type, status);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
@@ -81,7 +78,7 @@ public class PersonController {
                                @RequestParam(value = "order[0][column]") String orderCol,
                                @RequestParam(value = "type", required = false) String type,
                                @RequestParam(value = "status", required = false) String status) {
-        HaramMessage message = personService.listUser(start, length, search, order, orderCol, type, status);
+        HaramMessage message = personService.list(start, length, search, order, orderCol, type, status);
         message.put("draw", draw);
         message.put("recordsTotal", ((LinkedHashMap) message.get("page")).get("totalRows"));
         message.put("recordsFiltered", ((LinkedHashMap) message.get("page")).get("totalRows"));
@@ -91,7 +88,14 @@ public class PersonController {
     @RequestMapping(value = "/profile/{userId}", method = RequestMethod.PUT)
     public ResponseEntity uploadProfile(@RequestParam(value = "file", required = false) MultipartFile file,
                                         @PathVariable String userId){
-        HaramMessage message = personService.uploadProfile(userId, file);
+        HaramMessage message = personService.upload(userId, file, "p");
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/info/{userId}", method = RequestMethod.PUT)
+    public ResponseEntity updateInfo(@RequestParam(value = "file", required = false) MultipartFile file,
+                                     @PathVariable String userId){
+        HaramMessage message = personService.upload(userId, file, "f");
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }

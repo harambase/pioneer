@@ -16,11 +16,11 @@ public interface PersonService {
 
     HaramMessage updatePerson(String userId, Person person);
 
-    HaramMessage getUser(String userId);
+    HaramMessage get(String userId);
 
-    HaramMessage listUser(int start, int length, String search, String order, String orderCol, String type, String status);
+    HaramMessage list(int start, int length, String search, String order, String orderCol, String type, String status);
 
-    HaramMessage searchPerson(String search, String type, String status);
+    HaramMessage search(String search, String type, String status);
 
-    HaramMessage uploadProfile(String userId, MultipartFile file);
+    HaramMessage upload(String userId, MultipartFile file, String mode);
 }
