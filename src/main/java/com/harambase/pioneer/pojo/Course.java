@@ -51,6 +51,16 @@ public class Course {
 
     private String time;
 
+    private String courseInfo;
+
+    public String getCourseInfo() {
+        return courseInfo;
+    }
+
+    public void setCourseInfo(String courseInfo) {
+        this.courseInfo = courseInfo;
+    }
+
     public Integer getId() {
         return id;
     }

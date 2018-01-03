@@ -5,11 +5,13 @@ import com.harambase.pioneer.pojo.Course;
 import com.harambase.pioneer.pojo.dto.Option;
 import com.harambase.pioneer.service.CourseService;
 import com.harambase.support.util.SessionUtil;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.LinkedHashMap;
 
@@ -24,21 +26,21 @@ public class CourseController {
         this.courseService = courseService;
     }
 
-    @RequiresPermissions({"admin", "teach"})
+    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
     @RequestMapping(produces = "application/json", method = RequestMethod.POST)
     public ResponseEntity create(@RequestBody Course course) {
         HaramMessage haramMessage = courseService.create(course);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @RequiresPermissions({"admin", "teach"})
+    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
     @RequestMapping(value = "/{crn}", method = RequestMethod.DELETE)
     public ResponseEntity delete(@PathVariable(value = "crn") String crn) {
         HaramMessage haramMessage = courseService.delete(crn);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @RequiresPermissions({"admin", "teach"})
+    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
     @RequestMapping(value = "/{crn}", produces = "application/json", method = RequestMethod.PUT)
     public ResponseEntity update(@PathVariable String crn, @RequestBody Course course) {
         HaramMessage haramMessage = courseService.update(crn, course);
@@ -106,7 +108,7 @@ public class CourseController {
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @RequiresPermissions({"admin", "teach"})
+    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
     @RequestMapping(value = "/{crn}/student/{userId}", method = RequestMethod.DELETE)
     public ResponseEntity removeStuFromCourse(@PathVariable(value = "crn") String crn,
                                               @PathVariable(value = "userId") String studentId) {
@@ -114,7 +116,7 @@ public class CourseController {
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @RequiresPermissions({"admin", "teach"})
+    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
     @RequestMapping(value = "/{crn}/student/{userId}", method = RequestMethod.PUT)
     public ResponseEntity assignStu2Course(@PathVariable(value = "crn") String crn,
                                            @PathVariable(value = "userId") String studentId,
@@ -123,7 +125,7 @@ public class CourseController {
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @RequiresPermissions({"admin", "teach"})
+    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
     @RequestMapping(value = "/{crn}/faculty/{userId}", produces = "application/json", method = RequestMethod.PUT)
     public ResponseEntity assignFac2Course(@PathVariable(value = "crn") String crn,
                                            @PathVariable(value = "userId") String facultyId) {
@@ -131,10 +133,17 @@ public class CourseController {
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @RequiresPermissions({"admin", "student"})
+    @RequiresPermissions(value = {"admin", "student"}, logical = Logical.OR)
     @RequestMapping(value = "/choose", method = RequestMethod.POST)
     public ResponseEntity courseChoice(@RequestParam(value = "choiceList[]") String[] choices) {
         HaramMessage message = courseService.reg2Course(SessionUtil.getUserId(), choices);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
+    @RequestMapping(value = "/info/{crn}", method = RequestMethod.PUT)
+    public ResponseEntity uploadInfo(@RequestParam MultipartFile file, @PathVariable String crn){
+        HaramMessage message = courseService.uploadInfo(crn, file);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 

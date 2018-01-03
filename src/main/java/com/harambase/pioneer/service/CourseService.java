@@ -3,6 +3,7 @@ package com.harambase.pioneer.service;
 import com.harambase.common.HaramMessage;
 import com.harambase.pioneer.pojo.Course;
 import com.harambase.pioneer.pojo.dto.Option;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Created by linsh on 7/12/2017.
@@ -34,4 +35,6 @@ public interface CourseService {
     HaramMessage getCourseByCrn(String crn);
 
     HaramMessage courseTreeList(String facultyId, String info);
+
+    HaramMessage uploadInfo(String crn, MultipartFile file);
 }

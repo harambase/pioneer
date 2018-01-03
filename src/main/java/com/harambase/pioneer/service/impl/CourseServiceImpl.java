@@ -2,12 +2,23 @@ package com.harambase.pioneer.service.impl;
 
 import com.harambase.common.Config;
 import com.harambase.common.HaramMessage;
+import com.harambase.common.UploadFile;
+import com.harambase.common.constant.FlagDict;
 import com.harambase.pioneer.pojo.Course;
+import com.harambase.pioneer.pojo.Person;
 import com.harambase.pioneer.pojo.dto.Option;
 import com.harambase.pioneer.server.CourseServer;
 import com.harambase.pioneer.service.CourseService;
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 
 /**
@@ -54,6 +65,48 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public HaramMessage courseTreeList(String facultyid, String info) {
         return courseServer.courseTreeList(IP, PORT, facultyid, info);
+    }
+
+    @Override
+    public HaramMessage uploadInfo(String crn, MultipartFile file) {
+        HaramMessage message = new HaramMessage();
+        Map<String, Object> map = new HashMap<>();
+
+        try {
+            LinkedHashMap courseMap = (LinkedHashMap) courseServer.getCourseByCrn(IP, PORT, crn).getData();
+            Course course = new Course();
+            BeanUtils.populate(course, courseMap);
+            String name = file.getOriginalFilename();
+
+            String fileUri;
+            String oldInfo = course.getCourseInfo();
+
+            if (StringUtils.isNotEmpty(oldInfo)) {
+                File oldfile = new File(Config.serverPath + oldInfo);
+                oldfile.delete();
+            }
+
+            fileUri = UploadFile.uploadFileToPath(file, "/static/upload/document/courseInfo");
+
+            map.put("name", name);
+            map.put("size", file.getSize());
+            map.put("type", name.substring(name.lastIndexOf(".") + 1));
+            map.put("path", fileUri);
+
+            course.setCourseInfo(fileUri);
+
+            message = courseServer.update(IP, PORT, crn, course);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            message.setMsg("上传失败");
+            message.setCode(FlagDict.FAIL.getV());
+            return message;
+        }
+
+        message.setMsg("上传成功");
+        message.setData(map);
+        return message;
     }
 
     @Override

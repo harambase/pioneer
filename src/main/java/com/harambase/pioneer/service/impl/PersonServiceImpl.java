@@ -102,7 +102,7 @@ public class PersonServiceImpl implements PersonService {
                     break;
 
                 case "f":
-                    String oldInfo = person.getInfo();
+                    String oldInfo = person.getUserInfo();
 
                     if (StringUtils.isNotEmpty(oldInfo)) {
                         File oldfile = new File(Config.serverPath + oldInfo);
@@ -116,7 +116,7 @@ public class PersonServiceImpl implements PersonService {
                     map.put("type", name.substring(name.lastIndexOf(".") + 1));
                     map.put("path", fileUri);
 
-                    person.setInfo(fileUri);
+                    person.setUserInfo(fileUri);
                     break;
             }
 
