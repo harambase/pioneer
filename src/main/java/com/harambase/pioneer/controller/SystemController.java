@@ -1,8 +1,6 @@
 package com.harambase.pioneer.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.harambase.common.Config;
 import com.harambase.common.HaramMessage;
 import com.harambase.common.constant.FlagDict;
 import com.harambase.pioneer.pojo.Person;
@@ -47,10 +45,13 @@ public class SystemController {
                 BeanUtils.populate(person, (LinkedHashMap) message.getData());
                 UsernamePasswordToken token = new UsernamePasswordToken(person.getUserId(), person.getPassword().toCharArray());
                 Subject subject = SecurityUtils.getSubject();
+
                 //将用户信息放入session中
                 subject.getSession().setAttribute("user", person);
                 subject.getSession().setAttribute("profile", (JSON.parseObject(person.getProfile())).getString("path"));
+
                 subject.login(token); //完成登录
+
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
                 message.setMsg(FlagDict.SYSTEM_ERROR.getM());
