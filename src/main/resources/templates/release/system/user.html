@@ -51,78 +51,40 @@
                         </div>
                         <div class="panel-body">
                             <form class="form-horizontal" id="editUserForm">
-                                <div class="col-md-6 col-sm-4">
-                                    <div class="panel panel-danger">
+                                <div class="col-md-7 col-sm-4">
+                                    <div class="panel panel-primary">
                                         <div class="panel-heading">
-                                            学期信息
+                                            账户信息
                                         </div>
                                         <div class="panel-body">
                                             <div class="form-group">
-                                                <div class="col-sm-4">
+                                                <div class="col-sm-2">
                                                     <label for="year-semester"
-                                                           class="col-sm-12 control-label">*年份-学期(YYYY-XX):</label>
+                                                           class="col-sm-12 control-label">*注册学期:</label>
                                                 </div>
-                                                <div class="col-sm-7">
+                                                <div class="col-sm-3">
                                                     <input id="year-semester" class="form-control" required disabled
                                                            v-model="user.info"/>
                                                 </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="col-sm-4">
+                                                <div class="col-sm-2">
                                                     <label for="userId" class="col-sm-12 control-label">*用户ID:</label>
                                                 </div>
-                                                <div class="col-sm-7">
+                                                <div class="col-sm-3">
                                                     <input id="userId" class="form-control" required disabled
                                                            v-model="user.userId"/>
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <div class="col-sm-4">
+                                                <div class="col-sm-2">
                                                     <label for="username" class="col-sm-12 control-label">*用户名:</label>
                                                 </div>
-                                                <div class="col-sm-7">
+                                                <div class="col-sm-3">
                                                     <input id="username" class="form-control" minlength="4"
                                                            maxlength="20" required v-model="user.username"
                                                            v-if="pageMode==='view'"/>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="panel-footer">
-                                            注意：用户名修改请小心重名
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6 col-sm-4">
-                                    <div class="panel panel-danger">
-                                        <div class="panel-heading">
-                                            用户头像
-                                        </div>
-                                        <div class="panel-body">
-                                            <div class="form-group">
-                                                <div class="col-sm-3">
-                                                    <a href="javascript:" class="file">选择图片
-                                                        <input type="file" id="profile" accept="image/*" >
-                                                    </a>
-                                                </div>
-                                                <div class="col-sm-9">
-                                                    <img v-bind:src="user.profile" width="100px" height="100px">
-                                                </div>
-                                                <button class="btn btn-primary btn-info" onclick="profileUpload()">上传</button>
-                                            </div>
-                                        </div>
-                                        <div class="panel-footer">
-                                            注意：用户名修改请小心重名
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-12 col-sm-4">
-                                    <div class="panel panel-info">
-                                        <div class="panel-heading">
-                                            人员基本信息
-                                        </div>
-                                        <div class="panel-body">
+                                            <hr/>
                                             <div class="form-group">
                                                 <div class="col-sm-2">
                                                     <label for="lastName" class="col-sm-12 control-label">*姓:</label>
@@ -216,6 +178,36 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-md-5 col-sm-4">
+                                    <div class="panel panel-danger">
+                                        <div class="panel-heading">
+                                            用户头像修改
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <div class="col-sm-6">
+                                                    <input type="file" id="profile" accept="image/*"
+                                                           onchange="previewImg()">
+                                                    <p>上传头像预览：</p>
+                                                    <img id="preview" style="width: 230px;height: 230px">
+                                                    <button style="width: 100%; margin-top: 20px"
+                                                            class="btn btn-primary btn-info" onclick="profileUpload()">
+                                                        上传
+                                                    </button>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <p>当前头像：</p>
+                                                    <img id="current" v-bind:src="user.profile.path"
+                                                         style="width: 230px;height: 230px" class="profile">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel-footer">
+                                            注意：图片大小不要超过10M。
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="col-md-12 col-sm-4">
                                     <div class="panel panel-success">
                                         <div class="panel-heading">
@@ -521,12 +513,53 @@
         }
     });
 
-    function profileUpload(){
+    function previewImg() {
+
+        var preview = document.getElementById("preview");
+        var file = document.querySelector("input[type=file]").files[0];
+        var reader = new FileReader();
+        if (file) {
+            reader.readAsDataURL(file);
+        } else {
+            preview.src = '';
+        }
+
+        reader.onloadend = function () {
+            preview.src = reader.result;
+        }
+
+    }
+
+    function profileUpload() {
         let formData = new FormData();
         formData.append("file", document.getElementById("profile").files[0]);
-        axios.put("/user/profile/" + userVue.$data.user.userId, formData).then(function(response){
-            Showbo.Msg.alert(response.data.msg);
-        });
+        if(formData !== null && formData !== undefined) {
+            axios.put("/user/profile/" + userVue.$data.user.userId, formData).then(function (response) {
+                if(response.data.code === 2001) {
+                    Showbo.Msg.alert(response.data.msg, function () {
+                        userVue.$data.user.profile = response.data;
+                        var file = document.querySelector("input[type=file]").files[0];
+                        var current = document.getElementById("current");
+                        var preview = document.getElementById("preview");
+                        preview.scr = '';
+                        var reader = new FileReader();
+                        if (file) {
+                            reader.readAsDataURL(file);
+                        } else {
+                            current.src = '';
+                        }
+
+                        reader.onloadend = function () {
+                            preview.src = reader.result;
+                            current.src = reader.result;
+                        };
+                    });
+                }else{
+                    Showbo.Msg.alert(response.data.msg, function () {
+                    });
+                }
+            });
+        }
     }
 
     function deleteUser(userId) {
@@ -549,6 +582,7 @@
         userVue.$data.user = userVue.$data.userList[col];
         userVue.$data.userType = userVue.$data.user.type.split("/");
         userVue.$data.userRole = userVue.$data.user.roleId.split("/");
+        userVue.$data.user.profile = JSON.parse(userVue.$data.user.profile);
         userVue.$data.table = false;
         userVue.$data.detail = true;
     }
@@ -590,8 +624,8 @@
             columns: [
                 {  //行号
                     "data": null, "title": "ROW", "render": function (data, type, row, meta) {
-                    return meta.settings._iDisplayStart + meta.row + 1;
-                }
+                        return meta.settings._iDisplayStart + meta.row + 1;
+                    }
                 },
                 {"data": "userId", "title": "用户ID"},
                 {"data": "username", "title": "用户名"},
@@ -600,17 +634,17 @@
                 {"data": "type", "title": "账户类型"},
                 {
                     "data": "status", "title": "状态", "createdCell": function (nTd, rowData, row) {
-                    if (rowData === "1") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:green;">已启用</p>');
-                    else if (rowData === "0") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:red; ">已禁用</p>')
-                    userVue.$data.userList.push(row);
-                }
+                        if (rowData === "1") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:green;">已启用</p>');
+                        else if (rowData === "0") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:red; ">已禁用</p>')
+                        userVue.$data.userList.push(row);
+                    }
                 },
                 {"data": "updateTime", "title": "更新时间"},
                 {
                     "data": null, "title": "操作", "createdCell": function (nTd, rowData, row, col) {
-                    $(nTd).html('<button class="btn btn-info" onclick="deleteUser(\'' + rowData.userId + '\')">删除用户</button>' +
-                        '<button class="btn btn-edit" onclick="userDetail(\'' + col + '\')">编辑用户</button>');
-                }, "width": "180px"
+                        $(nTd).html('<button class="btn btn-info" onclick="deleteUser(\'' + rowData.userId + '\')">删除用户</button>' +
+                            '<button class="btn btn-edit" onclick="userDetail(\'' + col + '\')">编辑用户</button>');
+                    }, "width": "180px"
                 }
             ],
             "columnDefs": [{

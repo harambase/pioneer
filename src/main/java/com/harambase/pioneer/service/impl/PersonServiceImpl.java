@@ -1,5 +1,6 @@
 package com.harambase.pioneer.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.harambase.common.Config;
 import com.harambase.common.HaramMessage;
 import com.harambase.common.UploadFile;
@@ -14,9 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 
 @Service
@@ -72,7 +71,7 @@ public class PersonServiceImpl implements PersonService {
     public HaramMessage upload(String userId, MultipartFile file, String mode) {
 
         HaramMessage message = new HaramMessage();
-        Map<String, Object> map = new HashMap<>();
+        JSONObject jsonObject = new JSONObject();
 
         try {
             LinkedHashMap personMap = (LinkedHashMap) personServer.get(IP, PORT, userId).getData();
@@ -93,12 +92,12 @@ public class PersonServiceImpl implements PersonService {
 
                     fileUri = UploadFile.uploadFileToPath(file, "/static/upload/image/profile");
 
-                    map.put("name", name);
-                    map.put("size", file.getSize());
-                    map.put("type", name.substring(name.lastIndexOf(".") + 1));
-                    map.put("path", fileUri);
+                    jsonObject.put("name", name);
+                    jsonObject.put("size", file.getSize());
+                    jsonObject.put("type", name.substring(name.lastIndexOf(".") + 1));
+                    jsonObject.put("path", fileUri);
 
-                    person.setProfile(fileUri);
+                    person.setProfile(jsonObject.toJSONString());
                     break;
 
                 case "f":
@@ -111,12 +110,12 @@ public class PersonServiceImpl implements PersonService {
 
                     fileUri = UploadFile.uploadFileToPath(file, "/static/upload/document/userInfo");
 
-                    map.put("name", name);
-                    map.put("size", file.getSize());
-                    map.put("type", name.substring(name.lastIndexOf(".") + 1));
-                    map.put("path", fileUri);
+                    jsonObject.put("name", name);
+                    jsonObject.put("size", file.getSize());
+                    jsonObject.put("type", name.substring(name.lastIndexOf(".") + 1));
+                    jsonObject.put("path", fileUri);
 
-                    person.setUserInfo(fileUri);
+                    person.setUserInfo(jsonObject.toJSONString());
                     break;
             }
 
@@ -130,7 +129,7 @@ public class PersonServiceImpl implements PersonService {
         }
 
         message.setMsg("上传成功");
-        message.setData(map);
+        message.setData(jsonObject);
         return message;
     }
 
