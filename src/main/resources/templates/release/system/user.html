@@ -106,7 +106,7 @@
                                                     </a>
                                                 </div>
                                                 <div class="col-sm-9">
-                                                    <img v-bind:src="user.profile" width="100px" height="100px">
+                                                    <img v-bind:src="profile.path" width="100px" height="100px">
                                                 </div>
                                                 <button class="btn btn-primary btn-info" onclick="profileUpload()">上传</button>
                                             </div>
@@ -431,6 +431,12 @@
                 profile: "",
                 address: ""
             },
+            profile: {
+              name: "",
+              size: "",
+              type: "",
+              path: ""
+            },
             userType: [],
             userRole: [],
             passwordReset: "",
@@ -549,6 +555,7 @@
         userVue.$data.user = userVue.$data.userList[col];
         userVue.$data.userType = userVue.$data.user.type.split("/");
         userVue.$data.userRole = userVue.$data.user.roleId.split("/");
+        userVue.$data.profile = JSON.parse(userVue.$data.user.profile);
         userVue.$data.table = false;
         userVue.$data.detail = true;
     }
