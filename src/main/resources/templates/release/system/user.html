@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html"
+      xmlns:v-bind="http://www.w3.org/1999/xhtml">
 
 <head th:include="/release/common/header :: commonHeader('用户管理',true, false)"></head>
 
@@ -49,8 +50,8 @@
                             用户信息详情
                         </div>
                         <div class="panel-body">
-                            <form class="form-horizontal" id="editUserForm">
-                                <div class="col-md-12 col-sm-4">
+                            <form class="form-horizontal" id="editUserForm" onclick="return false;">
+                                <div class="col-md-6 col-sm-4">
                                     <div class="panel panel-danger">
                                         <div class="panel-heading">
                                             学期信息
@@ -80,6 +81,29 @@
                                                     <input id="username" class="form-control" minlength="4"
                                                            maxlength="20" required v-model="user.username"
                                                            v-if="pageMode==='view'"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="panel-footer">
+                                            注意：用户名修改请小心重名
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-4">
+                                    <div class="panel panel-danger">
+                                        <div class="panel-heading">
+                                            用户头像
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <div class="col-sm-2">
+                                                    <label for="profile" class="col-sm-12 control-label">*上传头像:</label>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <input id="profile" class="btn btn-primary btn-info" required>上传头像</input>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <img v-bind:src="user.profile">
                                                 </div>
                                             </div>
                                         </div>

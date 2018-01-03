@@ -4,6 +4,8 @@ import com.harambase.common.HaramMessage;
 import com.harambase.pioneer.pojo.Person;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+
 public interface PersonService {
 
     HaramMessage login(Person person);

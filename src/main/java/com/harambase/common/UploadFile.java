@@ -1,24 +1,22 @@
 package com.harambase.common;
 
 import com.harambase.support.util.FileWriterUtil;
+import org.springframework.http.HttpRequest;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 
 public class UploadFile {
 
-    /**
-     * @param file    待上传文件
-     * @param dirPath 文件服务器子目录
-     * @return
-     */
     public static String uploadFileToPath(MultipartFile file, String dirPath) throws IOException {
 
         String fileName = file.getOriginalFilename();
 
         // 源文件目录
-        String dirName = FileWriterUtil.getSecondPathByHashCode(Config.SERVER_PATH + dirPath, fileName);
+        String dirName = FileWriterUtil.getSecondPathByHashCode(Config.serverPath + dirPath, fileName);
 
         // 获取当前文件存放路径
         String filePath = FileWriterUtil.getSingleFileDirName(fileName, dirName);
@@ -27,7 +25,7 @@ public class UploadFile {
         File imgFile = new File(filePath);
 
         // 写入文件到实际路径
-        String imgPath = filePath.substring(Config.SERVER_PATH.length(), filePath.length());
+        String imgPath = filePath.substring(Config.serverPath.length(), filePath.length());
         file.transferTo(imgFile);
 
         return imgPath;

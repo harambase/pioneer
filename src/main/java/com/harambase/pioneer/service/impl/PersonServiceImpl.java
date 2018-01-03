@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -82,13 +83,13 @@ public class PersonServiceImpl implements PersonService {
             String oldProfile = person.getProfile();
 
             if(StringUtils.isNotEmpty(oldProfile)){
-                File oldfile = new File(Config.SERVER_PATH + oldProfile);
+                File oldfile = new File(Config.serverPath + oldProfile);
                 if(!oldfile.delete())
                     throw new RuntimeException("旧文件删除失败！");
             }
 
             String name = file.getOriginalFilename();
-            String fileUri = UploadFile.uploadFileToPath(file, "/profile");
+            String fileUri = UploadFile.uploadFileToPath(file, "/static/profile");
 
             map.put("name", name);
             map.put("size", file.getSize());
