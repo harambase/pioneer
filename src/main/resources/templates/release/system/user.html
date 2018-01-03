@@ -242,14 +242,12 @@
                                                     <label class="col-sm-12 control-label">*账户启停:</label>
                                                 </div>
                                                 <div class="col-sm-3">
-                                                    <div id="active-div"
-                                                         class="radio3 radio-check radio-success radio-inline">
+                                                    <div class="radio3 radio-check radio-success radio-inline">
                                                         <input type="radio" id="active" name="status" value="1"
                                                                v-model="user.status">
                                                         <label for="active">启用</label>
                                                     </div>
-                                                    <div id="inactive-div"
-                                                         class="radio3 radio-check radio-success radio-inline">
+                                                    <div class="radio3 radio-check radio-success radio-inline">
                                                         <input type="radio" id="inactive" name="status" value="0"
                                                                v-model="user.status">
                                                         <label for="inactive">禁用</label>
@@ -282,16 +280,16 @@
                                                         <label for="admin" color="red">超级管理员</label>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="form-group" v-if="pageMode === 'view'">
-                                                <div class="col-sm-2">
-                                                    <label class="col-sm-12 control-label">密码重置(不选不会重置):</label>
-                                                </div>
-                                                <div class="col-sm-3">
-                                                    <div lass="radio3 radio-check radio-success radio-inline">
-                                                        <input type="radio" id="reset" name="reset" value="true"
-                                                               v-model="passwordReset">
-                                                        <label for="reset">重置</label>
+
+                                                <div v-if="pageMode === 'view'">
+                                                    <div class="col-sm-2">
+                                                        <label class="col-sm-12 control-label">密码重置(不选不会重置):</label>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
+                                                            <input type="checkbox" id="reset" name="reset" v-model="passwordReset">
+                                                            <label for="reset">重置</label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -464,7 +462,7 @@
                 this.user.type = type;
                 this.user.roleId = roleId;
 
-                if (this.passwordReset === "true") {
+                if (this.passwordReset) {
                     this.user.password = hex_md5("pioneer123456");
                 }
 
@@ -533,15 +531,13 @@
     function profileUpload() {
         let formData = new FormData();
         formData.append("file", document.getElementById("profile").files[0]);
-        if(formData !== null && formData !== undefined) {
+        if (formData !== null && formData !== undefined) {
             axios.put("/user/profile/" + userVue.$data.user.userId, formData).then(function (response) {
-                if(response.data.code === 2001) {
+                if (response.data.code === 2001) {
                     Showbo.Msg.alert(response.data.msg, function () {
                         userVue.$data.user.profile = response.data;
                         var file = document.querySelector("input[type=file]").files[0];
                         var current = document.getElementById("current");
-                        var preview = document.getElementById("preview");
-                        preview.scr = '';
                         var reader = new FileReader();
                         if (file) {
                             reader.readAsDataURL(file);
@@ -550,11 +546,10 @@
                         }
 
                         reader.onloadend = function () {
-                            preview.src = reader.result;
                             current.src = reader.result;
                         };
                     });
-                }else{
+                } else {
                     Showbo.Msg.alert(response.data.msg, function () {
                     });
                 }

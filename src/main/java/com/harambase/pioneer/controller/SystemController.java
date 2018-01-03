@@ -1,5 +1,7 @@
 package com.harambase.pioneer.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.harambase.common.Config;
 import com.harambase.common.HaramMessage;
 import com.harambase.common.constant.FlagDict;
@@ -47,6 +49,7 @@ public class SystemController {
                 Subject subject = SecurityUtils.getSubject();
                 //将用户信息放入session中
                 subject.getSession().setAttribute("user", person);
+                subject.getSession().setAttribute("profile", (JSON.parseObject(person.getProfile())).getString("path"));
                 subject.login(token); //完成登录
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);

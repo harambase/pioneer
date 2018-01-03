@@ -212,10 +212,10 @@
             <!-- /.dropdown -->
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
-                    <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                   <img th:src="${session.profile}" class="avatar"> <i class="fa fa-caret-down"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-user">
-                    <li><a href="/profile"><i class="fa fa-user fa-fw"></i>个人中心</a>
+                    <li><a href="/system/user/manage?mode=profile"><i class="fa fa-user fa-fw"></i>个人中心</a>
                     </li>
                     <li><a href="/index"><i class="fa fa-gear fa-fw"></i>主页</a>
                     </li>
