@@ -96,4 +96,11 @@ public class PersonServer {
         return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
     }
 
+    public HaramMessage uploadProfile(String ip, int port, String userId, String fileUri) {
+        String remotePath = "/user/profile/" + userId;
+        StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
+        requestUrl.append("?profile").append(fileUri);
+        Map params = new HashMap();
+        return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.PUT, params);
+    }
 }

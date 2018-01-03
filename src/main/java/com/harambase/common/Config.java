@@ -8,5 +8,7 @@ public class Config {
     public final static String TEMP_FILE_PATH = resourceBundle.getString("tempFile.path");
     public final static String SERVER_IP = resourceBundle.getString("server.ip");
     public final static int SERVER_PORT = Integer.parseInt(resourceBundle.getString("server.port"));
+    public final static String SERVER_PATH = resourceBundle.getString("server.path");
+
 
 }

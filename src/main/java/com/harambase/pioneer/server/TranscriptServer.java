@@ -35,6 +35,6 @@ public class TranscriptServer {
         if (StringUtils.isNotEmpty(crn))
             requestUrl.append("&crn=").append(crn);
         Map params = new HashMap();
-        return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
+;        return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
     }
 }

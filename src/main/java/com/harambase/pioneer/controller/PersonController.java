@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.xml.ws.Response;
 import java.util.LinkedHashMap;
 
 @CrossOrigin
@@ -85,4 +87,10 @@ public class PersonController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/profile/{userId}", method = RequestMethod.PUT)
+    public ResponseEntity uploadProfile(@RequestParam(value = "file", required = false) MultipartFile file,
+                                        @PathVariable String userId){
+        HaramMessage message = personService.uploadProfile(userId, file);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
 }
