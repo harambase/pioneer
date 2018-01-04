@@ -40,20 +40,14 @@ public class WebController {
         return "release/web/message";
     }
 
-    @RequestMapping("/profile")
-    public String profile() {
-        return "release/web/profile";
-    }
-
     @RequestMapping("/myCourse")
     public String myCourse() {
         return "release/teach/myCourse";
     }
 
-
     //系统设置
     @RequestMapping("/system/user/manage")
-    public String createUser() {
+    public String user() {
         return "release/system/user";
     }
 

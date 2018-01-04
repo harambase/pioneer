@@ -1,5 +1,6 @@
 package com.harambase.pioneer.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.harambase.common.Config;
 import com.harambase.common.HaramMessage;
@@ -15,9 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 
 @Service
@@ -59,7 +58,8 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public HaramMessage list(int start, int length, String search, String order, String orderColumn, String type, String status) {
+    public HaramMessage list(int start, int length, String search, String order, String orderColumn,
+                             String type, String status) {
         return personServer.list(IP, PORT, start, length, search, order, orderColumn, type, status);
     }
 
@@ -84,11 +84,11 @@ public class PersonServiceImpl implements PersonService {
 
             switch (mode) {
                 case "p":
-                    String oldProfile = person.getProfile();
+                    String oldProfile = (JSON.parseObject(person.getProfile())).getString("path");
 
                     if (StringUtils.isNotEmpty(oldProfile)) {
-                        File oldfile = new File(Config.serverPath + oldProfile);
-                        oldfile.delete();
+                        File oldFile = new File(Config.serverPath + oldProfile);
+                        oldFile.delete();
                     }
 
                     fileUri = UploadFile.uploadFileToPath(file, "/static/upload/image/profile");
@@ -102,11 +102,11 @@ public class PersonServiceImpl implements PersonService {
                     break;
 
                 case "f":
-                    String oldInfo = person.getUserInfo();
+                    String oldInfo = (JSON.parseObject(person.getUserInfo())).getString("path");
 
                     if (StringUtils.isNotEmpty(oldInfo)) {
-                        File oldfile = new File(Config.serverPath + oldInfo);
-                        oldfile.delete();
+                        File oldFile = new File(Config.serverPath + oldInfo);
+                        oldFile.delete();
                     }
 
                     fileUri = UploadFile.uploadFileToPath(file, "/static/upload/document/userInfo");
