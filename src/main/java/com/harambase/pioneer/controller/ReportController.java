@@ -1,14 +1,12 @@
 package com.harambase.pioneer.controller;
 
+import com.harambase.common.DownloadFile;
 import com.harambase.common.HaramMessage;
-import com.harambase.common.constant.FlagDict;
 import com.harambase.pioneer.service.ReportService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
 
 
 @RestController
@@ -26,63 +24,9 @@ public class ReportController {
     @RequestMapping(value = "/{studentId}/transcript", method = RequestMethod.GET)
     public void studentTranscriptReport(@PathVariable(value = "studentId") String studentId, HttpServletResponse response) {
         HaramMessage haramMessage = reportService.studentTranscriptReport(studentId);
-        ReportControllerInner.download(studentId + "_transcript_report.pdf", haramMessage, response);
+        DownloadFile.downloadFile(studentId + "_transcript_report.pdf", (String) haramMessage.getData(), response);
     }
 
-    private static class ReportControllerInner {
-        private static void download(String fileName, HaramMessage haramMessage, HttpServletResponse response) {
-            String filePath = (String) haramMessage.getData();
-            File file = null;
-            if (StringUtils.isNotEmpty(filePath)) {
-                file = new File(filePath);
-            }
-            if (haramMessage.getCode() != FlagDict.SUCCESS.getV()) {
-                response.setCharacterEncoding("UTF-8");
-                response.setContentType("application/json; charset=utf-8");
-                PrintWriter out = null;
-                try {
-                    out = response.getWriter();
-                    out.append("下载失败");
-
-
-                } catch (IOException e2) {
-                    e2.printStackTrace();
-                } finally {
-                    if (out != null) {
-                        out.close();
-                    }
-                    if (file.exists())
-                        file.delete();
-                    return;
-                }
-            }
-            response.reset();
-            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName);//uri.substring(uri.lastIndexOf("/"), uri.length()) + ".csv\"");
-            response.setContentType("application/octet-stream;charset=UTF-8");
-            response.setCharacterEncoding("UTF-8");
-            OutputStream outputStream = null;
-            try {
-
-                FileInputStream fileInputStream = new FileInputStream(filePath);
-                outputStream = new BufferedOutputStream(response.getOutputStream());
-                byte[] bytes = new byte[2048];
-                int length;
-                while ((length = fileInputStream.read(bytes)) > 0) {
-                    outputStream.write(bytes, 0, length);
-                }
-                fileInputStream.close();
-                outputStream.flush();
-                outputStream.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-
-            } finally {
-                if (file.exists())
-                    file.delete();
-            }
-
-        }
-    }
 //    public void formPersonCourseSchedule(String id, String semeBelong){
 //        try {
 //            String seme = "";

@@ -84,7 +84,9 @@ public class PersonServiceImpl implements PersonService {
 
             switch (mode) {
                 case "p":
-                    String oldProfile = (JSON.parseObject(person.getProfile())).getString("path");
+                    String oldProfile = "";
+                    if(person.getProfile() != null)
+                        oldProfile = (JSON.parseObject(person.getProfile())).getString("path");
 
                     if (StringUtils.isNotEmpty(oldProfile)) {
                         File oldFile = new File(Config.serverPath + oldProfile);
@@ -102,7 +104,9 @@ public class PersonServiceImpl implements PersonService {
                     break;
 
                 case "f":
-                    String oldInfo = (JSON.parseObject(person.getUserInfo())).getString("path");
+                    String oldInfo = "";
+                    if(person.getUserInfo() != null)
+                        oldInfo = (JSON.parseObject(person.getUserInfo())).getString("path");
 
                     if (StringUtils.isNotEmpty(oldInfo)) {
                         File oldFile = new File(Config.serverPath + oldInfo);

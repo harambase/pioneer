@@ -81,16 +81,18 @@
                                                                v-model="user.info"/>
                                                     </div>
                                                     <div class="col-sm-2">
-                                                        <label for="userId" class="col-sm-12 control-label">*用户ID:</label>
+                                                        <label for="userId"
+                                                               class="col-sm-12 control-label">*用户ID:</label>
                                                     </div>
                                                     <div class="col-sm-3">
                                                         <input id="userId" class="form-control" required disabled
                                                                v-model="user.userId"/>
                                                     </div>
                                                 </div>
-                                                <div class="form-group"  v-if="pageMode==='view'">
+                                                <div class="form-group" v-if="pageMode==='view'">
                                                     <div class="col-sm-2">
-                                                        <label for="username" class="col-sm-12 control-label">*用户名:</label>
+                                                        <label for="username"
+                                                               class="col-sm-12 control-label">*用户名:</label>
                                                     </div>
                                                     <div class="col-sm-3">
                                                         <input id="username" class="form-control" minlength="4"
@@ -100,14 +102,16 @@
                                                 <hr/>
                                                 <div class="form-group">
                                                     <div class="col-sm-2">
-                                                        <label for="lastName" class="col-sm-12 control-label">*姓:</label>
+                                                        <label for="lastName"
+                                                               class="col-sm-12 control-label">*姓:</label>
                                                     </div>
                                                     <div class="col-sm-3">
                                                         <input id="lastName" class="form-control" minlength="1"
                                                                maxlength="20" required v-model="user.lastName"/>
                                                     </div>
                                                     <div class="col-sm-2">
-                                                        <label for="firstName" class="col-sm-12 control-label">*名:</label>
+                                                        <label for="firstName"
+                                                               class="col-sm-12 control-label">*名:</label>
                                                     </div>
                                                     <div class="col-sm-3">
                                                         <input id="firstName" class="form-control" minlength="1"
@@ -116,7 +120,8 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <div class="col-sm-2">
-                                                        <label for="birthday" class="col-sm-12 control-label">*生日:</label>
+                                                        <label for="birthday"
+                                                               class="col-sm-12 control-label">*生日:</label>
                                                     </div>
                                                     <div class="col-sm-3">
                                                         <input id="birthday" class="form-control" minlength="10"
@@ -135,7 +140,8 @@
                                                         <label for="tel" class="col-sm-12 control-label">*电话号:</label>
                                                     </div>
                                                     <div class="col-sm-3">
-                                                        <input id="tel" isDigits="true" class="form-control" minlength="8"
+                                                        <input id="tel" isDigits="true" class="form-control"
+                                                               minlength="8"
                                                                maxlength="11" required v-model="user.tel"/>
                                                     </div>
                                                     <div class="col-sm-2">
@@ -150,7 +156,8 @@
                                                         <label for="qq" class="col-sm-12 control-label">QQ号:</label>
                                                     </div>
                                                     <div class="col-sm-3">
-                                                        <input id="qq" isDigits="true" class="form-control" minlength="8"
+                                                        <input id="qq" isDigits="true" class="form-control"
+                                                               minlength="8"
                                                                maxlength="20" v-model="user.qq"/>
                                                     </div>
                                                     <div class="col-sm-2">
@@ -179,10 +186,12 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-2">
-                                                        <label for="address" class="col-sm-12 control-label">家庭住址:</label>
+                                                        <label for="address"
+                                                               class="col-sm-12 control-label">家庭住址:</label>
                                                     </div>
                                                     <div class="col-sm-3">
-                                                        <input id="address" class="form-control" v-model="user.address"/>
+                                                        <input id="address" class="form-control"
+                                                               v-model="user.address"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -194,7 +203,7 @@
                                     <div class="col-md-5 col-sm-4">
                                         <div class="panel panel-danger">
                                             <div class="panel-heading">
-                                                用户头像修改
+                                                用户头像
                                             </div>
                                             <div class="panel-body">
                                                 <div class="form-group">
@@ -204,7 +213,8 @@
                                                         <p>上传头像预览：</p>
                                                         <img id="preview" style="width: 230px;height: 230px">
                                                         <button style="width: 100%; margin-top: 20px"
-                                                                class="btn btn-primary btn-info" onclick="profileUpload()">
+                                                                class="btn btn-primary btn-info"
+                                                                onclick="profileUpload()">
                                                             上传
                                                         </button>
                                                     </div>
@@ -300,7 +310,8 @@
                                                         </div>
                                                         <div class="col-sm-3">
                                                             <div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
-                                                                <input type="checkbox" id="reset" name="reset" v-model="passwordReset">
+                                                                <input type="checkbox" id="reset" name="reset"
+                                                                       v-model="passwordReset">
                                                                 <label for="reset">重置</label>
                                                             </div>
                                                         </div>
@@ -329,16 +340,29 @@
                                             <div class="panel-body">
                                                 <div class="form-group">
                                                     <div class="col-sm-2">
-                                                        <label for="password" class="col-sm-12 control-label">备注信息:</label>
+                                                        <label for="password"
+                                                               class="col-sm-12 control-label">上传个人信息文件:</label>
                                                     </div>
-                                                    <div class="col-sm-8">
-                                                        <textarea style="resize: none;" class="form-control" rows="3"
-                                                                  v-model="user.comment"></textarea>
+                                                    <div class="col-sm-6">
+                                                        <input type="file" id="document">
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                    <button style="width: 100%; margin-top: 20px"
+                                                            class="btn btn-primary btn-info"
+                                                            onclick="documentUpload()">
+                                                        上传
+                                                    </button>
+                                                    <button style="width: 100%; margin-top: 20px"
+                                                            class="btn btn-primary btn-info"
+                                                            onclick="documentDownload()">
+                                                        下载
+                                                    </button>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <div class="col-sm-2">
-                                                        <label for="password" class="col-sm-12 control-label">备注信息:</label>
+                                                        <label for="password"
+                                                               class="col-sm-12 control-label">备注信息:</label>
                                                     </div>
                                                     <div class="col-sm-8">
                                                         <textarea style="resize: none;" class="form-control" rows="3"
@@ -399,7 +423,7 @@
                     <div th:include="/release/common/footer :: copy" id="copyright"></div>
                 </div>
             </div>
-        <!-- /. PAGE INNER  -->
+            <!-- /. PAGE INNER  -->
         </div>
     </div>
     <!-- /. PAGE WRAPPER  -->
@@ -442,8 +466,8 @@
             detail: false,
             pageMode: location.search.split("&")[0].split("=")[1],//location.search获取url中的?后的字符串
         },
-        created: function(){
-            if(this.pageMode !== 'create' && this.pageMode !== 'profile' && this.pageMode !== 'view'){
+        created: function () {
+            if (this.pageMode !== 'create' && this.pageMode !== 'profile' && this.pageMode !== 'view') {
                 window.location.href = basePath + "/404";
             }
         },
@@ -531,6 +555,39 @@
         }
     });
 
+    function documentUpload(){
+        let formData = new FormData();
+        formData.append("file", document.getElementById("document").files[0]);
+        if (formData !== null && formData !== undefined) {
+            axios.put("/user/info/" + userVue.$data.user.userId, formData).then(function (response) {
+                if (response.data.code === 2001) {
+                    Showbo.Msg.alert(response.data.msg, function () {
+                        userVue.$data.user.userInfo = response.data;
+                        // var file = document.querySelector("input[type=file]").files[0];
+                        // var current = document.getElementById("current");
+                        // var reader = new FileReader();
+                        // if (file) {
+                        //     reader.readAsDataURL(file);
+                        // } else {
+                        //     current.src = '';
+                        // }
+                        //
+                        // reader.onloadend = function () {
+                        //     current.src = reader.result;
+                        // };
+                    });
+                } else {
+                    Showbo.Msg.alert(response.data.msg, function () {
+                    });
+                }
+            });
+        }
+    }
+
+    function documentDownload(){
+        window.open(basePath + "/user/info/" + userVue.$data.user.userId);
+    }
+
     function previewImg() {
 
         var preview = document.getElementById("preview");
@@ -598,14 +655,15 @@
         userVue.$data.userType = userVue.$data.user.type.split("/");
         userVue.$data.userRole = userVue.$data.user.roleId.split("/");
         userVue.$data.user.profile = JSON.parse(userVue.$data.user.profile);
+        userVue.$data.user.userInfo = JSON.parse(userVue.$data.user.userInfo);
         userVue.$data.table = false;
         userVue.$data.detail = true;
     }
 
     $(function () {
 
-        if(userVue.$data.pageMode === 'profile'){
-            axios.get('/user/current').then(function(response){
+        if (userVue.$data.pageMode === 'profile') {
+            axios.get('/user/current').then(function (response) {
                 userVue.$data.user = response.data.data;
                 userVue.$data.userType = userVue.$data.user.type.split("/");
                 userVue.$data.userRole = userVue.$data.user.roleId.split("/");
