@@ -213,10 +213,16 @@ function deleteUser(userId) {
 
 function userDetail(col) {
     userVue.$data.user = userVue.$data.userList[col];
+    setInfo();
+    userVue.$data.table = false;
+    userVue.$data.detail = true;
+}
+
+function setInfo(){
     userVue.$data.userType = userVue.$data.user.type.split("/");
     userVue.$data.userRole = userVue.$data.user.roleId.split("/");
 
-    if ( userVue.$data.user.profile !== "" &&  userVue.$data.user.profile !== null && userVue.$data.user.profile !== null) {
+    if (userVue.$data.user.profile !== "" &&  userVue.$data.user.profile !== null && userVue.$data.user.profile !== null) {
         userVue.$data.user.profile = JSON.parse(userVue.$data.user.profile);
         userVue.$data.showProfile = true;
     }
@@ -225,9 +231,6 @@ function userDetail(col) {
         userVue.$data.user.userInfo = JSON.parse(userVue.$data.user.userInfo);
         userVue.$data.showDocument = true;
     }
-
-    userVue.$data.table = false;
-    userVue.$data.detail = true;
 }
 
 $(function () {
@@ -235,9 +238,7 @@ $(function () {
     if (userVue.$data.pageMode === 'profile') {
         axios.get('/user/current').then(function (response) {
             userVue.$data.user = response.data.data;
-            userVue.$data.userType = userVue.$data.user.type.split("/");
-            userVue.$data.userRole = userVue.$data.user.roleId.split("/");
-            userVue.$data.user.profile = JSON.parse(userVue.$data.user.profile);
+            setInfo();
         });
     }
 
