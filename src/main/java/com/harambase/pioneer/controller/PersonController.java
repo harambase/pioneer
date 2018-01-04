@@ -110,7 +110,7 @@ public class PersonController {
         String userInfo = (String)((LinkedHashMap) message.getData()).get("userInfo");
         if(StringUtils.isNotEmpty(userInfo)) {
             JSONObject info = JSONObject.parseObject(userInfo);
-            DownloadFile.downloadFile(info.getString("name"), Config.serverPath + info.getString("path"), response);
+            DownloadFile.downloadFile(info.getString("name"), info.getString("path"), response);
         }
     }
 }

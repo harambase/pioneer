@@ -11,7 +11,7 @@ public class DownloadFile {
 
         File file = null;
         if (StringUtils.isNotEmpty(filePath)) {
-            file = new File(filePath);
+            file = new File(Config.serverPath + filePath);
         }
 
         response.reset();

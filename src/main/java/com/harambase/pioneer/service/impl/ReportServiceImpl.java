@@ -37,7 +37,7 @@ public class ReportServiceImpl implements ReportService {
     public HaramMessage studentTranscriptReport(String studentid) {
 
         FileOutputStream fos = null;
-        String filePath = Config.TEMP_FILE_PATH + studentid + ".pdf";
+        String filePath = Config.serverPath + "/static/upload/document/studentReport" + studentid + ".pdf";
         try {
 
 
