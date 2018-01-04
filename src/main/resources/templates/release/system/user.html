@@ -89,7 +89,8 @@
                                                                v-model="user.userId"/>
                                                     </div>
                                                 </div>
-                                                <div class="form-group" v-if="pageMode==='view' || pageMode === 'profile'">
+                                                <div class="form-group"
+                                                     v-if="pageMode==='view' || pageMode === 'profile'">
                                                     <div class="col-sm-2">
                                                         <label for="username"
                                                                class="col-sm-12 control-label">*用户名:</label>
@@ -338,7 +339,7 @@
                                                 更多信息
                                             </div>
                                             <div class="panel-body">
-                                                <div class="form-group"  v-if="!showDocument">
+                                                <div class="form-group" v-if="!showDocument">
                                                     <div class="col-sm-2">
                                                         <label for="password"
                                                                class="col-sm-12 control-label">上传个人信息文件:</label>
@@ -353,12 +354,13 @@
                                                         </button>
                                                     </div>
                                                 </div>
-                                                <div class="form-group"  v-if="showDocument">
+                                                <div class="form-group" v-if="showDocument">
                                                     <div class="col-sm-2">
                                                         <label class="col-sm-12 control-label">个人信息文件:</label>
                                                     </div>
                                                     <div class="col-sm-4" style="margin-top: 10px;">
-                                                        下载文件： <a onclick="documentDownload()" style="cursor: pointer;" class="control-label">{{user.userInfo.name}}</a>
+                                                        下载文件： <a onclick="documentDownload()" style="cursor: pointer;"
+                                                                 class="control-label">{{user.userInfo.name}}</a>
                                                     </div>
                                                     <div class="col-sm-2">
                                                         <button style="width: 100%" class="btn btn-primary btn-danger"
@@ -389,19 +391,21 @@
                                                                class="col-sm-12 control-label">*请确认上述信息正确无误:</label>
                                                     </div>
                                                     <div class="col-sm-3">
-                                                        <div id="yes-div"
-                                                             class="checkbox3 checkbox-danger checkbox-inline checkbox-check  checkbox-circle checkbox-light">
+                                                        <div class="checkbox3 checkbox-danger checkbox-inline checkbox-check  checkbox-circle checkbox-light">
                                                             <input type="checkbox" id="yes" name="confirm" required>
                                                             <label for="yes">确认</label>
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-2">
-                                                        <label for="password"
-                                                               class="col-sm-12 control-label">*管理员操作密码:</label>
-                                                    </div>
-                                                    <div class="col-sm-3">
-                                                        <input type="password" id="password" class="form-control"
-                                                               minlength="6" maxlength="16" checkOpPwd="true" required/>
+                                                    <div v-if="pageMode==='create' || pageMode==='view'">
+                                                        <div class="col-sm-2">
+                                                            <label for="password"
+                                                                   class="col-sm-12 control-label">*管理员操作密码:</label>
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <input type="password" id="password" class="form-control"
+                                                                   minlength="6" maxlength="16" checkOpPwd="true"
+                                                                   required/>
+                                                        </div>
                                                     </div>
                                                     <button style="width:150px;" class="btn btn-primary btn-danger"
                                                             v-if="pageMode !== 'create'" v-on:click="update">
