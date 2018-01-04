@@ -1,11 +1,10 @@
 package com.harambase.pioneer.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.harambase.common.Config;
-import com.harambase.common.DownloadFile;
 import com.harambase.common.HaramMessage;
 import com.harambase.pioneer.pojo.Person;
 import com.harambase.pioneer.service.PersonService;
+import com.harambase.support.util.FileUtil;
 import com.harambase.support.util.SessionUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.Logical;
@@ -110,7 +109,7 @@ public class PersonController {
         String userInfo = (String)((LinkedHashMap) message.getData()).get("userInfo");
         if(StringUtils.isNotEmpty(userInfo)) {
             JSONObject info = JSONObject.parseObject(userInfo);
-            DownloadFile.downloadFile(info.getString("name"), info.getString("path"), response);
+            FileUtil.downloadFile(info.getString("name"), info.getString("path"), response);
         }
     }
 }

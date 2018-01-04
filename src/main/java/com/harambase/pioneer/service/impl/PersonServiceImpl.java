@@ -4,11 +4,11 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.harambase.common.Config;
 import com.harambase.common.HaramMessage;
-import com.harambase.common.UploadFile;
 import com.harambase.common.constant.FlagDict;
 import com.harambase.pioneer.pojo.Person;
 import com.harambase.pioneer.server.PersonServer;
 import com.harambase.pioneer.service.PersonService;
+import com.harambase.support.util.FileUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,7 +93,7 @@ public class PersonServiceImpl implements PersonService {
                         oldFile.delete();
                     }
 
-                    fileUri = UploadFile.uploadFileToPath(file, "/static/upload/image/profile");
+                    fileUri = FileUtil.uploadFileToPath(file, "/static/upload/image/profile");
 
                     jsonObject.put("name", name);
                     jsonObject.put("size", file.getSize());
@@ -113,7 +113,7 @@ public class PersonServiceImpl implements PersonService {
                         oldFile.delete();
                     }
 
-                    fileUri = UploadFile.uploadFileToPath(file, "/static/upload/document/userInfo");
+                    fileUri = FileUtil.uploadFileToPath(file, "/static/upload/document/userInfo");
 
                     jsonObject.put("name", name);
                     jsonObject.put("size", file.getSize());

@@ -338,7 +338,7 @@
                                                 更多信息
                                             </div>
                                             <div class="panel-body">
-                                                <div class="form-group">
+                                                <div class="form-group"  v-if="!showDocument">
                                                     <div class="col-sm-2">
                                                         <label for="password"
                                                                class="col-sm-12 control-label">上传个人信息文件:</label>
@@ -347,16 +347,24 @@
                                                         <input type="file" id="document">
                                                     </div>
                                                     <div class="col-sm-2">
-                                                    <button style="width: 100%; margin-top: 20px"
-                                                            class="btn btn-primary btn-info"
-                                                            onclick="documentUpload()">
-                                                        上传
-                                                    </button>
-                                                    <button style="width: 100%; margin-top: 20px"
-                                                            class="btn btn-primary btn-info"
-                                                            onclick="documentDownload()">
-                                                        下载
-                                                    </button>
+                                                        <button style="width: 100%" class="btn btn-primary btn-info"
+                                                                onclick="documentUpload()">
+                                                            上传
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group"  v-if="showDocument">
+                                                    <div class="col-sm-2">
+                                                        <label class="col-sm-12 control-label">个人信息文件:</label>
+                                                    </div>
+                                                    <div class="col-sm-4" style="margin-top: 10px;">
+                                                        下载文件： <a onclick="documentDownload()" style="cursor: pointer;" class="control-label">{{user.userInfo.name}}</a>
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <button style="width: 100%" class="btn btn-primary btn-danger"
+                                                                v-on:click="showDocument = false">
+                                                            替换
+                                                        </button>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -462,6 +470,7 @@
             userType: [],
             userRole: [],
             passwordReset: "",
+            showDocument: false,
             table: true,
             detail: false,
             pageMode: location.search.split("&")[0].split("=")[1],//location.search获取url中的?后的字符串
@@ -555,26 +564,16 @@
         }
     });
 
-    function documentUpload(){
+    function documentUpload() {
         let formData = new FormData();
         formData.append("file", document.getElementById("document").files[0]);
         if (formData !== null && formData !== undefined) {
             axios.put("/user/info/" + userVue.$data.user.userId, formData).then(function (response) {
                 if (response.data.code === 2001) {
                     Showbo.Msg.alert(response.data.msg, function () {
-                        userVue.$data.user.userInfo = response.data;
-                        // var file = document.querySelector("input[type=file]").files[0];
-                        // var current = document.getElementById("current");
-                        // var reader = new FileReader();
-                        // if (file) {
-                        //     reader.readAsDataURL(file);
-                        // } else {
-                        //     current.src = '';
-                        // }
-                        //
-                        // reader.onloadend = function () {
-                        //     current.src = reader.result;
-                        // };
+                        userVue.$data.user.userInfo = response.data.data;
+                        console.log(response.data.data);
+                        userVue.$data.showDocument = true;
                     });
                 } else {
                     Showbo.Msg.alert(response.data.msg, function () {
@@ -584,15 +583,15 @@
         }
     }
 
-    function documentDownload(){
+    function documentDownload() {
         window.open(basePath + "/user/info/" + userVue.$data.user.userId);
     }
 
     function previewImg() {
 
-        var preview = document.getElementById("preview");
-        var file = document.querySelector("input[type=file]").files[0];
-        var reader = new FileReader();
+        let preview = document.getElementById("preview");
+        let file = document.querySelector("input[type=file]").files[0];
+        let reader = new FileReader();
         if (file) {
             reader.readAsDataURL(file);
         } else {
@@ -612,7 +611,7 @@
             axios.put("/user/profile/" + userVue.$data.user.userId, formData).then(function (response) {
                 if (response.data.code === 2001) {
                     Showbo.Msg.alert(response.data.msg, function () {
-                        userVue.$data.user.profile = response.data;
+                        userVue.$data.user.profile = response.data.data;
                         var file = document.querySelector("input[type=file]").files[0];
                         var current = document.getElementById("current");
                         var reader = new FileReader();
@@ -655,7 +654,12 @@
         userVue.$data.userType = userVue.$data.user.type.split("/");
         userVue.$data.userRole = userVue.$data.user.roleId.split("/");
         userVue.$data.user.profile = JSON.parse(userVue.$data.user.profile);
-        userVue.$data.user.userInfo = JSON.parse(userVue.$data.user.userInfo);
+
+        if (userVue.$data.user.userInfo !== "" && userVue.$data.user.userInfo !== null && userVue.$data.user.userInfo !== null) {
+            userVue.$data.user.userInfo = JSON.parse(userVue.$data.user.userInfo);
+            userVue.$data.showDocument = true;
+        }
+
         userVue.$data.table = false;
         userVue.$data.detail = true;
     }

@@ -2,13 +2,12 @@ package com.harambase.pioneer.service.impl;
 
 import com.harambase.common.Config;
 import com.harambase.common.HaramMessage;
-import com.harambase.common.UploadFile;
 import com.harambase.common.constant.FlagDict;
 import com.harambase.pioneer.pojo.Course;
-import com.harambase.pioneer.pojo.Person;
 import com.harambase.pioneer.pojo.dto.Option;
 import com.harambase.pioneer.server.CourseServer;
 import com.harambase.pioneer.service.CourseService;
+import com.harambase.support.util.FileUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,7 +85,7 @@ public class CourseServiceImpl implements CourseService {
                 oldfile.delete();
             }
 
-            fileUri = UploadFile.uploadFileToPath(file, "/static/upload/document/courseInfo");
+            fileUri = FileUtil.uploadFileToPath(file, "/static/upload/document/courseInfo");
 
             map.put("name", name);
             map.put("size", file.getSize());
