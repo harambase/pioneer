@@ -15,8 +15,9 @@ public class FileUtil {
     public static void downloadFile(String fileName, String logicalPath, HttpServletResponse response) {
 
         try {
-            String filePath = Config.serverPath + logicalPath;
+            //中文支持
             fileName = new String(fileName.getBytes(), "ISO-8859-1");
+            String filePath = Config.serverPath + logicalPath;
 
             response.reset();
             response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName);

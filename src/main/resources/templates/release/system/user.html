@@ -519,12 +519,13 @@
                     this.user.password = hex_md5("pioneer123456");
                 }
 
+                this.user.profile = JSON.stringify(this.user.profile);
+                this.user.userInfo = JSON.stringify(this.user.userInfo);
+
                 axios.put("/user/" + this.user.userId, this.user).then(function (response) {
                     if (response.data.code === 2001)
                         Showbo.Msg.alert(response.data.msg, function () {
-                            this.table = true;
-                            this.detail = false;
-                            userTable.draw();
+                            window.location.href = basePath + "/system/user/manage?mode=view";
                         });
                     else
                         Showbo.Msg.alert(response.data.msg, function () {
@@ -554,7 +555,7 @@
                 axios.post("/user", this.user).then(function (response) {
                     if (response.data.code === 2001)
                         Showbo.Msg.alert(response.data.msg, function () {
-                            window.location.href = basePath + "/manage/user/manage?mode=view";
+                            window.location.href = basePath + "/system/user/manage?mode=view";
                         });
                     else
                         Showbo.Msg.alert(response.data.msg, function () {
@@ -572,7 +573,6 @@
                 if (response.data.code === 2001) {
                     Showbo.Msg.alert(response.data.msg, function () {
                         userVue.$data.user.userInfo = response.data.data;
-                        console.log(response.data.data);
                         userVue.$data.showDocument = true;
                     });
                 } else {
