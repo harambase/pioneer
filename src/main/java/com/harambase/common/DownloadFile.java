@@ -1,28 +1,25 @@
 package com.harambase.common;
 
-import com.harambase.common.constant.FlagDict;
-import org.apache.commons.lang3.StringUtils;
-
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.OutputStream;
 
 public class DownloadFile {
-    public static void downloadFile(String fileName, String filePath, HttpServletResponse response) {
 
-        File file = null;
-        if (StringUtils.isNotEmpty(filePath)) {
-            file = new File(Config.serverPath + filePath);
-        }
+    public static void downloadFile(String fileName, String logicalPath, HttpServletResponse response) {
+        String filePath = Config.serverPath + logicalPath;
 
         response.reset();
-        response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName);//uri.substring(uri.lastIndexOf("/"), uri.length()) + ".csv\"");
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName);
         response.setContentType("application/octet-stream;charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
 
         OutputStream outputStream = null;
+        FileInputStream fileInputStream = null;
         try {
 
-            FileInputStream fileInputStream = new FileInputStream(filePath);
+            fileInputStream = new FileInputStream(filePath);
             outputStream = new BufferedOutputStream(response.getOutputStream());
             byte[] bytes = new byte[2048];
             int length;
@@ -34,11 +31,7 @@ public class DownloadFile {
             outputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
-
-        } finally {
-            if (file.exists())
-                file.delete();
         }
-
     }
+
 }
