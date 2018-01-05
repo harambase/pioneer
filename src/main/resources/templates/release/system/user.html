@@ -232,7 +232,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-12 col-sm-4">
+                                    <div class="col-md-12 col-sm-4" v-if="pageMode==='create' && pageMode ==='view'">
                                         <div class="panel panel-success">
                                             <div class="panel-heading">
                                                 账户属性
@@ -431,7 +431,7 @@
                         </div>
                     </div>
                 </div>
-                <div id=footerPlaceholder">
+                <div class="panel-footer" id=footerPlaceholder">
                     <div th:include="/release/common/footer :: copy" id="copyright"></div>
                 </div>
             </div>
