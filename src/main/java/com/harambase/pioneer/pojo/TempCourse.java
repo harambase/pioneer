@@ -6,21 +6,35 @@ public class TempCourse implements Serializable {
 
     private Integer id;
 
-    public Integer getId() {
-        return id;
-    }
-
     private String crn;
 
     private String status;
 
-    private String createtime;
+    private String createTime;
 
-    private String updatetime;
+    private String updateTime;
 
-    private String operator;
+    private String operatorId;
+
+    private String facultyId;
 
     private String courseJson;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getFacultyId() {
+        return facultyId;
+    }
+
+    public void setFacultyId(String facultyId) {
+        this.facultyId = facultyId;
+    }
 
     public String getCrn() {
         return crn;
@@ -38,28 +52,28 @@ public class TempCourse implements Serializable {
         this.status = status == null ? null : status.trim();
     }
 
-    public String getCreatetime() {
-        return createtime;
+    public String getCreateTime() {
+        return createTime;
     }
 
-    public void setCreatetime(String createtime) {
-        this.createtime = createtime == null ? null : createtime.trim();
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime == null ? null : createTime.trim();
     }
 
-    public String getUpdatetime() {
-        return updatetime;
+    public String getUpdateTime() {
+        return updateTime;
     }
 
-    public void setUpdatetime(String updatetime) {
-        this.updatetime = updatetime == null ? null : updatetime.trim();
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime == null ? null : updateTime.trim();
     }
 
-    public String getOperator() {
-        return operator;
+    public String getOperatorId() {
+        return operatorId;
     }
 
-    public void setOperator(String operator) {
-        this.operator = operator == null ? null : operator.trim();
+    public void setOperatorId(String operatorId) {
+        this.operatorId = operatorId == null ? null : operatorId.trim();
     }
 
     public String getCourseJson() {

@@ -178,16 +178,14 @@ public class ShiroConfig {
         Map<String, String> hashMap = new HashMap<>();
         hashMap.put("/**", "anon");
         hashMap.put("/static/**", "anon");
-        hashMap.put("/request/user/register", "anon");
-        hashMap.put("/release/common/**", "anon");
-        hashMap.put("/stystem/**", "anon");
+        hashMap.put("/request/user/registerNewUser", "anon");
+        hashMap.put("/common/**", "anon");
+        hashMap.put("/system/**", "anon");
         hashMap.put("/403", "anon");
         hashMap.put("/404", "anon");
-        hashMap.put("/reg", "anon");
+        hashMap.put("/registerNewUser", "anon");
         hashMap.put("/login", "anon");
         hashMap.put("/system/login", "anon");
-        hashMap.put("/swagger-ui.html", "anon");
-        hashMap.put("/swagger", "anon");
         hashMap.put("/", "anon");
         hashMap.put("/index", "authc");
 

@@ -20,5 +20,5 @@ public interface PinService {
 
     HaramMessage sendFacultyPin(String info, String senderId);
 
-
+    HaramMessage getAllInfo();
 }

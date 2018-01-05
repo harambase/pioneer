@@ -2,6 +2,7 @@ package com.harambase.pioneer.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.harambase.common.HaramMessage;
+import com.harambase.pioneer.pojo.TempCourse;
 import com.harambase.pioneer.pojo.TempUser;
 import com.harambase.pioneer.service.RequestService;
 import com.harambase.support.util.SessionUtil;
@@ -29,7 +30,7 @@ public class RequestController {
 
     @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
     @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT)
-    public ResponseEntity updateRequest(@PathVariable Integer id, @RequestBody TempUser tempUser) {
+    public ResponseEntity updateUserRequest(@PathVariable Integer id, @RequestBody TempUser tempUser) {
         tempUser.setOperatorId(SessionUtil.getUserId());
         HaramMessage message = requestService.updateTempUser(id, tempUser);
         return new ResponseEntity<>(message, HttpStatus.OK);
@@ -37,8 +38,15 @@ public class RequestController {
 
     @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
     @RequestMapping(value = "/user/register", method = RequestMethod.POST)
-    public ResponseEntity register(@RequestBody JSONObject jsonObject) {
-        HaramMessage haramMessage = requestService.register(jsonObject);
+    public ResponseEntity registerNewUser(@RequestBody JSONObject jsonObject) {
+        HaramMessage haramMessage = requestService.registerNewUser(jsonObject);
+        return new ResponseEntity<>(haramMessage, HttpStatus.OK);
+    }
+
+    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity deleteTempUser(@PathVariable Integer id) {
+        HaramMessage haramMessage = requestService.deleteTempUser(id);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
@@ -59,29 +67,43 @@ public class RequestController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-//    @RequestMapping(value = "/teach/list", produces = "application/json", method = RequestMethod.GET)
-//    public ResponseEntity courseList(@RequestParam(value = "start") Integer start,
-//                                     @RequestParam(value = "length") Integer length,
-//                                     @RequestParam(value = "draw") Integer draw,
-//                                     @RequestParam(value = "search[value]") String search,
-//                                     @RequestParam(value = "order[0][dir]") String order,
-//                                     @RequestParam(value = "order[0][column]") String orderCol,
-//                                     HttpSession session){
-//        Map<String, Object> map = new HashMap<>();
-//        try {
-//            HaramMessage message = courseService.tempCourseList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderCol);
-//            map.put("draw", draw);
-//            map.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
-//            map.put("recordsFiltered", ((Page) message.get("page")).getTotalRows());
-//            map.put("data", message.getData());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            map.put("draw", 1);
-//            map.put("data", new ArrayList<>());
-//            map.put("recordsTotal", 0);
-//            map.put("recordsFiltered", 0);
-//        }
-//        return new ResponseEntity<>(map, HttpStatus.OK);
-//    }
+    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
+    @RequestMapping(value = "/course/{id}", method = RequestMethod.PUT)
+    public ResponseEntity updateCourseRequest(@PathVariable Integer id, @RequestBody TempCourse tempCourse) {
+        tempCourse.setOperatorId(SessionUtil.getUserId());
+        HaramMessage message = requestService.updateTempCourse(id, tempCourse);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
 
+    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
+    @RequestMapping(value = "/course/register", method = RequestMethod.POST)
+    public ResponseEntity registerNewCourse(@RequestBody JSONObject jsonObject) {
+        HaramMessage haramMessage = requestService.registerNewCourse(jsonObject);
+        return new ResponseEntity<>(haramMessage, HttpStatus.OK);
+    }
+
+    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
+    @RequestMapping(value = "/course/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity deleteTempCourse(@PathVariable Integer id) {
+        HaramMessage haramMessage = requestService.deleteTempCourse(id);
+        return new ResponseEntity<>(haramMessage, HttpStatus.OK);
+    }
+
+    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
+    @RequestMapping(value = "/course", produces = "application/json", method = RequestMethod.GET)
+    public ResponseEntity courseList(@RequestParam(value = "start") Integer start,
+                                     @RequestParam(value = "length") Integer length,
+                                     @RequestParam(value = "draw") Integer draw,
+                                     @RequestParam(value = "search[value]") String search,
+                                     @RequestParam(value = "order[0][dir]") String order,
+                                     @RequestParam(value = "order[0][column]") String orderCol,
+                                     @RequestParam(value = "viewStatus") String viewStatus,
+                                     @RequestParam(value = "facultyId", required = false) String facultyId) {
+
+        HaramMessage message = requestService.tempCourseList(start, length, search, order, orderCol, viewStatus, facultyId);
+        message.put("draw", draw);
+        message.put("recordsTotal", ((LinkedHashMap) message.get("page")).get("totalRows"));
+        message.put("recordsFiltered", ((LinkedHashMap) message.get("page")).get("totalRows"));
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
 }
