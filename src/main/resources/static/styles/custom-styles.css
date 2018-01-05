@@ -26,6 +26,10 @@ body {
     min-height: 1200px;
 }
 
+#main-menu {
+    margin-top: 12px;
+}
+
 .header .container-fluid {
     padding: 0;
 }
@@ -572,7 +576,7 @@ div#sideNav:hover {
     color: #fff;
     width: 260px;
     text-align: left;
-    height: 60px;
+    height: 72px;
     font-size: 24px;
     font-weight: 700; /* text-transform: uppercase; */
     line-height: 30px;

@@ -1,9 +1,12 @@
 package com.harambase.pioneer.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.harambase.common.HaramMessage;
 import com.harambase.pioneer.pojo.Person;
 import com.harambase.pioneer.service.PersonService;
+import com.harambase.support.util.FileUtil;
 import com.harambase.support.util.SessionUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.LinkedHashMap;
 
 @CrossOrigin
@@ -97,5 +101,15 @@ public class PersonController {
                                      @PathVariable String userId){
         HaramMessage message = personService.upload(userId, file, "f");
         return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/info/{userId}", method = RequestMethod.GET)
+    public void studentTranscriptReport(@PathVariable(value = "userId") String userId, HttpServletResponse response) {
+        HaramMessage message = personService.get(userId);
+        String userInfo = (String)((LinkedHashMap) message.getData()).get("userInfo");
+        if(StringUtils.isNotEmpty(userInfo)) {
+            JSONObject info = JSONObject.parseObject(userInfo);
+            FileUtil.downloadFile(info.getString("name"), info.getString("path"), response);
+        }
     }
 }
