@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml"
-      xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -62,7 +61,9 @@
 </div>
 
 </body>
-<div th:include="/release/common/js :: load_js(false,false,false)"></div>
+<script src="/static/plugins/vue/vue.js"></script>
+<script src="/static/plugins/axios/axios.min.js"></script>
+<script src="/static/plugins/md5/md5.js"></script>
 <script>
     new Vue({
         el: '#loginForm',
@@ -86,7 +87,5 @@
             }
         }
     });
-
-
 </script>
 </html>

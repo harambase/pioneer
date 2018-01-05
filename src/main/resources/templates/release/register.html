@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<html xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>注册</title>
 
-    <link href="/static/plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
-    <link href="/static/plugins/confirm/confirm.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/plugins/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/plugins/confirm/confirm.css">
     <link rel="stylesheet" href="/static/plugins/blur-admin/vendor-dddc8eebb5.css">
     <link rel="stylesheet" href="/static/plugins/blur-admin/auth-6732706e87.css">
 
@@ -67,7 +67,6 @@
             </div>
             <div class="form-group">
                 <label for="lastName" class="col-sm-2 control-label"><span style="color: red">*</span>电话</label>
-
                 <div class="col-sm-10">
                     <input class="form-control" id="tel" isDigits="true" placeholder="*电话号码" minlength="8"
                            maxlength="11" required v-model="regUser.tel">
@@ -114,8 +113,9 @@
         </form>
     </div>
 </main>
-<div th:include="/release/common/js :: load_js(false,false,false)"></div>
-
+<script src="/static/plugins/vue/vue.js"></script>
+<script src="/static/plugins/axios/axios.min.js"></script>
+<script src="/static/plugins/md5/md5.js"></script>
 <script>
     new Vue({
         el: '#regForm',
@@ -130,7 +130,7 @@
                 tel: "",
                 birthday: "",
                 gender: "",
-                comment:""
+                comment: ""
             },
             isReturn: false
         },
