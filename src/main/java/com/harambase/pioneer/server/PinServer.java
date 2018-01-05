@@ -88,4 +88,10 @@ public class PinServer {
         return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
     }
 
+    public HaramMessage getAllInfo(String ip, int port) {
+        String remotePath = "/pin/info";
+        StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
+        Map params = new HashMap();
+        return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
+    }
 }

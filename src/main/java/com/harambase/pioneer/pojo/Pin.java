@@ -24,6 +24,16 @@ public class Pin implements Serializable{
 
     private String remark;
 
+    private String owner;
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
     public Integer getId() {
         return id;
     }

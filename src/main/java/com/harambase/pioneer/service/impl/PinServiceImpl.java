@@ -56,6 +56,11 @@ public class PinServiceImpl implements PinService {
     }
 
     @Override
+    public HaramMessage getAllInfo() {
+        return pinServer.getAllInfo(IP, PORT);
+    }
+
+    @Override
     public HaramMessage sendAdvisorPin(String info, String senderId) {
         return pinServer.sendAdvisorPin(IP, PORT, info, senderId);
     }
