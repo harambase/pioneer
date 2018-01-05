@@ -16,17 +16,17 @@ public class WebController {
 
     @RequestMapping("/register")
     public String signUp() {
-        return "register";
+        return "registerNewUser";
     }
 
     @RequestMapping("/403")
     public String authError() {
-        return "web/403";
+        return "common/403";
     }
 
     @RequestMapping("/404")
     public String pageNotFound() {
-        return "web/404";
+        return "common/404";
     }
 
     //只需要用户权限

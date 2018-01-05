@@ -1,14 +1,14 @@
 ﻿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:include="/release/student/common/header :: commonHeader('课程查看',true, false)"></head>
+<head th:include="/common/header :: commonHeader('课程查看',true, false)"></head>
 <body>
 <div id="wrapper">
     <!--/. NAV TOP  -->
-    <div th:include="/release/student/common/navtop :: navtop" class="sidebar-collapse"></div>
+    <div th:include="/common/navtop :: navtop" class="sidebar-collapse"></div>
 
     <!-- /. NAV SIDE  -->
-    <div th:include="/release/student/common/navbar :: nav" class="sidebar-collapse"></div>
+    <div th:include="/common/navbar :: nav" class="sidebar-collapse"></div>
     <div id="page-wrapper">
         <div class="header">
             <h1 class="page-header">
@@ -41,7 +41,7 @@
                 </div>
             </div>
             <div id = footerPlaceholder">
-                <div th:include="/release/student/common/footer :: copy" id="copyright"></div>
+                <div th:include="/common/footer :: copy" id="copyright"></div>
             </div>
         </div>
         <!-- /. PAGE INNER  -->
@@ -49,9 +49,9 @@
     <!-- /. PAGE WRAPPER  -->
 </div>
 <!-- /. WRAPPER  -->
-<div th:include="/release/student/common/js :: load_js(true , false, false)"></div>
+<div th:include="/common/js :: load_js(true , false, false)"></div>
 
-<script src="/static/scripts/student/course/manageCourse.js"></script>
+<script src="/static/scripts/course/manageCourse.js"></script>
 
 </body>
 </html>

@@ -53,7 +53,7 @@
             </div>
             <div id="footerPlaceholder">
                 <div id=footerPlaceholder">
-                    <div th:include="/release/common/footer :: copy" id="copyright"></div>
+                    <div th:include="/common/footer :: copy" id="copyright"></div>
                 </div>
             </div>
         </div>
@@ -79,7 +79,7 @@
                 loginUser.password = hex_md5(this.user.password);
                 axios.post("/system/login", loginUser).then(function (response) {
                     if (response.data.code === 2001)
-                        window.location.href = basePath + "/index";
+                        window.location.href = "/index";
                     else
                         Showbo.Msg.alert("登录失败", function () {
                         });
