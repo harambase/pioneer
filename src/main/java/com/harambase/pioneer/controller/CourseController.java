@@ -68,7 +68,7 @@ public class CourseController {
         if (mode != null && mode.equals("faculty"))
             facultyid = SessionUtil.getUserId();
         if (mode != null && mode.equals("choose"))
-            info = SessionUtil.getPin().getInfo();
+            info = (String)SessionUtil.getPin().get("info");
 
         HaramMessage message = courseService.courseList(start, length, search, order, orderCol, facultyid, info);
         message.put("draw", draw);
@@ -86,7 +86,7 @@ public class CourseController {
         if (mode != null && mode.equals("faculty"))
             facultyid = SessionUtil.getUserId();
         if (mode != null && mode.equals("choose"))
-            info = SessionUtil.getPin().getInfo();
+            info = (String)SessionUtil.getPin().get("info");
 
         HaramMessage message = courseService.courseTreeList(facultyid, info);
         return new ResponseEntity<>(message, HttpStatus.OK);

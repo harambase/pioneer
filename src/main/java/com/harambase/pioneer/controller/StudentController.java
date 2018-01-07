@@ -38,7 +38,7 @@ public class StudentController {
     @RequiresPermissions(value = {"admin", "student", "teach"}, logical = Logical.OR)
     @RequestMapping(value = "/{studentId}/available/credit", method = RequestMethod.GET)
     public ResponseEntity getAvailableCredit(@PathVariable(value = "studentId") String studentId) {
-        HaramMessage haramMessage = studentService.getAvailableCredit(studentId, SessionUtil.getPin().getInfo());
+        HaramMessage haramMessage = studentService.getAvailableCredit(studentId, (String)SessionUtil.getPin().get("info"));
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 

@@ -1,0 +1,407 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml">
+
+<head th:include="/common/header :: commonHeader('选课设置',true, true)"></head>
+<body>
+<div id="wrapper">
+    <!--/. NAV TOP  -->
+    <div th:include="/common/navtop :: navtop" class="sidebar-collapse"></div>
+
+    <!-- /. NAV SIDE  -->
+    <div th:include="/common/navbar :: nav" class="sidebar-collapse"></div>
+
+    <div id="page-wrapper">
+        <div class="header">
+            <h1 class="page-header">
+                先锋教务管理
+                <small>创建新课程</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="/index">主页</a></li>
+                <li><a href="#">教学系统</a></li>
+                <li class="active">选课课程表单</li>
+            </ol>
+
+        </div>
+        <div id="page-inner">
+            <div class="row">
+                <div class="col-md-12" id="choosePage">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="card-title">
+                                <div class="title">新学期选课课程表单</div>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <form class="form-horizontal" id="pinNumForm" onclick="return false;">
+                                <div class="col-md-12 col-sm-4">
+                                    <div class="panel panel-danger">
+                                        <div class="panel-heading">
+                                            识别码验证
+                                        </div>
+                                        <div class="form-group panel-body">
+                                            <div class="col-sm-2">
+                                                <label for="pin" class="col-sm-12 control-label">*请输入识别码:</label>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <input id="pin" class="form-control" minlength="6" maxlength="6"
+                                                       required v-model="pin"/>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <button style="width:150px;" class="btn btn-success"
+                                                        v-on:click="validate">
+                                                    验证
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="panel-footer">
+                                            注意：该处填写你的识别码，你的识别码请在导师处获取。
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <form class="form-horizontal" v-if="pinValidate">
+                                <div class="col-md-12 col-sm-4">
+                                    <div class="panel panel-success">
+                                        <div class="panel-heading">
+                                            选课工作区
+                                        </div>
+                                        <div class="form-group panel-body">
+                                            <div class="col-md-3">
+                                                <div class="panel panel-info">
+                                                    <div class="panel-heading">
+                                                        选课工作表
+                                                    </div>
+                                                    <div class="panel-body" style="font-size: 8px">
+                                                        <div class="form-group">
+                                                            <div class="col-sm-4">
+                                                                总可用学分:
+                                                                <input id="tol_credits" class="form-control"
+                                                                       style="width:100%;" value="0" disabled v-model="tol_credits">
+                                                            </div>
+                                                            <div class="col-sm-4">
+                                                                当前已用学分:
+                                                                <input id="use_credits" class="form-control"
+                                                                       style="width:100%;" value="0" disabled v-model="use_credits">
+                                                            </div>
+                                                            <div class="col-sm-4">
+                                                                当前可用学分:
+                                                                <input id="ava_credits" class="form-control"
+                                                                       style="width:100%;" value="0" disabled v-model="ava_credits">
+                                                            </div>
+                                                        </div>
+                                                        <hr/>
+                                                        <div id="worksheet"></div>
+                                                        <hr/>
+                                                        <div class="form-group">
+                                                            <div class="col-sm-6">
+                                                                <button style="width:150px;" class="btn btn-success"
+                                                                        id="submit">
+                                                                    提交
+                                                                </button>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <button style="width:150px;" class="btn btn-danger"
+                                                                        id="reset">
+                                                                    重置当前
+                                                                </button>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <div class="panel panel-info">
+                                                    <div class="panel-heading">
+                                                        新学期课程列表
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <table id="newCourseTable" style="width: 100%;font-size: 8px;"
+                                                               class="table table-striped table-bordered table-hover"></table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </form>
+
+                        </div>
+                        <div class="panel-footer" id=footerPlaceholder">
+                            <div th:include="/common/footer :: copy" id="copyright"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /. PAGE INNER  -->
+    </div>
+    <!-- /. PAGE WRAPPER  -->
+</div>
+<!-- /. WRAPPER  -->
+<!--load_js(table,chart,select2)-->
+<div th:include="/common/js :: load_js(true , false, false)"></div>
+
+<script>
+    let courseTable;
+    let chooseVue = new Vue({
+        el: "#choosePage",
+        data: {
+            pin: "",
+            pinValidate: false,
+            tol_credits:"",
+            use_credits:"",
+            ava_credits:"",
+        },
+        mounted: function () {
+            axios.get('/pin/session').then(function (response) {
+                if (response.data.code === 2001) {
+                    initStudentInfo();
+                    courseTable.draw();
+                    this.pinValidate = true;
+                }
+            })
+        },
+        methods: {
+            validate: function () {
+                axios.get('/pin/' + this.pin).then(function (response) {
+                    if (response.data.code === 2001) {
+                        initStudentInfo();
+                        courseTable.draw();
+                        this.pinValidate = true;
+                    } else
+                        Showbo.Msg.alert("验证失败!", function () {
+                        });
+                })
+            }
+        }
+    });
+
+    function initStudentInfo() {
+        axios.get('/user/current').then(function (response) {
+            initStudent(response.data.data.userId);
+        });
+    }
+
+    $(function () {
+        courseTable = $("#newCourseTable").DataTable({
+
+            "language": {
+                "aria": {
+                    "sortAscending": ": activate to sort column ascending",
+                    "sortDescending": ": activate to sort column descending"
+                },
+                "emptyTable": "没有数据！",
+                "info": "显示 _START_ 至 _END_ 条 ，总共_TOTAL_ 条数据",
+                "infoEmpty": "没有发现记录！",
+                "infoFiltered": "(从_MAX_条记录中搜索)",
+                "lengthMenu": "显示: _MENU_",
+                "search": "搜索:",
+                "zeroRecords": "没有找到匹配的记录！",
+                "paginate": {
+                    "previous": "上一页",
+                    "next": "下一页",
+                    "last": "尾页",
+                    "first": "首页"
+                }
+            },
+            "pagingType": "full_numbers",
+            "lengthMenu": [
+                [5],
+                [5]
+            ],
+            pageLength: 5,
+            processing: true,
+            serverSide: true,
+
+            ajax: {
+                url: basePath + "/course",
+                data: function (d) {
+                    d.mode = "choose";
+                }
+            },
+            columns: [
+                {"data": "crn", "title": "编号"},
+                {"data": "name", "title": "课名"},
+                {
+                    "data": null, "title": "等级-班级", "createdCell": function (nTd, rowData) {
+                        $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; font-size:8px; color:blue; ">' + rowData.coulev + "-" + rowData.cousec + '</p>');
+                    }
+                },
+                {"data": "credits", "title": "学分"},
+                {
+                    "data": null, "title": "容量/剩余", "createdCell": function (nTd, rowData) {
+                        $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; font-size:8px; color:blue; ">' + rowData.capa + "/" + rowData.remain + '</p>');
+                    }
+                },
+                {
+                    "data": "status", "title": "状态", "createdCell": function (nTd, rowData) {
+                        if (rowData === "1")
+                            $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; font-size:8px; color:blue; ">未开始</p>');
+                        else if (rowData === "0")
+                            $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; font-size:8px; color:green; ">进行中</p>');
+                        else if (rowData === "-1")
+                            $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; font-size:8px; color:red; ">已结课</p>');
+                    }
+                },
+                {"data": "date", "title": "起止时间"},
+                {"data": "time", "title": "上课时间"},
+                {"data": "day", "title": "星期"},
+                {"data": "faculty", "title": "授课老师"},
+                {
+                    "data": null, "title": "操作", "createdCell": function (nTd, rowData) {
+                        $(nTd).html(
+                            '<i href="#" style="color: black;" class="fa fa-search" title="详情">' +
+                            '   <span style="cursor: pointer" class="info" onclick="showInfo(\'' + rowData.crn + '\')">详情</span>' +
+                            '</i>' +
+                            '<br/>' +
+                            '<i href="#" style="margin-top:5px; color: green;" class="fa fa-plus" title="添入工作表">' +
+                            '   <span style="cursor: pointer" class="info" onclick="addToWorkSheet(\'' + rowData.crn + '\',\'' + rowData.credits + '\')">添入工作表</span>' +
+                            '</i>'
+                        );
+                    }, "width": "80px"
+                }
+            ],
+            "columnDefs": [{
+                orderable: false,
+                targets: [10]
+            }, {
+                "defaultContent": "",
+                "targets": "_all"
+            }]
+        });
+    });
+
+    function initStudent(studentId) {
+        axios.get("/student/" + studentId + "/available/credit").then(function (response) {
+             if (response.data.code === 2001) {
+                chooseVue.$data.tol_credits = response.data.tol_credits;
+                chooseVue.$data.use_credits = response.data.use_credits;
+                chooseVue.$data.ava_credits = response.data.ava_credits;
+             } else
+                Showbo.Msg.alert("获取学生信息失败!", function () {
+                });
+        });
+    }
+
+    let crn = "";
+    let counter = 0;
+    let crnList = [];
+
+    function showInfo(crn) {
+        window.location.href = basePath + "/student/teach/view?crn=" + crn;
+    }
+
+    function isAvaCreditsEnough(credits) {
+        return (chooseVue.$data.tol_credits - chooseVue.$data.use_credits - credits) >= 0;//true:enough, false:not enough
+    }
+
+    function isSelectAgain(crn) {
+        let newId = "input_" + crn;
+        let input = document.getElementById(newId);
+        return input !== null; //true:again, false:not again
+    }
+
+    function addToWorkSheet(crn, credits) {
+        if (!isAvaCreditsEnough(credits)) {
+            Showbo.Msg.alert("学分不足!", function () {
+            });
+            return;
+        }
+        if (isSelectAgain(crn)) {
+            Showbo.Msg.alert("不可重复选!", function () {
+            });
+            return;
+        }
+        counter++;
+        crnList.push(crn);
+
+        var worksheet = $("#worksheet").html() +
+            '<div id="form_' + crn + '" class="form-group">' +
+            '   <div class="col-sm-1">' +
+            '       <i id="remove_' + crn + '" class="fa fa-minus-circle fa-3x" style="color: red; cursor: pointer; margin-top: 3px;" ' +
+            '          onclick="removeFromWorkSheet(\'' + crn + '\',\'' + credits + '\')"></i>' +
+            '   </div>' +
+            '   <div class="col-sm-4">' +
+            '       <label for="input_' + crn + '" class="control-label" style="width:100%;">已选课程:</label>' +
+            '   </div>' +
+            '   <div class="col-sm-6" style="width: 58%;">' +
+            '        <input name="course_choose" id="input_' + crn + '" class="form-control" minlength="6" maxlength="6" value="' + crn + '" required disabled/>' +
+            '   </div>' +
+            '</div>';
+
+
+        use_credits += parseInt(credits);
+        ava_credits = tol_credits - use_credits;
+        setCredits();
+
+
+        $("#worksheet").html(worksheet);
+    }
+
+    function removeFromWorkSheet(crn, credits) {
+        var newId = "#form_" + crn;
+        $(newId).remove();
+        use_credits -= parseInt(credits);
+        ava_credits = tol_credits - use_credits;
+        setCredits();
+    }
+
+    $("#reset").click(function () {
+        $("#worksheet").html("");
+        initStudentInfo();
+    });
+
+    $("#submit").click(function () {
+        var choiceList = [];
+        if (crnList.length === 0) {
+            Showbo.Msg.alert("没有选择任何课程!", function () {
+            });
+            return;
+        }
+        for (var i = 0; i < crnList.length; i++) {
+            var newId = "input_" + crnList[i];
+            var input = document.getElementById(newId);
+            if (input !== null) {
+                choiceList.push(crnList[i]);
+            }
+        }
+        sendChoiceListAjax(choiceList);
+    });
+
+    function sendChoiceListAjax(choiceList) {
+        $.ajax({
+            url: basePath + "/teach/choose",
+            type: "POST",
+            data: {
+                "choiceList": choiceList
+            },
+            success: function (data) {
+                var failList = data.data.failList;
+                if (failList.length === 0)
+                    Showbo.Msg.alert("全部注册成功!", function () {
+                        $("#worksheet").html("");
+                        initStudentInfo();
+                    });
+                else {
+                    var html = '<table style="text-align: left">';
+                    for (var i = 0; i < failList.length; i++) {
+                        html += '<tr><td>' + failList[i] + '</td></tr>';
+                    }
+                    var input = '<p style="color: red">课程注册失败详情</p>' + html + '</table>';
+                    Showbo.Msg.show({
+                        buttons: {yes: '确定'}, msg: input, title: '注意', fn: function () {
+                            $("#worksheet").html("");
+                            initStudentInfo();
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

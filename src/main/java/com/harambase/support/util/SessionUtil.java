@@ -4,6 +4,8 @@ import com.harambase.pioneer.pojo.Person;
 import com.harambase.pioneer.pojo.Pin;
 import org.apache.shiro.SecurityUtils;
 
+import java.util.LinkedHashMap;
+
 public class SessionUtil {
 
     public static Person getUser() {
@@ -14,8 +16,8 @@ public class SessionUtil {
         return ((Person) SecurityUtils.getSubject().getSession().getAttribute("user")).getUserId();
     }
 
-    public static Pin getPin() {
-        return ((Pin) SecurityUtils.getSubject().getSession().getAttribute("pin"));
+    public static LinkedHashMap getPin() {
+        return ((LinkedHashMap) SecurityUtils.getSubject().getSession().getAttribute("pin"));
     }
 
     public static void setPin(Object pin) {

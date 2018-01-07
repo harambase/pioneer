@@ -79,7 +79,7 @@ public class WebController {
 
     @RequestMapping("/teach/choose")
     public String courseChoose() {
-        return "teach/courseChoose";
+        return "teach/choose";
     }
 
     @RequestMapping("/teach/pin")
