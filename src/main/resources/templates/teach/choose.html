@@ -141,11 +141,12 @@
     <!-- /. PAGE WRAPPER  -->
 </div>
 <!-- /. WRAPPER  -->
-<!--load_js(table,chart,select2)-->
 <div th:include="/common/js :: load_js(true , false, false)"></div>
 
 <script>
+
     let courseTable;
+
     let chooseVue = new Vue({
         el: "#choosePage",
         data: {
@@ -183,7 +184,18 @@
         axios.get('/user/current').then(function (response) {
             initStudent(response.data.data.userId);
         });
-    }
+        function initStudent(studentId) {
+            axios.get("/student/" + studentId + "/available/credit").then(function (response) {
+                if (response.data.code === 2001) {
+                    chooseVue.$data.tol_credits = response.data.tol_credits;
+                    chooseVue.$data.use_credits = response.data.use_credits;
+                    chooseVue.$data.ava_credits = response.data.ava_credits;
+                } else
+                    Showbo.Msg.alert("获取学生信息失败!", function () {
+                    });
+            });
+        }
+    }    
 
     $(function () {
         courseTable = $("#newCourseTable").DataTable({
@@ -227,7 +239,7 @@
                 {"data": "name", "title": "课名"},
                 {
                     "data": null, "title": "等级-班级", "createdCell": function (nTd, rowData) {
-                        $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; font-size:8px; color:blue; ">' + rowData.coulev + "-" + rowData.cousec + '</p>');
+                        $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; font-size:8px; color:blue; ">' + rowData.level + "-" + rowData.section + '</p>');
                     }
                 },
                 {"data": "credits", "title": "学分"},
@@ -273,19 +285,7 @@
             }]
         });
     });
-
-    function initStudent(studentId) {
-        axios.get("/student/" + studentId + "/available/credit").then(function (response) {
-             if (response.data.code === 2001) {
-                chooseVue.$data.tol_credits = response.data.tol_credits;
-                chooseVue.$data.use_credits = response.data.use_credits;
-                chooseVue.$data.ava_credits = response.data.ava_credits;
-             } else
-                Showbo.Msg.alert("获取学生信息失败!", function () {
-                });
-        });
-    }
-
+    
     let crn = "";
     let counter = 0;
     let crnList = [];
@@ -295,7 +295,7 @@
     }
 
     function isAvaCreditsEnough(credits) {
-        return (chooseVue.$data.tol_credits - chooseVue.$data.use_credits - credits) >= 0;//true:enough, false:not enough
+        return (chooseVue.$data.tol_credits - chooseVue.$data.use_credits - credits) >= 0;
     }
 
     function isSelectAgain(crn) {
@@ -318,7 +318,7 @@
         counter++;
         crnList.push(crn);
 
-        var worksheet = $("#worksheet").html() +
+        let worksheet = $("#worksheet").html() +
             '<div id="form_' + crn + '" class="form-group">' +
             '   <div class="col-sm-1">' +
             '       <i id="remove_' + crn + '" class="fa fa-minus-circle fa-3x" style="color: red; cursor: pointer; margin-top: 3px;" ' +
@@ -342,7 +342,7 @@
     }
 
     function removeFromWorkSheet(crn, credits) {
-        var newId = "#form_" + crn;
+        let newId = "#form_" + crn;
         $(newId).remove();
         use_credits -= parseInt(credits);
         ava_credits = tol_credits - use_credits;
@@ -355,15 +355,15 @@
     });
 
     $("#submit").click(function () {
-        var choiceList = [];
+        let choiceList = [];
         if (crnList.length === 0) {
             Showbo.Msg.alert("没有选择任何课程!", function () {
             });
             return;
         }
-        for (var i = 0; i < crnList.length; i++) {
-            var newId = "input_" + crnList[i];
-            var input = document.getElementById(newId);
+        for (let i = 0; i < crnList.length; i++) {
+            let newId = "input_" + crnList[i];
+            let input = document.getElementById(newId);
             if (input !== null) {
                 choiceList.push(crnList[i]);
             }
@@ -379,18 +379,18 @@
                 "choiceList": choiceList
             },
             success: function (data) {
-                var failList = data.data.failList;
+                let failList = data.data.failList;
                 if (failList.length === 0)
                     Showbo.Msg.alert("全部注册成功!", function () {
                         $("#worksheet").html("");
                         initStudentInfo();
                     });
                 else {
-                    var html = '<table style="text-align: left">';
-                    for (var i = 0; i < failList.length; i++) {
+                    let html = '<table style="text-align: left">';
+                    for (let i = 0; i < failList.length; i++) {
                         html += '<tr><td>' + failList[i] + '</td></tr>';
                     }
-                    var input = '<p style="color: red">课程注册失败详情</p>' + html + '</table>';
+                    let input = '<p style="color: red">课程注册失败详情</p>' + html + '</table>';
                     Showbo.Msg.show({
                         buttons: {yes: '确定'}, msg: input, title: '注意', fn: function () {
                             $("#worksheet").html("");
