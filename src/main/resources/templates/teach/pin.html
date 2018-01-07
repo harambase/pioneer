@@ -25,23 +25,41 @@
         </div>
         <div id="page-inner">
             <div class="row" id="pinPage">
-                <div class="col-md-12" v-show="table">
+                <div class="col-md-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <div class="card-title">
-                                <div class="title">系统识别列表</div>
-                            </div>
+                            <span data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="collapsed"
+                                  style="cursor: pointer"><i class="fa down"></i> 识别码列表（按学期分类） </span>
                         </div>
-                        <div class="panel-body">
-                            <table class="table table-striped table-bordered table-hover" id="pinTable"></table>
+                        <div id="collapseOne" class="panel-collapse collapse" style="height: auto;">
+                            <div class="panel-body">
+                                <div class="col-md-12 col-sm-4">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <div class="col-sm-2">
+                                                <label class="col-sm-12 control-label">*请选择学期:</label>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <select style="width: 100%" class="js-example-basic-single info"
+                                                        name="info" id="info" onchange="refresh()">
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-4">
+                                    <table style="width: 100%;" class="table table-striped table-bordered table-hover"
+                                           id="pinTable"></table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12" v-if="manage">
+                <div class="col-md-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                                    <span data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"
-                                          style="cursor: pointer"><i class="fa down"></i> 识别码(PIN)生成 </span>
+                            <span data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"
+                                  style="cursor: pointer"><i class="fa down"></i> 识别码(PIN)生成 </span>
                         </div>
                         <div id="collapseTwo" class="panel-collapse in" style="height: auto;">
                             <div class="panel-body">
@@ -49,17 +67,43 @@
                                     <div class="col-md-12 col-sm-4">
                                         <div class="panel panel-danger">
                                             <div class="panel-heading">
-                                                学期信息
+                                                生成规则信息
                                             </div>
-                                            <div class="form-group panel-body">
-                                                <div class="col-sm-2">
-                                                    <label for="info"
-                                                           class="col-sm-12 control-label">*年份-学期(YYYY-XX):</label>
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <div class="col-sm-2">
+                                                        <label for="info" class="col-sm-12 control-label">*年份-学期(YYYY-XX):</label>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <input class="form-control" minlength="7" maxlength="7"
+                                                               required/>
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <label for="info" class="col-sm-12 control-label">*是否批量:</label>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <div class="radio3 radio-check radio-success radio-inline">
+                                                            <input type="radio" id="batch" name="mode" value="1"
+                                                                   v-model="mode">
+                                                            <label for="batch">批量</label>
+                                                        </div>
+                                                        <div class="radio3 radio-check radio-success radio-inline">
+                                                            <input type="radio" id="single" name="mode" value="0"
+                                                                   v-model="mode">
+                                                            <label for="single">单个</label>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="col-sm-3">
-                                                    <input id="info" class="form-control" minlength="7"
-                                                           maxlength="7" required/>
+                                                <div class="form-group" v-show="mode==='0'">
+                                                    <div class="col-sm-2">
+                                                        <label class="col-sm-12 control-label">*请选择所有人:</label>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <select style="width: 100%" class="js-example-basic-single user" name="user">
+                                                        </select>
+                                                    </div>
                                                 </div>
+
                                             </div>
                                             <div class="panel-footer">
                                                 注意：该处填写规则为注册年份-学期号。学期号规则为：春季是01，秋季是02，其他为03。
@@ -78,7 +122,7 @@
                                                                class="col-sm-12 control-label">*生效开始时间:</label>
                                                     </div>
                                                     <div class="col-sm-3">
-                                                        <input id="startTime" class="form-control"  v-model="startTime"
+                                                        <input id="startTime" class="form-control" v-model="startTime"
                                                                minlength="19" maxlength="19" required/>
                                                     </div>
                                                     <div class="col-sm-2">
@@ -97,11 +141,13 @@
                                                     </div>
                                                     <div class="col-sm-8">
                                                         <div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
-                                                            <input type="checkbox" id="course" name="type" value="1" v-model="role">
+                                                            <input type="checkbox" id="course" name="type" value="1"
+                                                                   v-model="role">
                                                             <label for="course">选课</label>
                                                         </div>
-                                                        <div class="checkbox3 checkbox-success checkbox-inline checkbox-chveck checkbox-round checkbox-light">
-                                                            <input type="checkbox" id="transcript" name="type" v-model="role"
+                                                        <div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
+                                                            <input type="checkbox" id="transcript" name="type"
+                                                                   v-model="role"
                                                                    value="2">
                                                             <label for="transcript">成绩录入</label>
                                                         </div>
@@ -114,7 +160,8 @@
                                                     </div>
 
                                                     <div class="col-sm-8">
-                                                        <textarea style="resize: none;" class="form-control" v-model="remark"
+                                                        <textarea style="resize: none;" class="form-control"
+                                                                  v-model="remark"
                                                                   id="comments" rows="3"></textarea>
                                                     </div>
                                                 </div>
@@ -138,8 +185,12 @@
                                                                maxlength="16" checkOpPwd="true" required/>
                                                     </div>
                                                     <button style="width:150px;" class="btn btn-primary"
-                                                            onclick="return false;"
-                                                            v-on:click="generateAll">生成
+                                                            onclick="return false;" v-if="mode==='1'"
+                                                            v-on:click="generateAll">批量生成
+                                                    </button>
+                                                    <button style="width:150px;" class="btn btn-primary"
+                                                            onclick="return false;" v-if="mode==='0'"
+                                                            v-on:click="generateOne">生成单个
                                                     </button>
                                                 </div>
                                             </div>
@@ -152,7 +203,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <span data-toggle="collapse" data-parent="#accordion" href="#collapseThree"
-                                              class="collapsed" style="cursor: pointer">识别码(PIN)清空</span>
+                                  class="collapsed" style="cursor: pointer">识别码(PIN)批量清空</span>
                         </div>
                         <div id="collapseThree" class="panel-collapse collapse">
                             <div class="panel-body">
@@ -170,7 +221,7 @@
                                     <input type="password" id="password" class="form-control" minlength="6"
                                            maxlength="16" checkOpPwd="true" required/>
                                 </div>
-                                <button style="width:150px;" class="btn btn-primary" v-on:click="deleteAll">清除
+                                <button style="width:150px;" class="btn btn-danger" v-on:click="deleteAll">清除
                                 </button>
                             </div>
                         </div>
@@ -186,6 +237,9 @@
 
 <div th:include="/common/js :: load_js(true , false, true)"></div>
 <script>
+
+    let pinTable;
+
     let pinVue = new Vue({
         el: '#pinPage',
         data: {
@@ -194,9 +248,8 @@
             role: [],
             info: "",
             remark: "",
-            userId: "",
-            table: false,
-            manage: true
+            table: "",
+            mode: ""
         },
         mounted: function () {
             laydate.render({
@@ -238,7 +291,7 @@
                 });
             },
             generateOne: function () {
-                let url = "/pin/generate/" + this.userId
+                let url = "/pin/generate/" + $(".user").val()
                     + "?startTime=" + this.startTime
                     + "&endTime=" + this.endTime
                     + "&role=" + this.role
@@ -255,7 +308,7 @@
                     }
                 });
             },
-            deleteAllByInfo: function () {
+            deleteAll: function () {
                 axios.delete('/pin/' + this.info + '/all').then(function (response) {
                     if (response.data.code === 2001)
                         Showbo.Msg.alert(data.msg, function () {
@@ -267,25 +320,28 @@
                     }
                 });
             },
-            deleteOne: function () {
-                axios.delete('/pin/' + this.pin).then(function (response) {
-                    if (response.data.code === 2001)
-                        Showbo.Msg.alert(data.msg, function () {
-                            window.location.reload();
-                        });
-                    else {
-                        Showbo.Msg.alert(data.msg, function () {
-                        });
-                    }
-                });
-            }
+
         }
     });
 
-    let pinTable;
+    function refresh() {
+        pinTable.draw();
+    }
+
+    function deleteOne(pin) {
+        axios.delete('/pin/' + pin).then(function (response) {
+            if (response.data.code === 2001)
+                Showbo.Msg.alert(data.msg, function () {
+                    pinTable.draw();
+                });
+            else {
+                Showbo.Msg.alert(data.msg, function () {
+                });
+            }
+        });
+    }
 
     $(function () {
-
         pinTable = $("#pinTable").DataTable({
             "language": {
                 "aria": {
@@ -318,7 +374,7 @@
             ajax: {
                 url: basePath + "/pin",
                 data: function (d) {
-                    d.info = pinVue.$data.info;
+                    d.info = $("#info").val();
                 }
             },
             columns: [
@@ -333,7 +389,7 @@
                     "data": "role", "title": "类型", "createdCell": function (nTd, rowData) {
                         let html;
                         if (rowData === 1) {
-                            html = '<p style="line-height: 1.42857143; padding-top: 0; color:green;">选课</p>'
+                            html = '<p style="line-height: 1.42857143; padding-top: 0; color:blue;">选课</p>'
                         } else {
                             html = '<p style="line-height: 1.42857143; padding-top: 0; color:green;">成绩录入</p>'
                         }
@@ -342,15 +398,15 @@
                 },
                 {
                     "data": null, "title": "有效时间", "createdCell": function (nTd, rowData) {
-                        $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:black">' + rowData.startTime + " to " + rowData.endTime + '</p>')
-                    }
+                        $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:black">' + rowData.startTime + " 至 " + rowData.endTime + '</p>')
+                    }, "width": "500px"
                 },
-                {"data": "remark", "title": "账户类型"},
-                {"data": "updateTime", "title": "更新时间"},
+                {"data": "remark", "title": "备注"},
+                {"data": "createTime", "title": "创建时间"},
                 {
                     "data": null, "title": "操作", "createdCell": function (nTd, rowData) {
                         $(nTd).html('<button class="btn btn-info" onclick="deleteOne(\'' + rowData.pin + '\')">删除识别码</button>');
-                    }, "width": "180px"
+                    }
                 }
             ],
             "columnDefs": [{
@@ -364,7 +420,7 @@
         });
     });
 
-    //USER列表
+    //info
     $(".info").select2({
         ajax: {
             url: basePath + "/pin/info",
@@ -396,6 +452,45 @@
         templateResult: formatRepo,
         templateSelection: formatRepoSelection
     });
+
+    $(".user").select2({
+        ajax: {
+            url: basePath + "/user/search",
+            type: "GET",
+            delay: 250,
+            data: function (params) {
+                return {
+                    search: params.term,
+                    status: "1"
+                };
+            },
+            processResults: function (data) {
+                let itemList = [];
+                let item;
+                for (let i = 0; i < data.data.length; i++) {
+                    item = {
+                        id: data.data[i].userId,
+                        text: data.data[i].lastName + ", " + data.data[i].firstName
+                    };
+                    itemList.push(item);
+                }
+                return {
+                    results: itemList
+                };
+            },
+            cache: true
+        },
+        language: "zh-CN",
+        tags: false,//允许手动添加
+        allowClear: false,//允许清空
+        escapeMarkup: function (markup) {
+            return markup;
+        }, // 自定义格式化防止xss注入
+        minimumInputLength: 0,
+        templateResult: formatRepo,
+        templateSelection: formatRepoSelection
+    });
+
 
 </script>
 </body>

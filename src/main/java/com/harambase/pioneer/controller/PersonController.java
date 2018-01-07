@@ -67,7 +67,9 @@ public class PersonController {
 
     @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
     @RequestMapping(value = "/search", method = RequestMethod.GET)
-    public ResponseEntity search(@RequestParam(value = "search") String search, @RequestParam(value = "type") String type, String status) {
+    public ResponseEntity search(@RequestParam(value = "search", required = false) String search,
+                                 @RequestParam(value = "type", required = false) String type,
+                                 @RequestParam(value = "status", required = false) String status) {
         HaramMessage message = personService.search(search, type, status);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
