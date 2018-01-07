@@ -29,7 +29,7 @@ public class PinController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity create(@RequestParam(value = "startTime") String startTime,
                                  @RequestParam(value = "endTime") String endTime,
-                                 @RequestParam(value = "role") int role,
+                                 @RequestParam(value = "role") String role,
                                  @RequestParam(value = "info") String info,
                                  @RequestParam(value = "remark") String remark) {
         HaramMessage haramMessage = pinService.generateAll(startTime, endTime, role, info, remark);

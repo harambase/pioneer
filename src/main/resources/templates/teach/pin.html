@@ -76,10 +76,10 @@
                                                     </div>
                                                     <div class="col-sm-3">
                                                         <input class="form-control" minlength="7" maxlength="7"
-                                                               required/>
+                                                               required v-model="info"/>
                                                     </div>
                                                     <div class="col-sm-2">
-                                                        <label for="info" class="col-sm-12 control-label">*是否批量:</label>
+                                                        <label class="col-sm-12 control-label">*是否批量:</label>
                                                     </div>
                                                     <div class="col-sm-3">
                                                         <div class="radio3 radio-check radio-success radio-inline">
@@ -119,7 +119,7 @@
                                                 <div class="form-group">
                                                     <div class="col-sm-2">
                                                         <label for="startTime"
-                                                               class="col-sm-12 control-label">*生效开始时间:</label>
+                                                               class="col-sm-12 control-label">*生效时间:</label>
                                                     </div>
                                                     <div class="col-sm-3">
                                                         <input id="startTime" class="form-control" v-model="startTime"
@@ -273,7 +273,7 @@
         },
         methods: {
             generateAll: function () {
-                let url = "/pin/generate"
+                let url = "/pin"
                     + "?startTime=" + this.startTime
                     + "&endTime=" + this.endTime
                     + "&role=" + this.role
@@ -291,7 +291,7 @@
                 });
             },
             generateOne: function () {
-                let url = "/pin/generate/" + $(".user").val()
+                let url = "/pin/" + $(".user").val()
                     + "?startTime=" + this.startTime
                     + "&endTime=" + this.endTime
                     + "&role=" + this.role
@@ -299,11 +299,11 @@
                     + "&remark=" + this.remark;
                 axios.post(url).then(function (response) {
                     if (response.data.code === 2001)
-                        Showbo.Msg.alert(data.msg, function () {
+                        Showbo.Msg.alert(response.data.msg, function () {
                             window.location.reload();
                         });
                     else {
-                        Showbo.Msg.alert(data.msg, function () {
+                        Showbo.Msg.alert(response.data.msg, function () {
                         });
                     }
                 });
@@ -311,11 +311,11 @@
             deleteAll: function () {
                 axios.delete('/pin/' + this.info + '/all').then(function (response) {
                     if (response.data.code === 2001)
-                        Showbo.Msg.alert(data.msg, function () {
+                        Showbo.Msg.alert(response.data.msg, function () {
                             window.location.reload();
                         });
                     else {
-                        Showbo.Msg.alert(data.msg, function () {
+                        Showbo.Msg.alert(response.data.msg, function () {
                         });
                     }
                 });
@@ -331,11 +331,11 @@
     function deleteOne(pin) {
         axios.delete('/pin/' + pin).then(function (response) {
             if (response.data.code === 2001)
-                Showbo.Msg.alert(data.msg, function () {
+                Showbo.Msg.alert(response.data.msg, function () {
                     pinTable.draw();
                 });
             else {
-                Showbo.Msg.alert(data.msg, function () {
+                Showbo.Msg.alert(response.data.msg, function () {
                 });
             }
         });

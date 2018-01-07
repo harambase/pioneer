@@ -6,7 +6,7 @@ public interface PinService {
 
     HaramMessage validate(Integer pin);
 
-    HaramMessage generateAll(String startTime, String endTime, int role, String info, String remark);
+    HaramMessage generateAll(String startTime, String endTime, String role, String info, String remark);
 
     HaramMessage generateOne(String startTime, String endTime, int role, String info, String remark, String userId);
 

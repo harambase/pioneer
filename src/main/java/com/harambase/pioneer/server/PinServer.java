@@ -26,14 +26,13 @@ public class PinServer {
     }
 
     public HaramMessage generateOne(String ip, int port, String startTime, String endTime, int role, String info, String remark, String userId) {
-        String remotePath = "/pin";
+        String remotePath = "/pin/" + userId;
         StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
         requestUrl.append("?startTime=").append(startTime)
                 .append("&endTime=").append(endTime)
                 .append("&role=").append(role)
                 .append("&info=").append(info)
-                .append("&remark=").append(remark)
-                .append("&userId=").append(userId);
+                .append("&remark=").append(remark);
         Map params = new HashMap();
         return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.POST, params);
     }
