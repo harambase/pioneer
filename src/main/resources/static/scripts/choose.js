@@ -35,7 +35,7 @@ let chooseVue = new Vue({
                     choiceList.push(this.crnList[i]);
                 }
             }
-
+            //todo: 数组发送问题
             axios.post('/course/choose', choiceList).then(function (response) {
                 let failList = response.data.data.failList;
                 if (failList.length === 0)
