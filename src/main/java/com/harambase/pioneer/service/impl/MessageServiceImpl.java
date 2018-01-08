@@ -37,6 +37,11 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
+    public HaramMessage updateStatus(Integer id, String status) {
+        return messageServer.updateStatus(IP, PORT, id, status);
+    }
+
+    @Override
     public HaramMessage get(Integer id) {
         return messageServer.get(IP, PORT, id);
     }

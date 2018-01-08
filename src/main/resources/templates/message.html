@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml"
+      xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head th:include="/common :: header('消息中心',false, true)"></head>
 <head>
     <link rel="stylesheet" href="/static/plugins/blur-admin/vendor-2cae343ef1.css">
@@ -27,7 +28,7 @@
         </div>
         <div id="page-inner">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12" id="messagePage">
                     <div class="panel panel-default xmedium-panel mail-panel animated zoomIn">
                         <div class="panel-body">
                             <div class="letter-layout ">
@@ -37,21 +38,20 @@
                                             写信息
                                         </button>
                                     </div>
-                                    <div id="inbox" class="mail-navigation active">
-                                        收件箱 <span id="inboxCount" class="new-mails">0</span>
+                                    <div v-on:click="inbox" class="mail-navigation" v-bind:class="{active:activeIndex==0}">
+                                        收件箱 <span class="new-mails">{{unread}}</span>
                                     </div>
-                                    <!--收件箱<span class="new-mails">7</span></div>-->
-                                    <div id="sent" class="mail-navigation">
+                                    <div v-on:click="sent" class="mail-navigation" v-bind:class="{active:activeIndex==1}">
                                         已发送
                                     </div>
-                                    <div id="important" class="mail-navigation">
-                                        重要信息 <span id="importantCount" class="new-mails">0</span>
+                                    <div v-on:click="important" class="mail-navigation" v-bind:class="{active:activeIndex==2}">
+                                        重要信息 <span class="new-mails">{{important}}</span>
                                     </div>
-                                    <div id="draft" class="mail-navigation">
-                                        草稿箱 <span id="draftCount" class="new-mails">0</span>
+                                    <div v-on:click="draft" class="mail-navigation" v-bind:class="{active:activeIndex==3}">
+                                        草稿箱 <span class="new-mails">{{saved}}</span>
                                     </div>
-                                    <div id="trash" class="mail-navigation">
-                                        垃圾箱 <span id="trashCount" class="new-mails">0</span>
+                                    <div v-on:click="trash" class="mail-navigation" v-bind:class="{active:activeIndex==4}">
+                                        垃圾箱 <span class="new-mails">{{trashed}}</span>
                                     </div>
                                     <div class="labels">
                                         <div class="labels-title"></div>
@@ -186,6 +186,94 @@
 <div th:include="/common :: load_js(true , false, true)"></div>
 <script src="/static/scripts/message/messageCenter.js"></script>
 <script>
+    let messageVue = new Vue({
+        el: "#messagePage",
+        data: {
+            unread: 0,
+            important: 0,
+            saved: 0,
+            trashed: 0,
+            box:"inbox",
+            activeIndex: 0
+        },
+        mounted: function(){
+          this.init();
+        },
+        methods: {
+            init: function(){
+                this.initImportant();
+                this.initUnread();
+                this.initDraft();
+                this.initTrash();
+            },
+            initImportant: function () {
+                axios.get('/message/count?status=unread&box=important').then(function(response){
+                    this.important = response.data.data;
+                });
+            },
+
+            initUnread: function () {
+                axios.get('/message/count?status=unread&box=inbox').then(function(response){
+                    this.unread = response.data.data;
+                });
+            },
+
+            initDraft: function () {
+                axios.get('/message/count?status=saved&box=draft').then(function(response){
+                    this.saved = response.data.data;
+                });
+            },
+
+            initTrash: function () {
+                axios.get('/message/count?status=trashed&box=trash').then(function(response){
+                    this.trashed = response.data.data;
+                });
+            },
+            inbox: function(){
+                this.box = "inbox";
+                this.activeIndex = 0;
+                messageTable.draw();
+            },
+            sent: function(){
+                this.box = "sent";
+                this.activeIndex = 1;
+                messageTable.draw();
+            },
+            draft: function(){
+                this.box = "draft";
+                this.activeIndex = 2;
+                messageTable.draw();
+            },
+            important: function(){
+                this.box = "important";
+                this.activeIndex = 3;
+                messageTable.draw();
+            }
+        }
+    });
+
+    function markAsRead(id) {
+        let status = "read";
+        sendStatusUpdateAjax(id, status);
+    }
+
+    function markAsUnread(id) {
+        let status = "unread";
+        sendStatusUpdateAjax(id, status);
+    }
+
+    function sendStatusUpdateAjax(id, status) {
+        axios.put('/message/' + id + '/status?status=' + status).then(function(response){
+            if (response.data.code === 2001) {
+                messageVue.init();
+                messageTable.draw();
+            }
+            else
+                Showbo.Msg.alert("消息更新失败!", function () {
+                });
+        });
+    }
+
 
     let writeVue = new Vue({
         el: "#writeMail",
@@ -317,7 +405,7 @@
         ajax: {
             url: basePath + "/message/list",
             data: function (d) {
-                d.box = box;
+                d.box = messageVue.$data.box;
             }
         },
         columns: [

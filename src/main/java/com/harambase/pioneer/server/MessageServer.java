@@ -61,4 +61,11 @@ public class MessageServer {
         Map params = new HashMap();
         return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
     }
+
+    public HaramMessage updateStatus(String ip, int port, Integer id, String status) {
+        String remotePath = "/message/" + id + "/status?status=" + status;
+        StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
+        Map params = new HashMap();
+        return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.PUT, params);
+    }
 }

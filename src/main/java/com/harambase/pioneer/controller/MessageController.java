@@ -48,6 +48,14 @@ public class MessageController {
     }
 
     @RequiresPermissions("user")
+    @RequestMapping(value = "/{id}/status", method = RequestMethod.PUT)
+    public ResponseEntity updateStatus(@PathVariable(value = "id") Integer id,
+                                       @RequestParam(value = "status") String status) {
+        HaramMessage haramMessage = messageService.updateStatus(id, status);
+        return new ResponseEntity<>(haramMessage, HttpStatus.OK);
+    }
+
+    @RequiresPermissions("user")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity get(@RequestParam(value = "id") Integer id) {
         HaramMessage haramMessage = messageService.get(id);
