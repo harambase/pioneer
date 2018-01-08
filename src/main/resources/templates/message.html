@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:include="/common/header :: commonHeader('消息中心',false, true)"></head>
+<head th:include="/common :: header('消息中心',false, true)"></head>
 <head>
     <link rel="stylesheet" href="/static/plugins/blur-admin/vendor-2cae343ef1.css">
     <link rel="stylesheet" href="/static/plugins/blur-admin/app-bce21c2366.css">
@@ -8,10 +8,10 @@
 <body data-gr-c-s-loaded="true" class="blur-theme">
 <div id="wrapper">
     <!--/. NAV TOP  -->
-    <div th:include="/common/navtop :: navtop" class="sidebar-collapse"></div>
+    <div th:include="/common :: navtop" class="sidebar-collapse"></div>
 
     <!-- /. NAV SIDE  -->
-    <div th:include="/common/navbar :: nav" class="sidebar-collapse"></div>
+    <div th:include="/common :: navbar" class="sidebar-collapse"></div>
 
     <div id="page-wrapper">
         <div class="header">
@@ -180,7 +180,7 @@
     <!-- /. PAGE WRAPPER  -->
 </div>
 <!--load_js(table,chart,select2)-->
-<div th:include="/faculty/common/js :: load_js(true , false, true)"></div>
+<div th:include="/common :: load_js(true , false, true)"></div>
 <script src="/static/scripts/message/messageCenter.js"></script>
 <script src="/static/scripts/message/writeMessage.js"></script>
 </body>

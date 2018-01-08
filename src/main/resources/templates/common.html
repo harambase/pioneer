@@ -7,13 +7,14 @@
 
     <title th:text="${title}"></title>
 
-    <link rel="stylesheet" href="/static/plugins/confirm/confirm.css" >
+    <link rel="stylesheet" href="/static/plugins/confirm/confirm.css">
     <link rel="stylesheet" href="/static/plugins/bootstrap/css/bootstrap.css"/>
     <link rel="stylesheet" href="/static/plugins/font/font.css"/>
     <link rel="stylesheet" href="/static/plugins/font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/static/plugins/checkbox3/checkbox3.min.css">
 
-    <link th:if="${table}" rel="stylesheet" type=text/css href="/static/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css">
+    <link th:if="${table}" rel="stylesheet" type=text/css
+          href="/static/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css">
     <link th:if="${table}" rel="stylesheet" type=text/css href="/static/plugins/datatables/datatables.min.css">
 
     <link th:if="${select2}" rel="stylesheet" type=text/css href="/static/plugins/select2/select2.min.css">
@@ -21,73 +22,6 @@
     <link rel="stylesheet" type=text/css href="/static/styles/custom-styles.css"/>
 
 </head>
-
-<div th:fragment="navbar" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
-    <nav class="navbar-default navbar-side" role="navigation">
-        <ul class="nav" id="main-menu">
-            <li><a href="/index" class="active-menu"><i class="fa fa-dashboard"></i> 主页</a></li>
-            <li shiro:hasAnyPermissions="admin, student, faculty, teach"><a href="/myCourse"><i class="fa fa-book"></i>我的课程</a></li>
-
-            </li>
-
-            <li><a href="#"><i class="fa fa-desktop"></i>教学系统<span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level">
-                    <li shiro:hasAnyPermissions="user"><a href="/course/view">查看所有课程</a></li>
-                    <li shiro:hasAnyPermissions="admin, faculty"><a href="#">新课程申请<span class="fa arrow"></span></a>
-                        <ul class="nav nav-third-level">
-                            <li><a href="/course/?mode=request">新课程申请</a></li>
-                            <li><a href="/course/request?mode=view">新课程申请查看</a></li>
-                        </ul>
-                    </li>
-                    <li shiro:hasAnyPermissions="admin, student"><a href="/course/transcript/view">成绩单</a></li>
-                    <li shiro:hasAnyPermissions="admin, student"><a href="/course/choose">新学期选课</a></li>
-                </ul>
-            </li>
-
-            <li shiro:hasAnyPermissions="admin, teach"><a href="#"><i class="fa fa-briefcase"></i>教务管理<span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level">
-                    <li><a href="#">课程管理<span class="fa arrow"></span></a>
-                        <ul class="nav nav-third-level">
-                            <li><a href="/teach/create?mode=create">创建新课程</a></li>
-                            <li><a href="/teach/request?mode=manage">新课程申请管理</a></li>
-                        </ul>
-                    </li>
-                    <li shiro:hasAnyPermissions="admin, teach"><a href="/teach/student/credit">学生学分管理</a></li>
-                    <li shiro:hasAnyPermissions="admin, teach"><a href="/teach/pin">识别码管理</a></li>
-                    <li shiro:hasAnyPermissions="admin, teach"><a href="/teach/advising">导师管理</a></li>
-                    <li shiro:hasAnyPermissions="admin, teach"><a href="/teach/transcript/view">成绩单管理</a></li>
-                </ul>
-            </li>
-
-            <li><a href="#"><i class="fa fa-sitemap"></i>后勤管理<span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level">
-                    <li shiro:hasAnyPermissions="admin, system"><a href="/logistic/leave">请假管理</a></li>
-                    <li shiro:hasAnyPermissions="admin, system"><a href="/logistic/course">宿舍管理</a></li>
-                </ul>
-            </li>
-
-            <li><a href="#"><i class="fa fa-laptop"></i>系统管理<span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level">
-                    <li><a href="#">用户管理<span class="fa arrow"></span></a>
-                        <ul class="nav nav-third-level">
-                            <li shiro:hasAnyPermissions="admin, system"><a href="/system/user/manage?mode=create">创建新用户</a></li>
-                            <li shiro:hasAnyPermissions="admin, system"><a href="/system/user/manage?mode=view">查看已有用户</a></li>
-                        </ul>
-                    </li>
-                    <li shiro:hasAnyPermissions="admin, system"><a href="/system/role">系统权限列表</a></li>
-                    <li shiro:hasAnyPermissions="admin, system"><a href="/system/user/request">新用户申请管理</a></li>
-                </ul>
-            </li>
-
-            <li><a shiro:hasAnyPermissions="admin, student" href="/student/advising"><i class="fa fa-user-circle"></i>辅导系统</a>
-            </li>
-            <li><a shiro:hasAnyPermissions="admin, teach" href="/faculty/advising"><i class="fa fa-user-circle"></i>导师系统</a>
-            </li>
-            <li><a shiro:hasAnyPermissions="user" href="/message"><i class="fa fa-bell"></i>消息中心</a></li>
-            <li><a shiro:hasAnyPermissions="admin" href="http://localhost:8080/"><i class="fa fa-gear"></i>后台接口</a></li>
-        </ul>
-    </nav>
-</div>
 
 <div th:fragment="navtop" xmlns:th="http://www.thymeleaf.org">
     <nav class="navbar navbar-default top-navbar">
@@ -320,6 +254,78 @@
         </ul>
     </nav>
 </div>
+
+<div th:fragment="navbar" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+    <nav class="navbar-default navbar-side" role="navigation">
+        <ul class="nav" id="main-menu">
+            <li><a href="/index" class="active-menu"><i class="fa fa-dashboard"></i> 主页</a></li>
+            <li shiro:hasAnyPermissions="admin, student, faculty, teach"><a href="/myCourse"><i class="fa fa-book"></i>我的课程</a>
+            </li>
+
+            </li>
+
+            <li><a href="#"><i class="fa fa-desktop"></i>教学系统<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li shiro:hasAnyPermissions="user"><a href="/course/view">查看所有课程</a></li>
+                    <li shiro:hasAnyPermissions="admin, faculty"><a href="#">新课程申请<span class="fa arrow"></span></a>
+                        <ul class="nav nav-third-level">
+                            <li><a href="/course/?mode=request">新课程申请</a></li>
+                            <li><a href="/course/request?mode=view">新课程申请查看</a></li>
+                        </ul>
+                    </li>
+                    <li shiro:hasAnyPermissions="admin, student"><a href="/course/transcript/view">成绩单</a></li>
+                    <li shiro:hasAnyPermissions="admin, student"><a href="/course/choose">新学期选课</a></li>
+                </ul>
+            </li>
+
+            <li shiro:hasAnyPermissions="admin, teach"><a href="#"><i class="fa fa-briefcase"></i>教务管理<span
+                    class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li><a href="#">课程管理<span class="fa arrow"></span></a>
+                        <ul class="nav nav-third-level">
+                            <li><a href="/teach/create?mode=create">创建新课程</a></li>
+                            <li><a href="/teach/request?mode=manage">新课程申请管理</a></li>
+                        </ul>
+                    </li>
+                    <li shiro:hasAnyPermissions="admin, teach"><a href="/teach/student/credit">学生学分管理</a></li>
+                    <li shiro:hasAnyPermissions="admin, teach"><a href="/teach/pin">识别码管理</a></li>
+                    <li shiro:hasAnyPermissions="admin, teach"><a href="/teach/advising">导师管理</a></li>
+                    <li shiro:hasAnyPermissions="admin, teach"><a href="/teach/transcript/view">成绩单管理</a></li>
+                </ul>
+            </li>
+
+            <li><a href="#"><i class="fa fa-sitemap"></i>后勤管理<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li shiro:hasAnyPermissions="admin, system"><a href="/logistic/leave">请假管理</a></li>
+                    <li shiro:hasAnyPermissions="admin, system"><a href="/logistic/course">宿舍管理</a></li>
+                </ul>
+            </li>
+
+            <li><a href="#"><i class="fa fa-laptop"></i>系统管理<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level">
+                    <li><a href="#">用户管理<span class="fa arrow"></span></a>
+                        <ul class="nav nav-third-level">
+                            <li shiro:hasAnyPermissions="admin, system"><a
+                                    href="/system/user/manage?mode=create">创建新用户</a></li>
+                            <li shiro:hasAnyPermissions="admin, system"><a
+                                    href="/system/user/manage?mode=view">查看已有用户</a></li>
+                        </ul>
+                    </li>
+                    <li shiro:hasAnyPermissions="admin, system"><a href="/system/role">系统权限列表</a></li>
+                    <li shiro:hasAnyPermissions="admin, system"><a href="/system/user/request">新用户申请管理</a></li>
+                </ul>
+            </li>
+
+            <li><a shiro:hasAnyPermissions="admin, student" href="/student/advising"><i class="fa fa-user-circle"></i>辅导系统</a>
+            </li>
+            <li><a shiro:hasAnyPermissions="admin, teach" href="/faculty/advising"><i class="fa fa-user-circle"></i>导师系统</a>
+            </li>
+            <li><a shiro:hasAnyPermissions="user" href="/message"><i class="fa fa-bell"></i>消息中心</a></li>
+            <li><a shiro:hasAnyPermissions="admin" href="http://localhost:8080/"><i class="fa fa-gear"></i>后台接口</a></li>
+        </ul>
+    </nav>
+</div>
+
 
 <div th:fragment="footer" xmlns:th="http://www.thymeleaf.org">
     Copyright &copy; 2017 - All Rights Reserved <br>
