@@ -33,106 +33,101 @@
                             </div>
                         </div>
                         <div class="panel-body">
-                            <form class="form-horizontal" id="pinNumForm" onclick="return false;">
-                                <div class="col-md-12 col-sm-4">
-                                    <div class="panel panel-danger">
-                                        <div class="panel-heading">
-                                            识别码验证
-                                        </div>
-                                        <div class="form-group panel-body">
-                                            <div class="col-sm-2">
-                                                <label for="pin" class="col-sm-12 control-label">*请输入识别码:</label>
+                            <div v-if="!pinValidate">
+                                <form class="form-horizontal">
+                                    <div class="col-md-12 col-sm-4">
+                                        <div class="panel panel-danger">
+                                            <div class="panel-heading">
+                                                识别码验证
                                             </div>
-                                            <div class="col-sm-3">
-                                                <input id="pin" class="form-control" minlength="6" maxlength="6"
-                                                       required v-model="pin"/>
+                                            <div class="form-group panel-body">
+                                                <div class="col-sm-2">
+                                                    <label for="pin" class="col-sm-12 control-label">*请输入识别码:</label>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <input id="pin" class="form-control" minlength="6" maxlength="6"
+                                                           required v-model="pin"/>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <button style="width:150px;" class="btn btn-success"
+                                                            onclick="validate()">
+                                                        验证
+                                                    </button>
+                                                </div>
                                             </div>
-                                            <div class="col-sm-3">
-                                                <button style="width:150px;" class="btn btn-success"
-                                                        v-on:click="validate">
-                                                    验证
-                                                </button>
+                                            <div class="panel-footer">
+                                                注意：该处填写你的识别码，你的识别码请在导师处获取。
                                             </div>
-                                        </div>
-                                        <div class="panel-footer">
-                                            注意：该处填写你的识别码，你的识别码请在导师处获取。
                                         </div>
                                     </div>
-                                </div>
-                            </form>
-                            <form class="form-horizontal" v-if="pinValidate">
-                                <div class="col-md-12 col-sm-4">
-                                    <div class="panel panel-success">
-                                        <div class="panel-heading">
-                                            选课工作区
-                                        </div>
-                                        <div class="form-group panel-body">
-                                            <div class="col-md-3">
-                                                <div class="panel panel-info">
-                                                    <div class="panel-heading">
-                                                        选课工作表
-                                                    </div>
-                                                    <div class="panel-body" style="font-size: 8px">
-                                                        <div class="form-group">
-                                                            <div class="col-sm-4">
-                                                                总可用学分:
-                                                                <input id="tol_credits" class="form-control"
-                                                                       style="width:100%;" value="0" disabled
-                                                                       v-model="tol_credits">
-                                                            </div>
-                                                            <div class="col-sm-4">
-                                                                当前已用学分:
-                                                                <input id="use_credits" class="form-control"
-                                                                       style="width:100%;" value="0" disabled
-                                                                       v-model="use_credits">
-                                                            </div>
-                                                            <div class="col-sm-4">
-                                                                当前可用学分:
-                                                                <input id="ava_credits" class="form-control"
-                                                                       style="width:100%;" value="0" disabled
-                                                                       v-model="ava_credits">
-                                                            </div>
+                                </form>
+                            </div>
+                            <div v-show="pinValidate">
+                                <form class="form-horizontal">
+                                    <div class="col-md-12 col-sm-4">
+                                        <div class="panel panel-success">
+                                            <div class="panel-heading">
+                                                选课工作区
+                                            </div>
+                                            <div class="form-group panel-body">
+                                                <div class="col-md-3">
+                                                    <div class="panel panel-info">
+                                                        <div class="panel-heading">
+                                                            选课工作表
                                                         </div>
-                                                        <hr/>
-                                                        <div id="worksheet" v-html="worksheet"></div>
-                                                        <hr/>
-                                                        <div class="form-group">
-                                                            <div class="col-sm-6">
-                                                                <button style="width:150px;" class="btn btn-success"
-                                                                        id="submit" v-on:click="submit">
-                                                                    提交
-                                                                </button>
+                                                        <div class="panel-body">
+                                                            <div class="form-group">
+                                                                <div class="col-sm-4">
+                                                                    学分上限: {{tol_credits}}
+                                                                </div>
+                                                                <div class="col-sm-4">
+                                                                    已用学分: {{use_credits}}
+                                                                </div>
+                                                                <div class="col-sm-4">
+                                                                    可用学分: {{ava_credits}}
+                                                                </div>
                                                             </div>
-                                                            <div class="col-sm-6">
-                                                                <button style="width:150px;" class="btn btn-danger"
-                                                                        id="reset" v-on:click="reset">
-                                                                    重置当前
-                                                                </button>
-                                                            </div>
+                                                            <hr/>
+                                                            <div id="worksheet" v-html="worksheet"></div>
+                                                            <hr/>
+                                                            <div class="form-group">
+                                                                <div class="col-sm-6">
+                                                                    <button style="width:150px;" class="btn btn-success"
+                                                                            id="submit" v-on:click="submit" onclick="return false;">
+                                                                        提交
+                                                                    </button>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <button style="width:150px;" class="btn btn-danger"
+                                                                            id="reset" v-on:click="reset" onclick="return false;">
+                                                                        重置当前
+                                                                    </button>
+                                                                </div>
 
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-9">
-                                                <div class="panel panel-info">
-                                                    <div class="panel-heading">
-                                                        新学期课程列表
-                                                    </div>
-                                                    <div class="panel-body">
-                                                        <table id="newCourseTable" style="width: 100%;font-size: 8px;"
-                                                               class="table table-striped table-bordered table-hover"></table>
+                                                <div class="col-md-9">
+                                                    <div class="panel panel-info">
+                                                        <div class="panel-heading">
+                                                            新学期课程列表
+                                                        </div>
+                                                        <div class="panel-body">
+                                                            <table id="newCourseTable"
+                                                                   class="table table-striped table-bordered table-hover"></table>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                            </form>
+                                </form>
+                            </div>
 
                         </div>
-                        <div class="panel-footer" id=footerPlaceholder">
+                        <div class="panel-footer">
                             <div th:include="/common :: footer" id="copyright"></div>
                         </div>
                     </div>

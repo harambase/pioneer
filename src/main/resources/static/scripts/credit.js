@@ -9,7 +9,7 @@ let creditVue = new Vue({
     },
     methods: {
         doUpdate: function () {
-            axios.put('/student',this.student).then(function(response){
+            axios.put('/student/' + this.student.studentId, this.student).then(function(response){
                 if (response.data.code === 2001)
                     Showbo.Msg.alert("更新成功!", function () {
                         $("#editCredits").modal('hide');
@@ -71,14 +71,14 @@ let curStuTable = $("#studentTable").DataTable({
         {"data": "studentId", "title": "学生ID"},
         {"data": "sname", "title": "姓名"},
         {"data": "maxCredits", "title": "学分上限"},
-        {"data": "complete", "title": "已完成"},
-        {"data": "progress", "title": "进行中"},
-        {"data": "incomplete", "title": "未完成"},
+        {"data": "complete", "title": "已完成学分"},
+        {"data": "progress", "title": "进行中学分"},
+        {"data": "incomplete", "title": "未完成学分"},
         {
             "data": null, "title": "操作", "createdCell": function (nTd, rowData) {
-            $(nTd).html('<button style="width: 100%" class="btn btn-primary btn-info" ' +
-                'onclick="edit(\'' + rowData.studentId + '\',\'' + rowData.sname + '\',\'' + rowData.maxCredits + '\')">修改上限</button>');
-        }, "width": "100px"
+            $(nTd).html('<button class="btn btn-primary col-sm-12" ' +
+                'onclick="edit(\'' + rowData.studentId + '\',\'' + rowData.sname + '\',\'' + rowData.maxCredits + '\')">修改学分上限</button>');
+        }, "width": "180px"
         }
     ],
     "columnDefs": [{
