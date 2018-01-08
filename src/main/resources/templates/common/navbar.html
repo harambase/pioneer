@@ -8,19 +8,19 @@
 
             <li><a href="#"><i class="fa fa-desktop"></i>教学系统<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
-                    <li shiro:hasAnyPermissions="user"><a href="/teach/view">查看所有课程</a></li>
+                    <li shiro:hasAnyPermissions="user"><a href="/course/view">查看所有课程</a></li>
                     <li shiro:hasAnyPermissions="admin, faculty"><a href="#">新课程申请<span class="fa arrow"></span></a>
                         <ul class="nav nav-third-level">
-                            <li><a href="/teach/?mode=request">新课程申请</a></li>
-                            <li><a href="/teach/request?mode=view">新课程申请查看</a></li>
+                            <li><a href="/course/?mode=request">新课程申请</a></li>
+                            <li><a href="/course/request?mode=view">新课程申请查看</a></li>
                         </ul>
                     </li>
-                    <li shiro:hasAnyPermissions="admin, student"><a href="/student/transcript/view">成绩单</a></li>
-                    <li shiro:hasAnyPermissions="admin, student"><a href="/teach/choose">新学期选课</a></li>
+                    <li shiro:hasAnyPermissions="admin, student"><a href="/course/transcript/view">成绩单</a></li>
+                    <li shiro:hasAnyPermissions="admin, student"><a href="/course/choose">新学期选课</a></li>
                 </ul>
             </li>
 
-            <li shiro:hasAnyPermissions="admin, teach"><a href="#"><i class="fa fa-desktop"></i>教务管理<span class="fa arrow"></span></a>
+            <li shiro:hasAnyPermissions="admin, teach"><a href="#"><i class="fa fa-briefcase"></i>教务管理<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li><a href="#">课程管理<span class="fa arrow"></span></a>
                         <ul class="nav nav-third-level">
@@ -30,15 +30,15 @@
                     </li>
                     <li shiro:hasAnyPermissions="admin, teach"><a href="/teach/student/credit">学生学分管理</a></li>
                     <li shiro:hasAnyPermissions="admin, teach"><a href="/teach/pin">识别码管理</a></li>
-                    <li shiro:hasAnyPermissions="admin, teach"><a href="/manage/advising">导师管理</a></li>
-                    <li shiro:hasAnyPermissions="admin, teach"><a href="/manage/transcript/view">成绩单管理</a></li>
+                    <li shiro:hasAnyPermissions="admin, teach"><a href="/teach/advising">导师管理</a></li>
+                    <li shiro:hasAnyPermissions="admin, teach"><a href="/teach/transcript/view">成绩单管理</a></li>
                 </ul>
             </li>
 
-            <li><a href="#"><i class="fa fa-sitemap"></i>行政管理<span class="fa arrow"></span></a>
+            <li><a href="#"><i class="fa fa-sitemap"></i>后勤管理<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
-                    <li shiro:hasAnyPermissions="admin, system"><a href="/manage/leave">请假管理</a></li>
-                    <li shiro:hasAnyPermissions="admin, system"><a href="/manage/course">宿舍管理</a></li>
+                    <li shiro:hasAnyPermissions="admin, system"><a href="/logistic/leave">请假管理</a></li>
+                    <li shiro:hasAnyPermissions="admin, system"><a href="/logistic/course">宿舍管理</a></li>
                 </ul>
             </li>
 

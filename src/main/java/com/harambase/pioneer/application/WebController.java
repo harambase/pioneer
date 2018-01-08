@@ -72,7 +72,7 @@ public class WebController {
         return "teach/course";
     }
 
-    @RequestMapping("/teach/view")
+    @RequestMapping("/course/view")
     public String viewCourse() {
         return "teach/course";
     }
@@ -82,7 +82,7 @@ public class WebController {
         return "teach/course";
     }
 
-    @RequestMapping("/teach/choose")
+    @RequestMapping("/course/choose")
     public String courseChoose() {
         return "teach/choose";
     }
