@@ -1,8 +1,13 @@
 package com.harambase.pioneer.application;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @CrossOrigin
@@ -86,6 +91,11 @@ public class WebController {
     public String pinInfo() {
         return "teach/pin";
     }
+
+    @RequestMapping("/teach/student/credit")
+    public String setCredit() {
+        return "teach/credit";
+    }
 //    @RequestMapping("/teach/advise")
 //    public String fViewAdvising(){
 //        return "administration/viewAdvising";
@@ -111,10 +121,7 @@ public class WebController {
         return "admin/teach/editTranscript";
     }
 
-    @RequestMapping("/manage/student/credit")
-    public String setCredit() {
-        return "admin/teach/setCredit";
-    }
+
 
     @RequestMapping("/manage/course/request")
     public String viewCourseRequest() {
@@ -130,6 +137,30 @@ public class WebController {
     @RequestMapping("/logistic/dorm")
     public String viewDorm() {
         return "logistic/viewDorm";
+    }
+
+
+    @RequestMapping("/MavenTest/testpage/base64test")
+    public String test() {
+        return "test";
+    }
+
+    @RequestMapping("/base64test")
+    @ResponseBody
+    public String base64test(HttpServletRequest request) {
+        String address = request.getParameter("amp;address");
+        String name = request.getParameter("name");
+        String convStr = StringEscapeUtils.unescapeHtml4("&name=1009");
+        System.out.println("base64传输前");
+        System.out.println("name:" + name + "   address:" + address);
+        System.out.println("base64取值后");
+        byte[] result1 = Base64.decodeBase64(name);
+        byte[] result2 = Base64.decodeBase64(address);
+        String str1 = new String(result1);
+        String str2 = new String(result2);
+        System.out.println("name:" + str1 + "   address:" + str2);
+        String result = "name:" + str1 + "   address:" + str2;
+        return result;
     }
 
 }

@@ -1,14 +1,14 @@
 ﻿<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml">
 
-<head th:include="/admin/common/header :: commonHeader('学生学分修改',true, false)"></head>
+<head th:include="/common/header :: commonHeader('学生学分修改',true, false)"></head>
 <body>
 <div id="wrapper">
     <!--/. NAV TOP  -->
-    <div th:include="/admin/common/navtop :: navtop" class="sidebar-collapse"></div>
+    <div th:include="/common/navtop :: navtop" class="sidebar-collapse"></div>
 
     <!-- /. NAV SIDE  -->
-    <div th:include="/admin/common/navbar :: nav" class="sidebar-collapse"></div>
+    <div th:include="/common/navbar :: nav" class="sidebar-collapse"></div>
 
     <div id="page-wrapper">
         <div class="header">
@@ -17,7 +17,7 @@
                 <small>学生学分修改</small>
             </h1>
             <ol class="breadcrumb">
-                <li><a href="/welcomeAdmin">主页</a></li>
+                <li><a href="/index">主页</a></li>
                 <li><a href="#">教务管理</a></li>
                 <li class="active">学生学分修改</li>
             </ol>
@@ -42,8 +42,8 @@
                 </div>
             </div>
             <div id="editCredits" class="modal fade modalDiy" tabindex="-1" role="dialog">
-                <div class="modal-dialog modal-md" role="document">
-                    <div class="panel panel-success" style="background: rgba(255, 255, 255, 1);">
+                <div class="modal-dialog modal-md" role="document" id="creditPage">
+                    <div class="panel panel-primary" style="background: rgba(255, 255, 255, 1);">
                         <div class="panel-heading">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                             </button>
@@ -52,17 +52,17 @@
                         <div class="panel-body">
                             <form id="editTranscriptForm" class="form-group" method="post" onsubmit="return false">
                                 <div class="col-sm-3">
-                                    <label for="sid" class="col-sm-12 control-label">学生ID/姓名:</label>
+                                    <label class="col-sm-12 control-label">学生ID/姓名:</label>
                                 </div>
                                 <div class="col-sm-9">
-                                    <input id="sid" value="" class="form-control" disabled hidden>
-                                    <input id="sname" value="" class="form-control" disabled>
+                                    <input value="" class="form-control" disabled v-model="student.studentId">
+                                    <input value="" class="form-control" disabled v-model="sname">
                                 </div>
                                 <div class="col-sm-3" style="margin-top:10px;">
-                                    <label for="sid" class="col-sm-12 control-label">*学分上限:</label>
+                                    <label for="credits" class="col-sm-12 control-label">*学分上限:</label>
                                 </div>
                                 <div class="col-sm-9" style="margin-top:10px;">
-                                    <input id="credits" class="form-control" minlength="1" maxlength="2" required/>
+                                    <input id="credits" class="form-control" minlength="1" maxlength="2" required v-model="student.maxCredits"/>
                                 </div>
                                 <div class="col-sm-3" style="margin-top:10px;">
                                     <label for="tPassword" class="col-sm-12 control-label">*操作密码:</label>
@@ -71,7 +71,7 @@
                                     <input type="password" id="tPassword" class="form-control" minlength="6" maxlength="16" checkOpPwd="true" required/>
                                 </div>
                                 <div class="col-sm-6" style="margin-top:10px;">
-                                    <button id="confirm" style="width: 100%" class="btn btn-danger btn-primary">更新</button>
+                                    <button id="confirm" style="width: 100%" class="btn btn-danger btn-primary" v-on:click="doUpdate">更新</button>
                                 </div>
                                 <div class="col-sm-6" style="margin-top:10px;">
                                     <button id="cancel" style="width: 100%" class="btn btn-info btn-primary" data-dismiss="modal" aria-label="Close">取消</button>
@@ -82,7 +82,7 @@
                 </div>
             </div>
             <div id=footerPlaceholder">
-                <div th:include="/admin/common/footer :: copy" id="copyright"></div>
+                <div th:include="/common/footer :: copy" id="copyright"></div>
             </div>
         </div>
         <!-- /. PAGE INNER  -->
@@ -90,7 +90,7 @@
     <!-- /. PAGE WRAPPER  -->
 </div>
 <!-- /. WRAPPER  -->
-<div th:include="/admin/common/js :: load_js(true , false, false)"></div>
-<script src="/static/scripts/admin/course/editCredits.js"></script>
+<div th:include="/common/js :: load_js(true , false, false)"></div>
+<script src="/static/scripts/credit.js"></script>
 </body>
 </html>
