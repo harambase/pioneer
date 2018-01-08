@@ -42,7 +42,7 @@ public class WebController {
 
     @RequestMapping("/message")
     public String message() {
-        return "web/message";
+        return "message";
     }
 
     @RequestMapping("/myCourse")
