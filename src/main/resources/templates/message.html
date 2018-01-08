@@ -34,23 +34,28 @@
                             <div class="letter-layout ">
                                 <div class="mail-navigation-container">
                                     <div class="text-center">
-                                        <button id="write" type="button" class="btn btn-default compose-button">
+                                        <button v-on:click="write" type="button" class="btn btn-default compose-button">
                                             写信息
                                         </button>
                                     </div>
-                                    <div v-on:click="inbox" class="mail-navigation" v-bind:class="{active:activeIndex==0}">
+                                    <div v-on:click="inbox" class="mail-navigation"
+                                         v-bind:class="{active:activeIndex==0}">
                                         收件箱 <span class="new-mails">{{unread}}</span>
                                     </div>
-                                    <div v-on:click="sent" class="mail-navigation" v-bind:class="{active:activeIndex==1}">
+                                    <div v-on:click="sent" class="mail-navigation"
+                                         v-bind:class="{active:activeIndex==1}">
                                         已发送
                                     </div>
-                                    <div v-on:click="important" class="mail-navigation" v-bind:class="{active:activeIndex==2}">
+                                    <div v-on:click="important" class="mail-navigation"
+                                         v-bind:class="{active:activeIndex==2}">
                                         重要信息 <span class="new-mails">{{important}}</span>
                                     </div>
-                                    <div v-on:click="draft" class="mail-navigation" v-bind:class="{active:activeIndex==3}">
+                                    <div v-on:click="draft" class="mail-navigation"
+                                         v-bind:class="{active:activeIndex==3}">
                                         草稿箱 <span class="new-mails">{{saved}}</span>
                                     </div>
-                                    <div v-on:click="trash" class="mail-navigation" v-bind:class="{active:activeIndex==4}">
+                                    <div v-on:click="trash" class="mail-navigation"
+                                         v-bind:class="{active:activeIndex==4}">
                                         垃圾箱 <span class="new-mails">{{trashed}}</span>
                                     </div>
                                     <div class="labels">
@@ -71,7 +76,7 @@
                                         </div>
                                     </div>
                                 </div><!-- uiView: -->
-                                <ui-view id="table" class="">
+                                <ui-view id="table" class="" v-show="table">
                                     <div class="side-message-navigation  expanded">
                                         <div class="mail-messages-control side-message-navigation-item">
                                             <div class="toggle-navigation-container">
@@ -81,7 +86,7 @@
                                                 <input type="checkbox" id="inlineCheckbox01" value="option1">
                                                 <span class="select-all-label">全选</span>
                                             </label>
-                                            <button type="button" class="btn btn-icon refresh-button">
+                                            <button type="button" class="btn btn-icon refresh-button" onclick="messageTable.draw();">
                                                 <i class="fa fa-refresh"></i>
                                             </button>
                                         </div>
@@ -89,14 +94,14 @@
                                                style="width: 100%;"></table>
                                     </div>
                                 </ui-view>
-                                <ui id="detail" class="">
+                                <ui id="detail" v-if="detail">
                                     <div class="message-container expanded">
                                         <div class="message">
                                             <div class="row">
                                                 <div class="toggle-navigation-container detail-page">
                                                     <a class="collapse-navigation-link ion-navicon"></a>
                                                 </div>
-                                                <button id="back" type="button"
+                                                <button id="back" type="button" v-on:click="back"
                                                         class="back-button btn btn-default btn-with-icon">
                                                     <i class="fa fa-arrow-left"></i>返回
                                                 </button>
@@ -157,7 +162,7 @@
         <!-- /. PAGE INNER  -->
     </div>
     <!-- /. PAGE INNER  -->
-    <div id="writeMail" class="modal-dialog modal-compose">
+    <div id="writeMail" class="modal-dialog modal-compose" v-if="showWrite">
         <div class="modal-content">
             <div class="compose-header"><span>写新信息</span>
                 <span class="header-controls">
@@ -193,61 +198,71 @@
             important: 0,
             saved: 0,
             trashed: 0,
-            box:"inbox",
-            activeIndex: 0
+            box: "inbox",
+            activeIndex: 0,
+            showWrite: false,
+            detail: false,
+            table: true
         },
-        mounted: function(){
-          this.init();
+        mounted: function () {
+            this.init();
         },
         methods: {
-            init: function(){
+            init: function () {
                 this.initImportant();
                 this.initUnread();
                 this.initDraft();
                 this.initTrash();
             },
             initImportant: function () {
-                axios.get('/message/count?status=unread&box=important').then(function(response){
+                axios.get('/message/count?status=unread&box=important').then(function (response) {
                     this.important = response.data.data;
                 });
             },
 
             initUnread: function () {
-                axios.get('/message/count?status=unread&box=inbox').then(function(response){
+                axios.get('/message/count?status=unread&box=inbox').then(function (response) {
                     this.unread = response.data.data;
                 });
             },
 
             initDraft: function () {
-                axios.get('/message/count?status=saved&box=draft').then(function(response){
+                axios.get('/message/count?status=saved&box=draft').then(function (response) {
                     this.saved = response.data.data;
                 });
             },
 
             initTrash: function () {
-                axios.get('/message/count?status=trashed&box=trash').then(function(response){
+                axios.get('/message/count?status=trashed&box=trash').then(function (response) {
                     this.trashed = response.data.data;
                 });
             },
-            inbox: function(){
+            inbox: function () {
                 this.box = "inbox";
                 this.activeIndex = 0;
                 messageTable.draw();
             },
-            sent: function(){
+            sent: function () {
                 this.box = "sent";
                 this.activeIndex = 1;
                 messageTable.draw();
             },
-            draft: function(){
+            draft: function () {
                 this.box = "draft";
                 this.activeIndex = 2;
                 messageTable.draw();
             },
-            important: function(){
+            important: function () {
                 this.box = "important";
                 this.activeIndex = 3;
                 messageTable.draw();
+            },
+            write: function(){
+                this.showWrite = true;
+            },
+            back: function(){
+                this.detail = false;
+                this.table = true;
             }
         }
     });
@@ -263,7 +278,7 @@
     }
 
     function sendStatusUpdateAjax(id, status) {
-        axios.put('/message/' + id + '/status?status=' + status).then(function(response){
+        axios.put('/message/' + id + '/status?status=' + status).then(function (response) {
             if (response.data.code === 2001) {
                 messageVue.init();
                 messageTable.draw();
@@ -274,6 +289,85 @@
         });
     }
 
+    function deleteMsg(id) {
+        Showbo.Msg.confirm("确认删除该用户？", function () {
+            if ($(".btnfocus").val() !== "取消") {
+                axios.delete('/message/' + id).then(function (response) {
+                    if (response.data.code === 2001) {
+                        messageVue.init();
+                        messageTable.draw();
+                    }
+                    else
+                        Showbo.Msg.alert("消息删除失败!", function () {
+                        });
+                });
+            }
+        });
+    }
+
+    function viewDraft(id) {
+        axios.get('/message/' + id).then(function (response) {
+            messageVue.$data.showWrite = true;
+            writeVue.$data.message = response.data.data;
+        });
+    }
+
+    function viewDetail(id) {
+        markAsRead(id);
+        axios.get('/message/' + id).then(function (response) {
+            if (response.data.code === 2001) {
+                let message = response.data.data;
+                messageVue.$data.detail = true;
+                messageVue.$data.table = false;
+                let senderInfo =
+                    '<img class="human-picture" src="' + message.pic + '">' +
+                    '   <div class="name"><h2 class="name-h ng-binding">发件人：' + message.sender + '</h2>' +
+                    '       <div>' +
+                    '           <span class="mail-tag tag label family">' + message.tag + '</span>' +
+                    '       </div>' +
+                    '   </div>';
+                $("#senderInfo").html(senderInfo);
+
+                let contactInfo =
+                    '<div class="contact-info phone-email">' +
+                    '    <div>' +
+                    '       <i class="fa fa-phone-square fa-2x"></i> ' +
+                    '       <span class="phone"> ' + message.tel + '</span>' +
+                    '    </div>' +
+                    '    <div>' +
+                    '       <i class="fa fa-envelope-square fa-2x"></i> ' +
+                    '       <span class="email"> ' + message.email + '</span>' +
+                    '    </div>' +
+                    '</div>';
+                $("#contactInfo").html(contactInfo);
+
+                let roleInfo =
+                    '<div class="contact-info position-address">' +
+                    '   <div>' +
+                    '       <i class="fa fa-user-circle fa-2x"></i>' +
+                    '       <span class="position">Technical Chef</span>' +
+                    '   </div>' +
+                    '   <div>' +
+                    '       <i class="fa fa-address-card fa-2x"></i>' +
+                    '       <span class="address">12 Nezavisimosti st. Vilnius, Lithuania</span>' +
+                    '   </div>' +
+                    '</div>';
+                $("#roleInfo").html(roleInfo);
+
+                let subject =
+                    '<span class="subject ng-binding">' + message.subject + '</span>' +
+                    '<span class="date ng-binding">• ' + message.date + ' </span>';
+                $("#subject").html(subject);
+
+                let body = '<p>' + message.body + '</p>';
+                $("#body").html(body);
+            }
+            else
+                Showbo.Msg.alert("消息获取失败", function () {
+                });
+
+        });
+    }
 
     let writeVue = new Vue({
         el: "#writeMail",
@@ -461,7 +555,7 @@
                 if (rowData.status.toLowerCase() === "trashed") {
                     $(nTd).html('' +
                         '<button class="btn btn-primary btn-info" style="width: 50%" onclick="viewDetail(\'' + rowData.id + '\')">查看消息</button>' +
-                        '<button class="btn btn-primary btn-danger" style="width: 50%" onclick="markAsRead(\'' + rowData.id + '\')">永久删除</button>');
+                        '<button class="btn btn-primary btn-danger" style="width: 50%" onclick="deleteMsg(\'' + rowData.id + '\')">永久删除</button>');
                 }
                 if (rowData.status.toLowerCase() === "sent") {
                     $(nTd).html('' +
