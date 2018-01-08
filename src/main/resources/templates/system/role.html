@@ -1,15 +1,15 @@
 ﻿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:include="/common/header :: commonHeader('系统权限列表',true, false)"></head>
+<head th:include="/common :: header('系统权限列表',true, false)"></head>
 <body>
 <div id="wrapper">
 
     <!--/. NAV TOP  -->
-    <div th:include="/common/navtop :: navtop" class="sidebar-collapse"></div>
+    <div th:include="/common :: navtop" class="sidebar-collapse"></div>
 
     <!-- /. NAV SIDE  -->
-    <div th:include="/common/navbar :: nav" class="sidebar-collapse"></div>
+    <div th:include="/common :: navbar" class="sidebar-collapse"></div>
 
     <div id="page-wrapper">
         <div class="header">
@@ -40,62 +40,60 @@
                 </div>
             </div>
             <div class="panel-footer" id=footerPlaceholder">
-                <div th:include="/common/footer :: copy" id="copyright"></div>
+                <div th:include="/common :: footer" id="copyright"></div>
             </div>
         </div>
     </div>
 </div>
-<div th:include="/common/js :: load_js(true , false, false)"></div>
+<div th:include="/common :: load_js(true , false, false)"></div>
 <script>
-    $(function () {
-        $("#roleTable").DataTable({
-            "language": {
-                "aria": {
-                    "sortAscending": ": activate to sort column ascending",
-                    "sortDescending": ": activate to sort column descending"
-                },
-                "emptyTable": "没有数据！",
-                "info": "显示 _START_ 至 _END_ 条 ，总共_TOTAL_ 条数据",
-                "infoEmpty": "没有发现记录！",
-                "infoFiltered": "(从_MAX_条记录中搜索)",
-                "lengthMenu": "显示: _MENU_",
-                "search": "搜索:",
-                "zeroRecords": "没有找到匹配的记录！",
-                "paginate": {
-                    "previous": "上一页",
-                    "next": "下一页",
-                    "last": "尾页",
-                    "first": "首页"
-                }
+    $("#roleTable").DataTable({
+        "language": {
+            "aria": {
+                "sortAscending": ": activate to sort column ascending",
+                "sortDescending": ": activate to sort column descending"
             },
-            "pagingType": "full_numbers",
-            "lengthMenu": [
-                [10],
-                [10]
-            ],
-            pageLength: 10,
-            processing: true,
-            serverSide: true,
+            "emptyTable": "没有数据！",
+            "info": "显示 _START_ 至 _END_ 条 ，总共_TOTAL_ 条数据",
+            "infoEmpty": "没有发现记录！",
+            "infoFiltered": "(从_MAX_条记录中搜索)",
+            "lengthMenu": "显示: _MENU_",
+            "search": "搜索:",
+            "zeroRecords": "没有找到匹配的记录！",
+            "paginate": {
+                "previous": "上一页",
+                "next": "下一页",
+                "last": "尾页",
+                "first": "首页"
+            }
+        },
+        "pagingType": "full_numbers",
+        "lengthMenu": [
+            [10],
+            [10]
+        ],
+        pageLength: 10,
+        processing: true,
+        serverSide: true,
 
-            ajax: {
-                url: basePath + "/role",
+        ajax: {
+            url: basePath + "/role",
+        },
+        columns: [
+            {  //行号
+                "data": null, "title": "ROW", "render": function (data, type, row, meta) {
+                return meta.settings._iDisplayStart + meta.row + 1;
+            }
             },
-            columns: [
-                {  //行号
-                    "data": null, "title": "ROW", "render": function (data, type, row, meta) {
-                    return meta.settings._iDisplayStart + meta.row + 1;
-                }
-                },
-                {"data": "roleId", "title": "权限ID"},
-                {"data": "roleName", "title": "权限名"},
-                {"data": "roleCode", "title": "权限代码"},
-            ],
-            "columnDefs": [{
-                "defaultContent": "",
-                "targets": "_all"
-            }]
+            {"data": "roleId", "title": "权限ID"},
+            {"data": "roleName", "title": "权限名"},
+            {"data": "roleCode", "title": "权限代码"},
+        ],
+        "columnDefs": [{
+            "defaultContent": "",
+            "targets": "_all"
+        }]
 
-        });
     });
 </script>
 </body>

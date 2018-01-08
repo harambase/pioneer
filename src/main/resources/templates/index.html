@@ -1,15 +1,13 @@
 ﻿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:include="/common/header :: commonHeader('先锋OA系统',false,false)"></head>
+<head th:include="/common :: header('先锋OA系统',false,false)"></head>
 <body>
 <div id="wrapper">
 
-    <!--/. NAV TOP  -->
-    <div th:include="/common/navtop :: navtop" class="sidebar-collapse"></div>
+    <div th:include="/common :: navtop" class="sidebar-collapse"></div>
 
-    <!-- /. NAV SIDE  -->
-    <div th:include="/common/navbar :: nav" class="sidebar-collapse"></div>
+    <div th:include="/common :: navbar" class="sidebar-collapse"></div>
 
     <div id="page-wrapper">
         <div class="header">
@@ -109,7 +107,7 @@
             </div>
             <div class="row">
                 <div id=footerPlaceholder">
-                    <div th:include="/common/footer :: copy" id="copyright"></div>
+                    <div th:include="/common :: footer" id="copyright"></div>
                 </div>
             </div>
 
@@ -123,7 +121,7 @@
     window.sliderFirstNav = "0";
 </script>
 
-<div th:include="/common/js :: load_js(true,true,false)"></div>
+<div th:include="/common :: load_js(true,true,false)"></div>
 <script src="/static/scripts/index.js"></script>
 <script>
     const v = new Vue({
