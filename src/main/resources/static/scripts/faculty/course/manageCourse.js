@@ -111,27 +111,3 @@ var logTable = $("#courseTable").DataTable({
         "targets": "_all"
     }]
 });
-
-//移除课程
-$("#courseTable").on("click", ".btn.btn-danger", function () {
-    crn = $(this).parents("tr").find("td").eq(0).html();
-    Showbo.Msg.confirm("确认删除该课程？", function () {
-        if ($(".btnfocus").val() !== "取消") {
-            /*删除操作*/
-            $.ajax({
-                url: basePath + "/teach/remove?crn=" + crn,
-                type: "DELETE",
-                contentType: "application/json; charset=utf-8",
-                success: function (data) {
-                    if (data.code === 2001)
-                        Showbo.Msg.alert("删除成功!", function () {
-                            logTable.draw();
-                        });
-                    else
-                        Showbo.Msg.alert(data.msg, function () {
-                        });
-                }
-            });
-        }
-    });
-});

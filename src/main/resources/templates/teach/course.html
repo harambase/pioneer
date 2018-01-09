@@ -770,7 +770,6 @@
 </div>
 <!-- /. WRAPPER  -->
 <div th:include="/common :: load_js(true, false, true)"></div>
-<!--<script src="/static/scripts/faculty/course/createCourse.js"></script>-->
 <!--<script src="/static/scripts/faculty/course/editCourse.js"></script>-->
 <script>
 
@@ -847,9 +846,17 @@
         },
         methods: {
             submit: function(){
+                $('input[name="day"]:checked').each(function () {
+                    day += $(this).val() + "/";
+                });
+
+                for (var i = 0; i < precrnArray.length; i++) {
+                    precrn += precrnArray[i] + "/";
+                }
                 axios.post('/request/course/register', this.course).then(function(response){
                     if (response.data.code === 2001)
                         Showbo.Msg.alert("申请成功，等待教务答复!", function () {
+                            window.location.href = basePath + '/course/request';
                         });
                     else
                         Showbo.Msg.alert(response.data.msg, function () {
@@ -857,6 +864,13 @@
                 })
             },
             create: function(){
+                $('input[name="day"]:checked').each(function () {
+                    day += $(this).val() + "/";
+                });
+
+                for (var i = 0; i < precrnArray.length; i++) {
+                    precrn += precrnArray[i] + "/";
+                }
                 axios.post('/course', this.course).then(function(response){
                     if (response.data.code === 2001)
                         Showbo.Msg.alert("创建成功!", function () {
@@ -873,22 +887,21 @@
         }
     });
 
-    // function deleteCourse(crn) {
-    //     Showbo.Msg.confirm("确认删除该课程？", function () {
-    //         if ($(".btnfocus").val() !== "取消") {
-    //             /*删除操作*/
-    //             axios.delete('/course/' + crn).then(function (response) {
-    //                 if (response.data.code === 2001)
-    //                     Showbo.Msg.alert("删除成功!", function () {
-    //                         logTable.draw();
-    //                     });
-    //                 else
-    //                     Showbo.Msg.alert(response.data.msg, function () {
-    //                     });
-    //             });
-    //         }
-    //     });
-    // }
+    function deleteCourse(crn) {
+        Showbo.Msg.confirm("确认删除该课程？", function () {
+            if ($(".btnfocus").val() !== "取消") {
+                axios.delete('/course/' + crn).then(function (response) {
+                    if (response.data.code === 2001)
+                        Showbo.Msg.alert("删除成功!", function () {
+                            logTable.draw();
+                        });
+                    else
+                        Showbo.Msg.alert(response.data.msg, function () {
+                        });
+                });
+            }
+        });
+    }
 
     // let studentTable;
     //

@@ -113,39 +113,28 @@ public class WebController {
         return "teach/course";
     }
 
-    @RequestMapping("/teach/edit")
+    @RequiresPermissions(value = {"teach", "admin"}, logical = Logical.OR)
+    @RequestMapping("/teach/course")
     public String editCourse() {
         return "teach/course";
     }
 
+    @RequiresPermissions(value = {"teach", "admin"}, logical = Logical.OR)
     @RequestMapping("/teach/advise")
-    public String fViewAdvising() {
-        return "teach/viewAdvising";
+    public String viewAdvising() {
+        return "teach/advise";
     }
 
-    @RequestMapping("/student/course/view")
-    public String sViewCourse() {
-        return "teach/viewCourse";
-    }
-
-    @RequestMapping("/student/transcript/view")
-    public String sViewTranscript() {
-        return "teach/viewTranscript";
-    }
-
-    @RequestMapping("/manage/transcript/view")
+    @RequiresPermissions(value = {"teach", "admin"}, logical = Logical.OR)
+    @RequestMapping("/teach/transcript")
     public String viewTranscript() {
-        return "teach/viewTranscript";
+        return "teach/transcript";
     }
 
-    @RequestMapping("/manage/transcript/edit")
-    public String editTranscript() {
-        return "teach/editTranscript";
-    }
-
-    @RequestMapping("/manage/course/request")
+    @RequiresPermissions(value = {"teach", "admin"}, logical = Logical.OR)
+    @RequestMapping("/teach/request")
     public String viewCourseRequest() {
-        return "admin/teach/viewCourseRequest";
+        return "teach/tempCourse";
     }
 
     //后勤管理
