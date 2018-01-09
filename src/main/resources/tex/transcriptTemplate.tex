@@ -41,8 +41,8 @@ pdftitle={$title}%
 \begin{minipage}[c][40pt][c]{0.67\textwidth}
 先锋教育学校     \hfill $sname              \\
 斑竹园镇北欧知识城一期     \hfill 学生 ID: $studentId \\
-Mars Hill, NC 28754 \hfill 入学时间: $info        \\
-Mars                \hfill 报告时间：\today \\
+四川省成都市新都区 \hfill 入学时间: $info        \\
+邮编:610500      \hfill 报告时间：\today \\
 \hfill 学生住址：
 \end{minipage}
 \end{center}
@@ -65,13 +65,12 @@ GPA               & $gpa  \\
 
 \section*{------ Beginning of Graduate Record ------}
 
-#foreach($info in $infoset)
+#foreach($info in $infoSet)
 \vfill
-\subsection*{$info}
+\subsection*{$infoNameSet[$info]}
 \begin{minipage}[c]{1\textwidth}\centering
 \begin{tabulary}{\textwidth}{ABCDEFG}
-    Course/Section & Course Title & Earned Hours &
-    Quality Hours & Grade & Quality Points \\
+    CRN & Course Title & Earned Hours & Quality Hours & Grade & Quality Points \\
     \midrule
     #foreach($transcript in $transcriptList[$info])
         \textsc{$transcript[0]} & $transcript[1] & $transcript[2] & $transcript[3] & $transcript[4] & $transcript[5]\\
