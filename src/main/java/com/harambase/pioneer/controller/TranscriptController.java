@@ -70,9 +70,33 @@ public class TranscriptController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "teach", "student", "faculty"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"admin", "student"}, logical = Logical.OR)
+    @RequestMapping(produces = "application/json", method = RequestMethod.GET)
+    public ResponseEntity list(@RequestParam(value = "start") Integer start,
+                               @RequestParam(value = "length") Integer length,
+                               @RequestParam(value = "draw") Integer draw,
+                               @RequestParam(value = "search[value]") String search,
+                               @RequestParam(value = "order[0][dir]") String order,
+                               @RequestParam(value = "order[0][column]") String orderCol) {
+
+        HaramMessage message = transcriptService.transcriptList(start, length, search, order, orderCol, SessionUtil.getUserId(), "");
+        message.put("draw", draw);
+        message.put("recordsTotal", ((LinkedHashMap) message.get("page")).get("totalRows"));
+        message.put("recordsFiltered", ((LinkedHashMap) message.get("page")).get("totalRows"));
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
     @RequestMapping(value = "/{studentId}/report", method = RequestMethod.GET)
     public void studentTranscriptReport(@PathVariable(value = "studentId") String studentId, HttpServletResponse response) {
+        HaramMessage haramMessage = transcriptService.studentTranscriptReport(studentId);
+        FileUtil.downloadFile(studentId + "_transcript_report.pdf", (String) haramMessage.getData(), response);
+    }
+
+    @RequiresPermissions(value = {"admin", "student"}, logical = Logical.OR)
+    @RequestMapping(value = "/report", method = RequestMethod.GET)
+    public void transcriptReport(HttpServletResponse response) {
+        String studentId = SessionUtil.getUserId();
         HaramMessage haramMessage = transcriptService.studentTranscriptReport(studentId);
         FileUtil.downloadFile(studentId + "_transcript_report.pdf", (String) haramMessage.getData(), response);
     }

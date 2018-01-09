@@ -76,6 +76,12 @@ public class WebController {
         return "course/choose";
     }
 
+    @RequiresPermissions(value = {"student", "admin"}, logical = Logical.OR)
+    @RequestMapping("/course/transcript")
+    public String studentTranscript() {
+        return "course/transcript";
+    }
+
     //教务管理
     @RequiresPermissions(value = {"teach", "admin"}, logical = Logical.OR)
     @RequestMapping("/teach/pin")
