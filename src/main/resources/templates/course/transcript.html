@@ -40,7 +40,7 @@
                                             <div class="col-sm-2">
                                                 <label class="col-sm-12 control-label">官方成绩报告:</label>
                                             </div>
-                                            <div class="col-sm-3">
+                                            <div class="col-sm-2">
                                                 <button class="btn btn-primary col-sm-12" onclick="download()">下载</button>
                                             </div>
                                         </div>
@@ -70,7 +70,7 @@
         window.open(basePath + "/transcript/report");
     }
 
-    let transcriptTable = $("#transcriptTable").DataTable({
+    $("#transcriptTable").DataTable({
 
         "language": {
             "aria": {
@@ -92,10 +92,10 @@
             }
         },
         "lengthMenu": [
-            [10],
-            [10]
+            [15],
+            [15]
         ],
-        pageLength: 10,
+        pageLength: 15,
         processing: true,
         serverSide: true,
 

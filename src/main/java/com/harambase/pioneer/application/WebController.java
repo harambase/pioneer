@@ -102,7 +102,7 @@ public class WebController {
 
     @RequestMapping("/course/view")
     public String viewCourse() {
-        return "teach/course";
+        return "course/course";
     }
 
     @RequestMapping("/teach/edit")

@@ -20,9 +20,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 
-/**
- * Created by linsh on 7/12/2017.
- */
 @Service
 public class CourseServiceImpl implements CourseService {
 
@@ -106,6 +103,11 @@ public class CourseServiceImpl implements CourseService {
         message.setMsg("上传成功");
         message.setData(map);
         return message;
+    }
+
+    @Override
+    public HaramMessage courseInfoList(String search) {
+        return courseServer.courseInfoList(IP, PORT, search);
     }
 
     @Override

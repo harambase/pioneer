@@ -5,6 +5,7 @@ import com.harambase.pioneer.pojo.Course;
 import com.harambase.pioneer.pojo.dto.Option;
 import com.harambase.pioneer.service.CourseService;
 import com.harambase.support.util.SessionUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,15 +63,16 @@ public class CourseController {
                                @RequestParam(value = "search[value]") String search,
                                @RequestParam(value = "order[0][dir]") String order,
                                @RequestParam(value = "order[0][column]") String orderCol,
-                               @RequestParam(value = "mode", required = false) String mode) {
-        String facultyid = "";
-        String info = "";
-        if (mode != null && mode.equals("faculty"))
-            facultyid = SessionUtil.getUserId();
-        if (mode != null && mode.equals("choose"))
+                               @RequestParam(value = "mode", required = false) String mode,
+                               @RequestParam(value = "info", required = false, defaultValue = "") String info,
+                               @RequestParam(value = "facultyId", required = false, defaultValue = "") String facultyId) {
+
+        if (StringUtils.isNotEmpty(mode) && mode.equals("faculty"))
+            facultyId = SessionUtil.getUserId();
+        if (StringUtils.isNotEmpty(mode) && mode.equals("choose"))
             info = (String)SessionUtil.getPin().get("info");
 
-        HaramMessage message = courseService.courseList(start, length, search, order, orderCol, facultyid, info);
+        HaramMessage message = courseService.courseList(start, length, search, order, orderCol, facultyId, info);
         message.put("draw", draw);
         message.put("recordsTotal", ((LinkedHashMap) message.get("page")).get("totalRows"));
         message.put("recordsFiltered", ((LinkedHashMap) message.get("page")).get("totalRows"));
@@ -81,14 +83,14 @@ public class CourseController {
     @RequestMapping(value = "/zTree/list", method = RequestMethod.GET)
     public ResponseEntity zTreeList(@RequestParam(value = "mode", required = false) String mode) {
 
-        String facultyid = "";
+        String facultyId = "";
         String info = "";
         if (mode != null && mode.equals("faculty"))
-            facultyid = SessionUtil.getUserId();
+            facultyId = SessionUtil.getUserId();
         if (mode != null && mode.equals("choose"))
             info = (String)SessionUtil.getPin().get("info");
 
-        HaramMessage message = courseService.courseTreeList(facultyid, info);
+        HaramMessage message = courseService.courseTreeList(facultyId, info);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
@@ -140,6 +142,13 @@ public class CourseController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
+    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
+    @RequestMapping(value = "/info", method = RequestMethod.GET)
+    public ResponseEntity courseInfoList(@RequestParam(required = false, defaultValue = "") String search){
+        HaramMessage message = courseService.courseInfoList(search);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+        
     @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
     @RequestMapping(value = "/info/{crn}", method = RequestMethod.PUT)
     public ResponseEntity uploadInfo(@RequestParam MultipartFile file, @PathVariable String crn){

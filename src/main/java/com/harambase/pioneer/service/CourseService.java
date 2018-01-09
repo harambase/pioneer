@@ -37,4 +37,6 @@ public interface CourseService {
     HaramMessage courseTreeList(String facultyId, String info);
 
     HaramMessage uploadInfo(String crn, MultipartFile file);
+
+    HaramMessage courseInfoList(String search);
 }
