@@ -39,24 +39,24 @@ var adviseTable = $("#transTable").DataTable({
         {"data": "fname", "title": "教师姓名"},
         {
             "data": "status", "title": "状态", "createdCell": function (nTd, rowData) {
-            if (rowData === "1")
-                $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:green; ">正常</p>');
-            else if (rowData === "0")
-                $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:red; ">已停止</p>');
-        }
+                if (rowData === "1")
+                    $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:green; ">正常</p>');
+                else if (rowData === "0")
+                    $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:red; ">已停止</p>');
+            }
         },
         {"data": "updateTime", "title": "更新时间"},
         {"data": "oname", "title": "操作人"},
         {
             "data": null, "title": "操作", "createdCell": function (nTd, rowData) {
-            var htmlStr = '<button class="btn btn-info" style="width:50%" onclick="deleteAdvise(\'' + rowData.id + '\')">删除辅导关系</button>';
-            if (rowData.status === "0")
-                htmlStr += '<button class="btn btn-success" style="width:50%" onclick="updateStatus(\'' + rowData.id + '\',\'' + "1" + '\')">启用辅导关系</button>';
-            else
-                htmlStr += '<button class="btn btn-danger " style="width:50%" onclick="updateStatus(\'' + rowData.id + '\',\'' + "0" + '\')">停止辅导关系</button>';
-            $(nTd).html(htmlStr);
+                var htmlStr = '<button class="btn btn-info" style="width:50%" onclick="deleteAdvise(\'' + rowData.id + '\')">删除辅导关系</button>';
+                if (rowData.status === "0")
+                    htmlStr += '<button class="btn btn-success" style="width:50%" onclick="updateStatus(\'' + rowData.id + '\',\'' + "1" + '\')">启用辅导关系</button>';
+                else
+                    htmlStr += '<button class="btn btn-danger " style="width:50%" onclick="updateStatus(\'' + rowData.id + '\',\'' + "0" + '\')">停止辅导关系</button>';
+                $(nTd).html(htmlStr);
 
-        }, "width": "200px"
+            }, "width": "200px"
         }
     ],
     "columnDefs": [{
