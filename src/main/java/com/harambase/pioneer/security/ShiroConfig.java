@@ -34,17 +34,6 @@ import java.util.Map;
 @Configuration
 public class ShiroConfig {
 
-    /**
-     * 安全管理器
-     */
-//    @Bean
-//    public SecurityManager securityManager() {
-//        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-//        ShiroDbRealm myRealm = new ShiroDbRealm();
-//        securityManager.setRealm(myRealm);
-//        securityManager.setSessionManager(sessionManager());
-//        return securityManager;
-//    }
     @Bean
     public SessionManager sessionManager() {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
@@ -54,13 +43,15 @@ public class ShiroConfig {
         return sessionManager;
     }
 
+    /**
+     * 安全管理器
+     */
     @Bean
     public DefaultWebSecurityManager securityManager(CookieRememberMeManager rememberMeManager,
-                                                     CacheManager cacheShiroManager,
                                                      DefaultWebSessionManager defaultWebSessionManager) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(this.shiroDbRealm());
-        securityManager.setCacheManager(cacheShiroManager);
+        securityManager.setCacheManager(getEhCacheManager());
         securityManager.setRememberMeManager(rememberMeManager);
         securityManager.setSessionManager(defaultWebSessionManager);
         return securityManager;
@@ -101,23 +92,12 @@ public class ShiroConfig {
         return realm;
     }
 
-//    @Bean
-//    public DefaultWebSecurityManager getDefaultWebSecurityManager(ShiroDbRealm realm, SessionManager sessionManager) {
-//        DefaultWebSecurityManager dwsm = new DefaultWebSecurityManager();
-//        dwsm.setRealm(realm);
-////        <!-- 用户授权/认证信息Cache, 采用EhCache 缓存 -->
-//        dwsm.setCacheManager(getEhCacheManager());
-//        dwsm.setSessionManager(sessionManager);
-//        return dwsm;
-//    }
-
     @Bean
     public AuthorizationAttributeSourceAdvisor getAuthorizationAttributeSourceAdvisor(DefaultWebSecurityManager securityManager) {
         AuthorizationAttributeSourceAdvisor aasa = new AuthorizationAttributeSourceAdvisor();
         aasa.setSecurityManager(securityManager);
         return aasa;
     }
-
 
     /**
      * 项目自定义的Realm
@@ -157,19 +137,20 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilter = new ShiroFilterFactoryBean();
         shiroFilter.setSecurityManager(securityManager);
 
-        /**
+        /*
          * 默认的登陆访问url
          */
         shiroFilter.setLoginUrl("/");
-        /**
+        /*
          * 登陆成功后跳转的url
          */
         shiroFilter.setSuccessUrl("/index");
-        /**
+        /*
          * 没有权限跳转的url
          */
         shiroFilter.setUnauthorizedUrl("/403");
-        /**
+
+        /*
          * 配置shiro拦截器链
          *
          * anon  不需要认证
@@ -179,7 +160,6 @@ public class ShiroConfig {
          */
 
         Map<String, String> hashMap = new HashMap<>();
-        hashMap.put("/**", "anon");
         hashMap.put("/static/**", "anon");
         hashMap.put("/request/user/registerNewUser", "anon");
         hashMap.put("/common/**", "anon");
@@ -191,6 +171,7 @@ public class ShiroConfig {
         hashMap.put("/system/login", "anon");
         hashMap.put("/", "anon");
         hashMap.put("/index", "authc");
+        hashMap.put("/**", "authc");
 
         shiroFilter.setFilterChainDefinitionMap(hashMap);
 
@@ -233,8 +214,4 @@ public class ShiroConfig {
         return authorizationAttributeSourceAdvisor;
     }
 
-//    @Bean(name = "shiroDialect")
-//    public ShiroDialect shiroDialect() {
-//        return new ShiroDialect();
-//    }
 }
