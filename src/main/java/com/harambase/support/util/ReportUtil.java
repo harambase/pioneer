@@ -36,7 +36,8 @@ public class ReportUtil {
                 grade = "CD";
 
             Grade point = Grade.valueOf(grade.toUpperCase());
-            return Integer.getInteger(String.valueOf(credits * point.getPoint()));
+            double ret = credits * point.getPoint();
+            return (int) ret;
         }
         if (StringUtils.isNumeric(grade)) {
             Double g = Double.parseDouble(grade);

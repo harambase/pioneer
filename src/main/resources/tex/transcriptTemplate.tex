@@ -15,12 +15,11 @@ margin=100pt%
 \newcolumntype{C}{>{\centering\arraybackslash}b{32pt}}%
 \newcolumntype{D}{>{\centering\arraybackslash}b{32pt}}%
 \newcolumntype{E}{>{\raggedleft\arraybackslash}b{24pt}}%
-\newcolumntype{F}{>{\raggedright\arraybackslash}b{10pt}}%
-\newcolumntype{G}{>{\raggedleft\arraybackslash}b{32pt}}%
+\newcolumntype{F}{>{\raggedright\arraybackslash}b{32pt}}%
 \usepackage{booktabs}
 \usepackage{hyperref}
 \hypersetup{%
-pdftitle={$title}%
+pdftitle={Offical Trabscript}%
 ,pdfsubject={Official Transcript}%
 ,pdfborder={0 0 0}%
 }
@@ -34,43 +33,43 @@ pdftitle={$title}%
 \begin{document}
 
 \null\section*{\LARGE 先锋教育学校成绩通知单}
+\null\section*{\SMALL OFFICAL TRANSCRIPT}
 
 \vfill
 
 \begin{center}
 \begin{minipage}[c][40pt][c]{0.67\textwidth}
-先锋教育学校     \hfill $sname              \\
-斑竹园镇北欧知识城一期     \hfill 学生 ID: $studentId \\
-四川省成都市新都区 \hfill 入学时间: $info        \\
-邮编:610500      \hfill 报告时间：\today \\
-\hfill 学生住址：
+先锋教育学校               \hfill 学生姓名: $sname    \\
+斑竹园镇北欧知识城一期      \hfill 学生ID: $studentId  \\
+四川省成都市新都区          \hfill 入学时间: $info      \\
+邮编:610500                \hfill 报告时间：\today     \\
+
 \end{minipage}
 \end{center}
 
 \vfill
 
-\section*{总览 Cumulative Totals：}
+\section*{概况}
 \begin{minipage}[c]{1\textwidth}\centering
-\begin{tabular}{r l}
-Earned Hours      & $total  \\
-Quality Hours     & $complete  \\
-Incomplete Hours  & $incomplete  \\
-Quality Points    & $points \\
-GPA               & $gpa  \\
+\begin{tabular}{l c l}
+    总学时       & Total Hours     & $total  \\
+    完成学时     & Earned Hours    & $complete  \\
+    质量分       & Quality Points  & $points \\
+    累积平均积点 & Cumulative GPA  & $gpa  \\
 \end{tabular}
 \end{minipage}
 
 \vfill
 \pagebreak
 
-\section*{------ Beginning of Graduate Record ------}
+\section*{------ Beginning of Record ------}
 
 #foreach($info in $infoSet)
 \vfill
 \subsection*{$infoNameSet[$info]}
 \begin{minipage}[c]{1\textwidth}\centering
-\begin{tabulary}{\textwidth}{ABCDEFG}
-    CRN & Course Title & Earned Hours & Quality Hours & Grade & Quality Points \\
+\begin{tabulary}{\textwidth}{ABCDEF}
+    CRN & Course Name & Quality Hours & Earned Hours & Grade & Quality Points \\
     \midrule
     #foreach($transcript in $transcriptList[$info])
         \textsc{$transcript[0]} & $transcript[1] & $transcript[2] & $transcript[3] & $transcript[4] & $transcript[5]\\

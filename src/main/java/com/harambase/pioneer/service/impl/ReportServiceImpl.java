@@ -70,7 +70,7 @@ public class ReportServiceImpl implements ReportService {
             List<LinkedHashMap> transcriptList = (List<LinkedHashMap>) transcriptServer.transcriptList(IP, PORT, 1, Integer.MAX_VALUE, "", "", "", studentid, "").getData();
             Map<String, List<List<Object>>> transcripts = new HashMap<>();
             Set<String> infoSet = new HashSet<>();
-            Set<String> infoNameSet = new HashSet<>();
+            Map<String, String> infoNameSet = new HashMap<>();
             for (LinkedHashMap transcriptView : transcriptList) {
                 infoSet.add((String) transcriptView.get("info"));
 
@@ -92,7 +92,7 @@ public class ReportServiceImpl implements ReportService {
                         if(transcript.getComplete().equals("1"))
                             transcriptDetail.add(transcript.getCredits());
                         else
-                            transcriptDetail.add(0.00);
+                            transcriptDetail.add("0.0");
                         String grade = transcript.getGrade();
                         int points = ReportUtil.qualityPointsCalculator(transcript.getCredits(), grade);
                         qualityPoints += points;
@@ -105,7 +105,7 @@ public class ReportServiceImpl implements ReportService {
                     }
                 }
                 transcripts.put(info, transcriptInfoList);
-                infoNameSet.add(ReportUtil.infoConverter(info));
+                infoNameSet.put(info, ReportUtil.infoConverter(info));
             }
 
             converter.replace("infoSet", infoSet);
@@ -116,7 +116,7 @@ public class ReportServiceImpl implements ReportService {
             LinkedHashMap studentViewMap = (LinkedHashMap) studentServer.transcriptDetail(IP, PORT, studentid).getData();
             int complete = (Integer) studentViewMap.get("complete");
             int progress = (Integer) studentViewMap.get("progress");
-            int incomplete = (Integer) studentViewMap.get("progress");
+            int incomplete = (Integer) studentViewMap.get("incomplete");
             int total = complete + progress + incomplete;
 
             double gpa = (double) qualityPoints / (double) (complete + incomplete);
@@ -124,7 +124,6 @@ public class ReportServiceImpl implements ReportService {
 
             converter.replace("total", total);
             converter.replace("complete", complete);
-            converter.replace("incomplete", incomplete);
             converter.replace("points", qualityPoints);
             converter.replace("gpa", df.format(gpa));
 
