@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml"
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml"
 >
 
 <head th:include="/common :: header('课程管理',true, true)"></head>
@@ -742,10 +742,10 @@
                                                                required/>
                                                     </div>
                                                     <button style="width:150px;" class="btn btn-primary"
-                                                            v-if="pageMode==='create'">创建课程
+                                                            v-if="pageMode==='create'" v-on:click="create">创建课程
                                                     </button>
                                                     <button style="width:150px;" class="btn btn-primary"
-                                                            v-if="pageMode==='request'">提交申请
+                                                            v-if="pageMode==='request'" v-on:click="submit">提交申请
                                                     </button>
                                                 </div>
                                                 <div class="panel-footer">
@@ -846,10 +846,30 @@
             });
         },
         methods: {
-            // showCourseTable: function () {
-            //     this.table = true;
-            //     this.detail = false;
-            // }
+            submit: function(){
+                axios.post('/request/course/register', this.course).then(function(response){
+                    if (response.data.code === 2001)
+                        Showbo.Msg.alert("申请成功，等待教务答复!", function () {
+                        });
+                    else
+                        Showbo.Msg.alert(response.data.msg, function () {
+                        });
+                })
+            },
+            create: function(){
+                axios.post('/course', this.course).then(function(response){
+                    if (response.data.code === 2001)
+                        Showbo.Msg.alert("创建成功!", function () {
+                        });
+                    else
+                        Showbo.Msg.alert(response.data.msg, function () {
+                        });
+                })
+            },
+            showCourseTable: function () {
+                this.table = true;
+                this.detail = false;
+            }
         }
     });
 
