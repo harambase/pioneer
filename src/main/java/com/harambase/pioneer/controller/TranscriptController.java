@@ -3,6 +3,7 @@ package com.harambase.pioneer.controller;
 import com.harambase.common.HaramMessage;
 import com.harambase.pioneer.pojo.Transcript;
 import com.harambase.pioneer.service.TranscriptService;
+import com.harambase.support.util.FileUtil;
 import com.harambase.support.util.SessionUtil;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.LinkedHashMap;
 
 @Controller
@@ -68,5 +70,9 @@ public class TranscriptController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-
+    @RequestMapping(value = "/{studentId}/report", method = RequestMethod.GET)
+    public void studentTranscriptReport(@PathVariable(value = "studentId") String studentId, HttpServletResponse response) {
+        HaramMessage haramMessage = transcriptService.studentTranscriptReport(studentId);
+        FileUtil.downloadFile(studentId + "_transcript_report.pdf", (String) haramMessage.getData(), response);
+    }
 }

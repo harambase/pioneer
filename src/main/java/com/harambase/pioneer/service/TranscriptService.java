@@ -9,4 +9,5 @@ public interface TranscriptService {
 
     HaramMessage transcriptList(int start, int length, String search, String order, String orderCol, String studentId, String crn);
 
+    HaramMessage studentTranscriptReport(String studentId);
 }
