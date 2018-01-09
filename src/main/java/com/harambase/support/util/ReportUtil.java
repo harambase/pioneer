@@ -1,6 +1,6 @@
 package com.harambase.support.util;
 
-import com.harambase.common.constant.Grade;
+import com.harambase.common.constant.GradeDict;
 import org.apache.commons.lang3.StringUtils;
 
 public class ReportUtil {
@@ -35,7 +35,7 @@ public class ReportUtil {
             if (grade.toUpperCase().equals("C-") || grade.toUpperCase().equals("D+"))
                 grade = "CD";
 
-            Grade point = Grade.valueOf(grade.toUpperCase());
+            GradeDict point = GradeDict.valueOf(grade.toUpperCase());
             double ret = credits * point.getPoint();
             return (int) ret;
         }
@@ -59,7 +59,7 @@ public class ReportUtil {
             else
                 grade = "F";
 
-            Grade point = Grade.valueOf(grade.toUpperCase());
+            GradeDict point = GradeDict.valueOf(grade.toUpperCase());
             return Integer.getInteger(String.valueOf(credits * point.getPoint()));
         }
 

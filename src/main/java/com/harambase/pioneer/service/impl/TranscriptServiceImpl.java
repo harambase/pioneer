@@ -53,7 +53,7 @@ public class TranscriptServiceImpl implements TranscriptService {
     @Override
     public HaramMessage studentTranscriptReport(String studentid) {
 
-        /*
+        /* VTL Syntax information:
          * http://velocity.apache.org/engine/1.7/user-guide.html
          */
 
@@ -73,7 +73,7 @@ public class TranscriptServiceImpl implements TranscriptService {
             LinkedHashMap studentInfoMap = (LinkedHashMap) personServer.get(IP, PORT, studentid).getData();
             converter.replace("sname", studentInfoMap.get("lastName") + ", " + studentInfoMap.get("firstName"));
             converter.replace("studentId", studentInfoMap.get("userId"));
-            converter.replace("info", ReportUtil.infoConverter((String)studentInfoMap.get("info")));
+            converter.replace("info", ReportUtil.infoConverter((String) studentInfoMap.get("info")));
             converter.replace("address", studentInfoMap.get("address"));
 
             //成绩详情
@@ -81,10 +81,11 @@ public class TranscriptServiceImpl implements TranscriptService {
             Map<String, List<List<Object>>> transcripts = new HashMap<>();
             Set<String> infoSet = new HashSet<>();
             Map<String, String> infoNameSet = new HashMap<>();
+
             for (LinkedHashMap transcriptView : transcriptList) {
                 infoSet.add((String) transcriptView.get("info"));
-
             }
+
             int qualityPoints = 0;
 
             for (String info : infoSet) {
@@ -99,7 +100,7 @@ public class TranscriptServiceImpl implements TranscriptService {
                         transcriptDetail.add(transcript.getCrn());
                         transcriptDetail.add(transcript.getCname());
                         transcriptDetail.add(transcript.getCredits());
-                        if(transcript.getComplete().equals("1"))
+                        if (transcript.getComplete().equals("1"))
                             transcriptDetail.add(transcript.getCredits());
                         else
                             transcriptDetail.add("0.0");
@@ -146,6 +147,7 @@ public class TranscriptServiceImpl implements TranscriptService {
             pdfGen.generate(reportTex, projectDir, projectDir);
 
             logger.info("Reporting task for " + studentid + " has completed.");
+
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
