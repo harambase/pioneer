@@ -82,6 +82,18 @@ public class WebController {
         return "course/transcript";
     }
 
+    @RequiresPermissions(value = {"faculty", "admin"}, logical = Logical.OR)
+    @RequestMapping("/course/create")
+    public String courseRequest() {
+        return "teach/course";
+    }
+
+    @RequiresPermissions("user")
+    @RequestMapping("/course/view")
+    public String viewCourse() {
+        return "course/course";
+    }
+
     //教务管理
     @RequiresPermissions(value = {"teach", "admin"}, logical = Logical.OR)
     @RequestMapping("/teach/pin")
@@ -95,14 +107,10 @@ public class WebController {
         return "teach/credit";
     }
 
+    @RequiresPermissions(value = {"teach", "admin"}, logical = Logical.OR)
     @RequestMapping("/teach/create")
     public String createCourse() {
         return "teach/course";
-    }
-
-    @RequestMapping("/course/view")
-    public String viewCourse() {
-        return "course/course";
     }
 
     @RequestMapping("/teach/edit")

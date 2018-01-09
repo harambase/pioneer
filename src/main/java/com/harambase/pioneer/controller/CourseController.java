@@ -94,11 +94,10 @@ public class CourseController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-
     @RequiresPermissions("user")
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public ResponseEntity search(@RequestParam("search") String search,
-                                 @RequestParam("status") String status) {
+                                 @RequestParam(value = "status", required = false, defaultValue = "") String status) {
         HaramMessage haramMessage = courseService.getCourseBySearch(search, status);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
