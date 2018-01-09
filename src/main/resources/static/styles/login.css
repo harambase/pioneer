@@ -33,7 +33,7 @@ body
 }
 #brandingWrapper
 {
-    background-image: url("/static/images/03484_moonlitnight_2880x1620.jpg");
+    background-image: url("/static/images/login_background.jpg");
     background-size: cover;
     width:100%;
     height:100%;

@@ -1,15 +1,10 @@
 package com.harambase.pioneer.application;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @CrossOrigin
@@ -55,7 +50,7 @@ public class WebController {
         return "teach/myCourse";
     }
 
-    //系统设置
+    //系统管理
     @RequiresPermissions(value = {"system", "admin", "user"}, logical = Logical.OR)
     @RequestMapping("/system/user/manage")
     public String user() {
@@ -94,7 +89,6 @@ public class WebController {
         return "teach/credit";
     }
 
-
     @RequestMapping("/teach/create")
     public String createCourse() {
         return "teach/course";
@@ -111,7 +105,7 @@ public class WebController {
     }
 
     @RequestMapping("/teach/advise")
-    public String fViewAdvising(){
+    public String fViewAdvising() {
         return "teach/viewAdvising";
     }
 
@@ -141,14 +135,16 @@ public class WebController {
     }
 
     //后勤管理
+    @RequiresPermissions(value = {"logistic", "admin"}, logical = Logical.OR)
     @RequestMapping("/logistic/leave")
     public String viewLeave() {
-        return "logistic/viewLeave";
+        return "logistic/leave";
     }
 
+    @RequiresPermissions(value = {"logistic", "admin"}, logical = Logical.OR)
     @RequestMapping("/logistic/dorm")
     public String viewDorm() {
-        return "logistic/viewDorm";
+        return "logistic/dorm";
     }
 
 //todo: URL加密

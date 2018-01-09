@@ -3,7 +3,7 @@
 ------------------------------------------------*/
 body {
     font-family: 'Open Sans', sans-serif;
-    background-image: url("/static/images/blur-bg.jpg");
+    background-image: url("/static/images/background.jpg");
     background-size: cover;
 }
 
