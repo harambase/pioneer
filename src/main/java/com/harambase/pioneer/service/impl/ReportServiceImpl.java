@@ -3,24 +3,28 @@ package com.harambase.pioneer.service.impl;
 import com.harambase.common.Config;
 import com.harambase.common.HaramMessage;
 import com.harambase.common.constant.FlagDict;
-import com.harambase.pioneer.pojo.Person;
-import com.harambase.pioneer.pojo.Student;
-import com.harambase.pioneer.pojo.Transcript;
 import com.harambase.pioneer.server.PersonServer;
 import com.harambase.pioneer.server.StudentServer;
 import com.harambase.pioneer.server.TranscriptServer;
 import com.harambase.pioneer.service.ReportService;
-import com.harambase.support.util.DateUtil;
+import com.harambase.support.document.jlr.JLRConverter;
+import com.harambase.support.document.jlr.JLRGenerator;
+import com.harambase.support.document.jlr.JLROpener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.*;
+import java.util.LinkedHashMap;
 
 @Service
 public class ReportServiceImpl implements ReportService {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    private final static String IP = Config.SERVER_IP;
+    private final static int PORT = Config.SERVER_PORT;
 
     private final TranscriptServer transcriptServer;
     private final PersonServer personServer;
@@ -36,77 +40,94 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public HaramMessage studentTranscriptReport(String studentid) {
 
-        FileOutputStream fos = null;
-        String filePath = Config.serverPath + "/static/upload/document/studentReport" + studentid + ".pdf";
+        File projectDirectory = new File("");
+        File workingDirectory = new File(projectDirectory.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "tex");
+
+        File template = new File(workingDirectory.getAbsolutePath() + File.separator + "transcriptTemplate.tex");
+
+        String dirPath = "/static/upload/document/studentReport/" + studentid + "/";
+        String inputTexPath = Config.serverPath + dirPath + studentid + ".tex";
+        File reportTex = new File(inputTexPath);
+
         try {
+            JLRConverter converter = new JLRConverter(workingDirectory);
 
+            //学生信息TITLE
+            LinkedHashMap studentInfoMap = (LinkedHashMap) personServer.get(IP, PORT, studentid).getData();
+            converter.replace("sname", studentInfoMap.get("lastName") + ", " + studentInfoMap.get("firstName"));
+            converter.replace("studentId", studentInfoMap.get("userId"));
+            converter.replace("info", studentInfoMap.get("info"));
+            converter.replace("address", studentInfoMap.get("address"));
 
-            StringBuilder exportInfoSb = new StringBuilder();
+            //学分TOTAL:
+            LinkedHashMap studentViewMap = (LinkedHashMap) studentServer.transcriptDetail(IP, PORT, studentid).getData();
+            int complete = (Integer) studentViewMap.get("complete");
+            int progress = (Integer) studentViewMap.get("progress");
+            int incomplete = (Integer) studentViewMap.get("progress");
+            int total = complete + progress + incomplete;
+            //todo: quality points caculation
+            int points = complete * 4;
+            double gpa = (double) points / (double) (complete + incomplete);
 
-            List<Transcript> transcriptViewList = new ArrayList<>();//transcriptServer.studentTranscripts(studentid);
-            Person student = new Person();//personServer.selectByUserId(studentid);
-            Student studentView = new Student();//studentServer.creditsDetail(studentid);
+            converter.replace("total", total);
+            converter.replace("complete", complete);
+            converter.replace("incomplete", incomplete);
+            converter.replace("points", points);
+            converter.replace("gpa", gpa);
 
-            if (transcriptViewList != null && transcriptViewList.size() > 0) {
-                exportInfoSb.append("先锋学校学生成绩单\n")
-                        .append("生成时间:" + DateUtil.DateToStr(new Date()) + "\n")
-                        .append("---------------------------------------------\n")
-                        .append("学生信息")
-                        .append("姓名：" + student.getLastName() + ", " + student.getFirstName() + "\n")
-                        .append("生日：" + student.getBirthday() + "\n")
-                        .append("----------------------------------------------\n")
-                        .append("成绩信息");
+            //成绩详情
+//            List<LinkedHashMap> transcriptList = (List<LinkedHashMap>) transcriptServer.transcriptList(IP, PORT, 1, Integer.MAX_VALUE, "", "", "", studentid, "").getData();
+//            Map<String, List<List<Object>>> transcripts = new HashMap<>();
+//            Set<String> infoSet = new HashSet<>();
+//            for (LinkedHashMap transcriptView : transcriptList) {
+//                infoSet.add((String)transcriptView.get("info"));
+//            }
+//
+//            for(String info: infoSet){
+//                List<List<Object>> transcriptInfoList = new ArrayList<>();
+//                for (LinkedHashMap transcriptMap : transcriptList) {
+//                    if(transcriptMap.get("info").equals(info)) {
+//                        List<Object> transcriptDetail = new ArrayList<>();
+//
+//                        Transcript transcript = new Transcript();
+//                        BeanUtils.populate(transcript, transcriptMap);
+//
+//                        transcriptDetail.add(transcript.getCname() + "-");//todo:course abbr-course level
+//                        transcriptDetail.add(transcript.getCname());
+//                        transcriptDetail.add(transcript.getCredits());
+//                        transcriptDetail.add(transcript.getCredits());
+//                        transcriptDetail.add(transcript.getGrade());
+//                        transcriptDetail.add(points);//todo: quality points calculator
+//
+//                        transcriptInfoList.add(transcriptDetail);
+//
+//                    }
+//                }
+//                transcripts.put(info, transcriptInfoList);
+//            }
 
-                Set<String> infoSet = new HashSet<>();
-                List<Transcript> usedTranscript;
-                for (Transcript transcriptView : transcriptViewList) {
-                    infoSet.add(transcriptView.getInfo());
-                }
-                String semeterInfo = "";
-                for (String info : infoSet) {
-                    usedTranscript = new ArrayList<>();
-                    semeterInfo += "学期：" + info + "\n";
-                    semeterInfo += "学生状态：\n";
-                    semeterInfo += "课程,课程名,教师,成绩,学分,总学时\n";
+//            converter.replace("infoSet", infoSet);
+//            converter.replace("transcripts", transcripts.get("2017-01"));
 
-                    for (Transcript transcriptView : transcriptViewList) {
-                        if (transcriptView.getInfo().equals(info)) {
-                            semeterInfo += transcriptView.getCrn() + ","
-                                    + transcriptView.getCname() + ","
-                                    + transcriptView.getFname() + ","
-                                    + transcriptView.getGrade() + ","
-                                    + transcriptView.getCredits() + ","
-                                    + "  " + "\n";
+            //输出
+            converter.parse(template, reportTex);
+            File projectDir = new File(Config.serverPath + dirPath);
 
-                        }
-                        usedTranscript.add(transcriptView);
-                    }
+            //PDF生成
+            JLRGenerator pdfGen = new JLRGenerator();
+            pdfGen.generate(reportTex, projectDir, projectDir);
 
-                    transcriptViewList.removeAll(usedTranscript);
-                }
-                exportInfoSb.append(semeterInfo);
-//                fos.write(exportInfoSb.toString().getBytes("UTF-8"));
-                fos = new FileOutputStream(new File(filePath), true);
-
-            }
+//          //PDF自动打开
+//            File pdf1 = pdfGen.getPDF();
+//            JLROpener.open(pdf1);
 
         } catch (Exception e) {
-            e.printStackTrace();
-            HaramMessage restMessage = new HaramMessage();
-            restMessage.setCode(FlagDict.SYSTEM_ERROR.getV());
-            return restMessage;
-        } finally {
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            logger.error(e.getMessage(), e);
         }
+
         HaramMessage restMessage = new HaramMessage();
         restMessage.setCode(FlagDict.SUCCESS.getV());
-        restMessage.setData(filePath);
+        restMessage.setData(dirPath + studentid + ".pdf");
         return restMessage;
     }
 }

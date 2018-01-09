@@ -15,8 +15,8 @@ import java.util.Map;
 @Component
 public class StudentServer {
 
-    public HaramMessage transcriptDetail(String ip, int port, String studentid) {
-        String remotePath = "/student/" + studentid + "/transcript";
+    public HaramMessage transcriptDetail(String ip, int port, String studentId) {
+        String remotePath = "/student/" + studentId + "/transcript";
         StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
         Map params = new HashMap();
         return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
@@ -45,8 +45,8 @@ public class StudentServer {
         return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
     }
 
-    public HaramMessage getAvailableCredit(String ip, int port, String studentid, String info) {
-        String remotePath = "/student/" + studentid + "/available/credit?info=" + info;
+    public HaramMessage getAvailableCredit(String ip, int port, String studentId, String info) {
+        String remotePath = "/student/" + studentId + "/available/credit?info=" + info;
         StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
         Map params = new HashMap();
         return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);

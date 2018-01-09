@@ -33,88 +33,53 @@ pdftitle={$title}%
 
 \begin{document}
 
-\null\section*{\LARGE 先锋教育学校官方成绩单}
+\null\section*{\LARGE 先锋教育学校成绩通知单}
 
-    \vfill
+\vfill
 
-    \begin{center}
-        \begin{minipage}[c][40pt][c]{0.67\textwidth}
-先锋教育学校     \hfill $StudentName              \\
+\begin{center}
+\begin{minipage}[c][40pt][c]{0.67\textwidth}
+先锋教育学校     \hfill $sname              \\
 斑竹园镇北欧知识城一期     \hfill 学生 ID: $studentId \\
-            Mars Hill, NC 28754 \hfill SSN: XXXXXXXXX        \\
-            Mars                \hfill 报告时间：\today
-        \end{minipage}
-    \end{center}
+Mars Hill, NC 28754 \hfill 入学时间: $info        \\
+Mars                \hfill 报告时间：\today \\
+\hfill 学生住址：
+\end{minipage}
+\end{center}
 
-    \vfill
+\vfill
 
-    \section*{总览 Cumulative Totals：}
-    \begin{minipage}[c]{1\textwidth}\centering
-    \begin{tabular}{r l}
-        Earned Hours   & 12.00  \\
-        Quality Hours  & 34.00  \\
-        Quality Points & 567.89 \\
-        GPA            & 3.141  \\
-    \end{tabular}
-    \end{minipage}
+\section*{总览 Cumulative Totals：}
+\begin{minipage}[c]{1\textwidth}\centering
+\begin{tabular}{r l}
+Earned Hours      & $total  \\
+Quality Hours     & $complete  \\
+Incomplete Hours  & $incomplete  \\
+Quality Points    & $points \\
+GPA               & $gpa  \\
+\end{tabular}
+\end{minipage}
 
-    \vfill
-    \pagebreak
+\vfill
+\pagebreak
 
-    \section*{------ Beginning of Graduate Record ------}
+\section*{------ Beginning of Graduate Record ------}
 
-    \vfill
-    \subsection*{Fall 3001}
-    \begin{minipage}[c]{1\textwidth}\centering
-    \begin{tabulary}{\textwidth}{ABCDE@{}FG}
-        Course/Section & Course Title & Earned Hours &
-        Quality Hours & \multicolumn{2}{c}{Grade} & Quality Points \\
-        \midrule
-        \textsc{Phys}-499  & Neutrino Fields  & 4 & 4.00 & A&+ & 16.00 \\
-        \textsc{Math}-314A & Really Hard Math & 4 & 4.00 & D&  &  4.00 \\
-        \textsc{Phys}-271B & Algebraic Space  & 4 & 4.00 & B&- & 12.34 \\
-    \end{tabulary}
-    \end{minipage}
+%#foreach( $info in $infoSet )
+%    \vfill
+%    \subsection*{$info}
+%    \begin{minipage}[c]{1\textwidth}\centering
+%    \begin{tabulary}{\textwidth}{ABCDE@{}FG}
+%        Course/Section & Course Title & Earned Hours &
+%        Quality Hours & \multicolumn{2}{c}{Grade} & Quality Points \\
+%        \midrule
+%    #foreach( $transcript in $transcripts )
+%        \textsc{$transcript[0]} & $transcript[1] & $transcript[2] & $transcript[3] & $transcript[4] & $transcript[5]\\
+%%        \textsc{Phys}-499  & Neutrino Fields  & 4 & 4.00 & A&+ & 16.00 \\
+%    #end
+%    \end{tabulary}
+%    \end{minipage}
+%#end
 
-    \vfill
-    \subsection*{Spring 3001}
-    \begin{minipage}[c]{1\textwidth}\centering
-    \begin{tabulary}{\textwidth}{ABCDE@{}FG}
-        Course/Section & Course Title & Earned Hours &
-        Quality Hours & \multicolumn{2}{c}{Grade} & Quality Points \\
-        \midrule
-        \textsc{Hist}-489  & 20th Century Hist & 4 & 4.00 & B&- & 10.80 \\
-        \textsc{Phys}-101B & Intro to Science  & 4 & 4.00 & B&  & 12.00 \\
-        \textsc{Phys}-271A & Algebraic Science & 4 & 4.00 & A&  & 16.00 \\
-    \end{tabulary}
-    \end{minipage}
-
-    \vfill
-    \subsection*{Winter 3001}
-    \begin{minipage}[c]{1\textwidth}\centering
-    \begin{tabulary}{\textwidth}{ABCDE@{}FG}
-        Course/Section & Course Title & Earned Hours &
-        Quality Hours & \multicolumn{2}{c}{Grade} & Quality Points \\
-        \midrule
-        \textsc{Phys}-101  & Discrete Mechanics & 4 & 4.00 & B&- & 10.80 \\
-        \textsc{Phys}-101A & Intro to Science   & 4 & 4.00 & B&  & 12.00 \\
-        \textsc{Math}-171B & Algebra            & 4 & 4.00 & A&  & 16.00 \\
-    \end{tabulary}
-    \end{minipage}
-
-    \vfill
-    \subsection*{Fall 3000}
-    \begin{minipage}[c]{1\textwidth}\centering
-    \begin{tabulary}{\textwidth}{ABCDE@{}FG}
-        Course/Section & Course Title & Earned Hours &
-        Quality Hours & \multicolumn{2}{c}{Grade} & Quality Points \\
-        \midrule
-        \textsc{Phys}-001X & Special Seminar & 4 & 4.00 & A&  & 16.00 \\
-        \textsc{Phys}-001  & Orientation     & 4 & 4.00 & B&- & 10.80 \\
-        \textsc{Phys}-101A & Breathing       & 4 & 4.00 & B&  & 12.00 \\
-        \textsc{Math}-171A & Algebra         & 4 & 4.00 & A&  & 16.00 \\
-    \end{tabulary}
-    \end{minipage}
-
-    \vfill
+\vfill
 \end{document}
