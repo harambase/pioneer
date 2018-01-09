@@ -3,20 +3,21 @@ package com.harambase.pioneer.service.impl;
 import com.harambase.common.Config;
 import com.harambase.common.HaramMessage;
 import com.harambase.common.constant.FlagDict;
+import com.harambase.pioneer.pojo.Transcript;
 import com.harambase.pioneer.server.PersonServer;
 import com.harambase.pioneer.server.StudentServer;
 import com.harambase.pioneer.server.TranscriptServer;
 import com.harambase.pioneer.service.ReportService;
 import com.harambase.support.document.jlr.JLRConverter;
 import com.harambase.support.document.jlr.JLRGenerator;
-import com.harambase.support.document.jlr.JLROpener;
+import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.util.LinkedHashMap;
+import java.util.*;
 
 @Service
 public class ReportServiceImpl implements ReportService {
@@ -76,39 +77,38 @@ public class ReportServiceImpl implements ReportService {
             converter.replace("gpa", gpa);
 
             //成绩详情
-//            List<LinkedHashMap> transcriptList = (List<LinkedHashMap>) transcriptServer.transcriptList(IP, PORT, 1, Integer.MAX_VALUE, "", "", "", studentid, "").getData();
-//            Map<String, List<List<Object>>> transcripts = new HashMap<>();
-//            Set<String> infoSet = new HashSet<>();
-//            for (LinkedHashMap transcriptView : transcriptList) {
-//                infoSet.add((String)transcriptView.get("info"));
-//            }
-//
-//            for(String info: infoSet){
-//                List<List<Object>> transcriptInfoList = new ArrayList<>();
-//                for (LinkedHashMap transcriptMap : transcriptList) {
-//                    if(transcriptMap.get("info").equals(info)) {
-//                        List<Object> transcriptDetail = new ArrayList<>();
-//
-//                        Transcript transcript = new Transcript();
-//                        BeanUtils.populate(transcript, transcriptMap);
-//
-//                        transcriptDetail.add(transcript.getCname() + "-");//todo:course abbr-course level
-//                        transcriptDetail.add(transcript.getCname());
-//                        transcriptDetail.add(transcript.getCredits());
-//                        transcriptDetail.add(transcript.getCredits());
-//                        transcriptDetail.add(transcript.getGrade());
-//                        transcriptDetail.add(points);//todo: quality points calculator
-//
-//                        transcriptInfoList.add(transcriptDetail);
-//
-//                    }
-//                }
-//                transcripts.put(info, transcriptInfoList);
-//            }
+            List<LinkedHashMap> transcriptList = (List<LinkedHashMap>) transcriptServer.transcriptList(IP, PORT, 1, Integer.MAX_VALUE, "", "", "", studentid, "").getData();
+            Map<String, List<List<Object>>> transcripts = new HashMap<>();
+            Set<String> infoSet = new HashSet<>();
+            for (LinkedHashMap transcriptView : transcriptList) {
+                infoSet.add((String) transcriptView.get("info"));
+            }
+            converter.replace("infoset", infoSet);
 
-//            converter.replace("infoSet", infoSet);
-//            converter.replace("transcripts", transcripts.get("2017-01"));
+            for (String info : infoSet) {
+                List<List<Object>> transcriptInfoList = new ArrayList<>();
+                for (LinkedHashMap transcriptMap : transcriptList) {
+                    if (transcriptMap.get("info").equals(info)) {
+                        List<Object> transcriptDetail = new ArrayList<>();
 
+                        Transcript transcript = new Transcript();
+                        BeanUtils.populate(transcript, transcriptMap);
+
+                        transcriptDetail.add(transcript.getCname() + "-");//todo:course abbr-course level
+                        transcriptDetail.add(transcript.getCname());
+                        transcriptDetail.add(transcript.getCredits());
+                        transcriptDetail.add(transcript.getCredits());
+                        transcriptDetail.add(transcript.getGrade());
+                        transcriptDetail.add(points);//todo: quality points calculator
+
+                        transcriptInfoList.add(transcriptDetail);
+
+                    }
+                }
+                transcripts.put(info, transcriptInfoList);
+            }
+
+            converter.replace("transcriptList", transcripts);
             //输出
             converter.parse(template, reportTex);
             File projectDir = new File(Config.serverPath + dirPath);
@@ -121,6 +121,7 @@ public class ReportServiceImpl implements ReportService {
 //            File pdf1 = pdfGen.getPDF();
 //            JLROpener.open(pdf1);
 
+            logger.info("Reporting task for " + studentid + " has completed.");
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }

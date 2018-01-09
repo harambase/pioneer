@@ -32,8 +32,8 @@ public class JLRConverter {
         this.contextData = new VelocityContext();
     }
 
-    public void replace(String var1, Object var2) {
-        this.contextData.put(var1, var2);
+    public void replace(String key, Object var2) {
+        this.contextData.put(key, var2);
     }
 
     public void clear() {

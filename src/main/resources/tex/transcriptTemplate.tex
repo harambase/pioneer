@@ -14,7 +14,7 @@ margin=100pt%
 \newcolumntype{B}{>{\raggedright\arraybackslash}b{144pt}}%
 \newcolumntype{C}{>{\centering\arraybackslash}b{32pt}}%
 \newcolumntype{D}{>{\centering\arraybackslash}b{32pt}}%
-\newcolumntype{E}{>{\raggedleft\arraybackslash}b{14pt}}%
+\newcolumntype{E}{>{\raggedleft\arraybackslash}b{24pt}}%
 \newcolumntype{F}{>{\raggedright\arraybackslash}b{10pt}}%
 \newcolumntype{G}{>{\raggedleft\arraybackslash}b{32pt}}%
 \usepackage{booktabs}
@@ -65,21 +65,20 @@ GPA               & $gpa  \\
 
 \section*{------ Beginning of Graduate Record ------}
 
-%#foreach( $info in $infoSet )
-%    \vfill
-%    \subsection*{$info}
-%    \begin{minipage}[c]{1\textwidth}\centering
-%    \begin{tabulary}{\textwidth}{ABCDE@{}FG}
-%        Course/Section & Course Title & Earned Hours &
-%        Quality Hours & \multicolumn{2}{c}{Grade} & Quality Points \\
-%        \midrule
-%    #foreach( $transcript in $transcripts )
-%        \textsc{$transcript[0]} & $transcript[1] & $transcript[2] & $transcript[3] & $transcript[4] & $transcript[5]\\
-%%        \textsc{Phys}-499  & Neutrino Fields  & 4 & 4.00 & A&+ & 16.00 \\
-%    #end
-%    \end{tabulary}
-%    \end{minipage}
-%#end
+#foreach($info in $infoset)
+\vfill
+\subsection*{$info}
+\begin{minipage}[c]{1\textwidth}\centering
+\begin{tabulary}{\textwidth}{ABCDEFG}
+    Course/Section & Course Title & Earned Hours &
+    Quality Hours & Grade & Quality Points \\
+    \midrule
+    #foreach($transcript in $transcriptList[$info])
+        \textsc{$transcript[0]} & $transcript[1] & $transcript[2] & $transcript[3] & $transcript[4] & $transcript[5]\\
+    #end
+\end{tabulary}
+\end{minipage}
+#end
 
 \vfill
 \end{document}
