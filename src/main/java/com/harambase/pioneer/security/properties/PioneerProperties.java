@@ -1,19 +1,13 @@
 package com.harambase.pioneer.security.properties;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "pioneer")
 public class PioneerProperties {
-
-    public static final String PREFIX = "pioneer";
 
     private Boolean kaptchaOpen = false;
 
     private Boolean swaggerOpen = false;
-
-//    private Boolean haveCreatePath = false;
 
     private Integer sessionInvalidateTime = 30 * 60;  //session 失效时间（默认为30分钟 单位：秒）
 

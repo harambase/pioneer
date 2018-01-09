@@ -8,7 +8,6 @@ import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.session.SessionListener;
-import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -34,15 +33,6 @@ import java.util.Map;
 @Configuration
 public class ShiroConfig {
 
-    @Bean
-    public SessionManager sessionManager() {
-        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
-        Collection<SessionListener> listeners = new ArrayList<>();
-        listeners.add(new PioneerSessionListener());
-        sessionManager.setSessionListeners(listeners);
-        return sessionManager;
-    }
-
     /**
      * 安全管理器
      */
@@ -63,6 +53,9 @@ public class ShiroConfig {
     @Bean
     public DefaultWebSessionManager defaultWebSessionManager(CacheManager cacheShiroManager, PioneerProperties pioneerProperties) {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+        Collection<SessionListener> listeners = new ArrayList<>();
+        listeners.add(new PioneerSessionListener());
+        sessionManager.setSessionListeners(listeners);
         sessionManager.setCacheManager(cacheShiroManager);
         sessionManager.setSessionValidationInterval(pioneerProperties.getSessionValidationInterval() * 1000);
         sessionManager.setGlobalSessionTimeout(pioneerProperties.getSessionInvalidateTime() * 1000);
@@ -185,7 +178,7 @@ public class ShiroConfig {
     public MethodInvokingFactoryBean methodInvokingFactoryBean(DefaultWebSecurityManager securityManager) {
         MethodInvokingFactoryBean bean = new MethodInvokingFactoryBean();
         bean.setStaticMethod("org.apache.shiro.SecurityUtils.setSecurityManager");
-        bean.setArguments(new Object[]{securityManager});
+        bean.setArguments(securityManager);
         return bean;
     }
 
