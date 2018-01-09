@@ -1,4 +1,4 @@
-package com.harambase.pioneer.security.entity;
+package com.harambase.pioneer.security;
 
 import java.io.Serializable;
 import java.util.List;

@@ -1,8 +1,8 @@
-package com.harambase.pioneer.security.helper;
+package com.harambase.support.util;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class CollectionKit {
+public class CollectionUtil {
 
     public static <T> String join(T[] array, String conjunction) {
         StringBuilder sb = new StringBuilder();

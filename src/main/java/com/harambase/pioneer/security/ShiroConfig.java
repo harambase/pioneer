@@ -1,6 +1,8 @@
 package com.harambase.pioneer.security;
 
-import com.harambase.pioneer.security.properties.ShiroSessionListener;
+import com.harambase.pioneer.security.properties.PioneerProperties;
+import com.harambase.pioneer.security.properties.PioneerSessionListener;
+import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
@@ -12,6 +14,8 @@ import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSource
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.servlet.Cookie;
+import org.apache.shiro.web.servlet.ShiroHttpSession;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
@@ -45,41 +49,40 @@ public class ShiroConfig {
     public SessionManager sessionManager() {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         Collection<SessionListener> listeners = new ArrayList<>();
-        listeners.add(new ShiroSessionListener());
+        listeners.add(new PioneerSessionListener());
         sessionManager.setSessionListeners(listeners);
         return sessionManager;
     }
 
     @Bean
-    public DefaultWebSecurityManager securityManager(CookieRememberMeManager rememberMeManager
-                                                     //CacheManager cacheShiroManager,
-                                                     //DefaultWebSessionManager defaultWebSessionManager
-    ) {
+    public DefaultWebSecurityManager securityManager(CookieRememberMeManager rememberMeManager,
+                                                     CacheManager cacheShiroManager,
+                                                     DefaultWebSessionManager defaultWebSessionManager) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(this.shiroDbRealm());
-//        securityManager.setCacheManager(cacheShiroManager);
+        securityManager.setCacheManager(cacheShiroManager);
         securityManager.setRememberMeManager(rememberMeManager);
-//        securityManager.setSessionManager(defaultWebSessionManager);
+        securityManager.setSessionManager(defaultWebSessionManager);
         return securityManager;
     }
 
-//    /**
-//     * session管理器
-//     */
-//    @Bean
-//    public DefaultWebSessionManager defaultWebSessionManager(CacheManager cacheShiroManager, PioneerProperties pioneerProperties) {
-//        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
-//        sessionManager.setCacheManager(cacheShiroManager);
-//        sessionManager.setSessionValidationInterval(pioneerProperties.getSessionValidationInterval() * 1000);
-//        sessionManager.setGlobalSessionTimeout(pioneerProperties.getSessionInvalidateTime() * 1000);
-//        sessionManager.setDeleteInvalidSessions(true);
-//        sessionManager.setSessionValidationSchedulerEnabled(true);
-//        Cookie cookie = new SimpleCookie(ShiroHttpSession.DEFAULT_SESSION_ID_NAME);
-//        cookie.setName("shiroAdminCookie");
-//        cookie.setHttpOnly(true);
-//        sessionManager.setSessionIdCookie(cookie);
-//        return sessionManager;
-//    }
+    /**
+     * session管理器
+     */
+    @Bean
+    public DefaultWebSessionManager defaultWebSessionManager(CacheManager cacheShiroManager, PioneerProperties pioneerProperties) {
+        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+        sessionManager.setCacheManager(cacheShiroManager);
+        sessionManager.setSessionValidationInterval(pioneerProperties.getSessionValidationInterval() * 1000);
+        sessionManager.setGlobalSessionTimeout(pioneerProperties.getSessionInvalidateTime() * 1000);
+        sessionManager.setDeleteInvalidSessions(true);
+        sessionManager.setSessionValidationSchedulerEnabled(true);
+        Cookie cookie = new SimpleCookie(ShiroHttpSession.DEFAULT_SESSION_ID_NAME);
+        cookie.setName("shiroCookie");
+        cookie.setHttpOnly(true);
+        sessionManager.setSessionIdCookie(cookie);
+        return sessionManager;
+    }
 
     /**
      * 缓存管理器 使用Ehcache实现

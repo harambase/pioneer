@@ -3,14 +3,16 @@ package com.harambase.pioneer.security.factory;
 import com.harambase.common.Config;
 import com.harambase.pioneer.pojo.Person;
 import com.harambase.pioneer.security.SpringContextHolder;
-import com.harambase.pioneer.security.entity.ShiroUser;
-import com.harambase.pioneer.security.helper.CollectionKit;
+import com.harambase.pioneer.security.ShiroUser;
+import com.harambase.support.util.CollectionUtil;
 import com.harambase.pioneer.server.PersonServer;
 import com.harambase.pioneer.server.RoleServer;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.shiro.authc.CredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,8 @@ public class ShiroServiceImpl implements ShiroService {
 
     private final static String IP = Config.SERVER_IP;
     private final static int PORT = Config.SERVER_PORT;
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final RoleServer roleServer;
     private final PersonServer personServer;
@@ -57,7 +61,7 @@ public class ShiroServiceImpl implements ShiroService {
         try {
             BeanUtils.populate(person, personMap);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
 
         return person;
@@ -65,12 +69,13 @@ public class ShiroServiceImpl implements ShiroService {
 
     @Override
     public ShiroUser shiroUser(Person user) {
+
         ShiroUser shiroUser = new ShiroUser();
 
         shiroUser.setUserId(user.getUserId());    // 用户id
         shiroUser.setUsername(user.getUsername());// 用户名
 
-        Integer[] roleArray = CollectionKit.toIntArray("/", user.getRoleId());// 角色集
+        Integer[] roleArray = CollectionUtil.toIntArray("/", user.getRoleId());// 角色集
 
         List<Integer> roleList = new ArrayList<>();
         List<String> roleNameList = new ArrayList<>();
@@ -98,11 +103,12 @@ public class ShiroServiceImpl implements ShiroService {
 
     @Override
     public SimpleAuthenticationInfo info(ShiroUser shiroUser, Person user, String realmName) {
-        //String credentials = user.getPassword();
-        // 密码加盐处理
         String source = user.getPassword();
-        //ByteSource credentialsSalt = new Md5Hash(source);
         return new SimpleAuthenticationInfo(shiroUser, source, realmName);
+        // 密码加盐处理
+        //String credentials = user.getPassword();
+        //ByteSource credentialsSalt = new Md5Hash(source);
+
     }
 
 }

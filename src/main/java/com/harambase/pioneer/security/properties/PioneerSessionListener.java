@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
-public class ShiroSessionListener implements SessionListener {
+public class PioneerSessionListener implements SessionListener {
 
     private final AtomicInteger sessionCount = new AtomicInteger(0);
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -17,7 +17,7 @@ public class ShiroSessionListener implements SessionListener {
     @Override
     public void onStart(Session session) {
         sessionCount.incrementAndGet();
-        logger.info("Session Increment, current active session: " + sessionCount.get());
+        logger.info("Session increment, current active session: " + sessionCount.get());
     }
 
     @Override

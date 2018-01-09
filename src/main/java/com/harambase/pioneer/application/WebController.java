@@ -96,10 +96,11 @@ public class WebController {
     public String setCredit() {
         return "teach/credit";
     }
-//    @RequestMapping("/teach/advise")
-//    public String fViewAdvising(){
-//        return "administration/viewAdvising";
-//    }
+
+    @RequestMapping("/teach/advise")
+    public String fViewAdvising(){
+        return "administration/viewAdvising";
+    }
 
     @RequestMapping("/student/course/view")
     public String sViewCourse() {

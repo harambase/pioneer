@@ -1,7 +1,7 @@
 package com.harambase.pioneer.security.factory;
 
 import com.harambase.pioneer.pojo.Person;
-import com.harambase.pioneer.security.entity.ShiroUser;
+import com.harambase.pioneer.security.ShiroUser;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 
 
