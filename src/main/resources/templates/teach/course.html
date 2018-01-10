@@ -38,155 +38,149 @@
 
             <div id="page-inner">
 
-                <!--<div class="panel panel-default" v-show="pageMode='student'">-->
-                <!--<div class="panel-heading">-->
-                <!--<span style="cursor: pointer" data-toggle="collapse" data-parent="#accordion"-->
-                <!--href="#collapseTwo" class="collapsed">课程学生详情</span>-->
-                <!--</div>-->
-                <!--<div id="collapseTwo" class="panel-collapse collapse">-->
-                <!--<div class="panel-body">-->
-                <!--<div class="col-md-7 col-sm-4">-->
-                <!--<table style="width:100%" id="studentTable"-->
-                <!--class="table table-striped table-bordered table-hover"></table>-->
-                <!--</div>-->
-                <!--<form id="editTranscript" class="form-group" method="post"-->
-                <!--onsubmit="return false">-->
-                <!--<div id="transcript" class="col-md-5 col-sm-4">-->
-                <!--<div class="panel panel-info">-->
-                <!--<div class="panel-heading">-->
-                <!--学生成绩详情-->
-                <!--</div>-->
-                <!--<div class="panel-body">-->
-                <!--<div class="form-group">-->
-                <!--<div class="col-sm-3">-->
-                <!--<label for="sid"-->
-                <!--class="col-sm-12 control-label">学生ID:</label>-->
-                <!--</div>-->
-                <!--<div class="col-sm-9">-->
-                <!--<input id="sid" value="" class="form-control"-->
-                <!--disabled>-->
-                <!--</div>-->
-                <!--<div class="col-sm-3" style="margin-top:10px;">-->
-                <!--<label for="crn"-->
-                <!--class="col-sm-12 control-label">*课程CRN:</label>-->
-                <!--</div>-->
-                <!--<div class="col-sm-9" style="margin-top:10px;">-->
-                <!--<input id="crn2" class="form-control" required-->
-                <!--disabled/>-->
-                <!--</div>-->
-                <!--<div class="col-sm-3" style="margin-top:10px;">-->
-                <!--<label for="crn"-->
-                <!--class="col-sm-12 control-label">*课程学分:</label>-->
-                <!--</div>-->
-                <!--<div class="col-sm-9" style="margin-top:10px;">-->
-                <!--<input id="credits2" class="form-control"-->
-                <!--required-->
-                <!--disabled/>-->
-                <!--</div>-->
-                <!--<div class="col-sm-3" style="margin-top:10px;">-->
-                <!--<label for="crn"-->
-                <!--class="col-sm-12 control-label">*成绩:</label>-->
-                <!--</div>-->
-                <!--<div class="col-sm-9" style="margin-top:10px;">-->
-                <!--<input placeholder="可使用Letter Grade或百分制"-->
-                <!--id="grade"-->
-                <!--name="grade" value=""-->
-                <!--class="form-control"-->
-                <!--minlength="1" required>-->
-                <!--</div>-->
+                <div class="row" v-show="pageMode === 'manage' && student">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                <span style="cursor: pointer" data-toggle="collapse" data-parent="#accordion"
+                      href="#collapseTwo" class="collapsed">课程学生详情</span>
+                        </div>
+                        <div id="collapseTwo" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <div class="col-md-7 col-sm-4">
+                                    <table style="width:100%" id="studentTable"
+                                           class="table table-striped table-bordered table-hover"></table>
+                                </div>
+                                <form id="editTranscript" class="form-group" method="post"
+                                      onsubmit="return false">
+                                    <div id="transcript" class="col-md-5 col-sm-4">
+                                        <div class="panel panel-info">
+                                            <div class="panel-heading">
+                                                学生成绩详情
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="form-group">
+                                                    <div class="col-sm-3">
+                                                        <label for="sid"
+                                                               class="col-sm-12 control-label">学生ID:</label>
+                                                    </div>
+                                                    <div class="col-sm-9">
+                                                        <input id="sid" value="" class="form-control"
+                                                               disabled>
+                                                    </div>
+                                                    <div class="col-sm-3" style="margin-top:10px;">
+                                                        <label class="col-sm-12 control-label">*课程CRN:</label>
+                                                    </div>
+                                                    <div class="col-sm-9" style="margin-top:10px;">
+                                                        <input class="form-control" required disabled
+                                                               v-model="course.crn"/>
+                                                    </div>
+                                                    <div class="col-sm-3" style="margin-top:10px;">
+                                                        <label class="col-sm-12 control-label">*课程学分:</label>
+                                                    </div>
+                                                    <div class="col-sm-9" style="margin-top:10px;">
+                                                        <input id="credits2" class="form-control"
+                                                               required v-model="course.credits"
+                                                               disabled/>
+                                                    </div>
+                                                    <div class="col-sm-3" style="margin-top:10px;">
+                                                        <label class="col-sm-12 control-label">*成绩:</label>
+                                                    </div>
+                                                    <div class="col-sm-9" style="margin-top:10px;">
+                                                        <input placeholder="可使用Letter Grade或百分制"
+                                                               id="grade"
+                                                               name="grade" value=""
+                                                               class="form-control" v-model="transcript.grade"
+                                                               minlength="1" required>
+                                                    </div>
 
-                <!--<div class="col-sm-3" style="margin-top:10px;">-->
-                <!--<label for="crn"-->
-                <!--class="col-sm-12 control-label">*完成情况:</label>-->
-                <!--</div>-->
-                <!--<div class="col-sm-9" style="margin-top:10px;">-->
-                <!--<input id="complete" type="radio"-->
-                <!--name="complete"-->
-                <!--value="Complete">完成-->
-                <!--<input id="process" type="radio" name="complete"-->
-                <!--value="In Progress">正在进行-->
-                <!--<input id="nComplete" type="radio"-->
-                <!--name="complete"-->
-                <!--value="Not Complete">未完成-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--<div class="col-sm-3" style="margin-top:10px;">-->
-                <!--<label for="tPassword"-->
-                <!--class="col-sm-12 control-label">*管理员操作密码:</label>-->
-                <!--</div>-->
-                <!--<div class="col-sm-9" style="margin-top:10px;">-->
-                <!--<input type="password" id="tPassword"-->
-                <!--class="form-control" minlength="6"-->
-                <!--maxlength="16" checkOpPwd="true" required/>-->
-                <!--</div>-->
-                <!--<div class="col-sm-6" style="margin-top:10px;">-->
-                <!--<button class="col-sm-12 btn btn-primary btn-sucess"-->
-                <!--id="tUpdate">更新-->
-                <!--</button>-->
-                <!--</div>-->
+                                                    <div class="col-sm-3" style="margin-top:10px;">
+                                                        <label class="col-sm-12 control-label">*完成情况:</label>
+                                                    </div>
+                                                    <div class="col-sm-9" style="margin-top:10px;">
+                                                        <input id="complete" type="radio"
+                                                               name="complete"
+                                                               value="Complete">完成
+                                                        <input id="process" type="radio" name="complete"
+                                                               value="In Progress">正在进行
+                                                        <input id="nComplete" type="radio"
+                                                               name="complete"
+                                                               value="Not Complete">未完成
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-3" style="margin-top:10px;">
+                                                    <label for="tPassword"
+                                                           class="col-sm-12 control-label">*管理员操作密码:</label>
+                                                </div>
+                                                <div class="col-sm-9" style="margin-top:10px;">
+                                                    <input type="password" id="tPassword"
+                                                           class="form-control" minlength="6"
+                                                           maxlength="16" checkOpPwd="true" required/>
+                                                </div>
+                                                <div class="col-sm-6" style="margin-top:10px;">
+                                                    <button class="col-sm-12 btn btn-primary btn-sucess"
+                                                            id="tUpdate">更新
+                                                    </button>
+                                                </div>
 
 
-                <!--<div class="col-sm-6" style="margin-top:10px;">-->
-                <!--<button id="cancel2"-->
-                <!--class="col-sm-12 btn btn-primary btn-danger">-->
-                <!--取消-->
-                <!--</button>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</form>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--<div class="panel panel-default" v-show="pageMode='student'">-->
-                <!--<div class="panel-heading">-->
-                <!--<span style="cursor: pointer" data-toggle="collapse" data-parent="#accordion"-->
-                <!--href="#collapseThree" class="collapsed">添加学生</span>-->
-                <!--</div>-->
-                <!--<div id="collapseThree" class="panel-collapse collapse">-->
-                <!--<div class="panel-body">-->
-                <!--<div class="col-md-8 col-sm-4">-->
-                <!--<table style="width:100%" id="userTable"-->
-                <!--class="table table-striped table-bordered table-hover"></table>-->
-                <!--</div>-->
-                <!--<div class="col-md-4 col-sm-4">-->
-                <!--<div id="assignSDiv" class="group-form-input">-->
-                <!--<h4 class="status" style="margin-top: 0px;">添加选项: </h4>-->
-                <!--<table style="font-size: 11px">-->
-                <!--<tr>-->
-                <!--<td style="color: red;font-weight: 900;margin-bottom: -5px">-->
-                <!--<input type="checkbox" name="pre"-->
-                <!--style="height: 14px; font-size:15px; margin: 10px 4px 10px 0; width: 12px;">-->
-                <!--添加此学生，即使未完成预选课程-->
-                <!--</td>-->
-                <!--</tr>-->
-                <!--<tr>-->
-                <!--<td style="color: red;font-weight: 900;">-->
-                <!--<input type="checkbox" name="time"-->
-                <!--style="height: 14px; font-size:15px;margin: 10px 4px 10px 0; width: 12px;">-->
-                <!--添加此学生，即使有时间冲突-->
-                <!--</td>-->
-                <!--</tr>-->
-                <!--<tr>-->
-                <!--<td style="color: red;font-weight: 900;">-->
-                <!--<input type="checkbox" name="capa"-->
-                <!--style="height: 14px; font-size:15px;margin: 10px 4px 10px 0; width: 12px;">-->
-                <!--添加此学生，即使已经达到课程人数上限-->
-                <!--</td>-->
-                <!--</tr>-->
-                <!--</table>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
-                <div class="row" v-show="pageMode === 'manage' || table">
+                                                <div class="col-sm-6" style="margin-top:10px;">
+                                                    <button id="cancel2"
+                                                            class="col-sm-12 btn btn-primary btn-danger">
+                                                        取消
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <span style="cursor: pointer" data-toggle="collapse" data-parent="#accordion"
+                                  href="#collapseThree" class="collapsed">添加学生</span>
+                        </div>
+                        <div id="collapseThree" class="panel-collapse collapse">
+                            <div class="panel-body">
+                                <div class="col-md-8 col-sm-4">
+                                    <table style="width:100%" id="userTable"
+                                           class="table table-striped table-bordered table-hover"></table>
+                                </div>
+                                <div class="col-md-4 col-sm-4">
+                                    <div id="assignSDiv" class="group-form-input">
+                                        <h4 class="status" style="margin-top: 0px;">添加选项: </h4>
+                                        <table style="font-size: 11px">
+                                            <tr>
+                                                <td style="color: red;font-weight: 900;margin-bottom: -5px">
+                                                    <input type="checkbox" name="pre"
+                                                           style="height: 14px; font-size:15px; margin: 10px 4px 10px 0; width: 12px;">
+                                                    添加此学生，即使未完成预选课程
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="color: red;font-weight: 900;">
+                                                    <input type="checkbox" name="time"
+                                                           style="height: 14px; font-size:15px;margin: 10px 4px 10px 0; width: 12px;">
+                                                    添加此学生，即使有时间冲突
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="color: red;font-weight: 900;">
+                                                    <input type="checkbox" name="capa"
+                                                           style="height: 14px; font-size:15px;margin: 10px 4px 10px 0; width: 12px;">
+                                                    添加此学生，即使已经达到课程人数上限
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" v-show="pageMode === 'manage' && table">
                     <div class="col-md-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
@@ -226,7 +220,7 @@
                     </div>
                 </div>
 
-                <div class="row" v-if="pageMode === 'request' || pageMode === 'create' || detail">
+                <div class="row" v-show="pageMode === 'request' || pageMode === 'create' || detail">
                     <div class="col-md-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
@@ -240,7 +234,12 @@
                                         onclick="window.location.href=basePath + '/course/request?mode=faculty'">
                                     <i class="fa fa-arrow-left"></i> 返回列表
                                 </button>
-                                课程创建表单
+                                <button class="btn btn-primary btn-info" type="button"
+                                        v-if="pageMode === 'manage'"
+                                        v-on:click="showTable">
+                                    <i class="fa fa-arrow-left"></i> 返回列表
+                                </button>
+                                课程基本信息表
                             </div>
                             <div class="panel-body">
                                 <form class="form-horizontal">
@@ -431,20 +430,22 @@
                                     </div>
                                     <div class="col-md-12 col-sm-4">
                                         <div class="panel panel-success">
-                                            <div class="panel-heading" v-if="pageMode === 'create'">
+                                            <div class="panel-heading"
+                                                 v-if="pageMode === 'create' || pageMode === 'manage'">
                                                 教师与预修课分配
                                             </div>
                                             <div class="panel-heading" v-if="pageMode === 'request'">
                                                 预修课分配
                                             </div>
                                             <div class="panel-body">
-                                                <div class="form-group" v-if="pageMode === 'create'">
+                                                <div class="form-group"
+                                                     v-if="pageMode === 'create' || pageMode === 'manage'">
                                                     <div class="col-sm-2">
                                                         <label class="col-sm-12 control-label">*分配教师:</label>
                                                     </div>
                                                     <div class="col-sm-8">
-                                                        <select class="col-sm-12 js-example-basic-single user"
-                                                                name="state"
+                                                        <select class="js-example-basic-single user"
+                                                                name="teacher" style="width: 100%;"
                                                                 :disabled="tempCourse.status==='0'?false:true">
                                                         </select>
                                                     </div>
@@ -456,7 +457,8 @@
                                                     </div>
                                                     <div class="col-sm-8">
                                                         <select class="col-sm-12 js-example-basic-multiple course"
-                                                                name="states[]" multiple="multiple"
+                                                                name="preList[]" style="width: 100%;"
+                                                                multiple="multiple"
                                                                 :disabled="tempCourse.status==='0'?false:true">
                                                         </select>
                                                     </div>
@@ -477,12 +479,6 @@
                                                     <div class="col-sm-6">
                                                         <input type="file" id="document"
                                                                :disabled="tempCourse.status==='0'?false:true">
-                                                    </div>
-                                                    <div class="col-sm-2" v-if="pageMode === 'view'">
-                                                        <button style="width: 100%" class="btn btn-primary btn-info"
-                                                                onclick="documentUpload()">
-                                                            上传
-                                                        </button>
                                                     </div>
                                                 </div>
                                                 <div class="form-group" v-if="showDocument">
@@ -524,7 +520,7 @@
                                                             <label for="yes">确认</label>
                                                         </div>
                                                     </div>
-                                                    <div v-if="pageMode === 'create'">
+                                                    <div v-if="pageMode === 'create' || pageMode === 'manage'">
                                                         <div class="col-sm-2">
                                                             <label class="col-sm-12 control-label">*管理员操作密码:</label>
                                                         </div>
@@ -540,6 +536,11 @@
                                                             v-if="pageMode === 'create' && id === ''"
                                                             v-on:click="create"
                                                             onclick="return false;">创建课程
+                                                    </button>
+                                                    <button style="width:150px;" class="btn btn-success"
+                                                            v-if="pageMode === 'manage' && id === ''"
+                                                            v-on:click="update"
+                                                            onclick="return false;">修改课程
                                                     </button>
                                                     <button style="width:150px;" class="btn btn-success"
                                                             v-if="pageMode === 'create' && id !== ''"
@@ -622,11 +623,18 @@
                 facultyId: "",
                 courseJson: "",
             },
+            transcript: {
+                studentId: "",
+                grade: "",
+                crn: "",
+                complete: ""
+            },
             courseDay: [],
             preList: [],
-            table: false,
+            table: true,
             detail: false,
             showDocument: false,
+            student: false,
             pageMode: location.search.split("&")[0].split("=")[1],
             id: location.search.split("&")[1].split("=")[1],
             url: location.pathname
@@ -677,21 +685,29 @@
             });
         },
         methods: {
-            submit: function () {
+            prepare: function () {
                 let day = "", precrn = "";
                 this.preList = $(".course").val();
 
                 if (isNotEmpty(this.courseDay))
                     for (let i = 0; i < this.courseDay.length; i++)
-                        day += this.courseDay[i] + "/";
-
+                        if (isNotEmpty(this.courseDay[i]))
+                            day += this.courseDay[i] + "/";
 
                 if (isNotEmpty(this.preList))
                     for (let i = 0; i < this.preList.length; i++)
-                        precrn += this.preList[i] + "/";
+                        if (isNotEmpty(this.preList[i]))
+                            precrn += this.preList[i] + "/";
 
                 this.course.day = day;
                 this.course.precrn = precrn;
+                this.course.facultyId = $(".user").val();
+
+                if (isNotEmpty(this.course.courseInfo))
+                    this.course.courseInfo = JSON.stringify(this.course.courseInfo);
+            },
+            submit: function () {
+                this.prepare();
 
                 axios.post('/request/course/register', this.course).then(function (response) {
                     if (response.data.code === 2001) {
@@ -708,21 +724,8 @@
             },
 
             updateRequest: function () {
-                let day = "", precrn = "";
-                this.preList = $(".course").val();
+                this.prepare();
 
-                if (isNotEmpty(this.courseDay))
-                    for (let i = 0; i < this.courseDay.length; i++)
-                        if (isNotEmpty(this.courseDay[i]))
-                            day += this.courseDay[i] + "/";
-
-                if (isNotEmpty(this.preList))
-                    for (let i = 0; i < this.preList.length; i++)
-                        if (isNotEmpty(this.preList[i]))
-                            precrn += this.preList[i] + "/";
-
-                this.course.day = day;
-                this.course.precrn = precrn;
                 this.tempCourse.courseJson = JSON.stringify(this.course);
 
                 axios.put('/request/course/' + this.id, this.tempCourse).then(function (response) {
@@ -738,57 +741,40 @@
             },
 
             create: function () {
-                let day = "", precrn = "";
-                this.preList = $(".course").val();
-
-                if (isNotEmpty(this.courseDay))
-                    for (let i = 0; i < this.courseDay.length; i++)
-                        if (isNotEmpty(this.courseDay[i]))
-                            day += this.courseDay[i] + "/";
-
-                if (isNotEmpty(this.preList))
-                    for (let i = 0; i < this.preList.length; i++)
-                        if (isNotEmpty(this.preList[i]))
-                            precrn += this.preList[i] + "/";
-
-                this.course.day = day;
-                this.course.precrn = precrn;
-                this.course.facultyId = $(".user").val();
+                this.prepare();
 
                 axios.post('/course', this.course).then(function (response) {
                     if (response.data.code === 2001)
                         Showbo.Msg.alert("创建成功!", function () {
                             courseVue.$data.course = response.data.data;
                             documentUpload(response.data.data.course.crn);
-                            courseVue.$data.table = true;
-                            courseVue.$data.detail = false;
+                            window.location.href = basePath + '/teach/course?mode=manage&id=';
                         });
                     else
                         Showbo.Msg.alert(response.data.msg, function () {
                         });
                 })
             },
-            showCourseTable: function () {
+            update: function () {
+                this.prepare();
+                axios.put('/course/' + this.course.crn, this.course).then(function (response) {
+                    if (response.data.code === 2001)
+                        Showbo.Msg.alert("修改成功!", function () {
+                            documentUpload();
+                            window.location.reload();
+                        });
+                    else
+                        Showbo.Msg.alert(response.data.msg, function () {
+                        });
+                })
+            },
+            showTable: function () {
                 this.table = true;
                 this.detail = false;
+                this.student = false;
             },
             approve: function () {
-                let day = "", precrn = "";
-                this.preList = $(".course").val();
-
-                if (isNotEmpty(this.courseDay))
-                    for (let i = 0; i < this.courseDay.length; i++)
-                        if (isNotEmpty(this.courseDay[i]))
-                            day += this.courseDay[i] + "/";
-
-                if (isNotEmpty(this.preList))
-                    for (let i = 0; i < this.preList.length; i++)
-                        if (isNotEmpty(this.preList[i]))
-                            precrn += this.preList[i] + "/";
-
-                this.course.day = day;
-                this.course.precrn = precrn;
-                this.course.facultyId = $(".user").val();
+                this.prepare();
 
                 this.tempCourse.status = "1";
                 this.tempCourse.courseJson = JSON.stringify(this.course);
@@ -861,6 +847,8 @@
             axios.get('/course/' + crn).then(function (response) {
                 courseVue.$data.course = response.data.data;
                 initCourse();
+                courseVue.$data.table = false;
+                courseVue.$data.detail = true;
             });
         }
     }
@@ -882,36 +870,40 @@
     }
 
     function documentUpload(key) {
+        if (courseVue.$data.showDocument)
+            return;
+
+        if (!isNotEmpty(document.getElementById("document").files))
+            return;
 
         let requestUrl = "/request/course/info/";
         let updateUrl = "/course/info/";
         let formData = new FormData();
+
         formData.append("file", document.getElementById("document").files[0]);
-
         let url;
-        if (isNotEmpty(formData)) {
-            if (courseVue.$data.url.indexOf('course') !== -1) {
-                if (isNotEmpty(key))
-                    url = requestUrl + key;
-                else
-                    url = requestUrl + courseVue.$data.id;
-            } else {
-                if (isNotEmpty(key))
-                    url = updateUrl + key;
-                else
-                    url = updateUrl + courseVue.$data.course.crn;
-            }
 
-            axios.put(url, formData).then(function (response) {
-                if (response.data.code === 2001) {
-                    courseVue.$data.course.courseInfo = response.data.data;
-                    courseVue.$data.showDocument = true;
-                } else {
-                    Showbo.Msg.alert(response.data.msg, function () {
-                    });
-                }
-            });
+        if (courseVue.$data.url.indexOf('course') !== -1 && courseVue.$data.pageMode !== 'manage') {
+            if (isNotEmpty(key))
+                url = requestUrl + key;
+            else
+                url = requestUrl + courseVue.$data.id;
+        } else {
+            if (isNotEmpty(key))
+                url = updateUrl + key;
+            else
+                url = updateUrl + courseVue.$data.course.crn;
         }
+
+        axios.put(url, formData).then(function (response) {
+            if (response.data.code === 2001) {
+                courseVue.$data.course.courseInfo = response.data.data;
+                courseVue.$data.showDocument = true;
+            } else {
+                Showbo.Msg.alert(response.data.msg, function () {
+                });
+            }
+        });
     }
 
     function refresh() {
@@ -926,7 +918,7 @@
         }
     }
 
-    //教师列表
+    //教师select
     let userSelect = $(".user").select2({
         ajax: {
             url: basePath + "/user/search",
@@ -967,7 +959,7 @@
         templateSelection: formatRepoSelection
     });
 
-    //课程列表
+    //课程select
     let courseSelect = $('.course').select2({
         ajax: {
             url: basePath + "/course/search",
@@ -1114,12 +1106,13 @@
             {"data": "day", "title": "星期"},
             {"data": "faculty", "title": "授课老师"},
             {
-                "data": null, "title": "操作", "createdCell": function (nTd) {
+                "data": null, "title": "操作", "createdCell": function (nTd, rowData) {
                     $(nTd).html(
-                        '<a style="cursor: pointer"><i class="fa fa-search"></i>查看并编辑</a><br/>' +
-                        '<a style="cursor: pointer; color: darkred"><i class="fa fa-trash"></i>删除该课程</a><br/>' +
-                        '<a style="cursor: pointer"><i class="fa fa-user"></i>课程学生信息</a>'
+                        '<a style="cursor: pointer" onclick="showCourseDetail(\'' + rowData.crn + '\')"><i class="fa fa-search"></i>查看并编辑</a><br/>' +
+                        '<a style="cursor: pointer; color: darkred" onclick="deleteCourse(\'' + rowData.crn + '\')"><i class="fa fa-trash"></i>删除该课程</a><br/>' +
+                        '<a style="cursor: pointer; color: green" onclick="showStudentDetail(\'' + rowData.crn + '\',\'' + rowData.credits + '\')"><i class="fa fa-user"></i>课程学生信息</a>'
                     );
+                    $(nTd).css({textAlign: "left"})
                 }, "width": "100px"
             }
         ],
@@ -1132,138 +1125,135 @@
         }]
     });
 
-    // let studentTable;
-    //
-    // function showCourseDetail(col) {
-    //
-    //     courseVue.$data.course = courseVue.$data.courseList[col];
-    //     courseVue.$data.courseDay = courseVue.$data.course.day.split("/");
-    //     courseVue.$data.preList = courseVue.$data.course.precrn.split("/");
-    //
-    //     courseVue.$data.table = false;
-    //     courseVue.$data.detail = true;
-    //
-    //     studentTable = $("#studentTable").DataTable({
-    //
-    //         "language": {
-    //             "aria": {
-    //                 "sortAscending": ": activate to sort column ascending",
-    //                 "sortDescending": ": activate to sort column descending"
-    //             },
-    //             "emptyTable": "没有数据！",
-    //             "info": "显示 _START_ 至 _END_ 条 ，总共_TOTAL_ 条数据",
-    //             "infoEmpty": "没有发现记录！",
-    //             "infoFiltered": "(从_MAX_条记录中搜索)",
-    //             "lengthMenu": "显示: _MENU_",
-    //             "search": "搜索:",
-    //             "zeroRecords": "没有找到匹配的记录！",
-    //             "paginate": {
-    //                 "previous": "上一页",
-    //                 "next": "下一页",
-    //                 "last": "尾页",
-    //                 "first": "首页"
-    //             }
-    //         },
-    //         "pagingType": "full_numbers",
-    //         "lengthMenu": [
-    //             [5, 10, 15],
-    //             [5, 10, 15]
-    //         ],
-    //         pageLength: 5,
-    //         processing: true,
-    //         serverSide: true,
-    //
-    //         ajax: {
-    //             url: basePath + "/transcript/" + courseVue.$data.course.crn + "/student",
-    //         },
-    //         columns: [
-    //             {"data": "studentId", "title": "学生ID"},
-    //             {"data": "sname", "title": "学生名"},
-    //             {"data": "grade", "title": "学生成绩"},
-    //             {
-    //                 "data": "complete", "title": "完成情况", "createdCell": function (nTd, rowData) {
-    //                     if (rowData === "1")
-    //                         $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:green; ">完成</p>');
-    //                     else if (rowData === "0")
-    //                         $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">进行中</p>');
-    //                     else if (rowData === "-1")
-    //                         $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:red; ">挂科</p>');
-    //                 }
-    //             },
-    //             {
-    //                 "data": null, "title": "操作", "createdCell": function (nTd) {
-    //                     $(nTd).html('<button style="width: 50%" class="btn btn-success">修改成绩</button><button style="width: 50%" class="btn btn-danger">移除</button>');
-    //                 }, "width": "10px"
-    //             }
-    //         ],
-    //         "columnDefs": [{
-    //             orderable: false,
-    //             targets: [4]
-    //         }, {
-    //             "defaultContent": "",
-    //             "targets": "_all"
-    //         }]
-    //     });
-    //
-    // }
-    //
-    //
-    // let userTable = $("#userTable").DataTable({
-    //     "language": {
-    //         "aria": {
-    //             "sortAscending": ": activate to sort column ascending",
-    //             "sortDescending": ": activate to sort column descending"
-    //         },
-    //         "emptyTable": "没有数据！",
-    //         "info": "显示 _START_ 至 _END_ 条 ，总共_TOTAL_ 条数据",
-    //         "infoEmpty": "没有发现记录！",
-    //         "infoFiltered": "(从_MAX_条记录中搜索)",
-    //         "lengthMenu": "显示: _MENU_",
-    //         "search": "搜索:",
-    //         "zeroRecords": "没有找到匹配的记录！",
-    //         "paginate": {
-    //             "previous": "上一页",
-    //             "next": "下一页",
-    //             "last": "尾页",
-    //             "first": "首页"
-    //         }
-    //     },
-    //     "pagingType": "full_numbers",
-    //     "lengthMenu": [
-    //         [5],
-    //         [5]
-    //     ],
-    //     pageLength: 5,
-    //     processing: true,
-    //     serverSide: true,
-    //
-    //     ajax: {
-    //         url: basePath + "/student",
-    //         data: function (d) {
-    //             d.status = "1";
-    //         }
-    //     },
-    //     columns: [
-    //         {"data": "studentId", "title": "学生ID"},
-    //         {"data": "sname", "title": "姓名"},
-    //         {"data": "maxCredits", "title": "学分上限"},
-    //         {"data": "complete", "title": "已完成"},
-    //         {"data": "progress", "title": "进行中"},
-    //         {"data": "incomplete", "title": "未完成"},
-    //         {
-    //             "data": null, "title": "操作", "createdCell": function (nTd) {
-    //                 $(nTd).html('<button style="width: 100%" class="btn btn-info">添加</button>');
-    //             }, "width": "100px"
-    //         }
-    //     ],
-    //     "columnDefs": [{
-    //         orderable: false,
-    //         targets: [6]
-    //     }, {
-    //         "defaultContent": "",
-    //         "targets": "_all"
-    //     }]
-    // });
+    let studentTable;
+
+    function showStudentDetail(crn, credits) {
+        courseVue.$data.course.crn = crn;
+        courseVue.$data.course.credits = credits;
+        courseVue.$data.table = false;
+        courseVue.$data.detail = false;
+        courseVue.$data.student = true;
+
+        studentTable = $("#studentTable").DataTable({
+
+            "language": {
+                "aria": {
+                    "sortAscending": ": activate to sort column ascending",
+                    "sortDescending": ": activate to sort column descending"
+                },
+                "emptyTable": "没有数据！",
+                "info": "显示 _START_ 至 _END_ 条 ，总共_TOTAL_ 条数据",
+                "infoEmpty": "没有发现记录！",
+                "infoFiltered": "(从_MAX_条记录中搜索)",
+                "lengthMenu": "显示: _MENU_",
+                "search": "搜索:",
+                "zeroRecords": "没有找到匹配的记录！",
+                "paginate": {
+                    "previous": "上一页",
+                    "next": "下一页",
+                    "last": "尾页",
+                    "first": "首页"
+                }
+            },
+            "pagingType": "full_numbers",
+            "lengthMenu": [
+                [5, 10, 15],
+                [5, 10, 15]
+            ],
+            pageLength: 5,
+            processing: true,
+            serverSide: true,
+
+            ajax: {
+                url: basePath + "/transcript/" + courseVue.$data.course.crn + "/student",
+            },
+            columns: [
+                {"data": "studentId", "title": "学生ID"},
+                {"data": "sname", "title": "学生名"},
+                {"data": "grade", "title": "学生成绩"},
+                {
+                    "data": "complete", "title": "完成情况", "createdCell": function (nTd, rowData) {
+                        if (rowData === "1")
+                            $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:green; ">完成</p>');
+                        else if (rowData === "0")
+                            $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">进行中</p>');
+                        else if (rowData === "-1")
+                            $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:red; ">挂科</p>');
+                    }
+                },
+                {
+                    "data": null, "title": "操作", "createdCell": function (nTd) {
+                        $(nTd).html('<button style="width: 50%" class="btn btn-success">修改成绩</button><button style="width: 50%" class="btn btn-danger">移除</button>');
+                    }, "width": "10px"
+                }
+            ],
+            "columnDefs": [{
+                orderable: false,
+                targets: [4]
+            }, {
+                "defaultContent": "",
+                "targets": "_all"
+            }]
+        });
+
+    }
+
+    let userTable = $("#userTable").DataTable({
+        "language": {
+            "aria": {
+                "sortAscending": ": activate to sort column ascending",
+                "sortDescending": ": activate to sort column descending"
+            },
+            "emptyTable": "没有数据！",
+            "info": "显示 _START_ 至 _END_ 条 ，总共_TOTAL_ 条数据",
+            "infoEmpty": "没有发现记录！",
+            "infoFiltered": "(从_MAX_条记录中搜索)",
+            "lengthMenu": "显示: _MENU_",
+            "search": "搜索:",
+            "zeroRecords": "没有找到匹配的记录！",
+            "paginate": {
+                "previous": "上一页",
+                "next": "下一页",
+                "last": "尾页",
+                "first": "首页"
+            }
+        },
+        "pagingType": "full_numbers",
+        "lengthMenu": [
+            [5],
+            [5]
+        ],
+        pageLength: 5,
+        processing: true,
+        serverSide: true,
+
+        ajax: {
+            url: basePath + "/student",
+            data: function (d) {
+                d.status = "1";
+            }
+        },
+        columns: [
+            {"data": "studentId", "title": "学生ID"},
+            {"data": "sname", "title": "姓名"},
+            {"data": "maxCredits", "title": "学分上限"},
+            {"data": "complete", "title": "已完成"},
+            {"data": "progress", "title": "进行中"},
+            {"data": "incomplete", "title": "未完成"},
+            {
+                "data": null, "title": "操作", "createdCell": function (nTd) {
+                    $(nTd).html('<button style="width: 100%" class="btn btn-info">添加</button>');
+                }, "width": "100px"
+            }
+        ],
+        "columnDefs": [{
+            orderable: false,
+            targets: [6]
+        }, {
+            "defaultContent": "",
+            "targets": "_all"
+        }]
+    });
 </script>
 </body>
 </html>
