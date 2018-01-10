@@ -681,12 +681,13 @@
                                                 教师与预选课分配
                                             </div>
                                             <div class="panel-body">
-                                                <div class="form-group">
+                                                <div class="form-group" v-if="pageMode === 'create'">
                                                     <div class="col-sm-2">
                                                         <label class="col-sm-12 control-label">*分配教师:</label>
                                                     </div>
                                                     <div class="col-sm-8">
-                                                        <select class="col-sm-12 js-example-basic-single user" name="state">
+                                                        <select class="col-sm-12 js-example-basic-single user"
+                                                                name="state">
                                                         </select>
                                                     </div>
 
@@ -710,6 +711,23 @@
 
                                     <div class="col-md-12 col-sm-4">
                                         <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                更多信息
+                                            </div>
+                                            <div class="form-group" v-if="!showDocument && pageMode === 'create'">
+                                                <div class="col-sm-2">
+                                                    <label class="col-sm-12 control-label">上传课程大纲:</label>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <input type="file" id="document">
+                                                </div>
+                                                <div class="col-sm-2" v-if="pageMode === 'view'">
+                                                    <button style="width: 100%" class="btn btn-primary btn-info"
+                                                            onclick="documentUpload()">
+                                                        上传
+                                                    </button>
+                                                </div>
+                                            </div>
                                             <div class="panel-body">
                                                 <div class="form-group">
                                                     <div class="col-sm-2">
@@ -742,10 +760,12 @@
                                                                required/>
                                                     </div>
                                                     <button style="width:150px;" class="btn btn-primary"
-                                                            v-if="pageMode==='create'" v-on:click="create">创建课程
+                                                            v-if="pageMode==='create'" v-on:click="create"
+                                                            onclick="return false;">创建课程
                                                     </button>
                                                     <button style="width:150px;" class="btn btn-primary"
-                                                            v-if="pageMode==='request'" v-on:click="submit">提交申请
+                                                            v-if="pageMode==='request'" v-on:click="submit"
+                                                            onclick="return false;">提交申请
                                                     </button>
                                                 </div>
                                                 <div class="panel-footer">
@@ -760,17 +780,16 @@
                     </div>
                 </div>
             </div>
-            <div class="panel-footer" id=footerPlaceholder">
-                <div th:include="/common :: footer" id="copyright"></div>
-            </div>
             <!-- /. PAGE INNER  -->
+        </div>
+        <div class="panel-footer" id=footerPlaceholder">
+            <div th:include="/common :: footer" id="copyright"></div>
         </div>
     </div>
     <!-- /. PAGE WRAPPER  -->
 </div>
 <!-- /. WRAPPER  -->
 <div th:include="/common :: load_js(true, false, true)"></div>
-<!--<script src="/static/scripts/faculty/course/editCourse.js"></script>-->
 <script>
 
     let courseVue = new Vue({
@@ -801,6 +820,7 @@
             preList: [],
             table: false,
             detail: false,
+            showDocument: false,
             pageMode: location.search.split("&")[0].split("=")[1],//location.search获取url中的?后的字符串
         },
         mounted: function () {
@@ -827,7 +847,7 @@
                 type: 'time',
                 min: '06:00:00',
                 max: '22:00:00',
-                showBottom: false,
+                showBottom: ['clear', 'confirm'],
                 done: (value) => {
                     this.course.startTime = value
                 }
@@ -838,22 +858,45 @@
                 type: 'time',
                 min: '06:00:00',
                 max: '22:00:00',
-                showBottom: false,
+                showBottom: ['clear', 'confirm'],
                 done: (value) => {
                     this.course.endTime = value
                 }
             });
         },
         methods: {
-            submit: function(){
-                $('input[name="day"]:checked').each(function () {
-                    day += $(this).val() + "/";
-                });
+            submit: function () {
 
-                for (var i = 0; i < precrnArray.length; i++) {
-                    precrn += precrnArray[i] + "/";
+                let day = "", precrn = "";
+
+                this.preList = $(".course").val();
+
+                for (let i = 0; i < this.courseDay.length; i++) {
+                    day += this.courseDay[i] + "/";
                 }
-                axios.post('/request/course/register', this.course).then(function(response){
+
+                for (let i = 0; i < this.preList.length; i++) {
+                    precrn += this.preList[i] + "/";
+                }
+
+                let tempCourse = {
+                    info: this.course.info,
+                    name: this.course.name,
+                    credits: this.course.credits,
+                    level: this.course.level,
+                    section: this.course.section,
+                    startDate: this.course.startDate,
+                    endDate: this.course.endDate,
+                    startTime: this.course.startTime,
+                    endTime: this.course.endTime,
+                    capacity: this.course.capacity,
+                    classroom: this.course.classroom,
+                    comment: this.course.comment,
+                    precrn: precrn,
+                    day: day
+                };
+
+                axios.post('/request/course/register', tempCourse).then(function (response) {
                     if (response.data.code === 2001)
                         Showbo.Msg.alert("申请成功，等待教务答复!", function () {
                             window.location.href = basePath + '/course/request';
@@ -863,15 +906,30 @@
                         });
                 })
             },
-            create: function(){
-                $('input[name="day"]:checked').each(function () {
-                    day += $(this).val() + "/";
-                });
-
-                for (var i = 0; i < precrnArray.length; i++) {
-                    precrn += precrnArray[i] + "/";
+            create: function () {
+                let day = "", precrn = "";
+                this.preList = $(".course").val();
+                for (let i = 0; i < this.courseDay.length; i++) {
+                    day += this.courseDay[i] + "/";
                 }
-                axios.post('/course', this.course).then(function(response){
+
+                for (let i = 0; i < this.preList.length; i++) {
+                    precrn += this.preList[i] + "/";
+                }
+
+                this.course.day = day;
+                this.course.precrn = precrn;
+                this.course.facultyId = $(".user").val();
+                let formData = new FormData();
+                formData.append("file", document.getElementById("document").files[0]);
+
+                axios.post('/course',
+                    {
+                        params: {
+                            course: this.course,
+                            file: formData
+                        }
+                    }).then(function (response) {
                     if (response.data.code === 2001)
                         Showbo.Msg.alert("创建成功!", function () {
                         });
@@ -893,7 +951,7 @@
                 axios.delete('/course/' + crn).then(function (response) {
                     if (response.data.code === 2001)
                         Showbo.Msg.alert("删除成功!", function () {
-                            logTable.draw();
+                            courseTable.draw();
                         });
                     else
                         Showbo.Msg.alert(response.data.msg, function () {
@@ -901,6 +959,24 @@
                 });
             }
         });
+    }
+
+    function documentUpload() {
+        let formData = new FormData();
+        formData.append("file", document.getElementById("document").files[0]);
+        if (formData !== null && formData !== undefined) {
+            axios.put("/course/info/" + userVue.$data.user.userId, formData).then(function (response) {
+                if (response.data.code === 2001) {
+                    Showbo.Msg.alert(response.data.msg, function () {
+                        userVue.$data.user.userInfo = response.data.data;
+                        userVue.$data.showDocument = true;
+                    });
+                } else {
+                    Showbo.Msg.alert(response.data.msg, function () {
+                    });
+                }
+            });
+        }
     }
 
     // let studentTable;

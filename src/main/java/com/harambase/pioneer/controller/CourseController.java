@@ -29,8 +29,12 @@ public class CourseController {
 
     @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
     @RequestMapping(produces = "application/json", method = RequestMethod.POST)
-    public ResponseEntity create(@RequestBody Course course) {
+    public ResponseEntity create(@RequestBody Course course, @RequestParam(required = false) MultipartFile file) {
         HaramMessage haramMessage = courseService.create(course);
+        if (haramMessage.getCode() == 2001 && file != null) {
+            String crn = (String) ((LinkedHashMap) haramMessage.getData()).get("crn");
+            haramMessage = courseService.uploadInfo(crn, file);
+        }
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
@@ -70,7 +74,7 @@ public class CourseController {
         if (StringUtils.isNotEmpty(mode) && mode.equals("faculty"))
             facultyId = SessionUtil.getUserId();
         if (StringUtils.isNotEmpty(mode) && mode.equals("choose"))
-            info = (String)SessionUtil.getPin().get("info");
+            info = (String) SessionUtil.getPin().get("info");
 
         HaramMessage message = courseService.courseList(start, length, search, order, orderCol, facultyId, info);
         message.put("draw", draw);
@@ -88,7 +92,7 @@ public class CourseController {
         if (mode != null && mode.equals("faculty"))
             facultyId = SessionUtil.getUserId();
         if (mode != null && mode.equals("choose"))
-            info = (String)SessionUtil.getPin().get("info");
+            info = (String) SessionUtil.getPin().get("info");
 
         HaramMessage message = courseService.courseTreeList(facultyId, info);
         return new ResponseEntity<>(message, HttpStatus.OK);
@@ -143,14 +147,14 @@ public class CourseController {
 
     @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
     @RequestMapping(value = "/info", method = RequestMethod.GET)
-    public ResponseEntity courseInfoList(@RequestParam(required = false, defaultValue = "") String search){
+    public ResponseEntity courseInfoList(@RequestParam(required = false, defaultValue = "") String search) {
         HaramMessage message = courseService.courseInfoList(search);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
-        
+
     @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
     @RequestMapping(value = "/info/{crn}", method = RequestMethod.PUT)
-    public ResponseEntity uploadInfo(@RequestParam MultipartFile file, @PathVariable String crn){
+    public ResponseEntity uploadInfo(@RequestParam MultipartFile file, @PathVariable String crn) {
         HaramMessage message = courseService.uploadInfo(crn, file);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }

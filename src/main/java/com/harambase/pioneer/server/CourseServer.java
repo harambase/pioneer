@@ -59,7 +59,7 @@ public class CourseServer {
     }
 
     public HaramMessage getCourseBySearch(String ip, int port, String search, String status) {
-        String remotePath = "/course?search=";
+        String remotePath = "/course/search?search=";
         StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
         if (StringUtils.isNotEmpty(search))
             requestUrl.append(search);
