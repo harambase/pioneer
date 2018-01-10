@@ -41,7 +41,8 @@
                                                 <label class="col-sm-12 control-label">官方成绩报告:</label>
                                             </div>
                                             <div class="col-sm-2">
-                                                <button class="btn btn-primary col-sm-12" onclick="download()">下载</button>
+                                                <button class="btn btn-primary col-sm-12" onclick="download()">下载
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -55,7 +56,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
         <div class="panel-footer" id=footerPlaceholder">
             <div th:include="/common :: footer" id="copyright"></div>
@@ -112,13 +112,13 @@
             {"data": "grade", "title": "成绩"},
             {
                 "data": "complete", "title": "完成情况", "createdCell": function (nTd, rowData) {
-                    if (rowData === "1")
-                        $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:green; ">完成</p>');
-                    else if (rowData === "0")
-                        $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">进行中</p>');
-                    else if (rowData === "-1")
-                        $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:red; ">挂科</p>');
-                }
+                if (rowData === "1")
+                    $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:green; ">完成</p>');
+                else if (rowData === "0")
+                    $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">进行中</p>');
+                else if (rowData === "-1")
+                    $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:red; ">挂科</p>');
+            }
             },
             {"data": "assignTime", "title": "提交时间"},
 

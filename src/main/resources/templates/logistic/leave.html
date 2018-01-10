@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:include="/common :: header('请假管理',true,false)"></head>
+<head th:include="/common :: header('请假管理',false,false)"></head>
 <body>
 <div id="wrapper">
     <!--/. NAV TOP  -->
@@ -17,24 +17,24 @@
                 <small>请假管理</small>
             </h1>
             <ol class="breadcrumb">
-                <li><a href="/welcomeAdmin">主页</a></li>
+                <li><a href="/index">主页</a></li>
                 <li><a href="#">行政管理</a></li>
                 <li class="active">请假管理</li>
             </ol>
 
         </div>
         <div id="page-inner">
-            <h2>即将上线！</h2>
-            <div id = footerPlaceholder">
-                <div th:include="/common :: footer" id="copyright"></div>
-            </div>
+            <h2 style="color: white">即将上线！</h2>
+        </div>
+        <div class="panel-footer" id=footerPlaceholder">
+            <div th:include="/common :: footer" id="copyright"></div>
         </div>
         <!-- /. PAGE INNER  -->
     </div>
     <!-- /. PAGE WRAPPER  -->
 </div>
 <!-- /. WRAPPER  -->
-<div th:include="/common :: js(true , false, false)"></div>
+<div th:include="/common :: js(false , false, false)"></div>
 
 </body>
 </html>

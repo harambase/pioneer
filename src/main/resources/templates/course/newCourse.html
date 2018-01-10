@@ -2,25 +2,25 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:v-on="http://www.w3.org/1999/xhtml">
 
-<head th:include="/common/header :: commonHeader('课程管理',true, false)"></head>
+<head th:include="/common :: header('新课程申请管理',true, false)"></head>
 <body>
 <div id="wrapper">
     <!--/. NAV TOP  -->
-    <div th:include="/common/navtop :: navtop" class="sidebar-collapse"></div>
+    <div th:include="/common :: navtop" class="sidebar-collapse"></div>
 
     <!-- /. NAV SIDE  -->
-    <div th:include="/common/navbar :: nav" class="sidebar-collapse"></div>
+    <div th:include="/common :: navbar" class="sidebar-collapse"></div>
     <div id="page-wrapper">
         <div id="coursePage">
             <div class="header">
                 <h1 class="page-header">
-                    先锋教务管理
-                    <small>课程管理</small>
+                    先锋课程系统
+                    <small>新课程申请管理</small>
                 </h1>
                 <ol class="breadcrumb">
                     <li><a href="/index">主页</a></li>
-                    <li><a href="#">教务管理</a></li>
-                    <li class="active">课程管理</li>
+                    <li><a href="#">课程系统</a></li>
+                    <li class="active">新课程申请管理</li>
                 </ol>
 
             </div>
@@ -506,9 +506,9 @@
                         </div>
                     </div>
                 </div>
-                <div id=footerPlaceholder">
-                    <div th:include="/common/footer :: copy" id="copyright"></div>
-                </div>
+            </div>
+            <div class="panel-footer" id=footerPlaceholder">
+                <div th:include="/common :: footer" id="copyright"></div>
             </div>
             <!-- /. PAGE INNER  -->
         </div>
@@ -517,8 +517,6 @@
 </div>
 <!-- /. WRAPPER  -->
 <div th:include="/common/js :: load_js(true , false, false)"></div>
-<script src="/static/scripts/faculty/course/createCourse.js"></script>
-<script src="/static/scripts/faculty/course/editCourse.js"></script>
 <script>
     let courseTable;
     let studentTable;
