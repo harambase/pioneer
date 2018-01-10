@@ -63,4 +63,14 @@ public class RequestServiceImpl implements RequestService {
         return requestServer.tempCourseList(IP, PORT, start, length, search, order, orderCol, viewStatus, facultyId);
     }
 
+    @Override
+    public HaramMessage getTempUser(Integer id) {
+        return requestServer.getTempUser(IP, PORT, id);
+    }
+
+    @Override
+    public HaramMessage getTempCourse(Integer id) {
+        return requestServer.getTempCourse(IP, PORT, id);
+    }
+
 }

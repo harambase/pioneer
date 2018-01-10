@@ -13,6 +13,17 @@
 
     <div id="page-wrapper">
         <div id="coursePage">
+            <div class="header" v-if="">
+                <h1 class="page-header">
+                    先锋教务管理
+                    <small>课程管理</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a href="/index">主页</a></li>
+                    <li><a href="#">教务管理</a></li>
+                    <li class="active">课程管理</li>
+                </ol>
+            </div>
             <div class="header">
                 <h1 class="page-header">
                     先锋教务管理
@@ -23,8 +34,8 @@
                     <li><a href="#">教务管理</a></li>
                     <li class="active">课程管理</li>
                 </ol>
-
             </div>
+
             <div id="page-inner">
                 <!--<div class="row" v-if="pageMode === 'view'">-->
                 <!--<div class="col-md-12" v-show="table">-->
@@ -199,37 +210,37 @@
                 <!--<label class="col-sm-12 control-label">*选择上课的时间:</label>-->
                 <!--</div>-->
                 <!--<div class="col-sm-8">-->
-                <!--<div class="checkbox3 checkbox-danger checkbox-inline checkbox-check  checkbox-circle checkbox-light">-->
+                <!--<div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">-->
                 <!--<input type="checkbox" value="m" id="m"-->
                 <!--name="day" v-model="courseDay">-->
                 <!--<label for="m">星期一</label>-->
                 <!--</div>-->
-                <!--<div class="checkbox3 checkbox-danger checkbox-inline checkbox-check  checkbox-circle checkbox-light">-->
+                <!--<div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">-->
                 <!--<input type="checkbox" value="t" id="t"-->
                 <!--name="day" v-model="courseDay">-->
                 <!--<label for="t">星期二</label>-->
                 <!--</div>-->
-                <!--<div class="checkbox3 checkbox-danger checkbox-inline checkbox-check  checkbox-circle checkbox-light">-->
+                <!--<div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">-->
                 <!--<input type="checkbox" value="w" id="w"-->
                 <!--name="day" v-model="courseDay">-->
                 <!--<label for="w">星期三</label>-->
                 <!--</div>-->
-                <!--<div class="checkbox3 checkbox-danger checkbox-inline checkbox-check  checkbox-circle checkbox-light">-->
+                <!--<div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">-->
                 <!--<input type="checkbox" value="tr" id="tr"-->
                 <!--name="day" v-model="courseDay">-->
                 <!--<label for="tr">星期四</label>-->
                 <!--</div>-->
-                <!--<div class="checkbox3 checkbox-danger checkbox-inline checkbox-check  checkbox-circle checkbox-light">-->
+                <!--<div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">-->
                 <!--<input type="checkbox" value="f" id="f"-->
                 <!--name="day" v-model="courseDay">-->
                 <!--<label for="f">星期五</label>-->
                 <!--</div>-->
-                <!--<div class="checkbox3 checkbox-danger checkbox-inline checkbox-check  checkbox-circle checkbox-light">-->
+                <!--<div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">-->
                 <!--<input type="checkbox" value="sa" id="sa"-->
                 <!--name="day" v-model="courseDay">-->
                 <!--<label for="sa">星期六</label>-->
                 <!--</div>-->
-                <!--<div class="checkbox3 checkbox-danger checkbox-inline checkbox-check  checkbox-circle checkbox-light">-->
+                <!--<div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">-->
                 <!--<input type="checkbox" value="s" id="s"-->
                 <!--name="day" v-model="courseDay">-->
                 <!--<label for="s">星期日</label>-->
@@ -504,6 +515,16 @@
                     <div class="col-md-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
+                                <button class="btn btn-primary btn-info" type="button"
+                                        v-if="pageMode === 'create' && id !== ''"
+                                        onclick="window.location.href=basePath + '/teach/request?mode=manage'">
+                                    <i class="fa fa-arrow-left"></i> 返回列表
+                                </button>
+                                <button class="btn btn-primary btn-info" type="button"
+                                        v-if="pageMode === 'request' && id !== ''"
+                                        onclick="window.location.href=basePath + '/course/request?mode=faculty'">
+                                    <i class="fa fa-arrow-left"></i> 返回列表
+                                </button>
                                 课程创建表单
                             </div>
                             <div class="panel-body">
@@ -632,37 +653,37 @@
                                                         <label class="col-sm-12 control-label">*选择上课的时间:</label>
                                                     </div>
                                                     <div class="col-sm-8">
-                                                        <div class="checkbox3 checkbox-danger checkbox-inline checkbox-check  checkbox-circle checkbox-light">
+                                                        <div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
                                                             <input type="checkbox" value="m" id="m"
                                                                    name="day" v-model="courseDay">
                                                             <label for="m">星期一</label>
                                                         </div>
-                                                        <div class="checkbox3 checkbox-danger checkbox-inline checkbox-check  checkbox-circle checkbox-light">
+                                                        <div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
                                                             <input type="checkbox" value="t" id="t"
                                                                    name="day" v-model="courseDay">
                                                             <label for="t">星期二</label>
                                                         </div>
-                                                        <div class="checkbox3 checkbox-danger checkbox-inline checkbox-check  checkbox-circle checkbox-light">
+                                                        <div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
                                                             <input type="checkbox" value="w" id="w"
                                                                    name="day" v-model="courseDay">
                                                             <label for="w">星期三</label>
                                                         </div>
-                                                        <div class="checkbox3 checkbox-danger checkbox-inline checkbox-check  checkbox-circle checkbox-light">
+                                                        <div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
                                                             <input type="checkbox" value="tr" id="tr"
                                                                    name="day" v-model="courseDay">
                                                             <label for="tr">星期四</label>
                                                         </div>
-                                                        <div class="checkbox3 checkbox-danger checkbox-inline checkbox-check  checkbox-circle checkbox-light">
+                                                        <div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
                                                             <input type="checkbox" value="f" id="f"
                                                                    name="day" v-model="courseDay">
                                                             <label for="f">星期五</label>
                                                         </div>
-                                                        <div class="checkbox3 checkbox-danger checkbox-inline checkbox-check  checkbox-circle checkbox-light">
+                                                        <div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
                                                             <input type="checkbox" value="sa" id="sa"
                                                                    name="day" v-model="courseDay">
                                                             <label for="sa">星期六</label>
                                                         </div>
-                                                        <div class="checkbox3 checkbox-danger checkbox-inline checkbox-check  checkbox-circle checkbox-light">
+                                                        <div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
                                                             <input type="checkbox" value="s" id="s"
                                                                    name="day" v-model="courseDay">
                                                             <label for="s">星期日</label>
@@ -706,6 +727,7 @@
                                             <div class="panel-footer">
                                                 注意：教师为必填
                                             </div>
+
                                         </div>
                                     </div>
 
@@ -743,7 +765,7 @@
                                                         <label class="col-sm-12 control-label">*请确认上述信息正确无误:</label>
                                                     </div>
                                                     <div class="col-sm-3">
-                                                        <div class="checkbox3 checkbox-danger checkbox-inline checkbox-check  checkbox-circle checkbox-light">
+                                                        <div class="checkbox3 checkbox-danger checkbox-inline checkbox-check checkbox-circle checkbox-light">
                                                             <input type="checkbox" id="yes"
                                                                    name="confirm"
                                                                    required>
@@ -767,6 +789,11 @@
                                                             v-if="pageMode==='request'" v-on:click="submit"
                                                             onclick="return false;">提交申请
                                                     </button>
+                                                    <button style="width:150px;" class="btn btn-primary"
+                                                            v-if="pageMode==='request' && id !== ''"
+                                                            v-on:click="updateRequest"
+                                                            onclick="return false;">修改申请
+                                                    </button>
                                                 </div>
                                                 <div class="panel-footer">
                                                     注意：操作密码不是登录密码
@@ -784,6 +811,7 @@
         </div>
         <div class="panel-footer" id=footerPlaceholder">
             <div th:include="/common :: footer" id="copyright"></div>
+
         </div>
     </div>
     <!-- /. PAGE WRAPPER  -->
@@ -813,17 +841,20 @@
                 day: "",
                 precrn: "",
                 facultyId: "",
-                faculty: "",
-                remain: ""
             },
             courseDay: [],
             preList: [],
             table: false,
             detail: false,
             showDocument: false,
-            pageMode: location.search.split("&")[0].split("=")[1],//location.search获取url中的?后的字符串
+            pageMode: location.search.split("&")[0].split("=")[1],
+            id: location.search.split("&")[1].split("=")[1],
+            url: location.pathname
         },
         mounted: function () {
+
+            initRequest(this.id);
+
             //执行一个laydate实例
             laydate.render({
                 elem: '#startdate',
@@ -865,12 +896,10 @@
             });
         },
         methods: {
+
             submit: function () {
-
                 let day = "", precrn = "";
-
                 this.preList = $(".course").val();
-
                 for (let i = 0; i < this.courseDay.length; i++) {
                     day += this.courseDay[i] + "/";
                 }
@@ -879,26 +908,38 @@
                     precrn += this.preList[i] + "/";
                 }
 
-                let tempCourse = {
-                    info: this.course.info,
-                    name: this.course.name,
-                    credits: this.course.credits,
-                    level: this.course.level,
-                    section: this.course.section,
-                    startDate: this.course.startDate,
-                    endDate: this.course.endDate,
-                    startTime: this.course.startTime,
-                    endTime: this.course.endTime,
-                    capacity: this.course.capacity,
-                    classroom: this.course.classroom,
-                    comment: this.course.comment,
-                    precrn: precrn,
-                    day: day
-                };
+                this.course.day = day;
+                this.course.precrn = precrn;
 
-                axios.post('/request/course/register', tempCourse).then(function (response) {
+                axios.post('/request/course/register', this.course).then(function (response) {
                     if (response.data.code === 2001)
                         Showbo.Msg.alert("申请成功，等待教务答复!", function () {
+                            window.location.href = basePath + '/course/request?mode=faculty';
+                        });
+                    else
+                        Showbo.Msg.alert(response.data.msg, function () {
+                        });
+                })
+            },
+            updateRequest: function () {
+                let day = "", precrn = "";
+                this.preList = $(".course").val();
+                for (let i = 0; i < this.courseDay.length; i++)
+                    if (this.courseDay[i] !== "")
+                        day += this.courseDay[i] + "/";
+
+
+                for (let i = 0; i < this.preList.length; i++)
+                    if (this.preList[i] !== "")
+                        precrn += this.preList[i] + "/";
+
+
+                this.course.day = day;
+                this.course.precrn = precrn;
+
+                axios.post('/request/course/' + this.id, this.course).then(function (response) {
+                    if (response.data.code === 2001)
+                        Showbo.Msg.alert("修改成功，等待教务答复!", function () {
                             window.location.href = basePath + '/course/request?mode=faculty';
                         });
                     else
@@ -909,13 +950,14 @@
             create: function () {
                 let day = "", precrn = "";
                 this.preList = $(".course").val();
-                for (let i = 0; i < this.courseDay.length; i++) {
-                    day += this.courseDay[i] + "/";
-                }
+                for (let i = 0; i < this.courseDay.length; i++)
+                    if (this.courseDay[i] !== "")
+                        day += this.courseDay[i] + "/";
 
-                for (let i = 0; i < this.preList.length; i++) {
-                    precrn += this.preList[i] + "/";
-                }
+
+                for (let i = 0; i < this.preList.length; i++)
+                    if (this.preList[i] !== "")
+                        precrn += this.preList[i] + "/";
 
                 this.course.day = day;
                 this.course.precrn = precrn;
@@ -944,6 +986,22 @@
             }
         }
     });
+
+    function initRequest(id) {
+        if (id !== '') {
+            axios.get('/request/course/' + id).then(function (response) {
+                courseVue.$data.course = JSON.parse(response.data.data.courseJson);
+                courseVue.$data.courseDay = courseVue.$data.course.day.split("/");
+                courseVue.$data.preList = courseVue.$data.course.precrn.split("/");
+                let preListOption = [];
+                for(let i = 0; i<courseVue.$data.preList.length; i++)
+                    if(courseVue.$data.preList[i] !== "")
+                        preListOption.push(new Option(courseVue.$data.preList[i],courseVue.$data.preList[i], true, true));
+                courseSelect.append(preListOption);
+                courseSelect.trigger('change');
+            });
+        }
+    }
 
     function deleteCourse(crn) {
         Showbo.Msg.confirm("确认删除该课程？", function () {
@@ -1197,10 +1255,10 @@
                 };
             },
             processResults: function (data, params) {
-                //var data = [{ id: 0, text: 'enhancement' }, { id: 1, text: 'bug' }, { id: 2, text: 'duplicate' }, { id: 3, text: 'invalid' }, { id: 4, text: 'wontfix' }];
-                var itemList = [];
-                var item;
-                for (var i = 0; i < data.data.length; i++) {
+                //let data = [{ id: 0, text: 'enhancement' }, { id: 1, text: 'bug' }, { id: 2, text: 'duplicate' }, { id: 3, text: 'invalid' }, { id: 4, text: 'wontfix' }];
+                let itemList = [];
+                let item;
+                for (let i = 0; i < data.data.length; i++) {
                     item = {
                         id: data.data[i].userId,
                         text: data.data[i].lastName + ", " + data.data[i].firstName
@@ -1226,7 +1284,7 @@
         templateSelection: formatRepoSelection
     });
     //课程列表
-    $('.course').select2({
+    let courseSelect = $('.course').select2({
         ajax: {
             url: basePath + "/course/search",
             type: "GET",
@@ -1237,9 +1295,9 @@
                 };
             },
             processResults: function (data, params) {
-                var itemList = [];
-                var item;
-                for (var i = 0; i < data.data.length; i++) {
+                let itemList = [];
+                let item;
+                for (let i = 0; i < data.data.length; i++) {
                     item = {
                         id: data.data[i].crn,
                         text: data.data[i].name
@@ -1258,7 +1316,7 @@
         escapeMarkup: function (markup) {
             return markup;
         }, // 自定义格式化防止xss注入
-        minimumInputLength: 1,//最少输入多少个字符后开始查询
+        minimumInputLength: 0,//最少输入多少个字符后开始查询
         templateResult: formatRepo,
         templateSelection: formatRepoSelection
     });

@@ -100,8 +100,8 @@ public class CourseController {
 
     @RequiresPermissions("user")
     @RequestMapping(value = "/search", method = RequestMethod.GET)
-    public ResponseEntity search(@RequestParam("search") String search,
-                                 @RequestParam(value = "status", required = false, defaultValue = "") String status) {
+    public ResponseEntity search(@RequestParam(required = false, defaultValue = "") String search,
+                                 @RequestParam(required = false, defaultValue = "") String status) {
         HaramMessage haramMessage = courseService.getCourseBySearch(search, status);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }

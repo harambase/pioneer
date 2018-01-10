@@ -101,4 +101,18 @@ public class RequestServer {
         Map params = new HashMap();
         return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
     }
+
+    public HaramMessage getTempUser(String ip, int port, Integer id) {
+        String remotePath = "/request/user/" + id;
+        StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
+        Map params = new HashMap();
+        return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
+    }
+
+    public HaramMessage getTempCourse(String ip, int port, Integer id) {
+        String remotePath = "/request/course/" + id;
+        StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
+        Map params = new HashMap();
+        return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
+    }
 }

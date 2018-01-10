@@ -11,21 +11,32 @@
     <!-- /. NAV SIDE  -->
     <div th:include="/common :: navbar" class="sidebar-collapse"></div>
     <div id="page-wrapper">
-        <div id="coursePage">
-            <div class="header">
+        <div id="courseRequestPage">
+            <div class="header" v-if="pageMode === 'manage'">
                 <h1 class="page-header">
-                    先锋课程系统
+                    先锋教务管理
                     <small>新课程申请管理</small>
                 </h1>
                 <ol class="breadcrumb">
                     <li><a href="/index">主页</a></li>
-                    <li><a href="#">课程系统</a></li>
+                    <li><a href="#">教务管理</a></li>
                     <li class="active">新课程申请管理</li>
                 </ol>
-
             </div>
+            <div class="header" v-if="pageMode ==='faculty'">
+                <h1 class="page-header">
+                    先锋课程系统
+                    <small>新课程申请查看</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a href="/index">主页</a></li>
+                    <li><a href="#">课程系统</a></li>
+                    <li class="active">新课程申请查看</li>
+                </ol>
+            </div>
+
             <div id="page-inner">
-                <div class="row" id="courseRequestPage">
+                <div class="row">
                     <div class="col-md-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
@@ -101,10 +112,12 @@
 <div th:include="/common :: load_js(true , false, false)"></div>
 <script>
     let status = "";
-    let pageMode = location.search.split("&")[0].split("=")[1];
 
-    new Vue({
+    let requestVue = new Vue({
         el: '#courseRequestPage',
+        data:{
+            pageMode : location.search.split("&")[0].split("=")[1]
+        },
         methods: {
             showGeneral: function () {
                 status = "";
@@ -143,10 +156,10 @@
     }
 
     function detail(id) {
-        if (pageMode === 'faculty')
+        if (requestVue.$data.pageMode === 'faculty')
             window.location.href = "/course/create?mode=request&id=" + id;
-        else if (pageMode === 'manage')
-            window.location.href = "/teach/create?mode=request&id=" + id;
+        else if (requestVue.$data.pageMode === 'manage')
+            window.location.href = "/teach/create?mode=create&id=" + id;
     }
 
     let tempCourseTable = $("#tempCourseTable").DataTable({
@@ -186,8 +199,8 @@
             }
         },
         columns: [
-            {  //行号
-                "data": null, "title": "ROW", "render": function (data, type, row, meta) {
+            {
+                "data": null, "title": "行号", "render": function (data, type, row, meta) {
                 return meta.settings._iDisplayStart + meta.row + 1;
             }
             },

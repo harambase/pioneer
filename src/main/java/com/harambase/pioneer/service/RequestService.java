@@ -22,4 +22,8 @@ public interface RequestService {
     HaramMessage deleteTempCourse(Integer id);
 
     HaramMessage tempCourseList(Integer start, Integer length, String search, String order, String orderCol, String viewStatus, String facultyId);
+
+    HaramMessage getTempUser(Integer id);
+
+    HaramMessage getTempCourse(Integer id);
 }

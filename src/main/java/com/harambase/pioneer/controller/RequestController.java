@@ -29,6 +29,13 @@ public class RequestController {
         this.requestService = requestService;
     }
 
+    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
+    public ResponseEntity getUserRequest(@PathVariable Integer id) {
+        HaramMessage message = requestService.getTempUser(id);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
     @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
     @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT)
     public ResponseEntity updateUserRequest(@PathVariable Integer id, @RequestBody TempUser tempUser) {
@@ -68,7 +75,7 @@ public class RequestController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
     @RequestMapping(value = "/course/{id}", method = RequestMethod.PUT)
     public ResponseEntity updateCourseRequest(@PathVariable Integer id, @RequestBody TempCourse tempCourse) {
         tempCourse.setOperatorId(SessionUtil.getUserId());
@@ -76,7 +83,14 @@ public class RequestController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
+    @RequestMapping(value = "/course/{id}", method = RequestMethod.GET)
+    public ResponseEntity getCourseRequest(@PathVariable Integer id) {
+        HaramMessage message = requestService.getTempCourse(id);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
     @RequestMapping(value = "/course/register", method = RequestMethod.POST)
     public ResponseEntity registerNewCourse(@RequestBody JSONObject jsonObject) {
         String facultyId = SessionUtil.getUserId();
@@ -84,7 +98,7 @@ public class RequestController {
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
     @RequestMapping(value = "/course/{id}", method = RequestMethod.DELETE)
     public ResponseEntity deleteTempCourse(@PathVariable Integer id) {
         HaramMessage haramMessage = requestService.deleteTempCourse(id);

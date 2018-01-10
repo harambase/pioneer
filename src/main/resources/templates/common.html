@@ -265,7 +265,7 @@
                     <li shiro:hasAnyPermissions="user"><a href="/course/view">所有课程</a></li>
                     <li shiro:hasAnyPermissions="admin, faculty"><a href="#">新课程申请<span class="fa arrow"></span></a>
                         <ul class="nav nav-third-level">
-                            <li><a href="/course/create?mode=request">新建申请</a></li>
+                            <li><a href="/course/create?mode=request&id=">新建申请</a></li>
                             <li><a href="/course/request?mode=faculty">申请查看</a></li>
                         </ul>
                     </li>
@@ -278,7 +278,7 @@
                 <ul class="nav nav-second-level">
                     <li><a href="#">课程管理<span class="fa arrow"></span></a>
                         <ul class="nav nav-third-level">
-                            <li><a href="/teach/create?mode=create">创建新课程</a></li>
+                            <li><a href="/teach/create?mode=create&id=">创建新课程</a></li>
                             <li><a href="/teach/request?mode=manage">新课程申请管理</a></li>
                             <li><a href="/teach/course?mode=manage">课程管理</a></li>
                         </ul>
