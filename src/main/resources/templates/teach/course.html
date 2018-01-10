@@ -24,7 +24,7 @@
                     <li class="active">课程管理</li>
                 </ol>
             </div>
-            <div class="header" v-if="url.indexOf('course') !== -1">
+            <div class="header" v-if="url.indexOf('course') !== -1 && url.indexOf('teach') === -1">
                 <h1 class="page-header">
                     先锋教学系统
                     <small>新课程申请</small>
@@ -37,6 +37,7 @@
             </div>
 
             <div id="page-inner">
+
                 <!--<div class="panel panel-default" v-show="pageMode='student'">-->
                 <!--<div class="panel-heading">-->
                 <!--<span style="cursor: pointer" data-toggle="collapse" data-parent="#accordion"-->
@@ -185,7 +186,47 @@
                 <!--</div>-->
                 <!--</div>-->
                 <!--</div>-->
-                <div class="row" v-show="pageMode === 'request' || pageMode === 'create'">
+                <div class="row" v-show="pageMode === 'manage' || table">
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                搜索条件
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="col-sm-2">
+                                        <label class="col-sm-12 control-label">*按学期查询:</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <select class="js-example-basic-single info col-sm-12"></select>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label class="col-sm-12 control-label">*按授课老师查询:</label>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <select class="js-example-basic-single user col-sm-12"></select>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <button class="btn btn-primary col-sm-12" onclick="refresh()">查询</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                课程列表
+                            </div>
+                            <div class="panel-body">
+                                <table class="table table-striped table-bordered table-hover" id="courseTable"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" v-if="pageMode === 'request' || pageMode === 'create' || detail">
                     <div class="col-md-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
@@ -213,7 +254,8 @@
                                                     <label class="col-sm-12 control-label">*年份-学期(YYYY-XX):</label>
                                                 </div>
                                                 <div class="col-sm-3">
-                                                    <input class="form-control" required v-model="course.info" :disabled="tempCourse.status==='0'?false:true"/>
+                                                    <input class="form-control" required v-model="course.info"
+                                                           :disabled="tempCourse.status==='0'?false:true"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -402,7 +444,8 @@
                                                     </div>
                                                     <div class="col-sm-8">
                                                         <select class="col-sm-12 js-example-basic-single user"
-                                                                name="state" :disabled="tempCourse.status==='0'?false:true">
+                                                                name="state"
+                                                                :disabled="tempCourse.status==='0'?false:true">
                                                         </select>
                                                     </div>
 
@@ -413,7 +456,8 @@
                                                     </div>
                                                     <div class="col-sm-8">
                                                         <select class="col-sm-12 js-example-basic-multiple course"
-                                                                name="states[]" multiple="multiple" :disabled="tempCourse.status==='0'?false:true">
+                                                                name="states[]" multiple="multiple"
+                                                                :disabled="tempCourse.status==='0'?false:true">
                                                         </select>
                                                     </div>
                                                 </div>
@@ -431,7 +475,8 @@
                                                         <label class="col-sm-12 control-label">上传课程大纲:</label>
                                                     </div>
                                                     <div class="col-sm-6">
-                                                        <input type="file" id="document" :disabled="tempCourse.status==='0'?false:true">
+                                                        <input type="file" id="document"
+                                                               :disabled="tempCourse.status==='0'?false:true">
                                                     </div>
                                                     <div class="col-sm-2" v-if="pageMode === 'view'">
                                                         <button style="width: 100%" class="btn btn-primary btn-info"
@@ -461,7 +506,8 @@
                                                     </div>
                                                     <div class="col-sm-8">
                                                         <textarea style="resize: none;" class="form-control" rows="3"
-                                                                  v-model="course.comment" :disabled="tempCourse.status==='0'?false:true"></textarea>
+                                                                  v-model="course.comment"
+                                                                  :disabled="tempCourse.status==='0'?false:true"></textarea>
                                                     </div>
                                                 </div>
 
@@ -569,7 +615,7 @@
             tempCourse: {
                 id: "",
                 crn: "",
-                status: "",
+                status: '0',
                 createTime: "",
                 updateTime: "",
                 operatorId: "",
@@ -587,7 +633,8 @@
         },
         mounted: function () {
 
-            initRequest(this.id);
+            if (isNotEmpty(this.id))
+                initRequest(this.id);
 
             //执行一个laydate实例
             laydate.render({
@@ -711,8 +758,10 @@
                 axios.post('/course', this.course).then(function (response) {
                     if (response.data.code === 2001)
                         Showbo.Msg.alert("创建成功!", function () {
-                            this.course = response.data.data;
-                            documentUpload(this.course.crn);
+                            courseVue.$data.course = response.data.data;
+                            documentUpload(response.data.data.course.crn);
+                            courseVue.$data.table = true;
+                            courseVue.$data.detail = false;
                         });
                     else
                         Showbo.Msg.alert(response.data.msg, function () {
@@ -744,7 +793,7 @@
                 this.tempCourse.status = "1";
                 this.tempCourse.courseJson = JSON.stringify(this.course);
 
-                if(!this.showDocument)
+                if (!this.showDocument)
                     documentUpload(this.id);
                 update(this.id, this.tempCourse);
 
@@ -865,6 +914,10 @@
         }
     }
 
+    function refresh() {
+        courseTable.draw();
+    }
+
     function documentDownload() {
         if (isNotEmpty(courseVue.$data.id))//申请中的下载
             window.open(basePath + "/request/course/info/" + courseVue.$data.id);
@@ -952,6 +1005,133 @@
         templateSelection: formatRepoSelection
     });
 
+    $(".info").select2({
+        ajax: {
+            url: basePath + "/course/info",
+            type: "GET",
+            delay: 250,
+            data: function (params) {
+                return {
+                    search: params.term,
+                };
+            },
+            processResults: function (data) {
+                let itemList = [];
+                let item;
+                for (let i = 0; i < data.data.length; i++) {
+                    item = {
+                        id: data.data[i],
+                        text: data.data[i]
+                    };
+                    itemList.push(item);
+                }
+                item = {
+                    id: "",
+                    text: "清除"
+                };
+                itemList.push(item);
+                return {
+                    results: itemList
+                };
+            },
+            cache: true
+        },
+        language: "zh-CN",
+        tags: false,//允许手动添加
+        allowClear: true,//允许清空
+        escapeMarkup: function (markup) {
+            return markup;
+        }, // 自定义格式化防止xss注入
+        minimumInputLength: 0,
+        templateResult: formatRepo,
+        templateSelection: formatRepoSelection
+    });
+
+    let courseTable = $("#courseTable").DataTable({
+
+        "language": {
+            "aria": {
+                "sortAscending": ": activate to sort column ascending",
+                "sortDescending": ": activate to sort column descending"
+            },
+            "emptyTable": "没有数据！",
+            "info": "显示 _START_ 至 _END_ 条 ，总共_TOTAL_ 条数据",
+            "infoEmpty": "没有发现记录！",
+            "infoFiltered": "(从_MAX_条记录中搜索)",
+            "lengthMenu": "显示: _MENU_",
+            "search": "模糊搜索:",
+            "zeroRecords": "没有找到匹配的记录！",
+            "paginate": {
+                "previous": "上一页",
+                "next": "下一页",
+                "last": "尾页",
+                "first": "首页"
+            }
+        },
+        "pagingType": "full_numbers",
+        "lengthMenu": [
+            [5, 10, 15, 20],
+            [5, 10, 15, 20]
+        ],
+        pageLength: 10,
+        processing: true,
+        serverSide: true,
+
+        ajax: {
+            url: basePath + "/course",
+            data: function (d) {
+                d.info = $(".info").val();
+                d.facultyId = $(".user").val();
+            }
+        },
+        columns: [
+            {
+                "data": null, "title": "行号", "render": function (data, type, row, meta) {
+                    return meta.settings._iDisplayStart + meta.row + 1;
+                }
+            },
+            {"data": "crn", "title": "编号"},
+            {
+                "data": null, "title": "课程名（等级-班级）", "createdCell": function (nTd, rowData) {
+                    $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">' + rowData.name + '<br/>' + "(" + rowData.level + "-" + rowData.section + ")" + '</p>');
+                }
+            },
+            {"data": "capacity", "title": "容量"},
+            {"data": "remain", "title": "剩余"},
+            {
+                "data": "status", "title": "状态", "createdCell": function (nTd, rowData) {
+                    if (rowData === 1)
+                        $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">未开始</p>');
+                    else if (rowData === 0)
+                        $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:green; ">进行中</p>');
+                    else if (rowData === -1)
+                        $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:red; ">已结课</p>');
+
+                }
+            },
+            {"data": "date", "title": "起止时间"},
+            {"data": "time", "title": "上课时间"},
+            {"data": "day", "title": "星期"},
+            {"data": "faculty", "title": "授课老师"},
+            {
+                "data": null, "title": "操作", "createdCell": function (nTd) {
+                    $(nTd).html(
+                        '<a style="cursor: pointer"><i class="fa fa-search"></i>查看并编辑</a><br/>' +
+                        '<a style="cursor: pointer; color: darkred"><i class="fa fa-trash"></i>删除该课程</a><br/>' +
+                        '<a style="cursor: pointer"><i class="fa fa-user"></i>课程学生信息</a>'
+                    );
+                }, "width": "100px"
+            }
+        ],
+        "columnDefs": [{
+            orderable: false,
+            targets: [9]
+        }, {
+            "defaultContent": "",
+            "targets": "_all"
+        }]
+    });
+
     // let studentTable;
     //
     // function showCourseDetail(col) {
@@ -1027,77 +1207,6 @@
     //
     // }
     //
-    // let courseTable = $("#courseTable").DataTable({
-    //
-    //     "language": {
-    //         "aria": {
-    //             "sortAscending": ": activate to sort column ascending",
-    //             "sortDescending": ": activate to sort column descending"
-    //         },
-    //         "emptyTable": "没有数据！",
-    //         "info": "显示 _START_ 至 _END_ 条 ，总共_TOTAL_ 条数据",
-    //         "infoEmpty": "没有发现记录！",
-    //         "infoFiltered": "(从_MAX_条记录中搜索)",
-    //         "lengthMenu": "显示: _MENU_",
-    //         "search": "搜索:",
-    //         "zeroRecords": "没有找到匹配的记录！",
-    //         "paginate": {
-    //             "previous": "上一页",
-    //             "next": "下一页",
-    //             "last": "尾页",
-    //             "first": "首页"
-    //         }
-    //     },
-    //     "pagingType": "full_numbers",
-    //     "lengthMenu": [
-    //         [5, 10, 15, 20],
-    //         [5, 10, 15, 20]
-    //     ],
-    //     pageLength: 10,
-    //     processing: true,
-    //     serverSide: true,
-    //
-    //     ajax: {
-    //         url: basePath + "/course"
-    //     },
-    //     columns: [
-    //         {"data": "crn", "title": "编号"},
-    //         {"data": "name", "title": "课程名"},
-    //         {"data": "level", "title": "等级"},
-    //         {"data": "section", "title": "班级"},
-    //         {"data": "capacity", "title": "容量"},
-    //         {"data": "remain", "title": "剩余"},
-    //         {
-    //             "data": "status", "title": "状态", "createdCell": function (nTd, rowData) {
-    //                 if (rowData === 1)
-    //                     $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">未开始</p>');
-    //                 else if (rowData === 0)
-    //                     $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:green; ">进行中</p>');
-    //                 else if (rowData === -1)
-    //                     $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:red; ">已结课</p>');
-    //             }
-    //         },
-    //         {"data": "date", "title": "起止时间"},
-    //         {"data": "time", "title": "上课时间"},
-    //         {"data": "day", "title": "星期"},
-    //         {"data": "faculty", "title": "授课老师"},
-    //         {"data": "updateTime", "title": "更新时间"},
-    //         {
-    //             "data": "crn", "title": "操作", "createdCell": function (nTd, rowData, row, col) {
-    //                 $(nTd).html('<button style="width: 50%" class="btn btn-danger" onclick="deleteCourse(\'' + rowData + '\')">删除课程</button>' +
-    //                     '<button style="width: 50%" class="btn btn-info" onclick="showCourseDetail(\'' + col + '\')">查看详情</button>');
-    //                 courseVue.$data.courseList.push(row);
-    //             }
-    //         }
-    //     ],
-    //     "columnDefs": [{
-    //         orderable: false,
-    //         targets: [12]
-    //     }, {
-    //         "defaultContent": "",
-    //         "targets": "_all"
-    //     }]
-    // });
     //
     // let userTable = $("#userTable").DataTable({
     //     "language": {

@@ -99,6 +99,11 @@
                     };
                     itemList.push(item);
                 }
+                item = {
+                    id: "",
+                    text: "清除"
+                };
+                itemList.push(item);
                 return {
                     results: itemList
                 };
@@ -107,7 +112,7 @@
         },
         language: "zh-CN",
         tags: false,//允许手动添加
-        allowClear: false,//允许清空
+        allowClear: true,//允许清空
         escapeMarkup: function (markup) {
             return markup;
         }, // 自定义格式化防止xss注入
@@ -200,9 +205,11 @@
                 }
             },
             {"data": "crn", "title": "编号"},
-            {"data": "name", "title": "课程名"},
-            {"data": "level", "title": "等级"},
-            {"data": "section", "title": "班级"},
+            {
+                "data": null, "title": "课程名（等级-班级）", "createdCell": function (nTd, rowData) {
+                    $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">' + rowData.name + " (" + rowData.level + "-" + rowData.section + ")" + '</p>');
+                }
+            },
             {"data": "capacity", "title": "容量"},
             {"data": "remain", "title": "剩余"},
             {
@@ -222,9 +229,6 @@
             {"data": "faculty", "title": "授课老师"},
         ],
         "columnDefs": [{
-            orderable: false,
-            targets: [11]
-        }, {
             "defaultContent": "",
             "targets": "_all"
         }]
