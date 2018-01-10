@@ -1,9 +1,11 @@
 package com.harambase.pioneer.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.harambase.common.HaramMessage;
 import com.harambase.pioneer.pojo.Course;
 import com.harambase.pioneer.pojo.dto.Option;
 import com.harambase.pioneer.service.CourseService;
+import com.harambase.support.util.FileUtil;
 import com.harambase.support.util.SessionUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.Logical;
@@ -14,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.LinkedHashMap;
 
 @RestController
@@ -157,6 +160,17 @@ public class CourseController {
     public ResponseEntity uploadInfo(@RequestParam MultipartFile file, @PathVariable String crn) {
         HaramMessage message = courseService.uploadInfo(crn, file);
         return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
+    @RequestMapping(value = "/info/{crn}", method = RequestMethod.GET)
+    public void downloadCourseInfo(@PathVariable String crn, HttpServletResponse response) {
+        HaramMessage message = courseService.getCourseByCrn(crn);
+        String courseInfo = (String)((LinkedHashMap) message.getData()).get("courseInfo");
+        if(StringUtils.isNotEmpty(courseInfo)) {
+            JSONObject info = JSONObject.parseObject(courseInfo);
+            FileUtil.downloadFile(info.getString("name"), info.getString("path"), response);
+        }
     }
 
 }

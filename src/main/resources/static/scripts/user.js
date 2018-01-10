@@ -174,9 +174,9 @@ function profileUpload() {
                 Showbo.Msg.alert(response.data.msg, function () {
                     userVue.$data.user.profile = response.data.data;
                     userVue.$data.showProfile = true;
-                    var file = document.querySelector("input[type=file]").files[0];
-                    var current = document.getElementById("current");
-                    var reader = new FileReader();
+                    let file = document.querySelector("input[type=file]").files[0];
+                    let current = document.getElementById("current");
+                    let reader = new FileReader();
                     if (file) {
                         reader.readAsDataURL(file);
                     } else {
@@ -222,12 +222,12 @@ function setInfo(){
     userVue.$data.userType = userVue.$data.user.type.split("/");
     userVue.$data.userRole = userVue.$data.user.roleId.split("/");
 
-    if (userVue.$data.user.profile !== "" &&  userVue.$data.user.profile !== null && userVue.$data.user.profile !== null) {
+    if (isNotEmpty(userVue.$data.user.profile)) {
         userVue.$data.user.profile = JSON.parse(userVue.$data.user.profile);
         userVue.$data.showProfile = true;
     }
 
-    if (userVue.$data.user.userInfo !== "" && userVue.$data.user.userInfo !== null && userVue.$data.user.userInfo !== null) {
+    if (isNotEmpty(userVue.$data.user.userInfo)) {
         userVue.$data.user.userInfo = JSON.parse(userVue.$data.user.userInfo);
         userVue.$data.showDocument = true;
     }

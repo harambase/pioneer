@@ -11,6 +11,8 @@ import com.harambase.pioneer.service.PersonService;
 import com.harambase.support.util.FileUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +23,8 @@ import java.util.LinkedHashMap;
 
 @Service
 public class PersonServiceImpl implements PersonService {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final static String IP = Config.SERVER_IP;
     private final static int PORT = Config.SERVER_PORT;
@@ -127,7 +131,7 @@ public class PersonServiceImpl implements PersonService {
             message = personServer.update(IP, PORT, userId, person);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             message.setMsg("上传失败");
             message.setCode(FlagDict.FAIL.getV());
             return message;

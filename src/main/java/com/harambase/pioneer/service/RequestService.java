@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.harambase.common.HaramMessage;
 import com.harambase.pioneer.pojo.TempCourse;
 import com.harambase.pioneer.pojo.TempUser;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface RequestService {
 
@@ -26,4 +27,6 @@ public interface RequestService {
     HaramMessage getTempUser(Integer id);
 
     HaramMessage getTempCourse(Integer id);
+
+    HaramMessage uploadCourseInfo(Integer id, MultipartFile file);
 }

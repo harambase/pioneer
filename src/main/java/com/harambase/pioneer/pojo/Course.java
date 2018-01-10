@@ -40,6 +40,8 @@ public class Course {
 
     private String comment;
 
+    private String courseInfo;
+
     //Extensions:
     private Integer remain;
 
@@ -50,8 +52,6 @@ public class Course {
     private String date;
 
     private String time;
-
-    private String courseInfo;
 
     public String getCourseInfo() {
         return courseInfo;

@@ -5,6 +5,7 @@ import com.harambase.common.HaramMessage;
 import com.harambase.pioneer.pojo.TempCourse;
 import com.harambase.pioneer.pojo.TempUser;
 import com.harambase.pioneer.service.RequestService;
+import com.harambase.support.util.FileUtil;
 import com.harambase.support.util.SessionUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.Logical;
@@ -13,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.LinkedHashMap;
 
 @RestController
@@ -92,10 +95,21 @@ public class RequestController {
 
     @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
     @RequestMapping(value = "/course/register", method = RequestMethod.POST)
-    public ResponseEntity registerNewCourse(@RequestBody JSONObject jsonObject) {
+    public ResponseEntity registerNewCourse(@RequestBody JSONObject jsonObject, @RequestParam(required = false) MultipartFile file) {
         String facultyId = SessionUtil.getUserId();
         HaramMessage haramMessage = requestService.registerNewCourse(facultyId, jsonObject);
+        if (haramMessage.getCode() == 2001 && file != null) {
+            Integer id = (Integer) ((LinkedHashMap) haramMessage.getData()).get("id");
+            haramMessage = requestService.uploadCourseInfo(id, file);
+        }
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
+    }
+
+    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
+    @RequestMapping(value = "/course/info/{id}", method = RequestMethod.PUT)
+    public ResponseEntity uploadCourseInfo(@RequestParam MultipartFile file, @PathVariable Integer id) {
+        HaramMessage message = requestService.uploadCourseInfo(id, file);
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
@@ -103,6 +117,17 @@ public class RequestController {
     public ResponseEntity deleteTempCourse(@PathVariable Integer id) {
         HaramMessage haramMessage = requestService.deleteTempCourse(id);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
+    }
+
+    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
+    @RequestMapping(value = "/course/info/{id}", method = RequestMethod.GET)
+    public void downloadCourseInfo(@PathVariable Integer id, HttpServletResponse response) {
+        HaramMessage message = requestService.getTempCourse(id);
+        String courseInfo = (String)((LinkedHashMap) message.getData()).get("courseInfo");
+        if(StringUtils.isNotEmpty(courseInfo)) {
+            JSONObject info = JSONObject.parseObject(courseInfo);
+            FileUtil.downloadFile(info.getString("name"), info.getString("path"), response);
+        }
     }
 
     @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)

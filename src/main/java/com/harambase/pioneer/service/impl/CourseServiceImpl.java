@@ -1,5 +1,6 @@
 package com.harambase.pioneer.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.harambase.common.Config;
 import com.harambase.common.HaramMessage;
 import com.harambase.common.constant.FlagDict;
@@ -10,6 +11,8 @@ import com.harambase.pioneer.service.CourseService;
 import com.harambase.support.util.FileUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,6 +25,8 @@ import java.util.Map;
 
 @Service
 public class CourseServiceImpl implements CourseService {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final static String IP = Config.SERVER_IP;
     private final static int PORT = Config.SERVER_PORT;
@@ -67,6 +72,7 @@ public class CourseServiceImpl implements CourseService {
     public HaramMessage uploadInfo(String crn, MultipartFile file) {
         HaramMessage message = new HaramMessage();
         Map<String, Object> map = new HashMap<>();
+        JSONObject jsonObject = new JSONObject();
 
         try {
             LinkedHashMap courseMap = (LinkedHashMap) courseServer.getCourseByCrn(IP, PORT, crn).getData();
@@ -84,17 +90,17 @@ public class CourseServiceImpl implements CourseService {
 
             fileUri = FileUtil.uploadFileToPath(file, "/static/upload/document/courseInfo");
 
-            map.put("name", name);
-            map.put("size", file.getSize());
-            map.put("type", name.substring(name.lastIndexOf(".") + 1));
-            map.put("path", fileUri);
+            jsonObject.put("name", name);
+            jsonObject.put("size", file.getSize());
+            jsonObject.put("type", name.substring(name.lastIndexOf(".") + 1));
+            jsonObject.put("path", fileUri);
 
-            course.setCourseInfo(fileUri);
+            course.setCourseInfo(jsonObject.toJSONString());
 
             message = courseServer.update(IP, PORT, crn, course);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
             message.setMsg("上传失败");
             message.setCode(FlagDict.FAIL.getV());
             return message;
