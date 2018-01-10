@@ -213,7 +213,7 @@
                                                     <label class="col-sm-12 control-label">*年份-学期(YYYY-XX):</label>
                                                 </div>
                                                 <div class="col-sm-3">
-                                                    <input class="form-control" required v-model="course.info"/>
+                                                    <input class="form-control" required v-model="course.info" :disabled="tempCourse.status==='0'?false:true"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -232,7 +232,8 @@
                                                         <input class="form-control"
                                                                minlength="1"
                                                                maxlength="20"
-                                                               required v-model="course.name"/>
+                                                               required v-model="course.name"
+                                                               :disabled="tempCourse.status==='0'?false:true"/>
                                                     </div>
                                                     <div class="col-sm-2">
                                                         <label class="col-sm-12 control-label">*课程等级:</label>
@@ -242,7 +243,8 @@
                                                                class="form-control"
                                                                placeholder="*100-499" minlength="3"
                                                                maxlength="3" required
-                                                               v-model="course.level"/>
+                                                               v-model="course.level"
+                                                               :disabled="tempCourse.status==='0'?false:true"/>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -253,7 +255,8 @@
                                                         <input class="form-control"
                                                                placeholder="*01,02,03..."
                                                                minlength="2" maxlength="2" required
-                                                               v-model="course.section"/>
+                                                               v-model="course.section"
+                                                               :disabled="tempCourse.status==='0'?false:true"/>
                                                     </div>
                                                     <div class="col-sm-2">
                                                         <label class="col-sm-12 control-label">*学分:</label>
@@ -263,7 +266,8 @@
                                                                placeholder="*0-4"
                                                                class="form-control" minlength="1"
                                                                maxlength="1" required
-                                                               v-model="course.credits"/>
+                                                               v-model="course.credits"
+                                                               :disabled="tempCourse.status==='0'?false:true"/>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -273,7 +277,8 @@
                                                     <div class="col-sm-3">
                                                         <input isDigits="true"
                                                                class="form-control" required
-                                                               v-model="course.capacity"/>
+                                                               v-model="course.capacity"
+                                                               :disabled="tempCourse.status==='0'?false:true"/>
                                                     </div>
                                                     <div class="col-sm-2">
                                                         <label class="col-sm-12 control-label">教室:</label>
@@ -281,7 +286,8 @@
                                                     <div class="col-sm-3">
                                                         <input class="form-control"
                                                                maxlength="20"
-                                                               v-model="course.classroom"/>
+                                                               v-model="course.classroom"
+                                                               :disabled="tempCourse.status==='0'?false:true"/>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -291,7 +297,8 @@
                                                     </div>
                                                     <div class="col-sm-3">
                                                         <input id="startdate" class="form-control"
-                                                               required v-model="course.startDate"/>
+                                                               required v-model="course.startDate"
+                                                               :disabled="tempCourse.status==='0'?false:true"/>
                                                     </div>
                                                     <div class="col-sm-2">
                                                         <label for="enddate"
@@ -300,7 +307,8 @@
                                                     <div class="col-sm-3">
                                                         <input id="enddate" class="form-control"
                                                                required
-                                                               v-model="course.endDate"/>
+                                                               v-model="course.endDate"
+                                                               :disabled="tempCourse.status==='0'?false:true"/>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -310,7 +318,8 @@
                                                     </div>
                                                     <div class="col-sm-3">
                                                         <input id="starttime" class="form-control"
-                                                               required v-model="course.startTime"/>
+                                                               required v-model="course.startTime"
+                                                               :disabled="tempCourse.status==='0'?false:true"/>
                                                     </div>
                                                     <div class="col-sm-2">
                                                         <label for="endtime"
@@ -319,7 +328,8 @@
                                                     <div class="col-sm-3">
                                                         <input id="endtime" class="form-control"
                                                                required
-                                                               v-model="course.endTime"/>
+                                                               v-model="course.endTime"
+                                                               :disabled="tempCourse.status==='0'?false:true"/>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -329,37 +339,44 @@
                                                     <div class="col-sm-8">
                                                         <div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
                                                             <input type="checkbox" value="m" id="m"
-                                                                   name="day" v-model="courseDay">
+                                                                   name="day" v-model="courseDay"
+                                                                   :disabled="tempCourse.status==='0'?false:true">
                                                             <label for="m">星期一</label>
                                                         </div>
                                                         <div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
                                                             <input type="checkbox" value="t" id="t"
-                                                                   name="day" v-model="courseDay">
+                                                                   name="day" v-model="courseDay"
+                                                                   :disabled="tempCourse.status==='0'?false:true">
                                                             <label for="t">星期二</label>
                                                         </div>
                                                         <div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
                                                             <input type="checkbox" value="w" id="w"
-                                                                   name="day" v-model="courseDay">
+                                                                   name="day" v-model="courseDay"
+                                                                   :disabled="tempCourse.status==='0'?false:true">
                                                             <label for="w">星期三</label>
                                                         </div>
                                                         <div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
                                                             <input type="checkbox" value="tr" id="tr"
-                                                                   name="day" v-model="courseDay">
+                                                                   name="day" v-model="courseDay"
+                                                                   :disabled="tempCourse.status==='0'?false:true">
                                                             <label for="tr">星期四</label>
                                                         </div>
                                                         <div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
                                                             <input type="checkbox" value="f" id="f"
-                                                                   name="day" v-model="courseDay">
+                                                                   name="day" v-model="courseDay"
+                                                                   :disabled="tempCourse.status==='0'?false:true">
                                                             <label for="f">星期五</label>
                                                         </div>
                                                         <div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
                                                             <input type="checkbox" value="sa" id="sa"
-                                                                   name="day" v-model="courseDay">
+                                                                   name="day" v-model="courseDay"
+                                                                   :disabled="tempCourse.status==='0'?false:true">
                                                             <label for="sa">星期六</label>
                                                         </div>
                                                         <div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
                                                             <input type="checkbox" value="s" id="s"
-                                                                   name="day" v-model="courseDay">
+                                                                   name="day" v-model="courseDay"
+                                                                   :disabled="tempCourse.status==='0'?false:true">
                                                             <label for="s">星期日</label>
                                                         </div>
                                                     </div>
@@ -385,7 +402,7 @@
                                                     </div>
                                                     <div class="col-sm-8">
                                                         <select class="col-sm-12 js-example-basic-single user"
-                                                                name="state">
+                                                                name="state" :disabled="tempCourse.status==='0'?false:true">
                                                         </select>
                                                     </div>
 
@@ -396,7 +413,7 @@
                                                     </div>
                                                     <div class="col-sm-8">
                                                         <select class="col-sm-12 js-example-basic-multiple course"
-                                                                name="states[]" multiple="multiple">
+                                                                name="states[]" multiple="multiple" :disabled="tempCourse.status==='0'?false:true">
                                                         </select>
                                                     </div>
                                                 </div>
@@ -414,7 +431,7 @@
                                                         <label class="col-sm-12 control-label">上传课程大纲:</label>
                                                     </div>
                                                     <div class="col-sm-6">
-                                                        <input type="file" id="document">
+                                                        <input type="file" id="document" :disabled="tempCourse.status==='0'?false:true">
                                                     </div>
                                                     <div class="col-sm-2" v-if="pageMode === 'view'">
                                                         <button style="width: 100%" class="btn btn-primary btn-info"
@@ -444,7 +461,7 @@
                                                     </div>
                                                     <div class="col-sm-8">
                                                         <textarea style="resize: none;" class="form-control" rows="3"
-                                                                  v-model="course.comment"></textarea>
+                                                                  v-model="course.comment" :disabled="tempCourse.status==='0'?false:true"></textarea>
                                                     </div>
                                                 </div>
 
@@ -456,7 +473,8 @@
                                                         <div class="checkbox3 checkbox-danger checkbox-inline checkbox-check checkbox-circle checkbox-light">
                                                             <input type="checkbox" id="yes"
                                                                    name="confirm"
-                                                                   required>
+                                                                   required
+                                                                   :disabled="tempCourse.status==='0'?false:true">
                                                             <label for="yes">确认</label>
                                                         </div>
                                                     </div>
@@ -468,6 +486,7 @@
                                                             <input type="password"
                                                                    class="form-control" minlength="6"
                                                                    maxlength="16" checkOpPwd="true"
+                                                                   :disabled="tempCourse.status==='0'?false:true"
                                                                    required/>
                                                         </div>
                                                     </div>
@@ -479,11 +498,13 @@
                                                     <button style="width:150px;" class="btn btn-success"
                                                             v-if="pageMode === 'create' && id !== ''"
                                                             v-on:click="approve"
+                                                            :disabled="tempCourse.status==='0'?false:true"
                                                             onclick="return false;">批准申请
                                                     </button>
                                                     <button style="width:150px;" class="btn btn-danger"
                                                             v-if="pageMode === 'create' && id !== ''"
                                                             v-on:click="decline"
+                                                            :disabled="tempCourse.status==='0'?false:true"
                                                             onclick="return false;">拒绝申请
                                                     </button>
                                                     <button style="width:150px;" class="btn btn-primary"
@@ -672,14 +693,16 @@
             create: function () {
                 let day = "", precrn = "";
                 this.preList = $(".course").val();
-                for (let i = 0; i < this.courseDay.length; i++)
-                    if (this.courseDay[i] !== "")
-                        day += this.courseDay[i] + "/";
 
+                if (isNotEmpty(this.courseDay))
+                    for (let i = 0; i < this.courseDay.length; i++)
+                        if (isNotEmpty(this.courseDay[i]))
+                            day += this.courseDay[i] + "/";
 
-                for (let i = 0; i < this.preList.length; i++)
-                    if (this.preList[i] !== "")
-                        precrn += this.preList[i] + "/";
+                if (isNotEmpty(this.preList))
+                    for (let i = 0; i < this.preList.length; i++)
+                        if (isNotEmpty(this.preList[i]))
+                            precrn += this.preList[i] + "/";
 
                 this.course.day = day;
                 this.course.precrn = precrn;
@@ -703,14 +726,16 @@
             approve: function () {
                 let day = "", precrn = "";
                 this.preList = $(".course").val();
-                for (let i = 0; i < this.courseDay.length; i++)
-                    if (this.courseDay[i] !== "")
-                        day += this.courseDay[i] + "/";
 
+                if (isNotEmpty(this.courseDay))
+                    for (let i = 0; i < this.courseDay.length; i++)
+                        if (isNotEmpty(this.courseDay[i]))
+                            day += this.courseDay[i] + "/";
 
-                for (let i = 0; i < this.preList.length; i++)
-                    if (this.preList[i] !== "")
-                        precrn += this.preList[i] + "/";
+                if (isNotEmpty(this.preList))
+                    for (let i = 0; i < this.preList.length; i++)
+                        if (isNotEmpty(this.preList[i]))
+                            precrn += this.preList[i] + "/";
 
                 this.course.day = day;
                 this.course.precrn = precrn;
@@ -719,7 +744,8 @@
                 this.tempCourse.status = "1";
                 this.tempCourse.courseJson = JSON.stringify(this.course);
 
-                documentUpload(this.id);
+                if(!this.showDocument)
+                    documentUpload(this.id);
                 update(this.id, this.tempCourse);
 
             },
