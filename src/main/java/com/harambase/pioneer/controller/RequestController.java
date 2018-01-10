@@ -6,6 +6,7 @@ import com.harambase.pioneer.pojo.TempCourse;
 import com.harambase.pioneer.pojo.TempUser;
 import com.harambase.pioneer.service.RequestService;
 import com.harambase.support.util.SessionUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +52,7 @@ public class RequestController {
     }
 
     @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
-    @RequestMapping(value = "/user/list", produces = "application/json", method = RequestMethod.GET)
+    @RequestMapping(value = "/user", produces = "application/json", method = RequestMethod.GET)
     public ResponseEntity userList(@RequestParam(value = "start") Integer start,
                                    @RequestParam(value = "length") Integer length,
                                    @RequestParam(value = "draw") Integer draw,
@@ -78,7 +79,8 @@ public class RequestController {
     @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
     @RequestMapping(value = "/course/register", method = RequestMethod.POST)
     public ResponseEntity registerNewCourse(@RequestBody JSONObject jsonObject) {
-        HaramMessage haramMessage = requestService.registerNewCourse(jsonObject);
+        String facultyId = SessionUtil.getUserId();
+        HaramMessage haramMessage = requestService.registerNewCourse(facultyId, jsonObject);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
@@ -98,7 +100,10 @@ public class RequestController {
                                      @RequestParam(value = "order[0][dir]") String order,
                                      @RequestParam(value = "order[0][column]") String orderCol,
                                      @RequestParam(value = "viewStatus") String viewStatus,
-                                     @RequestParam(value = "facultyId", required = false) String facultyId) {
+                                     @RequestParam(value = "mode", required = false) String mode) {
+        String facultyId = "";
+        if(StringUtils.isNotEmpty(mode) && mode.equals("faculty"))
+            facultyId = SessionUtil.getUserId();
 
         HaramMessage message = requestService.tempCourseList(start, length, search, order, orderCol, viewStatus, facultyId);
         message.put("draw", draw);

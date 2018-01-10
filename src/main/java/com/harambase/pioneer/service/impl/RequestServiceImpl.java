@@ -49,8 +49,8 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public HaramMessage registerNewCourse(JSONObject jsonObject) {
-        return requestServer.registerNewCourse(IP, PORT, jsonObject);
+    public HaramMessage registerNewCourse(String facultyId, JSONObject jsonObject) {
+        return requestServer.registerNewCourse(IP, PORT, facultyId, jsonObject);
     }
 
     @Override

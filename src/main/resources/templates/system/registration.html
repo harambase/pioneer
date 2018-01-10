@@ -32,7 +32,7 @@
                             用户申请列表
                         </div>
                         <div class="panel-body">
-                            <div class="panel-group" id="accordion">
+                            <div class="panel-group">
                                 <div class="panel panel-info">
                                     <div class="panel-heading">
                                         <h4 class="panel-title">
@@ -74,7 +74,7 @@
                             <div class="panel panel-success">
                                 <div class="panel-heading">
                                     <h4 class="panel-title">
-                                        用户注册申请列表
+                                        申请列表
                                     </h4>
                                 </div>
                                 <div class="panel-body">
@@ -365,11 +365,9 @@
         </div>
     </div>
 </div>
-
 <div th:include="/common:: load_js(true , false, false)"></div>
 
 <script>
-    let userRegTable;
     let status = "";
     let regVue = new Vue({
         el: '#regPage',
@@ -491,81 +489,80 @@
         regVue.$data.regDetail = true;
     }
 
-    $(function () {
-        userRegTable = $("#userReg").DataTable({
-            "language": {
-                "aria": {
-                    "sortAscending": ": activate to sort column ascending",
-                    "sortDescending": ": activate to sort column descending"
-                },
-                "emptyTable": "没有数据！",
-                "info": "显示 _START_ 至 _END_ 条 ，总共_TOTAL_ 条数据",
-                "infoEmpty": "没有发现记录！",
-                "infoFiltered": "(从_MAX_条记录中搜索)",
-                "lengthMenu": "显示: _MENU_",
-                "search": "搜索:",
-                "zeroRecords": "没有找到匹配的记录！",
-                "paginate": {
-                    "previous": "上一页",
-                    "next": "下一页",
-                    "last": "尾页",
-                    "first": "首页"
-                }
-            },
-            "pagingType": "full_numbers",
-            "lengthMenu": [
-                [5, 10],
-                [5, 10]
-            ],
-            pageLength: 10,
-            processing: true,
-            serverSide: true,
 
-            ajax: {
-                url: basePath + "/request/user/list",
-                data: function (d) {
-                    d.viewStatus = status;
-                }
+    let userRegTable = $("#userReg").DataTable({
+        "language": {
+            "aria": {
+                "sortAscending": ": activate to sort column ascending",
+                "sortDescending": ": activate to sort column descending"
             },
-            columns: [
-                {  //行号
-                    "data": null, "title": "ROW", "render": function (data, type, row, meta) {
-                    return meta.settings._iDisplayStart + meta.row + 1;
-                }
-                },
-                {"data": "id", "title": "序列号", "width": "100px"},
-                {"data": "userId", "title": "分配ID"},
-                {
-                    "data": "userJson", "title": "姓, 名", "createdCell": function (nTd, rowData) {
-                    let user = JSON.parse(rowData);
-                    $(nTd).html(user.lastName + ", " + user.firstName);
-                    regVue.$data.regUserList.push(user);
-                }
-                },
-                {"data": "createTime", "title": "申请时间"},
-                {
-                    "data": "status", "title": "申请状态", "createdCell": function (nTd, rowData) {
-                    if (rowData === "0") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">申请中</p>');
-                    else if (rowData === "1") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0;color:green; ">已批准</p>');
-                    else if (rowData === "-1") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0;color:red; ">已拒绝</p>');
-                }
-                },
-                {
-                    "data": null, "title": "操作", "createdCell": function (nTd, rowData, row, col) {
-                    $(nTd).html('<button class="btn btn-edit btn-warning" onclick="regDetail(\'' + col + '\',\'' + rowData.id + '\',\'' + rowData.userId + '\',\'' + rowData.createTime + '\',\'' + rowData.status + '\')">查看详情</button>');
-                }, "width": "100px"
-                }
-            ],
-            "columnDefs": [{
-                orderable: false,
-                targets: [0, 6]
-            }, {
-                "defaultContent": "",
-                "targets": "_all"
-            }]
-        });
+            "emptyTable": "没有数据！",
+            "info": "显示 _START_ 至 _END_ 条 ，总共_TOTAL_ 条数据",
+            "infoEmpty": "没有发现记录！",
+            "infoFiltered": "(从_MAX_条记录中搜索)",
+            "lengthMenu": "显示: _MENU_",
+            "search": "搜索:",
+            "zeroRecords": "没有找到匹配的记录！",
+            "paginate": {
+                "previous": "上一页",
+                "next": "下一页",
+                "last": "尾页",
+                "first": "首页"
+            }
+        },
+        "pagingType": "full_numbers",
+        "lengthMenu": [
+            [5, 10],
+            [5, 10]
+        ],
+        pageLength: 10,
+        processing: true,
+        serverSide: true,
+
+        ajax: {
+            url: basePath + "/request/user",
+            data: function (d) {
+                d.viewStatus = status;
+            }
+        },
+        columns: [
+            {  //行号
+                "data": null, "title": "ROW", "render": function (data, type, row, meta) {
+                return meta.settings._iDisplayStart + meta.row + 1;
+            }
+            },
+            {"data": "id", "title": "序列号", "width": "100px"},
+            {"data": "userId", "title": "临时用户ID"},
+            {
+                "data": "userJson", "title": "姓, 名", "createdCell": function (nTd, rowData) {
+                let user = JSON.parse(rowData);
+                $(nTd).html(user.lastName + ", " + user.firstName);
+                regVue.$data.regUserList.push(user);
+            }
+            },
+            {"data": "createTime", "title": "申请时间"},
+            {
+                "data": "status", "title": "申请状态", "createdCell": function (nTd, rowData) {
+                if (rowData === "0") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">申请中</p>');
+                else if (rowData === "1") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0;color:green; ">已批准</p>');
+                else if (rowData === "-1") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0;color:red; ">已拒绝</p>');
+            }
+            },
+            {
+                "data": null, "title": "操作", "createdCell": function (nTd, rowData, row, col) {
+                $(nTd).html('<button class="btn btn-edit btn-warning" onclick="regDetail(\'' + col + '\',\'' + rowData.id + '\',\'' + rowData.userId + '\',\'' + rowData.createTime + '\',\'' + rowData.status + '\')">查看详情</button>');
+            }, "width": "100px"
+            }
+        ],
+        "columnDefs": [{
+            orderable: false,
+            targets: [0, 6]
+        }, {
+            "defaultContent": "",
+            "targets": "_all"
+        }]
     });
-
 </script>
+
 </body>
 </html>

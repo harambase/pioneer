@@ -100,6 +100,12 @@ public class WebController {
         return "course/course";
     }
 
+    @RequiresPermissions(value = {"faculty", "admin"}, logical = Logical.OR)
+    @RequestMapping("/course/request")
+    public String courseRequestView() {
+        return "teach/tempCourse";
+    }
+
     //教务管理
     @RequiresPermissions(value = {"teach", "admin"}, logical = Logical.OR)
     @RequestMapping("/teach/pin")

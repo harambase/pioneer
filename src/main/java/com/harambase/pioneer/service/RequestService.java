@@ -17,7 +17,7 @@ public interface RequestService {
 
     HaramMessage updateTempCourse(Integer id, TempCourse tempCourse);
 
-    HaramMessage registerNewCourse(JSONObject jsonObject);
+    HaramMessage registerNewCourse(String facultyId, JSONObject jsonObject);
 
     HaramMessage deleteTempCourse(Integer id);
 
