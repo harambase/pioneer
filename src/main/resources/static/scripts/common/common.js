@@ -1,16 +1,16 @@
-function removeStuFromCourse(studentid, crn) {
-    $.ajax({
-        url: basePath + "/teach/student/remove?studentid=" + studentid + "&crn=" + crn,
-        type: "DELETE",
-        async: false,
-        contentType: "application/json; charset=utf-8",
-        success: function (data) {
-            Showbo.Msg.alert(data.msg, function () {
-            });
-            return data;
-        }
-    });
-}
+// function removeStuFromCourse(studentId, crn) {
+//     $.ajax({
+//         url: basePath + "/" + crn + "/student/" + studentId,
+//         type: "DELETE",
+//         async: false,
+//         contentType: "application/json; charset=utf-8",
+//         success: function (data) {
+//             Showbo.Msg.alert(data.msg, function () {
+//             });
+//             return data;
+//         }
+//     });
+// }
 
 function isNotEmpty(s){
     return s !== "" && s !== null && s !== undefined;

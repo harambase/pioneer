@@ -31,7 +31,7 @@ public class TranscriptController {
     @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
     @RequestMapping(value = "/{id}", produces = "application/json", method = RequestMethod.PUT)
     public ResponseEntity update(@PathVariable Integer id, @RequestBody Transcript transcript) {
-        transcript.setOperator(SessionUtil.getUserId());
+        transcript.setOperator(SessionUtil.getUserId());//todo: 替换为op_id
         HaramMessage haramMessage = transcriptService.updateGrade(id, transcript);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }

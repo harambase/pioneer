@@ -102,13 +102,13 @@ public class CourseServer {
     }
 
     public HaramMessage addStu2Cou(String ip, int port, String crn, String studentId, Option option) {
-        String remotePath = "/course" + crn + "/student" + studentId;
+        String remotePath = "/course/" + crn + "/student/" + studentId;
         StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
         return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.PUT, option);
     }
 
     public HaramMessage removeStuFromCou(String ip, int port, String crn, String studentId) {
-        String remotePath = "/course" + crn + "/student" + studentId;
+        String remotePath = "/course/" + crn + "/student/" + studentId;
         StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
         Map params = new HashMap();
         return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.DELETE, params);
