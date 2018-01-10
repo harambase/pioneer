@@ -72,7 +72,7 @@ public class RequestServer {
     }
 
     public HaramMessage registerNewCourse(String ip, int port, String facultyId, JSONObject jsonObject) {
-        String remotePath = "/request/course/" + facultyId;
+        String remotePath = "/request/course/register/" + facultyId;
         StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
         return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.POST, jsonObject);
     }

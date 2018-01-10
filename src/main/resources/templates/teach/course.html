@@ -899,7 +899,7 @@
                 axios.post('/request/course/register', tempCourse).then(function (response) {
                     if (response.data.code === 2001)
                         Showbo.Msg.alert("申请成功，等待教务答复!", function () {
-                            window.location.href = basePath + '/course/request';
+                            window.location.href = basePath + '/course/request?mode=faculty';
                         });
                     else
                         Showbo.Msg.alert(response.data.msg, function () {
