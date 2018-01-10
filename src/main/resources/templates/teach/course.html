@@ -219,7 +219,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-12 col-sm-4">
-                                        <div class="panel panel-info">
+                                        <div class="panel panel-primary">
                                             <div class="panel-heading">
                                                 课程基本信息
                                             </div>
@@ -324,7 +324,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <div class="col-sm-2">
-                                                        <label class="col-sm-12 control-label">*选择上课的时间:</label>
+                                                        <label class="col-sm-12 control-label">*选择上课日:</label>
                                                     </div>
                                                     <div class="col-sm-8">
                                                         <div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
@@ -372,8 +372,11 @@
                                     </div>
                                     <div class="col-md-12 col-sm-4">
                                         <div class="panel panel-success">
-                                            <div class="panel-heading">
-                                                教师与预选课分配
+                                            <div class="panel-heading" v-if="pageMode === 'create'">
+                                                教师与预修课分配
+                                            </div>
+                                            <div class="panel-heading" v-if="pageMode === 'request'">
+                                                预修课分配
                                             </div>
                                             <div class="panel-body">
                                                 <div class="form-group" v-if="pageMode === 'create'">
@@ -389,7 +392,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <div class="col-sm-2">
-                                                        <label class="col-sm-12 control-label">*预选课程（可以多选，也可不选）:</label>
+                                                        <label class="col-sm-12 control-label">预修课程（可多选，可不选）:</label>
                                                     </div>
                                                     <div class="col-sm-8">
                                                         <select class="col-sm-12 js-example-basic-multiple course"
@@ -398,47 +401,43 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="panel-footer">
-                                                注意：教师为必填
-                                            </div>
                                         </div>
                                     </div>
-
                                     <div class="col-md-12 col-sm-4">
                                         <div class="panel panel-default">
                                             <div class="panel-heading">
                                                 更多信息
                                             </div>
-                                            <div class="form-group" v-if="!showDocument">
-                                                <div class="col-sm-2">
-                                                    <label class="col-sm-12 control-label">上传课程大纲:</label>
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <input type="file" id="document">
-                                                </div>
-                                                <div class="col-sm-2" v-if="pageMode === 'view'">
-                                                    <button style="width: 100%" class="btn btn-primary btn-info"
-                                                            onclick="documentUpload()">
-                                                        上传
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="form-group" v-if="showDocument">
-                                                <div class="col-sm-2">
-                                                    <label class="col-sm-12 control-label">课程大纲:</label>
-                                                </div>
-                                                <div class="col-sm-4" style="margin-top: 10px;">
-                                                    下载文件： <a onclick="documentDownload()" style="cursor: pointer;"
-                                                             class="control-label">{{course.courseInfo.name}}</a>
-                                                </div>
-                                                <div class="col-sm-2">
-                                                    <button style="width: 100%" class="btn btn-primary btn-danger"
-                                                            v-on:click="showDocument = false">
-                                                        替换
-                                                    </button>
-                                                </div>
-                                            </div>
                                             <div class="panel-body">
+                                                <div class="form-group" v-if="!showDocument">
+                                                    <div class="col-sm-2">
+                                                        <label class="col-sm-12 control-label">上传课程大纲:</label>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <input type="file" id="document">
+                                                    </div>
+                                                    <div class="col-sm-2" v-if="pageMode === 'view'">
+                                                        <button style="width: 100%" class="btn btn-primary btn-info"
+                                                                onclick="documentUpload()">
+                                                            上传
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" v-if="showDocument">
+                                                    <div class="col-sm-2">
+                                                        <label class="col-sm-12 control-label">课程大纲:</label>
+                                                    </div>
+                                                    <div class="col-sm-4" style="margin-top: 10px;">
+                                                        下载文件： <a onclick="documentDownload()" style="cursor: pointer;"
+                                                                 class="control-label">{{course.courseInfo.name}}</a>
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <button style="width: 100%" class="btn btn-primary btn-danger"
+                                                                v-on:click="showDocument = false">
+                                                            替换
+                                                        </button>
+                                                    </div>
+                                                </div>
                                                 <div class="form-group">
                                                     <div class="col-sm-2">
                                                         <label class="col-sm-12 control-label">备注信息:</label>
@@ -448,6 +447,7 @@
                                                                   v-model="course.comment"></textarea>
                                                     </div>
                                                 </div>
+
                                                 <div class="form-group">
                                                     <div class="col-sm-2">
                                                         <label class="col-sm-12 control-label">*请确认上述信息正确无误:</label>
@@ -460,33 +460,39 @@
                                                             <label for="yes">确认</label>
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-2">
-                                                        <label class="col-sm-12 control-label">*管理员操作密码:</label>
-                                                    </div>
-                                                    <div class="col-sm-3">
-                                                        <input type="password"
-                                                               class="form-control" minlength="6"
-                                                               maxlength="16" checkOpPwd="true"
-                                                               required/>
+                                                    <div v-if="pageMode === 'create'">
+                                                        <div class="col-sm-2">
+                                                            <label class="col-sm-12 control-label">*管理员操作密码:</label>
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <input type="password"
+                                                                   class="form-control" minlength="6"
+                                                                   maxlength="16" checkOpPwd="true"
+                                                                   required/>
+                                                        </div>
                                                     </div>
                                                     <button style="width:150px;" class="btn btn-primary"
-                                                            v-if="pageMode==='create' && id === ''" v-on:click="create"
+                                                            v-if="pageMode === 'create' && id === ''"
+                                                            v-on:click="create"
                                                             onclick="return false;">创建课程
                                                     </button>
                                                     <button style="width:150px;" class="btn btn-success"
-                                                            v-if="pageMode==='create' && id !== ''" v-on:click="approve"
+                                                            v-if="pageMode === 'create' && id !== ''"
+                                                            v-on:click="approve"
                                                             onclick="return false;">批准申请
                                                     </button>
                                                     <button style="width:150px;" class="btn btn-danger"
-                                                            v-if="pageMode==='create' && id !== ''" v-on:click="decline"
+                                                            v-if="pageMode === 'create' && id !== ''"
+                                                            v-on:click="decline"
                                                             onclick="return false;">拒绝申请
                                                     </button>
                                                     <button style="width:150px;" class="btn btn-primary"
-                                                            v-if="pageMode==='request' && id === ''" v-on:click="submit"
+                                                            v-if="pageMode === 'request' && id === ''"
+                                                            v-on:click="submit"
                                                             onclick="return false;">提交申请
                                                     </button>
                                                     <button style="width:150px;" class="btn btn-danger"
-                                                            v-if="pageMode==='request' && id !== ''"
+                                                            v-if="pageMode === 'request' && id !== ''"
                                                             v-on:click="updateRequest"
                                                             onclick="return false;">修改申请
                                                     </button>
@@ -620,11 +626,13 @@
                 this.course.precrn = precrn;
 
                 axios.post('/request/course/register', this.course).then(function (response) {
-                    if (response.data.code === 2001)
+                    if (response.data.code === 2001) {
+                        let id = response.data.data.id;
                         Showbo.Msg.alert("申请成功，等待教务答复!", function () {
-                            documentUpload();
+                            documentUpload(id);
                             window.location.href = basePath + '/course/request?mode=faculty';
                         });
+                    }
                     else
                         Showbo.Msg.alert(response.data.msg, function () {
                         });
@@ -634,14 +642,16 @@
             updateRequest: function () {
                 let day = "", precrn = "";
                 this.preList = $(".course").val();
-                for (let i = 0; i < this.courseDay.length; i++)
-                    if (this.courseDay[i] !== "")
-                        day += this.courseDay[i] + "/";
 
+                if (isNotEmpty(this.courseDay))
+                    for (let i = 0; i < this.courseDay.length; i++)
+                        if (isNotEmpty(this.courseDay[i]))
+                            day += this.courseDay[i] + "/";
 
-                for (let i = 0; i < this.preList.length; i++)
-                    if (this.preList[i] !== "")
-                        precrn += this.preList[i] + "/";
+                if (isNotEmpty(this.preList))
+                    for (let i = 0; i < this.preList.length; i++)
+                        if (isNotEmpty(this.preList[i]))
+                            precrn += this.preList[i] + "/";
 
                 this.course.day = day;
                 this.course.precrn = precrn;
@@ -679,8 +689,7 @@
                     if (response.data.code === 2001)
                         Showbo.Msg.alert("创建成功!", function () {
                             this.course = response.data.data;
-                            initCourse();
-                            documentUpload();
+                            documentUpload(this.course.crn);
                         });
                     else
                         Showbo.Msg.alert(response.data.msg, function () {
@@ -690,9 +699,54 @@
             showCourseTable: function () {
                 this.table = true;
                 this.detail = false;
+            },
+            approve: function () {
+                let day = "", precrn = "";
+                this.preList = $(".course").val();
+                for (let i = 0; i < this.courseDay.length; i++)
+                    if (this.courseDay[i] !== "")
+                        day += this.courseDay[i] + "/";
+
+
+                for (let i = 0; i < this.preList.length; i++)
+                    if (this.preList[i] !== "")
+                        precrn += this.preList[i] + "/";
+
+                this.course.day = day;
+                this.course.precrn = precrn;
+                this.course.facultyId = $(".user").val();
+
+                this.tempCourse.status = "1";
+                this.tempCourse.courseJson = JSON.stringify(this.course);
+
+                documentUpload(this.id);
+                update(this.id, this.tempCourse);
+
+            },
+            decline: function () {
+                if (isNotEmpty(this.course.comment)) {
+                    this.tempCourse.status = "-1";
+                    this.tempCourse.courseJson = JSON.stringify(this.course);
+                    update(this.id, this.tempCourse);
+                } else
+                    Showbo.Msg.alert("必须填写备注！", function () {
+                    });
+
             }
         }
     });
+
+    function update(id, tempCourse) {
+        axios.put("/request/course/" + id, tempCourse).then(function (response) {
+            if (response.data.code === 2001)
+                Showbo.Msg.alert(response.data.msg, function () {
+                    window.location.href = "/teach/request?mode=manage"
+                });
+            else
+                Showbo.Msg.alert(response.data.msg, function () {
+                });
+        });
+    }
 
     function initCourse() {
         courseVue.$data.courseDay = courseVue.$data.course.day.split("/");
@@ -709,6 +763,11 @@
                 preListOption.push(new Option(courseVue.$data.preList[i], courseVue.$data.preList[i], true, true));
         courseSelect.append(preListOption);
         courseSelect.trigger('change');
+
+        let facultyId = courseVue.$data.course.facultyId;
+        userSelect.append(new Option(facultyId, facultyId, true, true));
+        courseSelect.trigger('change');
+
     }
 
     function initRequest(id) {
@@ -716,6 +775,7 @@
             axios.get('/request/course/' + id).then(function (response) {
                 courseVue.$data.tempCourse = response.data.data;
                 courseVue.$data.course = JSON.parse(response.data.data.courseJson);
+                courseVue.$data.course.facultyId = response.data.data.facultyId;
                 initCourse();
             });
         }
@@ -746,17 +806,25 @@
         });
     }
 
-    function documentUpload() {
-        let formData = new FormData();
-        formData.append("file", document.getElementById("document").files[0]);
+    function documentUpload(key) {
+
         let requestUrl = "/request/course/info/";
         let updateUrl = "/course/info/";
+        let formData = new FormData();
+        formData.append("file", document.getElementById("document").files[0]);
+
         let url;
         if (isNotEmpty(formData)) {
-            if (isNotEmpty(courseVue.$data.id)) {
-                url = requestUrl + courseVue.$data.id;
+            if (courseVue.$data.url.indexOf('course') !== -1) {
+                if (isNotEmpty(key))
+                    url = requestUrl + key;
+                else
+                    url = requestUrl + courseVue.$data.id;
             } else {
-                url = updateUrl + courseVue.$data.course.crn;
+                if (isNotEmpty(key))
+                    url = updateUrl + key;
+                else
+                    url = updateUrl + courseVue.$data.course.crn;
             }
 
             axios.put(url, formData).then(function (response) {
@@ -780,7 +848,7 @@
     }
 
     //教师列表
-    $(".user").select2({
+    let userSelect = $(".user").select2({
         ajax: {
             url: basePath + "/user/search",
             type: "GET",
@@ -793,7 +861,6 @@
                 };
             },
             processResults: function (data, params) {
-                //let data = [{ id: 0, text: 'enhancement' }, { id: 1, text: 'bug' }, { id: 2, text: 'duplicate' }, { id: 3, text: 'invalid' }, { id: 4, text: 'wontfix' }];
                 let itemList = [];
                 let item;
                 for (let i = 0; i < data.data.length; i++) {
@@ -803,7 +870,6 @@
                     };
                     itemList.push(item);
                 }
-                // console.log(itemList);
                 return {
                     results: itemList//itemList
                 };
@@ -817,7 +883,7 @@
         escapeMarkup: function (markup) {
             return markup;
         }, // 自定义格式化防止xss注入
-        minimumInputLength: 1,//最少输入多少个字符后开始查询
+        minimumInputLength: 0,//最少输入多少个字符后开始查询
         templateResult: formatRepo,
         templateSelection: formatRepoSelection
     });

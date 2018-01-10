@@ -430,14 +430,13 @@
                 update();
             },
             decline: function () {
-
-                if (this.regUser.comment === "" || this.regUser.comment === undefined) {
-                    Showbo.Msg.alert("必须填写备注！", function () {
-                    });
-                } else {
+                if (isNotEmpty(this.regUser.comment)) {
                     this.regTempUser.status = "-1";
                     this.regTempUser.userJson = JSON.stringify(this.regUser);
                     update();
+                } else {
+                    Showbo.Msg.alert("必须填写备注！", function () {
+                    });
                 }
             },
             showGeneral: function () {
