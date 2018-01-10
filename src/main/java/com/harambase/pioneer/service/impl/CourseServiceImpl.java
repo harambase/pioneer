@@ -78,9 +78,8 @@ public class CourseServiceImpl implements CourseService {
             LinkedHashMap courseMap = (LinkedHashMap) courseServer.getCourseByCrn(IP, PORT, crn).getData();
             Course course = new Course();
             BeanUtils.populate(course, courseMap);
-            String name = file.getOriginalFilename();
 
-            String fileUri;
+            //处理老的文件
             String oldInfo = course.getCourseInfo();
 
             if (StringUtils.isNotEmpty(oldInfo)) {
@@ -88,7 +87,8 @@ public class CourseServiceImpl implements CourseService {
                 oldfile.delete();
             }
 
-            fileUri = FileUtil.uploadFileToPath(file, "/static/upload/document/courseInfo");
+            String fileUri = FileUtil.uploadFileToPath(file, "/static/upload/document/courseInfo");
+            String name = file.getOriginalFilename();
 
             jsonObject.put("name", name);
             jsonObject.put("size", file.getSize());

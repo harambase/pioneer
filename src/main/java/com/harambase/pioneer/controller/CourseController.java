@@ -32,12 +32,8 @@ public class CourseController {
 
     @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
     @RequestMapping(produces = "application/json", method = RequestMethod.POST)
-    public ResponseEntity create(@RequestBody Course course, @RequestParam(required = false) MultipartFile file) {
+    public ResponseEntity create(@RequestBody Course course) {
         HaramMessage haramMessage = courseService.create(course);
-        if (haramMessage.getCode() == 2001 && file != null) {
-            String crn = (String) ((LinkedHashMap) haramMessage.getData()).get("crn");
-            haramMessage = courseService.uploadInfo(crn, file);
-        }
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 

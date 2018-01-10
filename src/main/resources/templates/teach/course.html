@@ -470,14 +470,22 @@
                                                                required/>
                                                     </div>
                                                     <button style="width:150px;" class="btn btn-primary"
-                                                            v-if="pageMode==='create'" v-on:click="create"
+                                                            v-if="pageMode==='create' && id === ''" v-on:click="create"
                                                             onclick="return false;">创建课程
+                                                    </button>
+                                                    <button style="width:150px;" class="btn btn-success"
+                                                            v-if="pageMode==='create' && id !== ''" v-on:click="approve"
+                                                            onclick="return false;">批准申请
+                                                    </button>
+                                                    <button style="width:150px;" class="btn btn-danger"
+                                                            v-if="pageMode==='create' && id !== ''" v-on:click="decline"
+                                                            onclick="return false;">拒绝申请
                                                     </button>
                                                     <button style="width:150px;" class="btn btn-primary"
                                                             v-if="pageMode==='request' && id === ''" v-on:click="submit"
                                                             onclick="return false;">提交申请
                                                     </button>
-                                                    <button style="width:150px;" class="btn btn-primary"
+                                                    <button style="width:150px;" class="btn btn-danger"
                                                             v-if="pageMode==='request' && id !== ''"
                                                             v-on:click="updateRequest"
                                                             onclick="return false;">修改申请
@@ -530,6 +538,16 @@
                 precrn: "",
                 facultyId: "",
                 courseInfo: ""
+            },
+            tempCourse: {
+                id: "",
+                crn: "",
+                status: "",
+                createTime: "",
+                updateTime: "",
+                operatorId: "",
+                facultyId: "",
+                courseJson: "",
             },
             courseDay: [],
             preList: [],
@@ -585,17 +603,18 @@
             });
         },
         methods: {
-
             submit: function () {
                 let day = "", precrn = "";
                 this.preList = $(".course").val();
-                for (let i = 0; i < this.courseDay.length; i++) {
-                    day += this.courseDay[i] + "/";
-                }
 
-                for (let i = 0; i < this.preList.length; i++) {
-                    precrn += this.preList[i] + "/";
-                }
+                if (isNotEmpty(this.courseDay))
+                    for (let i = 0; i < this.courseDay.length; i++)
+                        day += this.courseDay[i] + "/";
+
+
+                if (isNotEmpty(this.preList))
+                    for (let i = 0; i < this.preList.length; i++)
+                        precrn += this.preList[i] + "/";
 
                 this.course.day = day;
                 this.course.precrn = precrn;
@@ -603,6 +622,7 @@
                 axios.post('/request/course/register', this.course).then(function (response) {
                     if (response.data.code === 2001)
                         Showbo.Msg.alert("申请成功，等待教务答复!", function () {
+                            documentUpload();
                             window.location.href = basePath + '/course/request?mode=faculty';
                         });
                     else
@@ -610,6 +630,7 @@
                         });
                 })
             },
+
             updateRequest: function () {
                 let day = "", precrn = "";
                 this.preList = $(".course").val();
@@ -624,10 +645,12 @@
 
                 this.course.day = day;
                 this.course.precrn = precrn;
+                this.tempCourse.courseJson = JSON.stringify(this.course);
 
-                axios.post('/request/course/' + this.id, this.course).then(function (response) {
+                axios.put('/request/course/' + this.id, this.tempCourse).then(function (response) {
                     if (response.data.code === 2001)
                         Showbo.Msg.alert("修改成功，等待教务答复!", function () {
+                            documentUpload();
                             window.location.href = basePath + '/course/request?mode=faculty';
                         });
                     else
@@ -635,6 +658,7 @@
                         });
                 })
             },
+
             create: function () {
                 let day = "", precrn = "";
                 this.preList = $(".course").val();
@@ -650,18 +674,13 @@
                 this.course.day = day;
                 this.course.precrn = precrn;
                 this.course.facultyId = $(".user").val();
-                let formData = new FormData();
-                formData.append("file", document.getElementById("document").files[0]);
 
-                axios.post('/course',
-                    {
-                        params: {
-                            course: this.course,
-                            file: formData
-                        }
-                    }).then(function (response) {
+                axios.post('/course', this.course).then(function (response) {
                     if (response.data.code === 2001)
                         Showbo.Msg.alert("创建成功!", function () {
+                            this.course = response.data.data;
+                            initCourse();
+                            documentUpload();
                         });
                     else
                         Showbo.Msg.alert(response.data.msg, function () {
@@ -675,26 +694,38 @@
         }
     });
 
+    function initCourse() {
+        courseVue.$data.courseDay = courseVue.$data.course.day.split("/");
+        courseVue.$data.preList = courseVue.$data.course.precrn.split("/");
+
+        if (isNotEmpty(courseVue.$data.course.courseInfo)) {
+            courseVue.$data.course.courseInfo = JSON.parse(courseVue.$data.course.courseInfo);
+            courseVue.$data.showDocument = true;
+        }
+
+        let preListOption = [];
+        for (let i = 0; i < courseVue.$data.preList.length; i++)
+            if (courseVue.$data.preList[i] !== "")
+                preListOption.push(new Option(courseVue.$data.preList[i], courseVue.$data.preList[i], true, true));
+        courseSelect.append(preListOption);
+        courseSelect.trigger('change');
+    }
+
     function initRequest(id) {
-        if (id !== '') {
+        if (isNotEmpty(id)) {
             axios.get('/request/course/' + id).then(function (response) {
+                courseVue.$data.tempCourse = response.data.data;
                 courseVue.$data.course = JSON.parse(response.data.data.courseJson);
+                initCourse();
+            });
+        }
+    }
 
-                courseVue.$data.courseDay = courseVue.$data.course.day.split("/");
-                courseVue.$data.preList = courseVue.$data.course.precrn.split("/");
-
-                if (isNotEmpty(courseVue.$data.course.courseInfo)) {
-                    courseVue.$data.course.courseInfo = JSON.parse(courseVue.$data.course.courseInfo);
-                    courseVue.$data.showDocument = true;
-                }
-
-                let preListOption = [];
-                for (let i = 0; i < courseVue.$data.preList.length; i++)
-                    if (courseVue.$data.preList[i] !== "")
-                        preListOption.push(new Option(courseVue.$data.preList[i], courseVue.$data.preList[i], true, true));
-                courseSelect.append(preListOption);
-                courseSelect.trigger('change');
-
+    function showCourseDetail(crn) {
+        if (isNotEmpty(crn)) {
+            axios.get('/course/' + crn).then(function (response) {
+                courseVue.$data.course = response.data.data;
+                initCourse();
             });
         }
     }
@@ -721,7 +752,6 @@
         let requestUrl = "/request/course/info/";
         let updateUrl = "/course/info/";
         let url;
-
         if (isNotEmpty(formData)) {
             if (isNotEmpty(courseVue.$data.id)) {
                 url = requestUrl + courseVue.$data.id;
@@ -731,10 +761,8 @@
 
             axios.put(url, formData).then(function (response) {
                 if (response.data.code === 2001) {
-                    Showbo.Msg.alert(response.data.msg, function () {
-                        courseVue.$data.course.courseInfo = response.data.data;
-                        courseVue.$data.showDocument = true;
-                    });
+                    courseVue.$data.course.courseInfo = response.data.data;
+                    courseVue.$data.showDocument = true;
                 } else {
                     Showbo.Msg.alert(response.data.msg, function () {
                     });
@@ -750,6 +778,87 @@
             window.open(basePath + "/course/info/" + courseVue.$data.course.crn);
         }
     }
+
+    //教师列表
+    $(".user").select2({
+        ajax: {
+            url: basePath + "/user/search",
+            type: "GET",
+            delay: 250,
+            data: function (params) {
+                return {
+                    search: params.term, // search term 请求参数 ， 请求框中输入的参数
+                    status: "1",
+                    type: "f"
+                };
+            },
+            processResults: function (data, params) {
+                //let data = [{ id: 0, text: 'enhancement' }, { id: 1, text: 'bug' }, { id: 2, text: 'duplicate' }, { id: 3, text: 'invalid' }, { id: 4, text: 'wontfix' }];
+                let itemList = [];
+                let item;
+                for (let i = 0; i < data.data.length; i++) {
+                    item = {
+                        id: data.data[i].userId,
+                        text: data.data[i].lastName + ", " + data.data[i].firstName
+                    };
+                    itemList.push(item);
+                }
+                // console.log(itemList);
+                return {
+                    results: itemList//itemList
+                };
+            },
+            cache: true
+        },
+        placeholder: '请分配所属集群',//默认文字提示
+        language: "zh-CN",
+        tags: false,//允许手动添加
+        allowClear: true,//允许清空
+        escapeMarkup: function (markup) {
+            return markup;
+        }, // 自定义格式化防止xss注入
+        minimumInputLength: 1,//最少输入多少个字符后开始查询
+        templateResult: formatRepo,
+        templateSelection: formatRepoSelection
+    });
+
+    //课程列表
+    let courseSelect = $('.course').select2({
+        ajax: {
+            url: basePath + "/course/search",
+            type: "GET",
+            delay: 250,
+            data: function (params) {
+                return {
+                    search: params.term
+                };
+            },
+            processResults: function (data, params) {
+                let itemList = [];
+                let item;
+                for (let i = 0; i < data.data.length; i++) {
+                    item = {
+                        id: data.data[i].crn,
+                        text: data.data[i].name
+                    };
+                    itemList.push(item);
+                }
+                return {
+                    results: itemList
+                };
+            },
+            cache: true
+        },
+        language: "zh-CN",
+        tags: false,//允许手动添加
+        allowClear: true,//允许清空
+        escapeMarkup: function (markup) {
+            return markup;
+        }, // 自定义格式化防止xss注入
+        minimumInputLength: 0,//最少输入多少个字符后开始查询
+        templateResult: formatRepo,
+        templateSelection: formatRepoSelection
+    });
 
     // let studentTable;
     //
@@ -954,86 +1063,6 @@
     //         "targets": "_all"
     //     }]
     // });
-
-    //教师列表
-    $(".user").select2({
-        ajax: {
-            url: basePath + "/user/search",
-            type: "GET",
-            delay: 250,
-            data: function (params) {
-                return {
-                    search: params.term, // search term 请求参数 ， 请求框中输入的参数
-                    status: "1",
-                    type: "f"
-                };
-            },
-            processResults: function (data, params) {
-                //let data = [{ id: 0, text: 'enhancement' }, { id: 1, text: 'bug' }, { id: 2, text: 'duplicate' }, { id: 3, text: 'invalid' }, { id: 4, text: 'wontfix' }];
-                let itemList = [];
-                let item;
-                for (let i = 0; i < data.data.length; i++) {
-                    item = {
-                        id: data.data[i].userId,
-                        text: data.data[i].lastName + ", " + data.data[i].firstName
-                    };
-                    itemList.push(item);
-                }
-                // console.log(itemList);
-                return {
-                    results: itemList//itemList
-                };
-            },
-            cache: true
-        },
-        placeholder: '请分配所属集群',//默认文字提示
-        language: "zh-CN",
-        tags: false,//允许手动添加
-        allowClear: true,//允许清空
-        escapeMarkup: function (markup) {
-            return markup;
-        }, // 自定义格式化防止xss注入
-        minimumInputLength: 1,//最少输入多少个字符后开始查询
-        templateResult: formatRepo,
-        templateSelection: formatRepoSelection
-    });
-    //课程列表
-    let courseSelect = $('.course').select2({
-        ajax: {
-            url: basePath + "/course/search",
-            type: "GET",
-            delay: 250,
-            data: function (params) {
-                return {
-                    search: params.term
-                };
-            },
-            processResults: function (data, params) {
-                let itemList = [];
-                let item;
-                for (let i = 0; i < data.data.length; i++) {
-                    item = {
-                        id: data.data[i].crn,
-                        text: data.data[i].name
-                    };
-                    itemList.push(item);
-                }
-                return {
-                    results: itemList
-                };
-            },
-            cache: true
-        },
-        language: "zh-CN",
-        tags: false,//允许手动添加
-        allowClear: true,//允许清空
-        escapeMarkup: function (markup) {
-            return markup;
-        }, // 自定义格式化防止xss注入
-        minimumInputLength: 0,//最少输入多少个字符后开始查询
-        templateResult: formatRepo,
-        templateSelection: formatRepoSelection
-    });
 </script>
 </body>
 </html>

@@ -95,13 +95,9 @@ public class RequestController {
 
     @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
     @RequestMapping(value = "/course/register", method = RequestMethod.POST)
-    public ResponseEntity registerNewCourse(@RequestBody JSONObject jsonObject, @RequestParam(required = false) MultipartFile file) {
+    public ResponseEntity registerNewCourse(@RequestBody JSONObject jsonObject) {
         String facultyId = SessionUtil.getUserId();
         HaramMessage haramMessage = requestService.registerNewCourse(facultyId, jsonObject);
-        if (haramMessage.getCode() == 2001 && file != null) {
-            Integer id = (Integer) ((LinkedHashMap) haramMessage.getData()).get("id");
-            haramMessage = requestService.uploadCourseInfo(id, file);
-        }
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 

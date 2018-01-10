@@ -96,14 +96,12 @@ public class RequestServiceImpl implements RequestService {
             LinkedHashMap tempCourseMap = (LinkedHashMap) requestServer.getTempCourse(IP, PORT, id).getData();
             TempCourse tempCourse = new TempCourse();
             BeanUtils.populate(tempCourse, tempCourseMap);
-            String name = file.getOriginalFilename();
 
-            String fileUri;
-
+            //处理老的文件
             String oldInfo = "";
             JSONObject courseJson = JSONObject.parseObject(tempCourse.getCourseJson());
 
-            if(courseJson.get("courseInfo") != null)
+            if(StringUtils.isNotEmpty(courseJson.getString("courseInfo")))
                 oldInfo = (JSON.parseObject(courseJson.getString("courseInfo"))).getString("path");
 
             if (StringUtils.isNotEmpty(oldInfo)) {
@@ -111,7 +109,8 @@ public class RequestServiceImpl implements RequestService {
                 oldFile.delete();
             }
 
-            fileUri = FileUtil.uploadFileToPath(file, "/static/upload/document/courseInfo");
+            String fileUri = FileUtil.uploadFileToPath(file, "/static/upload/document/courseInfo");
+            String name = file.getOriginalFilename();
 
             jsonObject.put("name", name);
             jsonObject.put("size", file.getSize());
