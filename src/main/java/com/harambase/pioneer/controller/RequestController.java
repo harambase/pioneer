@@ -119,9 +119,9 @@ public class RequestController {
     @RequestMapping(value = "/course/info/{id}", method = RequestMethod.GET)
     public void downloadCourseInfo(@PathVariable Integer id, HttpServletResponse response) {
         HaramMessage message = requestService.getTempCourse(id);
-        String courseInfo = (String)((LinkedHashMap) message.getData()).get("courseInfo");
-        if(StringUtils.isNotEmpty(courseInfo)) {
-            JSONObject info = JSONObject.parseObject(courseInfo);
+        JSONObject courseJson = JSONObject.parseObject((String)((LinkedHashMap) message.getData()).get("courseJson"));
+        if(StringUtils.isNotEmpty(courseJson.getString("courseInfo"))) {
+            JSONObject info = JSONObject.parseObject(courseJson.getString("courseInfo"));
             FileUtil.downloadFile(info.getString("name"), info.getString("path"), response);
         }
     }

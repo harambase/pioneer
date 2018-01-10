@@ -117,8 +117,9 @@ public class RequestServiceImpl implements RequestService {
             jsonObject.put("type", name.substring(name.lastIndexOf(".") + 1));
             jsonObject.put("path", fileUri);
 
-            courseJson.put("courseJson", jsonObject.toJSONString());
+            courseJson.put("courseInfo", jsonObject.toJSONString());
 
+            tempCourse.setCourseJson(courseJson.toJSONString());
             message = requestServer.updateTempCourse(IP, PORT, id, tempCourse);
 
         } catch (Exception e) {
