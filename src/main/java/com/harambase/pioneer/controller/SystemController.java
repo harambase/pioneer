@@ -6,6 +6,7 @@ import com.harambase.common.constant.FlagDict;
 import com.harambase.pioneer.pojo.Person;
 import com.harambase.pioneer.service.MonitorService;
 import com.harambase.pioneer.service.PersonService;
+import com.harambase.support.util.SessionUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -18,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.LinkedHashMap;
 
 @RestController
@@ -62,10 +64,16 @@ public class SystemController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/logout", method = RequestMethod.POST)
-    public String logout() {
-        SecurityUtils.getSubject().logout();
-        return "/login";
+    @RequestMapping(value = "/logout")
+    public void logout(HttpServletResponse response) throws Exception{
+        response.sendRedirect("/login");
+    }
+
+    @RequestMapping(value = "/swagger")
+    @RequiresPermissions("admin")
+    public void swagger(HttpServletResponse response) throws Exception{
+        response.addHeader("userId", SessionUtil.getUserId());
+        response.sendRedirect("http://localhost:8080/");
     }
 
     @RequestMapping(value = "/info", method = RequestMethod.GET)
