@@ -72,7 +72,7 @@ public class CourseController {
 
         if (StringUtils.isNotEmpty(mode) && mode.equals("faculty"))
             facultyId = SessionUtil.getUserId();
-        if (StringUtils.isNotEmpty(mode) && mode.equals("choose"))
+        if (StringUtils.isNotEmpty(mode) && mode.equals("choose") && SessionUtil.getPin() != null)
             info = (String) SessionUtil.getPin().get("info");
 
         HaramMessage message = courseService.courseList(start, length, search, order, orderCol, facultyId, info);

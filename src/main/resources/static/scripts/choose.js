@@ -20,6 +20,18 @@ let chooseVue = new Vue({
             initStudentInfo();
         },
 
+        validate: function () {
+            axios.get('/pin/' + this.pin).then(function (response) {
+                if (response.data.code === 2001) {
+                    initStudentInfo();
+                    courseTable.draw();
+                    this.pinValidate = true;
+                } else
+                    Showbo.Msg.alert("验证失败!", function () {
+                    });
+            });
+        },
+
         submit: function () {
 
             let choiceList = [];
@@ -71,17 +83,6 @@ function initPin() {
     })
 }
 
-function validate() {
-    axios.get('/pin/' + chooseVue.$data.pin).then(function (response) {
-        if (response.data.code === 2001) {
-            initStudentInfo();
-            courseTable.draw();
-            chooseVue.$data.pinValidate = true;
-        } else
-            Showbo.Msg.alert("验证失败!", function () {
-            });
-    })
-}
 
 function initStudentInfo() {
     axios.get('/user/current').then(function (response) {
@@ -198,24 +199,24 @@ let courseTable = $("#newCourseTable").DataTable({
         {"data": "name", "title": "课名"},
         {
             "data": null, "title": "等级-班级", "createdCell": function (nTd, rowData) {
-                $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">' + rowData.level + "-" + rowData.section + '</p>');
-            }
+            $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">' + rowData.level + "-" + rowData.section + '</p>');
+        }
         },
         {"data": "credits", "title": "学分"},
         {
             "data": null, "title": "容量/剩余", "createdCell": function (nTd, rowData) {
-                $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">' + rowData.capacity + "/" + rowData.remain + '</p>');
-            }
+            $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">' + rowData.capacity + "/" + rowData.remain + '</p>');
+        }
         },
         {
             "data": "status", "title": "状态", "createdCell": function (nTd, rowData) {
-                if (rowData === 1)
-                    $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">未开始</p>');
-                else if (rowData === 0)
-                    $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:green; ">进行中</p>');
-                else if (rowData === -1)
-                    $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:red; ">已结课</p>');
-            }
+            if (rowData === 1)
+                $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">未开始</p>');
+            else if (rowData === 0)
+                $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:green; ">进行中</p>');
+            else if (rowData === -1)
+                $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:red; ">已结课</p>');
+        }
         },
         {"data": "date", "title": "起止时间"},
         {"data": "time", "title": "上课时间"},
@@ -223,16 +224,16 @@ let courseTable = $("#newCourseTable").DataTable({
         {"data": "faculty", "title": "授课老师"},
         {
             "data": null, "title": "操作", "createdCell": function (nTd, rowData) {
-                $(nTd).html(
-                    '<i href="#" style="color: black;" class="fa fa-search" title="详情">' +
-                    '   <span style="cursor: pointer" class="info" onclick="showInfo(\'' + rowData.crn + '\')">详情</span>' +
-                    '</i>' +
-                    '<br/>' +
-                    '<i href="#" style="margin-top:5px; color: green;" class="fa fa-plus" title="添入工作表">' +
-                    '   <span style="cursor: pointer" class="info" onclick="addToWorkSheet(\'' + rowData.crn + '\',\'' + rowData.credits + '\')">添入工作表</span>' +
-                    '</i>'
-                );
-            }, "width": "80px"
+            $(nTd).html(
+                '<i href="#" style="color: black;" class="fa fa-search" title="详情">' +
+                '   <span style="cursor: pointer" class="info" onclick="showInfo(\'' + rowData.crn + '\')">详情</span>' +
+                '</i>' +
+                '<br/>' +
+                '<i href="#" style="margin-top:5px; color: green;" class="fa fa-plus" title="添入工作表">' +
+                '   <span style="cursor: pointer" class="info" onclick="addToWorkSheet(\'' + rowData.crn + '\',\'' + rowData.credits + '\')">添入工作表</span>' +
+                '</i>'
+            );
+        }, "width": "80px"
         }
     ],
     "columnDefs": [{

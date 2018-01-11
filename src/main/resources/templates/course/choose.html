@@ -50,7 +50,7 @@
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <button style="width:150px;" class="btn btn-success"
-                                                            onclick="validate()">
+                                                            v-on:click="validate">
                                                         验证
                                                     </button>
                                                 </div>
@@ -62,7 +62,7 @@
                                     </div>
                                 </form>
                             </div>
-                            <div v-show="pinValidate">
+                            <div v-if="pinValidate">
                                 <form class="form-horizontal">
                                     <div class="col-md-12 col-sm-4">
                                         <div class="panel panel-success">
@@ -93,13 +93,15 @@
                                                             <div class="form-group">
                                                                 <div class="col-sm-6">
                                                                     <button style="width:150px;" class="btn btn-success"
-                                                                            id="submit" v-on:click="submit" onclick="return false;">
+                                                                            id="submit" v-on:click="submit"
+                                                                            onclick="return false;">
                                                                         提交
                                                                     </button>
                                                                 </div>
                                                                 <div class="col-sm-6">
                                                                     <button style="width:150px;" class="btn btn-danger"
-                                                                            id="reset" v-on:click="reset" onclick="return false;">
+                                                                            id="reset" v-on:click="reset"
+                                                                            onclick="return false;">
                                                                         重置当前
                                                                     </button>
                                                                 </div>
