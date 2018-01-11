@@ -5,7 +5,6 @@ import com.harambase.pioneer.pojo.Transcript;
 import com.harambase.pioneer.service.TranscriptService;
 import com.harambase.support.util.FileUtil;
 import com.harambase.support.util.SessionUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,27 +54,18 @@ public class TranscriptController {
     }
 
     @RequiresPermissions(value = {"admin", "teach", "student", "faculty"}, logical = Logical.OR)
-    @RequestMapping(value = "/{crn}/student", produces = "application/json", method = RequestMethod.GET)
+    @RequestMapping(value = "/course/student", produces = "application/json", method = RequestMethod.GET)
     public ResponseEntity listByCRN(@RequestParam(value = "start") Integer start,
                                     @RequestParam(value = "length") Integer length,
                                     @RequestParam(value = "draw") Integer draw,
                                     @RequestParam(value = "search[value]") String search,
                                     @RequestParam(value = "order[0][dir]") String order,
                                     @RequestParam(value = "order[0][column]") String orderCol,
-                                    @PathVariable(value = "crn") String crn) {
-        HaramMessage message;
-        if(StringUtils.isNotEmpty(crn)) {
-            message = transcriptService.transcriptList(start, length, search, order, orderCol, "", crn);
-            message.put("draw", draw);
-            message.put("recordsTotal", ((LinkedHashMap) message.get("page")).get("totalRows"));
-            message.put("recordsFiltered", ((LinkedHashMap) message.get("page")).get("totalRows"));
-
-        }else{
-            message = new HaramMessage();
-            message.put("draw", draw);
-            message.put("recordsTotal", 0);
-            message.put("recordsFiltered", 0);
-        }
+                                    @RequestParam(value = "crn", required = false) String crn) {
+        HaramMessage message = transcriptService.transcriptList(start, length, search, order, orderCol, "", crn);
+        message.put("draw", draw);
+        message.put("recordsTotal", ((LinkedHashMap) message.get("page")).get("totalRows"));
+        message.put("recordsFiltered", ((LinkedHashMap) message.get("page")).get("totalRows"));
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 

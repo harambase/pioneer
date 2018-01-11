@@ -708,7 +708,10 @@ let studentInCourse = $("#studentInCourse").DataTable({
     serverSide: true,
 
     ajax: {
-        url: basePath + "/transcript/" + courseVue.$data.transcript.crn + "/student",
+        url: basePath + "/transcript/course/student",
+        data: function(d){
+            d.crn = courseVue.$data.transcript.crn;
+        }
     },
     columns: [
         {

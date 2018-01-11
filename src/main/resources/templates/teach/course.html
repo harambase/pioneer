@@ -45,7 +45,7 @@
                                 <span style="cursor: pointer" data-toggle="collapse" data-parent="#accordion"
                                       href="#collapseTwo" class="collapsed">课程中学生详情</span>
                             </div>
-                            <div id="collapseTwo" class="panel-collapse">
+                            <div id="collapseTwo" class="panel-collapse in">
                                 <div class="panel-body">
                                     <div class="col-md-7 col-sm-4">
                                         <div class="panel panel-default">
@@ -151,7 +151,7 @@
                             <span style="cursor: pointer" data-toggle="collapse" data-parent="#accordion"
                                   href="#collapseThree" class="collapsed">添加学生</span>
                             </div>
-                            <div id="collapseThree" class="panel-collapse collapse">
+                            <div id="collapseThree" class="panel-collapse in">
                                 <div class="panel-body">
                                     <div class="col-md-7 col-sm-4">
                                         <div class="panel panel-default">
@@ -212,7 +212,7 @@
                                                                        value="2">
                                                                 <label for="capacity">添加此学生，即使已经达到课程人数上限</label>
                                                             </div>
-                                                            {{option}}
+                                                            {{addStudent.option}}
                                                         </div>
                                                         <div class="col-sm-3" style="margin-top:10px;">
                                                             <label for="tPassword"
@@ -642,13 +642,12 @@
         </div>
         <div class="panel-footer" id=footerPlaceholder">
             <div th:include="/common :: footer" id="copyright"></div>
-
         </div>
     </div>
     <!-- /. PAGE WRAPPER  -->
 </div>
 <!-- /. WRAPPER  -->
 <div th:include="/common :: load_js(true, false, true)"></div>
-
+<script src="/static/scripts/course.js"></script>
 </body>
 </html>
