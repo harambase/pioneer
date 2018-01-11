@@ -1,25 +1,25 @@
 ﻿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:include="/common/header :: commonHeader('辅导关系管理',true, true)"></head>
+<head th:include="/common :: header('辅导管理',true, true)"></head>
 <body>
 <div id="wrapper">
     <!--/. NAV TOP  -->
-    <div th:include="/common/navtop :: navtop" class="sidebar-collapse"></div>
+    <div th:include="/common :: navtop" class="sidebar-collapse"></div>
 
     <!-- /. NAV SIDE  -->
-    <div th:include="/common/navbar :: nav" class="sidebar-collapse"></div>
+    <div th:include="/common :: navbar" class="sidebar-collapse"></div>
 
     <div id="page-wrapper">
         <div class="header">
             <h1 class="page-header">
-                先锋行政管理
-                <small>辅导关系管理</small>
+                先锋教务管理
+                <small>辅导管理</small>
             </h1>
             <ol class="breadcrumb">
-                <li><a href="/welcomeAdmin">主页</a></li>
-                <li><a href="#">行政管理</a></li>
-                <li class="active">辅导关系管理</li>
+                <li><a href="/index">主页</a></li>
+                <li><a href="#">教务管理</a></li>
+                <li class="active">辅导管理</li>
             </ol>
 
         </div>
@@ -91,18 +91,18 @@
                     </div>
                 </div>
             </div>
-            <div id = footerPlaceholder">
-                <div th:include="/common/footer :: copy" id="copyright"></div>
-            </div>
+        </div>
+        <div class="panel-footer" id=footerPlaceholder">
+            <div th:include="/common :: footer" id="copyright"></div>
         </div>
         <!-- /. PAGE INNER  -->
     </div>
     <!-- /. PAGE WRAPPER  -->
 </div>
 <!-- /. WRAPPER  -->
-<div th:include="/common/js :: load_js(true , false, true)"></div>
+<div th:include="/common :: load_js(true , false, true)"></div>
 
-<script src="/static/scripts/administration/manageAdvise.js"></script>
+<script src="/static/scripts/advise.js"></script>
 
 </body>
 </html>
