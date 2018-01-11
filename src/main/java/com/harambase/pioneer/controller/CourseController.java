@@ -122,9 +122,9 @@ public class CourseController {
 
     @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
     @RequestMapping(value = "/{crn}/student/{userId}", method = RequestMethod.PUT)
-    public ResponseEntity assignStu2Course(@PathVariable(value = "crn") String crn,
-                                           @PathVariable(value = "userId") String studentId,
-                                           @RequestBody Option option) {
+    public ResponseEntity addStudent2Course(@PathVariable(value = "crn") String crn,
+                                            @PathVariable(value = "userId") String studentId,
+                                            @RequestBody Option option) {
         HaramMessage haramMessage = courseService.addStu2Cou(crn, studentId, option);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
@@ -162,8 +162,8 @@ public class CourseController {
     @RequestMapping(value = "/info/{crn}", method = RequestMethod.GET)
     public void downloadCourseInfo(@PathVariable String crn, HttpServletResponse response) {
         HaramMessage message = courseService.getCourseByCrn(crn);
-        String courseInfo = (String)((LinkedHashMap) message.getData()).get("courseInfo");
-        if(StringUtils.isNotEmpty(courseInfo)) {
+        String courseInfo = (String) ((LinkedHashMap) message.getData()).get("courseInfo");
+        if (StringUtils.isNotEmpty(courseInfo)) {
             JSONObject info = JSONObject.parseObject(courseInfo);
             FileUtil.downloadFile(info.getString("name"), info.getString("path"), response);
         }

@@ -63,12 +63,9 @@ public class SystemController {
     }
 
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
-    public ResponseEntity logout() {
-        HaramMessage message = new HaramMessage();
+    public String logout() {
         SecurityUtils.getSubject().logout();
-        message.setCode(FlagDict.SUCCESS.getV());
-        message.setMsg(FlagDict.SUCCESS.getM());
-        return new ResponseEntity<>(message, HttpStatus.OK);
+        return "/login";
     }
 
     @RequestMapping(value = "/info", method = RequestMethod.GET)

@@ -17,7 +17,7 @@ public class Transcript implements Serializable {
 
     private String assignTime;
 
-    private String operator;
+    private String operatorId;
 
     private String cname;
 
@@ -45,12 +45,12 @@ public class Transcript implements Serializable {
         this.id = id;
     }
 
-    public String getOperator() {
-        return operator;
+    public String getOperatorId() {
+        return operatorId;
     }
 
-    public void setOperator(String operator) {
-        this.operator = operator;
+    public void setOperatorId(String operatorId) {
+        this.operatorId = operatorId;
     }
 
     public String getStudentId() {

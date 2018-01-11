@@ -50,7 +50,7 @@
                                     <div class="col-md-7 col-sm-4">
                                         <div class="panel panel-default">
                                             <div class="panel-body">
-                                                <table style="width: 100%" id="studentTable"
+                                                <table style="width: 100%" id="studentInCourse"
                                                        class="table table-striped table-bordered table-hover"></table>
                                             </div>
                                         </div>
@@ -135,7 +135,7 @@
                                                                 v-on:click="transcriptUpdate">更新
                                                         </button>
                                                         <button class="btn btn-danger col-sm-2" onclick="return false"
-                                                                v-on:click="resetTranscript">
+                                                                v-on:click="transcriptReset">
                                                             取消
                                                         </button>
                                                     </div>
@@ -153,38 +153,89 @@
                             </div>
                             <div id="collapseThree" class="panel-collapse collapse">
                                 <div class="panel-body">
-                                    <div class="col-md-8 col-sm-4">
-                                        <table style="width:100%" id="userTable"
-                                               class="table table-striped table-bordered table-hover"></table>
-                                    </div>
-                                    <div class="col-md-4 col-sm-4">
-                                        <div id="assignSDiv" class="group-form-input">
-                                            <h4 class="status" style="margin-top: 0px;">添加选项: </h4>
-                                            <table style="font-size: 11px">
-                                                <tr>
-                                                    <td style="color: red;font-weight: 900;margin-bottom: -5px">
-                                                        <input type="checkbox" name="pre"
-                                                               style="height: 14px; font-size:15px; margin: 10px 4px 10px 0; width: 12px;">
-                                                        添加此学生，即使未完成预选课程
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="color: red;font-weight: 900;">
-                                                        <input type="checkbox" name="time"
-                                                               style="height: 14px; font-size:15px;margin: 10px 4px 10px 0; width: 12px;">
-                                                        添加此学生，即使有时间冲突
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="color: red;font-weight: 900;">
-                                                        <input type="checkbox" name="capa"
-                                                               style="height: 14px; font-size:15px;margin: 10px 4px 10px 0; width: 12px;">
-                                                        添加此学生，即使已经达到课程人数上限
-                                                    </td>
-                                                </tr>
-                                            </table>
+                                    <div class="col-md-7 col-sm-4">
+                                        <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <table style="width:100%" id="studentTable"
+                                                       class="table table-striped table-bordered table-hover"></table>
+                                            </div>
                                         </div>
                                     </div>
+                                    <form class="form-horizontal">
+                                        <div class="col-md-5 col-sm-4">
+                                            <div class="panel panel-primary">
+                                                <div class="panel-heading">
+                                                    添加学生选项
+                                                </div>
+                                                <div class="panel-body">
+                                                    <div class="form-group">
+                                                        <div class="col-sm-3">
+                                                            <label for="sid"
+                                                                   class="col-sm-12 control-label">学生ID:</label>
+                                                        </div>
+                                                        <div class="col-sm-9">
+                                                            <input class="form-control"
+                                                                   v-model="addStudent.studentId"
+                                                                   disabled>
+                                                        </div>
+                                                        <div class="col-sm-3" style="margin-top:10px;">
+                                                            <label class="col-sm-12 control-label">*课程CRN:</label>
+                                                        </div>
+                                                        <div class="col-sm-9" style="margin-top:10px;">
+                                                            <input class="form-control" required disabled
+                                                                   v-model="addStudent.crn"/>
+                                                        </div>
+                                                        <div class="col-sm-3" style="margin-top:10px;">
+                                                            <label class="col-sm-12 control-label">*课程学分:</label>
+                                                        </div>
+                                                        <div class="col-sm-9" style="margin-top:10px;">
+                                                            <input class="form-control"
+                                                                   required v-model="addStudent.credits"
+                                                                   disabled/>
+                                                        </div>
+                                                        <div class="col-sm-9" style="margin-top:10px;">
+                                                            <div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
+                                                                <input type="checkbox" id="prereq" name="prereq"
+                                                                       value="1"
+                                                                       v-model="addStudent.option.prereq">
+                                                                <label for="prereq">添加此学生，即使未完成预选课程</label>
+                                                            </div>
+                                                            <div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
+                                                                <input type="checkbox" id="time" name="time"
+                                                                       v-model="addStudent.option.time"
+                                                                       value="2">
+                                                                <label for="time">添加此学生，即使有时间冲突</label>
+                                                            </div>
+                                                            <div class="checkbox3 checkbox-success checkbox-inline checkbox-check checkbox-round checkbox-light">
+                                                                <input type="checkbox" id="capacity" name="type"
+                                                                       v-model="addStudent.option.capacity"
+                                                                       value="2">
+                                                                <label for="capacity">添加此学生，即使已经达到课程人数上限</label>
+                                                            </div>
+                                                            {{option}}
+                                                        </div>
+                                                        <div class="col-sm-3" style="margin-top:10px;">
+                                                            <label for="tPassword"
+                                                                   class="col-sm-12 control-label">*管理员操作密码:</label>
+                                                        </div>
+                                                        <div class="col-sm-6" style="margin-top:10px;">
+                                                            <input type="password"
+                                                                   class="form-control" minlength="6"
+                                                                   maxlength="16" checkOpPwd="true" required/>
+                                                        </div>
+                                                        <button class="btn btn-success col-sm-2"
+                                                                style="margin-top:10px;" onclick="return false"
+                                                                v-on:click="addStudent2Course">添加
+                                                        </button>
+                                                        <button class="btn btn-danger col-sm-2" onclick="return false"
+                                                                v-on:click="addStudentReset">
+                                                            取消
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -544,34 +595,34 @@
                                                     </div>
                                                     <button style="width:150px;" class="btn btn-primary"
                                                             v-if="pageMode === 'create' && id === ''"
-                                                            v-on:click="create"
+                                                            v-on:click="courseCreate"
                                                             onclick="return false;">创建课程
                                                     </button>
                                                     <button style="width:150px;" class="btn btn-success"
                                                             v-if="pageMode === 'manage' && id === ''"
-                                                            v-on:click="update"
+                                                            v-on:click="courseUpdate"
                                                             onclick="return false;">修改课程
                                                     </button>
                                                     <button style="width:150px;" class="btn btn-success"
                                                             v-if="pageMode === 'create' && id !== ''"
-                                                            v-on:click="approve"
+                                                            v-on:click="tempCourseApprove"
                                                             :disabled="tempCourse.status==='0'?false:true"
                                                             onclick="return false;">批准申请
                                                     </button>
                                                     <button style="width:150px;" class="btn btn-danger"
                                                             v-if="pageMode === 'create' && id !== ''"
-                                                            v-on:click="decline"
+                                                            v-on:click="tempCourseDecline"
                                                             :disabled="tempCourse.status==='0'?false:true"
                                                             onclick="return false;">拒绝申请
                                                     </button>
                                                     <button style="width:150px;" class="btn btn-primary"
                                                             v-if="pageMode === 'request' && id === ''"
-                                                            v-on:click="submit"
+                                                            v-on:click="tempCourseCreate"
                                                             onclick="return false;">提交申请
                                                     </button>
                                                     <button style="width:150px;" class="btn btn-danger"
                                                             v-if="pageMode === 'request' && id !== ''"
-                                                            v-on:click="updateRequest"
+                                                            v-on:click="tempCourseUpdate"
                                                             onclick="return false;">修改申请
                                                     </button>
                                                 </div>
@@ -640,6 +691,16 @@
                 crn: "",
                 complete: "",
                 credits: ""
+            },
+            addStudent: {
+                crn:"",
+                studentId: "",
+                credits:"",
+                option: {
+                    prereq: false,
+                    time: false,
+                    capacity: false,
+                },
             },
             courseDay: [],
             preList: [],
@@ -718,7 +779,12 @@
                 if (isNotEmpty(this.course.courseInfo))
                     this.course.courseInfo = JSON.stringify(this.course.courseInfo);
             },
-            submit: function () {
+            showTable: function () {
+                this.table = true;
+                this.detail = false;
+                this.student = false;
+            },
+            tempCourseCreate: function () {
                 this.prepare();
 
                 axios.post('/request/course/register', this.course).then(function (response) {
@@ -735,7 +801,7 @@
                 })
             },
 
-            updateRequest: function () {
+            tempCourseUpdate: function () {
                 this.prepare();
 
                 this.tempCourse.courseJson = JSON.stringify(this.course);
@@ -751,8 +817,28 @@
                         });
                 })
             },
+            tempCourseApprove: function () {
+                this.prepare();
 
-            create: function () {
+                this.tempCourse.status = "1";
+                this.tempCourse.courseJson = JSON.stringify(this.course);
+
+                if (!this.showDocument)
+                    documentUpload(this.id);
+                update(this.id, this.tempCourse);
+
+            },
+            tempCourseDecline: function () {
+                if (isNotEmpty(this.course.comment)) {
+                    this.tempCourse.status = "-1";
+                    this.tempCourse.courseJson = JSON.stringify(this.course);
+                    update(this.id, this.tempCourse);
+                } else
+                    Showbo.Msg.alert("必须填写备注！", function () {
+                    });
+
+            },
+            courseCreate: function () {
                 this.prepare();
 
                 axios.post('/course', this.course).then(function (response) {
@@ -767,7 +853,7 @@
                         });
                 })
             },
-            update: function () {
+            courseUpdate: function () {
                 this.prepare();
                 axios.put('/course/' + this.course.crn, this.course).then(function (response) {
                     if (response.data.code === 2001)
@@ -780,47 +866,39 @@
                         });
                 })
             },
-            showTable: function () {
-                this.table = true;
-                this.detail = false;
-                this.student = false;
-            },
-            approve: function () {
-                this.prepare();
-
-                this.tempCourse.status = "1";
-                this.tempCourse.courseJson = JSON.stringify(this.course);
-
-                if (!this.showDocument)
-                    documentUpload(this.id);
-                update(this.id, this.tempCourse);
-
-            },
-            decline: function () {
-                if (isNotEmpty(this.course.comment)) {
-                    this.tempCourse.status = "-1";
-                    this.tempCourse.courseJson = JSON.stringify(this.course);
-                    update(this.id, this.tempCourse);
-                } else
-                    Showbo.Msg.alert("必须填写备注！", function () {
-                    });
-
-            },
-            resetTranscript: function () {
+            transcriptReset: function () {
                 this.transcript.complete = "";
                 this.transcript.studentId = "";
                 this.transcript.grade = "";
             },
             transcriptUpdate: function () {
-               axios.put('/transcript/' + this.transcript.id, this.transcript).then(function(response){
-                   if (response.data.code === 2001)
-                       Showbo.Msg.alert(response.data.msg, function () {
-                           studentTable.draw();
-                       });
-                   else
-                       Showbo.Msg.alert(response.data.msg, function () {
-                       });
-               })
+                axios.put('/transcript/' + this.transcript.id, this.transcript).then(function (response) {
+                    if (response.data.code === 2001)
+                        Showbo.Msg.alert(response.data.msg, function () {
+                            studentInCourse.draw();
+                        });
+                    else
+                        Showbo.Msg.alert(response.data.msg, function () {
+                        });
+                })
+            },
+            addStudent2Course: function () {
+                axios.put('/course/' + this.addStudent.crn + '/student/' + this.addStudent.studentId, this.addStudent.option).then(function (response) {
+                    if (response.data.code === 2001) {
+                        Showbo.Msg.alert("添加成功!", function () {
+                            studentInCourse.draw();
+                        });
+                    } else {
+                        Showbo.Msg.alert(response.data.msg, function () {
+                        });
+                    }
+                });
+            },
+            addStudentReset: function () {
+                this.addStudent.studentId = "";
+                this.addStudent.option.capacity = false;
+                this.addStudent.option.prereq = false;
+                this.addStudent.option.time = false;
             }
         }
     });
@@ -879,6 +957,15 @@
                 courseVue.$data.detail = true;
             });
         }
+    }
+
+    function showStudentDetail(crn, credits) {
+        courseVue.$data.transcript.crn = crn;
+        courseVue.$data.transcript.credits = credits;
+        courseVue.$data.table = false;
+        courseVue.$data.detail = false;
+        courseVue.$data.student = true;
+        studentInCourse.draw();
     }
 
     function deleteCourse(crn) {
@@ -952,7 +1039,7 @@
                 axios.delete('/course/' + crn + '/student/' + studentId).then(function (response) {
                     if (response.data.code === 2001) {
                         Showbo.Msg.alert("删除成功!", function () {
-                            studentTable.draw();
+                            studentInCourse.draw();
                         });
                     } else {
                         Showbo.Msg.alert(response.data.msg, function () {
@@ -963,11 +1050,17 @@
         });
     }
 
+    function showAddStudentToCourse(studentId) {
+        courseVue.$data.addStudent.studentId = studentId;
+        courseVue.$data.addStudent.crn = courseVue.$data.transcript.crn;
+        courseVue.$data.addStudent.credits = courseVue.$data.transcript.credits;
+    }
+
     function showTranscript(id, studentId, grade, complete) {
-        courseVue.transcript.id = id;
-        courseVue.transcript.studentId = studentId;
-        courseVue.transcript.grade = grade;
-        courseVue.transcript.complete = complete;
+        courseVue.$data.transcript.id = id;
+        courseVue.$data.transcript.studentId = studentId;
+        courseVue.$data.transcript.grade = grade;
+        courseVue.$data.transcript.complete = complete;
     }
 
     //教师select
@@ -1049,7 +1142,8 @@
         templateSelection: formatRepoSelection
     });
 
-    $(".info").select2({
+    //学期select
+    let infoSelect = $(".info").select2({
         ajax: {
             url: basePath + "/course/info",
             type: "GET",
@@ -1091,6 +1185,7 @@
         templateSelection: formatRepoSelection
     });
 
+    //课程表
     let courseTable = $("#courseTable").DataTable({
 
         "language": {
@@ -1131,27 +1226,27 @@
         columns: [
             {
                 "data": null, "title": "行号", "render": function (data, type, row, meta) {
-                    return meta.settings._iDisplayStart + meta.row + 1;
-                }
+                return meta.settings._iDisplayStart + meta.row + 1;
+            }
             },
             {"data": "crn", "title": "编号"},
             {
                 "data": null, "title": "课程名（等级-班级）", "createdCell": function (nTd, rowData) {
-                    $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">' + rowData.name + '<br/>' + "(" + rowData.level + "-" + rowData.section + ")" + '</p>');
-                }
+                $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">' + rowData.name + '<br/>' + "(" + rowData.level + "-" + rowData.section + ")" + '</p>');
+            }
             },
             {"data": "capacity", "title": "容量"},
             {"data": "remain", "title": "剩余"},
             {
                 "data": "status", "title": "状态", "createdCell": function (nTd, rowData) {
-                    if (rowData === 1)
-                        $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">未开始</p>');
-                    else if (rowData === 0)
-                        $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:green; ">进行中</p>');
-                    else if (rowData === -1)
-                        $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:red; ">已结课</p>');
+                if (rowData === 1)
+                    $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">未开始</p>');
+                else if (rowData === 0)
+                    $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:green; ">进行中</p>');
+                else if (rowData === -1)
+                    $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:red; ">已结课</p>');
 
-                }
+            }
             },
             {"data": "date", "title": "起止时间"},
             {"data": "time", "title": "上课时间"},
@@ -1159,13 +1254,13 @@
             {"data": "faculty", "title": "授课老师"},
             {
                 "data": null, "title": "操作", "createdCell": function (nTd, rowData) {
-                    $(nTd).html(
-                        '<a style="cursor: pointer" onclick="showCourseDetail(\'' + rowData.crn + '\')"><i class="fa fa-search"></i>查看并编辑</a><br/>' +
-                        '<a style="cursor: pointer; color: darkred" onclick="deleteCourse(\'' + rowData.crn + '\')"><i class="fa fa-trash"></i>删除该课程</a><br/>' +
-                        '<a style="cursor: pointer; color: green" onclick="showStudentDetail(\'' + rowData.crn + '\',\'' + rowData.credits + '\')"><i class="fa fa-user"></i>课程学生信息</a>'
-                    );
-                    $(nTd).css({textAlign: "left"})
-                }, "width": "100px"
+                $(nTd).html(
+                    '<a style="cursor: pointer" onclick="showCourseDetail(\'' + rowData.crn + '\')"><i class="fa fa-search"></i>查看并编辑</a><br/>' +
+                    '<a style="cursor: pointer; color: darkred" onclick="deleteCourse(\'' + rowData.crn + '\')"><i class="fa fa-trash"></i>删除该课程</a><br/>' +
+                    '<a style="cursor: pointer; color: green" onclick="showStudentDetail(\'' + rowData.crn + '\',\'' + rowData.credits + '\')"><i class="fa fa-user"></i>课程学生信息</a>'
+                );
+                $(nTd).css({textAlign: "left"})
+            }, "width": "100px"
             }
         ],
         "columnDefs": [{
@@ -1177,88 +1272,8 @@
         }]
     });
 
-    let studentTable;
-
-    function showStudentDetail(crn, credits) {
-        courseVue.$data.transcript.crn = crn;
-        courseVue.$data.transcript.credits = credits;
-        courseVue.$data.table = false;
-        courseVue.$data.detail = false;
-        courseVue.$data.student = true;
-
-        studentTable = $("#studentTable").DataTable({
-
-            "language": {
-                "aria": {
-                    "sortAscending": ": activate to sort column ascending",
-                    "sortDescending": ": activate to sort column descending"
-                },
-                "emptyTable": "没有数据！",
-                "info": "显示 _START_ 至 _END_ 条 ，总共_TOTAL_ 条数据",
-                "infoEmpty": "没有发现记录！",
-                "infoFiltered": "(从_MAX_条记录中搜索)",
-                "lengthMenu": "显示: _MENU_",
-                "search": "搜索:",
-                "zeroRecords": "没有找到匹配的记录！",
-                "paginate": {
-                    "previous": "上一页",
-                    "next": "下一页",
-                    "last": "尾页",
-                    "first": "首页"
-                }
-            },
-            "pagingType": "full_numbers",
-            "lengthMenu": [
-                [5, 10, 15],
-                [5, 10, 15]
-            ],
-            pageLength: 5,
-            processing: true,
-            serverSide: true,
-
-            ajax: {
-                url: basePath + "/transcript/" + courseVue.$data.transcript.crn + "/student",
-            },
-            columns: [
-                {
-                    "data": null, "title": "行号", "render": function (data, type, row, meta) {
-                        return meta.settings._iDisplayStart + meta.row + 1;
-                    }
-                },
-                {"data": "id", "title": "序号"},
-                {"data": "studentId", "title": "学生ID"},
-                {"data": "sname", "title": "学生名"},
-                {"data": "grade", "title": "学生成绩"},
-                {
-                    "data": "complete", "title": "完成情况", "createdCell": function (nTd, rowData) {
-                        if (rowData === "1")
-                            $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:green; ">完成</p>');
-                        else if (rowData === "0")
-                            $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">进行中</p>');
-                        else if (rowData === "-1")
-                            $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:red; ">挂科</p>');
-                    }
-                },
-                {
-                    "data": null, "title": "操作", "createdCell": function (nTd, rowData) {
-                        $(nTd).html('' +
-                            '<button style="width: 50%" class="btn btn-success" onclick="showTranscript(\'' + rowData.id + '\',\'' + rowData.studentId + '\',\'' + rowData.grade + '\',\'' + rowData.complete + '\')">修改成绩</button>' +
-                            '<button style="width: 50%" class="btn btn-danger" onclick="removeStuFromCourse(\'' + rowData.studentId + '\',\'' + courseVue.$data.transcript.crn + '\')">从课程中移除</button>');
-                    }, "width": "200px"
-                }
-            ],
-            "columnDefs": [{
-                orderable: false,
-                targets: [6]
-            }, {
-                "defaultContent": "",
-                "targets": "_all"
-            }]
-        });
-
-    }
-
-    let userTable = $("#userTable").DataTable({
+    //学生表
+    let studentTable = $("#studentTable").DataTable({
         "language": {
             "aria": {
                 "sortAscending": ": activate to sort column ascending",
@@ -1301,9 +1316,10 @@
             {"data": "progress", "title": "进行中"},
             {"data": "incomplete", "title": "未完成"},
             {
-                "data": null, "title": "操作", "createdCell": function (nTd) {
-                    $(nTd).html('<button style="width: 100%" class="btn btn-info">添加</button>');
-                }, "width": "100px"
+                "data": null, "title": "操作", "createdCell": function (nTd, rowData) {
+                $(nTd).html('<button style="width: 100%" class="btn btn-success" ' +
+                    'onclick="showAddStudentToCourse(\'' + rowData.studentId + '\')">添加</button>');
+            }, "width": "100px"
             }
         ],
         "columnDefs": [{
@@ -1314,6 +1330,77 @@
             "targets": "_all"
         }]
     });
+
+    let studentInCourse = $("#studentInCourse").DataTable({
+
+        "language": {
+            "aria": {
+                "sortAscending": ": activate to sort column ascending",
+                "sortDescending": ": activate to sort column descending"
+            },
+            "emptyTable": "没有数据！",
+            "info": "显示 _START_ 至 _END_ 条 ，总共_TOTAL_ 条数据",
+            "infoEmpty": "没有发现记录！",
+            "infoFiltered": "(从_MAX_条记录中搜索)",
+            "lengthMenu": "显示: _MENU_",
+            "search": "搜索:",
+            "zeroRecords": "没有找到匹配的记录！",
+            "paginate": {
+                "previous": "上一页",
+                "next": "下一页",
+                "last": "尾页",
+                "first": "首页"
+            }
+        },
+        "pagingType": "full_numbers",
+        "lengthMenu": [
+            [5, 10, 15],
+            [5, 10, 15]
+        ],
+        pageLength: 5,
+        processing: true,
+        serverSide: true,
+
+        ajax: {
+            url: basePath + "/transcript/" + courseVue.$data.transcript.crn + "/student",
+        },
+        columns: [
+            {
+                "data": null, "title": "行号", "render": function (data, type, row, meta) {
+                return meta.settings._iDisplayStart + meta.row + 1;
+            }
+            },
+            {"data": "id", "title": "序号"},
+            {"data": "studentId", "title": "学生ID"},
+            {"data": "sname", "title": "学生名"},
+            {"data": "grade", "title": "学生成绩"},
+            {
+                "data": "complete", "title": "完成情况", "createdCell": function (nTd, rowData) {
+                if (rowData === "1")
+                    $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:green; ">完成</p>');
+                else if (rowData === "0")
+                    $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">进行中</p>');
+                else if (rowData === "-1")
+                    $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:red; ">挂科</p>');
+            }
+            },
+            {
+                "data": null, "title": "操作", "createdCell": function (nTd, rowData) {
+                $(nTd).html('' +
+                    '<button style="width: 50%" class="btn btn-success" onclick="showTranscript(\'' + rowData.id + '\',\'' + rowData.studentId + '\',\'' + rowData.grade + '\',\'' + rowData.complete + '\')">修改成绩</button>' +
+                    '<button style="width: 50%" class="btn btn-danger" onclick="removeStuFromCourse(\'' + rowData.studentId + '\',\'' + courseVue.$data.transcript.crn + '\')">从课程中移除</button>');
+            }, "width": "200px"
+            }
+        ],
+        "columnDefs": [{
+            orderable: false,
+            targets: [6]
+        }, {
+            "defaultContent": "",
+            "targets": "_all"
+        }]
+    });
+
 </script>
 </body>
 </html>

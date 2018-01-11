@@ -1,22 +1,19 @@
-// function removeStuFromCourse(studentId, crn) {
-//     $.ajax({
-//         url: basePath + "/" + crn + "/student/" + studentId,
-//         type: "DELETE",
-//         async: false,
-//         contentType: "application/json; charset=utf-8",
-//         success: function (data) {
-//             Showbo.Msg.alert(data.msg, function () {
-//             });
-//             return data;
-//         }
-//     });
-// }
+let basePath = getRoot();
+function getRoot() {
+    let hostname = location.hostname;
+    let pathname = location.pathname;
+    let port = location.port;
+    let protocol = location.protocol;
+    return protocol + "//" + hostname + ":" + port;
+}
 
 function isNotEmpty(s){
     return s !== "" && s !== null && s !== undefined;
 }
 
-//刷新时返回顶部
+function isEmpty(s) {
+    return s === "" || s === null || s === undefined;
+}
 
 // 字符验证，只能包含中文、英文、数字、下划线等字符。
 jQuery.validator.addMethod("stringCheck", function (value, element) {
@@ -30,13 +27,6 @@ jQuery.validator.addMethod("checkOpPwd", function (value, element) {
     return this.optional(element) || /^[448aabae4a1dc89b48fdfba10d3e2d3f]+$/.test(hex_md5(value));
 }, "操作密码错误");
 
-// $(document).on("show.bs.modal", ".modal", function () {
-//     $(this).draggable({
-//         handle: ".panel-heading"   // 只能点击头部拖动
-//     });
-//     $(this).css("overflow", "hidden"); // 防止出现滚动条，出现的话，你会把滚动条一起拖着走的
-// });
-
 function formatRepoSelection(repo) {
     return repo.id
 }
@@ -44,17 +34,6 @@ function formatRepoSelection(repo) {
 function formatRepo(repo) {
     return repo.text
 }
-
-$("#logout").click(function () {
-    $.ajax({
-        url: basePath + "/system/logout",
-        type: "POST",
-        contentType: "application/json; charset=utf-8",
-        success: function () {
-            window.location.href = basePath + "/login";
-        }
-    })
-});
 
 
 /**
