@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 @Controller
@@ -56,6 +57,7 @@ public class TranscriptController {
             message.put("recordsFiltered", ((LinkedHashMap) message.get("page")).get("totalRows"));
         } else {
             message = new HaramMessage();
+            message.setData(new ArrayList<>());
             message.put("draw", draw);
             message.put("recordsTotal", 0);
             message.put("recordsFiltered", 0);
