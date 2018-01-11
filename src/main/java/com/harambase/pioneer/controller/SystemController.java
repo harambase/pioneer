@@ -72,8 +72,8 @@ public class SystemController {
     @RequestMapping(value = "/swagger")
     @RequiresPermissions("admin")
     public void swagger(HttpServletResponse response) throws Exception{
-        response.addHeader("userId", SessionUtil.getUserId());
-        response.sendRedirect("http://localhost:8080/");
+        response.setHeader("userId", SessionUtil.getUserId());
+        response.sendRedirect("http://localhost:8080/?userId=" +  SessionUtil.getUserId());
     }
 
     @RequestMapping(value = "/info", method = RequestMethod.GET)
