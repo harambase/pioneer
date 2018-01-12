@@ -34,16 +34,16 @@
                         </div>
                         <div class="panel-body">
                             <div class="exampleTable">
-                                <div id="firstStep" class="firstStepWrap">
-                                    <div id="dbType" class="firstStep clearfix">
+                                <div id="firstStep" class="firstStepWrap" v-for="course in courseList">
+                                    <div class="firstStep clearfix">
                                         <div class="item check">
                                             <div class="img">
                                                 <img src="" alt="">
                                             </div>
-                                            <h3>关系型数据库</h3>
-                                            <p>增加Oracle和 </p>
-                                            <p>MySQL类型的关系型</p>
-                                            <p>数据库</p>
+                                            <h3>{{course.name}}</h3>
+                                            <p>{{course.faculty}} </p>
+                                            <p>{{course.time}}</p>
+                                            <p>{{course.day}}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -74,7 +74,10 @@
         },
         mounted: function(){
             axios.get('/course?mode=faculty').then(function(response){
-                this.teachList = response.data.data;
+                let teachList = response.data.data;
+                for(let i = 0; i<teachList.size; i++){
+                    let course
+                }
             });
             axios.get('/transcript?complete=0').then(function(response){
                 this.courseList = response.data.data;
