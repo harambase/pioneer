@@ -41,6 +41,10 @@ function showTranscript(id, studentId, grade, complete) {
     transcriptVue.$data.transcript.complete = complete;
 }
 
+function downloadReport(studentId){
+    window.open(basePath + "/transcript/report?studentId=" + studentId);
+}
+
 //学生select
 let userSelect = $(".user").select2({
     ajax: {
@@ -226,7 +230,8 @@ let transcriptTable = $("#transcriptTable").DataTable({
         {
             "data": null, "title": "操作", "createdCell": function (nTd, rowData) {
             $(nTd).html(
-                '<button style="width: 100%" class="btn btn-success" onclick="showTranscript(\'' + rowData.id + '\',\'' + rowData.studentId + '\',\'' + rowData.grade + '\',\'' + rowData.complete + '\')">修改成绩</button>'
+                '<button style="width: 100%" class="btn btn-success" onclick="showTranscript(\'' + rowData.id + '\',\'' + rowData.studentId + '\',\'' + rowData.grade + '\',\'' + rowData.complete + '\')">修改成绩</button>' +
+                '<button style="width: 100%" class="btn btn-primary" onclick="downloadReport(\'' + rowData.studentId + '\')">下载成绩报告</button>'
             );
         }, "width": "100px"
         }

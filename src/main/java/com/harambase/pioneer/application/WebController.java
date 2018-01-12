@@ -162,29 +162,4 @@ public class WebController {
         return "logistic/dorm";
     }
 
-//todo: URL加密
-//
-//    @RequestMapping("/MavenTest/testpage/base64test")
-//    public String test() {
-//        return "test";
-//    }
-//
-//    @RequestMapping("/base64test")
-//    @ResponseBody
-//    public String base64test(HttpServletRequest request) {
-//        String address = request.getParameter("amp;address");
-//        String name = request.getParameter("name");
-//        String convStr = StringEscapeUtils.unescapeHtml4("&name=1009");
-//        System.out.println("base64传输前");
-//        System.out.println("name:" + name + "   address:" + address);
-//        System.out.println("base64取值后");
-//        byte[] result1 = Base64.decodeBase64(name);
-//        byte[] result2 = Base64.decodeBase64(address);
-//        String str1 = new String(result1);
-//        String str2 = new String(result2);
-//        System.out.println("name:" + str1 + "   address:" + str2);
-//        String result = "name:" + str1 + "   address:" + str2;
-//        return result;
-//    }
-
 }

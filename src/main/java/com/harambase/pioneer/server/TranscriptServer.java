@@ -22,7 +22,7 @@ public class TranscriptServer {
     }
 
     public HaramMessage transcriptList(String ip, int port, int start, int length,
-                                       String search, String order, String orderColumn, String studentId, String crn, String info) {
+                                       String search, String order, String orderColumn, String studentId, String crn, String info, String complete) {
         String remotePath = "/transcript";
         StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
         requestUrl.append("?start=").append(start)
@@ -35,7 +35,9 @@ public class TranscriptServer {
         if (StringUtils.isNotEmpty(crn))
             requestUrl.append("&crn=").append(crn);
         if (StringUtils.isNotEmpty(info))
-            requestUrl.append("&info=").append(crn);
+            requestUrl.append("&info=").append(info);
+        if (StringUtils.isNotEmpty(complete))
+            requestUrl.append("&complete=").append(complete);
         Map params = new HashMap();
         return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
     }

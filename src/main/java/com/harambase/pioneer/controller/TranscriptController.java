@@ -48,10 +48,10 @@ public class TranscriptController {
                                        @RequestParam(value = "order[0][column]") String orderCol,
                                        @RequestParam(value = "crn", required = false) String crn,
                                        @RequestParam(value = "studentId", required = false) String studentId,
-                                       @RequestParam(value = "info", required = false)String info) {
+                                       @RequestParam(value = "info", required = false) String info) {
         HaramMessage message;
         if (StringUtils.isNotEmpty(crn) || StringUtils.isNotEmpty(studentId) || StringUtils.isNotEmpty(info)) {
-            message = transcriptService.transcriptList(start, length, search, order, orderCol, studentId, crn, info);
+            message = transcriptService.transcriptList(start, length, search, order, orderCol, studentId, crn, info, "");
             message.put("draw", draw);
             message.put("recordsTotal", ((LinkedHashMap) message.get("page")).get("totalRows"));
             message.put("recordsFiltered", ((LinkedHashMap) message.get("page")).get("totalRows"));
@@ -72,9 +72,10 @@ public class TranscriptController {
                                          @RequestParam(value = "draw") Integer draw,
                                          @RequestParam(value = "search[value]") String search,
                                          @RequestParam(value = "order[0][dir]") String order,
-                                         @RequestParam(value = "order[0][column]") String orderCol) {
+                                         @RequestParam(value = "order[0][column]") String orderCol,
+                                         @RequestParam(value = "complete", required = false) String complete) {
 
-        HaramMessage message = transcriptService.transcriptList(start, length, search, order, orderCol, SessionUtil.getUserId(), "", "");
+        HaramMessage message = transcriptService.transcriptList(start, length, search, order, orderCol, SessionUtil.getUserId(), "", "", complete);
         message.put("draw", draw);
         message.put("recordsTotal", ((LinkedHashMap) message.get("page")).get("totalRows"));
         message.put("recordsFiltered", ((LinkedHashMap) message.get("page")).get("totalRows"));
@@ -90,8 +91,9 @@ public class TranscriptController {
 
     @RequiresPermissions(value = {"admin", "student"}, logical = Logical.OR)
     @RequestMapping(value = "/report", method = RequestMethod.GET)
-    public void transcriptReport(HttpServletResponse response) {
-        String studentId = SessionUtil.getUserId();
+    public void transcriptReport(@RequestParam(required = false) String studentId, HttpServletResponse response) {
+        if (StringUtils.isEmpty(studentId))
+            studentId = SessionUtil.getUserId();
         HaramMessage haramMessage = transcriptService.studentTranscriptReport(studentId);
         FileUtil.downloadFile(studentId + "_transcript_report.pdf", (String) haramMessage.getData(), response);
     }

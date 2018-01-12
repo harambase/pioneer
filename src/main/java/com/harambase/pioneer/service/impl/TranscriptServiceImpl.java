@@ -46,8 +46,9 @@ public class TranscriptServiceImpl implements TranscriptService {
     }
 
     @Override
-    public HaramMessage transcriptList(int start, int length, String search, String order, String orderColumn, String studentId, String crn, String info) {
-        return transcriptServer.transcriptList(IP, PORT, start, length, search, order, orderColumn, studentId, crn, info);
+    public HaramMessage transcriptList(int start, int length, String search, String order, String orderColumn, String studentId, String crn,
+                                       String info, String complete) {
+        return transcriptServer.transcriptList(IP, PORT, start, length, search, order, orderColumn, studentId, crn, info, complete);
     }
 
     @Override
@@ -77,7 +78,7 @@ public class TranscriptServiceImpl implements TranscriptService {
             converter.replace("address", studentInfoMap.get("address"));
 
             //成绩详情
-            List<LinkedHashMap> transcriptList = (List<LinkedHashMap>) transcriptServer.transcriptList(IP, PORT, 1, Integer.MAX_VALUE, "", "", "", studentid, "", "").getData();
+            List<LinkedHashMap> transcriptList = (List<LinkedHashMap>) transcriptServer.transcriptList(IP, PORT, 1, Integer.MAX_VALUE, "", "", "", studentid, "", "", "").getData();
             Map<String, List<List<Object>>> transcripts = new HashMap<>();
             Set<String> infoSet = new HashSet<>();
             Map<String, String> infoNameSet = new HashMap<>();

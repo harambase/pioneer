@@ -1,0 +1,458 @@
+section.createDbSource{
+    padding-top: 20px;
+    background: #e0e3e8;
+    min-height: 829px;
+    padding-bottom: 40px;
+}
+section.createDbSource .system-nav {
+    width: 220px;
+    height: 800px;
+    float: left;
+    background: #32394B;
+}
+section.createDbSource .system-nav div {
+    height: 60px;
+    width: 100%;
+    line-height: 60px;
+    color: #fff;
+    border-bottom: 1px solid #222834;
+    text-align: center;
+    position: relative;
+    z-index: 200;
+    cursor: pointer;
+}
+section.createDbSource .system-nav div .system-user-bg {
+    display: block;
+    width: 230px;
+    height: 60px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: url("../images/user-nav-bg.png");
+    z-index: -1;
+}
+section.createDbSource .exampleContent{
+    width: 960px;
+    float: right;
+}
+section.createDbSource .exampleContent .exampleTable{
+    margin-top: 10px;
+    padding: 30px 20px;
+    background: #fff;
+}
+section.createDbSource .infoStatistics{
+
+}
+section.createDbSource .infoStatistics h3{
+    font-size: 16px;
+    color: #292c2e;
+}
+section.createDbSource .infoStatistics .list{
+    margin-top: 20px;
+    height: 51px;
+}
+section.createDbSource .infoStatistics .list>.item{
+    float: left;
+    width: 20%;
+    border-right: 1px solid #e1e2e3;
+    text-align: center;
+    letter-spacing: 1px;
+}
+section.createDbSource .infoStatistics .list>.item>h2{
+    color: #4a8cd6;
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+section.createDbSource .infoStatistics .list>.item>p{
+    color: #767e85;
+    font-size: 14px;
+}
+section.createDbSource .infoStatistics .list>.item:last-of-type{
+    border-right: none;
+}
+section.createDbSource .exampleContent .exampleTable .tableBtns{
+    position: relative;
+    width: 270px;
+    height: 30px;
+    top: 15px;
+    left: 110px;
+    z-index: 999;
+}
+section.createDbSource .exampleContent .exampleTable .tableBtns button.spaceBtn{
+    width: 100px;
+    height: 30px;
+    border-radius: 15px;
+    background: #fff;
+    color: #8e959e;
+    text-align: center;
+    line-height: 28px;
+    border: 1px solid #8e959e;
+    outline: none;
+    margin-right: 15px;
+}
+section.createDbSource .exampleContent .exampleTable .tableBtns button.spaceBtn:hover{
+    border: 1px solid #3F99ED;
+    color: #3F99ED;
+}
+section.createDbSource .exampleContent .exampleChart{
+    margin-top: 20px;
+    background: #fff;
+    padding: 30px 20px;
+}
+section.createDbSource .exampleContent .exampleChart h3.exampleChartTitle{
+    color: #333;
+    font-size: 16px;
+    font-weight: normal;
+}
+#exampleChart{
+    width: 920px;
+    height: 400px;
+    margin-top: 20px;
+}
+
+/*模态框*/
+/*新建文件夹*/
+.modalDiy.modal .modal-body{
+    padding: 50px 80px;
+}
+.modalDiy.modal .formBody .formRow{
+    margin-bottom: 20px;
+}
+.modalDiy.modal .formBody .formRow .inputValidate{
+    position: relative;
+    display: inline-block;
+}
+.modalDiy.modal .formBody .formRow .formRowName{
+    width: 100px;
+    font-size: 14px;
+    font-weight: normal;
+    color: #767e85;
+}
+.modalDiy.modal .formBody .formRow .radioDiv .radioBtn{
+    margin-right: 40px;
+}
+.modalDiy.modal .formBody .formRow input.radiusInput,.modalDiy.modal .formBody .formRow select.radiusSelect{
+    width: 320px;
+    height: 30px;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    padding-left: 10px;
+    outline: none;
+}
+.modalDiy.modal .modal-body .config{
+    padding: 10px;
+    background: #f7f8fa;
+}
+.modalDiy.modal .modal-body .config .typeConfig{
+    color: #767e85;
+}
+.modalDiy.modal .modal-body .config .typeConfig .title{
+    font-size: 14px;
+    margin-bottom: 30px;
+}
+.modalDiy.modal .modal-body .config .typeConfig .title .testSuccess{
+    color: #4a8cd6;
+    display: none;
+}
+.modalDiy.modal .modal-body .config .typeConfig .title .testError{
+    color: #ed5532;
+    display: none;
+}
+.modalDiy.modal .modal-body .config .typeConfig .title button.testBtn{
+    width: 60px;
+    height: 20px;
+    background: #4a8cd6;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    float: right;
+}
+.modalDiy.modal .modal-body .config .typeConfig .title button.testBtn.errortest{
+    background: grey;
+}
+.modalDiy.modal .modal-body .config .typeConfig .typeConfigRow{
+    font-size: 12px;
+    color: #767e85;
+    margin-bottom: 20px;
+}
+.modalDiy.modal .modal-body .config .typeConfig .typeConfigRow .inputValidate{
+    position: relative;
+    display: inline-block;
+}
+.modalDiy.modal .modal-body .config .typeConfig .typeConfigRow .rowName{
+    width: 80px;
+    font-weight: normal;
+    color: #767e85;
+    vertical-align: text-top;
+}
+.modalDiy.modal .modal-body .config .typeConfig .typeConfigRow input.radiusInput{
+    width: 320px;
+    height: 30px;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    padding-left: 10px;
+    outline: none;
+}
+.modalDiy.modal .modal-body .config .typeConfig .typeConfigRow .colonyRadio input[type=radio]:last-of-type{
+    margin-left: 40px;
+}
+.modalDiy.modal .calculateEngine .newcalculateEngineExampleSShFile{
+    display: none;
+}
+.modalDiy.modal .serviceType{
+    width: 320px;
+    display: inline-block;
+    position: relative;
+}
+.modalDiy.modal .serviceType .serviceTypeAdd{
+    margin-bottom: 5px;
+}
+.modalDiy.modal .serviceType .serviceTypeAdd>span{
+    display: inline-block;
+    width: 30px;
+    height: 18px;
+    border-radius: 9px;
+    background: #4a8cd6;
+    text-align: center;
+    color: #fff;
+    cursor: pointer;
+}
+
+.modalDiy.modal .serviceType .serviceTypeAddContent{
+    position: absolute;
+    display: none;
+    z-index: 10;
+    top:20px;
+    left: 0;
+    width: 320px;
+    height: 140px;
+    background: #fff;
+    box-shadow: 0 0 5px #333;
+    padding: 15px;
+    border-radius: 5px;
+}
+.modalDiy.modal .serviceType .serviceTypeAddContent>span{
+    display: inline-block;
+    width: 90px;
+    margin-bottom: 15px;
+}
+.modalDiy.modal .serviceType .serviceTypeAddContent>.serviceTypeAddContentBtn{
+    margin-top: 20px;
+}
+
+.modalDiy.modal .serviceType .serviceTypeContent{
+    width: 320px;
+    height: 100px;
+    background: #f7f8fa;
+    padding: 10px;
+    border-radius: 5px;
+}
+.modalDiy.modal .serviceType .serviceTypeContent .serviceTypeContentItem{
+    display: inline-block;
+    width: 85px;
+    height: 25px;
+    background: #fff;
+    border: 1px solid #e1e2e3;
+    border-radius: 13px;
+    margin-right: 11px;
+    position: relative;
+    line-height: 22px;
+    text-align: center;
+    margin-bottom: 11px;
+    cursor: pointer;
+}
+.modalDiy.modal .serviceType .serviceTypeContent .serviceTypeContentItem:nth-of-type(3n){
+    margin-right: 0;
+}
+.modalDiy.modal .serviceType .serviceTypeContent .serviceTypeContentItem>i{
+    position: absolute;
+    z-index:5;
+    top: -10px;
+    right: -10px;
+    color: #f6a123;
+    padding: 4px;
+    font-size: 18px;
+    cursor: pointer;
+    opacity: 0;
+}
+.modalDiy.modal .serviceType .serviceTypeContent .serviceTypeContentItem:hover{
+    border-color: #f6a123;
+}
+.modalDiy.modal .serviceType .serviceTypeContent .serviceTypeContentItem:hover i{
+    opacity: 1;
+}
+.modalDiy.modal .formBody .formRow textarea.radiusTextarea{
+    width: 320px;
+    resize: none;
+    height: 150px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    outline: none;
+}
+.verticalTop{
+    vertical-align: top;
+}
+
+.ellipseBtn{
+    width: 75px;
+    height: 30px;
+    background: #4a8cd6;
+    color: #fff;
+    border: none;
+    border-radius: 15px;
+    outline: none;
+}
+.ellipseSpaceBtn {
+    width: 75px;
+    height: 30px;
+    background: #fff;
+    color: #4a8cd6;
+    border: 1px solid #4a8cd6;
+    border-radius: 15px;
+    outline: none;
+}
+.dbSourceTitle {
+    height: 60px;
+    background: #fff;
+    padding: 18px 20px;
+}
+.dbSourceTitle>h3 {
+    border-left: 5px solid #409aee;
+    padding-left: 5px;
+    font-size: 16px;
+    color: #26292b;
+    padding-bottom: 0;
+    height: 22px;
+    line-height: 22px;
+}
+.dbSourceTitle>h3.secondUrl{
+    display: none;
+}
+/*第一步*/
+.firstStepWrap{
+    /*display: none;*/
+}
+.firstStep{
+
+}
+.firstStep>.item{
+    float: left;
+    width: 200px;
+    height: 280px;
+    background: #f6f7f7;
+    border: 1px solid #d0e0e4;
+    box-shadow: 0 0 10px 10px rgba(9, 84, 109, 0.03);
+    border-radius: 5px;
+    padding: 20px;
+    cursor: pointer;
+    margin-right: 30px;
+    margin-bottom: 40px;
+}
+.firstStep>.item.disable{
+    cursor: not-allowed;
+}
+.firstStep>.item.check{
+    border-color: #409aee;
+}
+.firstStep>.item:nth-of-type(4n){
+    margin-right: 0;
+}
+.firstStep>.item .img{
+    width: 100%;
+    height: 135px;
+    text-align: center;
+    line-height: 110px;
+}
+.firstStep>.item>h3{
+    color: #073443;
+    font-size: 14px;
+    width: 100%;
+    overflow: hidden;
+    text-align: center;
+    margin-bottom: 10px;
+}
+.firstStep>.item>p{
+    color: #999;
+    font-size: 12px;
+    margin-top: 3px;
+}
+.firstStepWrap .nextBtnOut{
+    text-align: center;
+    margin-top: 320px;
+}
+.nextBtn {
+    width: 120px;
+    height: 30px;
+    background: #4a8cd6;
+    color: #fff;
+    border: none;
+    border-radius: 15px;
+    outline: none;
+}
+/*第二步*/
+.secondStepWrap{
+    display: none;
+    padding-top: 46px;
+    /*padding-bottom: 174px;*/
+    height: 670px;
+}
+.secondStepWrap p.testConnect{
+    margin-bottom: 10px;
+    height: 20px;
+    padding-left: 102px;
+}
+.secondStepWrap p.testConnect>span{
+    font-size: 12px;
+    display: none;
+}
+.secondStepWrap p.testConnect>span.testSuccess{
+    color: #4a8cd6;
+}
+.secondStepWrap p.testConnect>span.testError{
+    color: #ed5532;
+}
+.secondStepWrap p.testConnect button.testBtn {
+    width: 60px;
+    height: 20px;
+    background: #4a8cd6;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    float: right;
+}
+.secondStepWrap p.testConnect button.testBtn:disabled{
+    background: grey;
+    cursor: not-allowed;
+}
+.secondStepWrap form{
+    width: 450px;
+    margin: 0 auto;
+}
+.secondStepWrap form .formLine{
+    margin-bottom: 30px;
+}
+.secondStepWrap form .formLine.oracleInput{
+    display: none;
+}
+.secondStepWrap label.formLabel{
+    width: 100px;
+    text-align: right;
+    color: #767e85;
+    font-size: 14px;
+    font-weight: normal;
+}
+.secondStepWrap input.formInput,.secondStepWrap select.formSelect{
+    width: 320px;
+    height: 35px;
+    border: 1px solid #c8cacc;
+    border-radius: 5px;
+}
+.secondStepWrap .btnGroup{
+    text-align: center;
+}
+.secondStepWrap .btnGroup>button:first-of-type{
+    margin-right: 70px;
+}
+
