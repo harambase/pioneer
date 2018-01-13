@@ -24,11 +24,9 @@ import java.util.*;
 @Service
 public class TranscriptServiceImpl implements TranscriptService {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
     private final static String IP = Config.SERVER_IP;
     private final static int PORT = Config.SERVER_PORT;
-
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final TranscriptServer transcriptServer;
     private final PersonServer personServer;
     private final StudentServer studentServer;

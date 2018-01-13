@@ -24,11 +24,9 @@ import java.util.LinkedHashMap;
 @Service
 public class PersonServiceImpl implements PersonService {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
     private final static String IP = Config.SERVER_IP;
     private final static int PORT = Config.SERVER_PORT;
-
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final PersonServer personServer;
 
     @Autowired
@@ -89,7 +87,7 @@ public class PersonServiceImpl implements PersonService {
             switch (mode) {
                 case "p":
                     String oldProfile = "";
-                    if(person.getProfile() != null)
+                    if (person.getProfile() != null)
                         oldProfile = (JSON.parseObject(person.getProfile())).getString("path");
 
                     if (StringUtils.isNotEmpty(oldProfile)) {
@@ -109,7 +107,7 @@ public class PersonServiceImpl implements PersonService {
 
                 case "f":
                     String oldInfo = "";
-                    if(person.getUserInfo() != null)
+                    if (person.getUserInfo() != null)
                         oldInfo = (JSON.parseObject(person.getUserInfo())).getString("path");
 
                     if (StringUtils.isNotEmpty(oldInfo)) {

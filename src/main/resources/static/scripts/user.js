@@ -218,7 +218,7 @@ function userDetail(col) {
     userVue.$data.detail = true;
 }
 
-function setInfo(){
+function setInfo() {
     userVue.$data.userType = userVue.$data.user.type.split("/");
     userVue.$data.userRole = userVue.$data.user.roleId.split("/");
 

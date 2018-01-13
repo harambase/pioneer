@@ -45,7 +45,7 @@ public class TranscriptController {
                                        @RequestParam(value = "draw", required = false, defaultValue = "1") Integer draw,
                                        @RequestParam(value = "search[value]", required = false, defaultValue = "") String search,
                                        @RequestParam(value = "order[0][dir]", required = false, defaultValue = "") String order,
-                                       @RequestParam(value = "order[0][column]",required = false, defaultValue = "") String orderCol,
+                                       @RequestParam(value = "order[0][column]", required = false, defaultValue = "") String orderCol,
                                        @RequestParam(value = "crn", required = false) String crn,
                                        @RequestParam(value = "studentId", required = false) String studentId,
                                        @RequestParam(value = "info", required = false) String info) {
@@ -72,7 +72,7 @@ public class TranscriptController {
                                          @RequestParam(value = "draw", required = false, defaultValue = "1") Integer draw,
                                          @RequestParam(value = "search[value]", required = false, defaultValue = "") String search,
                                          @RequestParam(value = "order[0][dir]", required = false, defaultValue = "") String order,
-                                         @RequestParam(value = "order[0][column]",required = false, defaultValue = "") String orderCol,
+                                         @RequestParam(value = "order[0][column]", required = false, defaultValue = "") String orderCol,
                                          @RequestParam(value = "complete", required = false) String complete) {
 
         HaramMessage message = transcriptService.transcriptList(start, length, search, order, orderCol, SessionUtil.getUserId(), "", "", complete);

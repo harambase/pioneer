@@ -26,11 +26,9 @@ import java.util.Map;
 @Service
 public class CourseServiceImpl implements CourseService {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
     private final static String IP = Config.SERVER_IP;
     private final static int PORT = Config.SERVER_PORT;
-
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final CourseServer courseServer;
 
     @Autowired

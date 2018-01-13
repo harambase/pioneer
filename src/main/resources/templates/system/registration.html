@@ -1,6 +1,6 @@
 ﻿<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:v-on="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/xhtml">
 
 <head th:include="/common :: header('用户申请',true, false)"></head>
 
@@ -527,30 +527,30 @@
         columns: [
             {  //行号
                 "data": null, "title": "ROW", "render": function (data, type, row, meta) {
-                return meta.settings._iDisplayStart + meta.row + 1;
-            }
+                    return meta.settings._iDisplayStart + meta.row + 1;
+                }
             },
             {"data": "id", "title": "序列号", "width": "100px"},
             {"data": "userId", "title": "临时用户ID"},
             {
                 "data": "userJson", "title": "姓, 名", "createdCell": function (nTd, rowData) {
-                let user = JSON.parse(rowData);
-                $(nTd).html(user.lastName + ", " + user.firstName);
-                regVue.$data.regUserList.push(user);
-            }
+                    let user = JSON.parse(rowData);
+                    $(nTd).html(user.lastName + ", " + user.firstName);
+                    regVue.$data.regUserList.push(user);
+                }
             },
             {"data": "createTime", "title": "申请时间"},
             {
                 "data": "status", "title": "申请状态", "createdCell": function (nTd, rowData) {
-                if (rowData === "0") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">申请中</p>');
-                else if (rowData === "1") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0;color:green; ">已批准</p>');
-                else if (rowData === "-1") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0;color:red; ">已拒绝</p>');
-            }
+                    if (rowData === "0") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">申请中</p>');
+                    else if (rowData === "1") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0;color:green; ">已批准</p>');
+                    else if (rowData === "-1") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0;color:red; ">已拒绝</p>');
+                }
             },
             {
                 "data": null, "title": "操作", "createdCell": function (nTd, rowData, row, col) {
-                $(nTd).html('<button class="btn btn-edit btn-warning" onclick="regDetail(\'' + col + '\',\'' + rowData.id + '\',\'' + rowData.userId + '\',\'' + rowData.createTime + '\',\'' + rowData.status + '\')">查看详情</button>');
-            }, "width": "100px"
+                    $(nTd).html('<button class="btn btn-edit btn-warning" onclick="regDetail(\'' + col + '\',\'' + rowData.id + '\',\'' + rowData.userId + '\',\'' + rowData.createTime + '\',\'' + rowData.status + '\')">查看详情</button>');
+                }, "width": "100px"
             }
         ],
         "columnDefs": [{

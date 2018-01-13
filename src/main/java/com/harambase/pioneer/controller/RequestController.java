@@ -119,8 +119,8 @@ public class RequestController {
     @RequestMapping(value = "/course/info/{id}", method = RequestMethod.GET)
     public void downloadCourseInfo(@PathVariable Integer id, HttpServletResponse response) {
         HaramMessage message = requestService.getTempCourse(id);
-        JSONObject courseJson = JSONObject.parseObject((String)((LinkedHashMap) message.getData()).get("courseJson"));
-        if(StringUtils.isNotEmpty(courseJson.getString("courseInfo"))) {
+        JSONObject courseJson = JSONObject.parseObject((String) ((LinkedHashMap) message.getData()).get("courseJson"));
+        if (StringUtils.isNotEmpty(courseJson.getString("courseInfo"))) {
             JSONObject info = JSONObject.parseObject(courseJson.getString("courseInfo"));
             FileUtil.downloadFile(info.getString("name"), info.getString("path"), response);
         }
@@ -137,7 +137,7 @@ public class RequestController {
                                      @RequestParam(value = "viewStatus") String viewStatus,
                                      @RequestParam(value = "mode", required = false) String mode) {
         String facultyId = "";
-        if(StringUtils.isNotEmpty(mode) && mode.equals("faculty"))
+        if (StringUtils.isNotEmpty(mode) && mode.equals("faculty"))
             facultyId = SessionUtil.getUserId();
 
         HaramMessage message = requestService.tempCourseList(start, length, search, order, orderCol, viewStatus, facultyId);

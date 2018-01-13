@@ -1,4 +1,3 @@
-
 let pinVue = new Vue({
     el: '#pinPage',
     data: {

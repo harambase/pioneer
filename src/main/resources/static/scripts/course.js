@@ -39,9 +39,9 @@ let courseVue = new Vue({
             credits: ""
         },
         addStudent: {
-            crn:"",
+            crn: "",
             studentId: "",
-            credits:"",
+            credits: "",
             option: {
                 prereq: false,
                 time: false,
@@ -572,27 +572,27 @@ let courseTable = $("#courseTable").DataTable({
     columns: [
         {
             "data": null, "title": "行号", "render": function (data, type, row, meta) {
-            return meta.settings._iDisplayStart + meta.row + 1;
-        }
+                return meta.settings._iDisplayStart + meta.row + 1;
+            }
         },
         {"data": "crn", "title": "编号"},
         {
             "data": null, "title": "课程名（等级-班级）", "createdCell": function (nTd, rowData) {
-            $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">' + rowData.name + '<br/>' + "(" + rowData.level + "-" + rowData.section + ")" + '</p>');
-        }
+                $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">' + rowData.name + '<br/>' + "(" + rowData.level + "-" + rowData.section + ")" + '</p>');
+            }
         },
         {"data": "capacity", "title": "容量"},
         {"data": "remain", "title": "剩余"},
         {
             "data": "status", "title": "状态", "createdCell": function (nTd, rowData) {
-            if (rowData === 1)
-                $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">未开始</p>');
-            else if (rowData === 0)
-                $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:green; ">进行中</p>');
-            else if (rowData === -1)
-                $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:red; ">已结课</p>');
+                if (rowData === 1)
+                    $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">未开始</p>');
+                else if (rowData === 0)
+                    $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:green; ">进行中</p>');
+                else if (rowData === -1)
+                    $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:red; ">已结课</p>');
 
-        }
+            }
         },
         {"data": "date", "title": "起止时间"},
         {"data": "time", "title": "上课时间"},
@@ -600,13 +600,13 @@ let courseTable = $("#courseTable").DataTable({
         {"data": "faculty", "title": "授课老师"},
         {
             "data": null, "title": "操作", "createdCell": function (nTd, rowData) {
-            $(nTd).html(
-                '<a style="cursor: pointer" onclick="showCourseDetail(\'' + rowData.crn + '\')"><i class="fa fa-search"></i>查看并编辑</a><br/>' +
-                '<a style="cursor: pointer; color: darkred" onclick="deleteCourse(\'' + rowData.crn + '\')"><i class="fa fa-trash"></i>删除该课程</a><br/>' +
-                '<a style="cursor: pointer; color: green" onclick="showStudentDetail(\'' + rowData.crn + '\',\'' + rowData.credits + '\')"><i class="fa fa-user"></i>课程学生信息</a>'
-            );
-            $(nTd).css({textAlign: "left"})
-        }, "width": "100px"
+                $(nTd).html(
+                    '<a style="cursor: pointer" onclick="showCourseDetail(\'' + rowData.crn + '\')"><i class="fa fa-search"></i>查看并编辑</a><br/>' +
+                    '<a style="cursor: pointer; color: darkred" onclick="deleteCourse(\'' + rowData.crn + '\')"><i class="fa fa-trash"></i>删除该课程</a><br/>' +
+                    '<a style="cursor: pointer; color: green" onclick="showStudentDetail(\'' + rowData.crn + '\',\'' + rowData.credits + '\')"><i class="fa fa-user"></i>课程学生信息</a>'
+                );
+                $(nTd).css({textAlign: "left"})
+            }, "width": "100px"
         }
     ],
     "columnDefs": [{
@@ -663,9 +663,9 @@ let studentTable = $("#studentTable").DataTable({
         {"data": "incomplete", "title": "未完成"},
         {
             "data": null, "title": "操作", "createdCell": function (nTd, rowData) {
-            $(nTd).html('<button style="width: 100%" class="btn btn-success" ' +
-                'onclick="showAddStudentToCourse(\'' + rowData.studentId + '\')">查看添加条件</button>');
-        }, "width": "100px"
+                $(nTd).html('<button style="width: 100%" class="btn btn-success" ' +
+                    'onclick="showAddStudentToCourse(\'' + rowData.studentId + '\')">查看添加条件</button>');
+            }, "width": "100px"
         }
     ],
     "columnDefs": [{
@@ -709,15 +709,15 @@ let studentInCourse = $("#studentInCourse").DataTable({
 
     ajax: {
         url: basePath + "/transcript/course/student",
-        data: function(d){
+        data: function (d) {
             d.crn = courseVue.$data.transcript.crn;
         }
     },
     columns: [
         {
             "data": null, "title": "行号", "render": function (data, type, row, meta) {
-            return meta.settings._iDisplayStart + meta.row + 1;
-        }
+                return meta.settings._iDisplayStart + meta.row + 1;
+            }
         },
         {"data": "id", "title": "序号"},
         {"data": "studentId", "title": "学生ID"},
@@ -725,20 +725,20 @@ let studentInCourse = $("#studentInCourse").DataTable({
         {"data": "grade", "title": "学生成绩"},
         {
             "data": "complete", "title": "完成情况", "createdCell": function (nTd, rowData) {
-            if (rowData === "1")
-                $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:green; ">完成</p>');
-            else if (rowData === "0")
-                $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">进行中</p>');
-            else if (rowData === "-1")
-                $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:red; ">挂科</p>');
-        }
+                if (rowData === "1")
+                    $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:green; ">完成</p>');
+                else if (rowData === "0")
+                    $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">进行中</p>');
+                else if (rowData === "-1")
+                    $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:red; ">挂科</p>');
+            }
         },
         {
             "data": null, "title": "操作", "createdCell": function (nTd, rowData) {
-            $(nTd).html('' +
-                '<button style="width: 50%" class="btn btn-success" onclick="showTranscript(\'' + rowData.id + '\',\'' + rowData.studentId + '\',\'' + rowData.grade + '\',\'' + rowData.complete + '\')">修改成绩</button>' +
-                '<button style="width: 50%" class="btn btn-danger" onclick="removeStuFromCourse(\'' + rowData.studentId + '\',\'' + courseVue.$data.transcript.crn + '\')">从课程中移除</button>');
-        }, "width": "200px"
+                $(nTd).html('' +
+                    '<button style="width: 50%" class="btn btn-success" onclick="showTranscript(\'' + rowData.id + '\',\'' + rowData.studentId + '\',\'' + rowData.grade + '\',\'' + rowData.complete + '\')">修改成绩</button>' +
+                    '<button style="width: 50%" class="btn btn-danger" onclick="removeStuFromCourse(\'' + rowData.studentId + '\',\'' + courseVue.$data.transcript.crn + '\')">从课程中移除</button>');
+            }, "width": "200px"
         }
     ],
     "columnDefs": [{

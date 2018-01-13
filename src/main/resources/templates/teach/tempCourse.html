@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml"
+<html xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/xhtml"
 >
 
 <head th:include="/common :: header('新课程申请管理',true, false)"></head>
@@ -115,8 +115,8 @@
 
     let requestVue = new Vue({
         el: '#courseRequestPage',
-        data:{
-            pageMode : location.search.split("&")[0].split("=")[1]
+        data: {
+            pageMode: location.search.split("&")[0].split("=")[1]
         },
         methods: {
             showGeneral: function () {
@@ -201,31 +201,31 @@
         columns: [
             {
                 "data": null, "title": "行号", "render": function (data, type, row, meta) {
-                return meta.settings._iDisplayStart + meta.row + 1;
-            }
+                    return meta.settings._iDisplayStart + meta.row + 1;
+                }
             },
             {"data": "id", "title": "序列号", "width": "100px"},
             {"data": "crn", "title": "临时课程编码"},
             {
                 "data": "courseJson", "title": "课程名", "createdCell": function (nTd, rowData) {
-                let course = JSON.parse(rowData);
-                $(nTd).html(course.name);
-            }
+                    let course = JSON.parse(rowData);
+                    $(nTd).html(course.name);
+                }
             },
             {"data": "facultyId", "title": "申请人ID"},
             {"data": "createTime", "title": "申请时间"},
             {
                 "data": "status", "title": "申请状态", "createdCell": function (nTd, rowData) {
-                if (rowData === "0") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">申请中</p>');
-                else if (rowData === "1") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0;color:green; ">已批准</p>');
-                else if (rowData === "-1") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0;color:red; ">已拒绝</p>');
-            }
+                    if (rowData === "0") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">申请中</p>');
+                    else if (rowData === "1") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0;color:green; ">已批准</p>');
+                    else if (rowData === "-1") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0;color:red; ">已拒绝</p>');
+                }
             },
             {
                 "data": null, "title": "操作", "createdCell": function (nTd, rowData) {
-                $(nTd).html('<button class="btn btn-warning col-xs-6" onclick="detail(\'' + rowData.id + '\')">查看</button>' +
-                    '<button class="btn btn-danger col-xs-6" onclick="deleteTempCourse(\'' + rowData.id + '\')">删除</button>');
-            }, "width": "180px"
+                    $(nTd).html('<button class="btn btn-warning col-xs-6" onclick="detail(\'' + rowData.id + '\')">查看</button>' +
+                        '<button class="btn btn-danger col-xs-6" onclick="deleteTempCourse(\'' + rowData.id + '\')">删除</button>');
+                }, "width": "180px"
             }
         ],
         "columnDefs": [{

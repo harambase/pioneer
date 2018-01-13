@@ -2,7 +2,6 @@ package com.harambase.pioneer.controller;
 
 import com.harambase.common.HaramMessage;
 import com.harambase.common.constant.FlagDict;
-import com.harambase.pioneer.pojo.Pin;
 import com.harambase.pioneer.service.PinService;
 import com.harambase.support.util.SessionUtil;
 import org.apache.shiro.authz.annotation.Logical;
@@ -44,7 +43,7 @@ public class PinController {
                                     @RequestParam(value = "role") int role,
                                     @RequestParam(value = "info") String info,
                                     @RequestParam(value = "remark") String remark,
-                                    @PathVariable(value = "userId")String userId) {
+                                    @PathVariable(value = "userId") String userId) {
         HaramMessage haramMessage = pinService.generateOne(startTime, endTime, role, info, remark, userId);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
@@ -77,11 +76,11 @@ public class PinController {
     public ResponseEntity sessionValidate() {
         LinkedHashMap pin = SessionUtil.getPin();
         HaramMessage haramMessage;
-        if(pin != null) {
+        if (pin != null) {
             haramMessage = pinService.validate((Integer) pin.get("pin"));
             if (haramMessage.getCode() == FlagDict.SUCCESS.getV())
                 SessionUtil.setPin(haramMessage.getData());
-        }else{
+        } else {
             haramMessage = new HaramMessage();
             haramMessage.setCode(FlagDict.FAIL.getV());
         }

@@ -7,7 +7,7 @@ public class Option {
     private boolean time;
 
     private boolean capacity;
-    
+
     public boolean isPrereq() {
         return prereq;
     }

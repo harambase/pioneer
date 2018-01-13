@@ -52,7 +52,7 @@ public class SystemController {
                 //将用户信息放入session中
                 subject.getSession().setAttribute("user", person);
 
-                if(StringUtils.isNotEmpty(person.getProfile()))
+                if (StringUtils.isNotEmpty(person.getProfile()))
                     subject.getSession().setAttribute("profile", (JSON.parseObject(person.getProfile())).getString("path"));
 
                 subject.login(token); //完成登录
@@ -68,15 +68,15 @@ public class SystemController {
     }
 
     @RequestMapping(value = "/logout")
-    public void logout(HttpServletResponse response) throws Exception{
+    public void logout(HttpServletResponse response) throws Exception {
         response.sendRedirect("/login");
     }
 
     @RequestMapping(value = "/swagger")
     @RequiresPermissions("admin")
-    public void swagger(HttpServletResponse response) throws Exception{
+    public void swagger(HttpServletResponse response) throws Exception {
         response.setHeader("userId", SessionUtil.getUserId());
-        response.sendRedirect("http://localhost:8080/?userId=" +  SessionUtil.getUserId());
+        response.sendRedirect("http://localhost:8080/?userId=" + SessionUtil.getUserId());
     }
 
     @RequestMapping(value = "/info", method = RequestMethod.GET)

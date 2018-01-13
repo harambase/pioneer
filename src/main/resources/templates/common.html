@@ -1,4 +1,4 @@
-<head th:fragment="header(title,table,select2)" xmlns:th="http://www.thymeleaf.org">
+<head xmlns:th="http://www.thymeleaf.org" th:fragment="header(title,table,select2)">
 
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -7,13 +7,14 @@
 
     <title th:text="${title}"></title>
 
-    <link rel="stylesheet" href="/static/plugins/confirm/confirm.css" >
+    <link rel="stylesheet" href="/static/plugins/confirm/confirm.css">
     <link rel="stylesheet" href="/static/plugins/bootstrap/css/bootstrap.css"/>
     <link rel="stylesheet" href="/static/plugins/font/font.css"/>
     <link rel="stylesheet" href="/static/plugins/font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/static/plugins/checkbox3/checkbox3.min.css">
 
-    <link th:if="${table}" rel="stylesheet" type=text/css href="/static/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css">
+    <link th:if="${table}" rel="stylesheet" type=text/css
+          href="/static/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css">
     <link th:if="${table}" rel="stylesheet" type=text/css href="/static/plugins/datatables/datatables.min.css">
 
     <link th:if="${select2}" rel="stylesheet" type=text/css href="/static/plugins/select2/select2.min.css">
@@ -258,7 +259,8 @@
     <nav class="navbar-default navbar-side" role="navigation">
         <ul class="nav" id="main-menu">
             <li><a href="/index" class="active-menu"><i class="fa fa-dashboard"></i> 主页</a></li>
-            <li shiro:hasAnyPermissions="admin, student, faculty, teach"><a href="/myCourse"><i class="fa fa-book"></i>我的课程</a></li>
+            <li shiro:hasAnyPermissions="admin, student, faculty, teach"><a href="/myCourse"><i class="fa fa-book"></i>我的课程</a>
+            </li>
 
             <li><a href="#"><i class="fa fa-desktop"></i>教学系统<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
@@ -274,7 +276,8 @@
                 </ul>
             </li>
 
-            <li shiro:hasAnyPermissions="admin, teach"><a href="#"><i class="fa fa-briefcase"></i>教务管理<span class="fa arrow"></span></a>
+            <li shiro:hasAnyPermissions="admin, teach"><a href="#"><i class="fa fa-briefcase"></i>教务管理<span
+                    class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li><a href="#">课程管理<span class="fa arrow"></span></a>
                         <ul class="nav nav-third-level">
@@ -301,8 +304,10 @@
                 <ul class="nav nav-second-level">
                     <li><a href="#">用户管理<span class="fa arrow"></span></a>
                         <ul class="nav nav-third-level">
-                            <li shiro:hasAnyPermissions="admin, system"><a href="/system/user/manage?mode=create">创建新用户</a></li>
-                            <li shiro:hasAnyPermissions="admin, system"><a href="/system/user/manage?mode=view">查看已有用户</a></li>
+                            <li shiro:hasAnyPermissions="admin, system"><a
+                                    href="/system/user/manage?mode=create">创建新用户</a></li>
+                            <li shiro:hasAnyPermissions="admin, system"><a
+                                    href="/system/user/manage?mode=view">查看已有用户</a></li>
                         </ul>
                     </li>
                     <li shiro:hasAnyPermissions="admin, system"><a href="/system/role">系统权限列表</a></li>

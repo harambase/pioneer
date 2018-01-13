@@ -65,7 +65,7 @@ public class CourseController {
                                @RequestParam(value = "draw", required = false, defaultValue = "1") Integer draw,
                                @RequestParam(value = "search[value]", required = false, defaultValue = "") String search,
                                @RequestParam(value = "order[0][dir]", required = false, defaultValue = "") String order,
-                               @RequestParam(value = "order[0][column]",required = false, defaultValue = "") String orderCol,
+                               @RequestParam(value = "order[0][column]", required = false, defaultValue = "") String orderCol,
                                @RequestParam(value = "mode", required = false) String mode,
                                @RequestParam(value = "info", required = false, defaultValue = "") String info,
                                @RequestParam(value = "facultyId", required = false, defaultValue = "") String facultyId) {

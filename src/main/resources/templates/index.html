@@ -13,7 +13,8 @@
         <div class="header">
             <h1 class="page-header">
                 先锋OA系统
-                <small id="name" th:text="'Welcome back '+${session.user.lastName}+', '+${session.user.firstName} + '!'"></small>
+                <small id="name"
+                       th:text="'Welcome back '+${session.user.lastName}+', '+${session.user.firstName} + '!'"></small>
             </h1>
             <ol class="breadcrumb">
                 <li class="active"><a href="/index">主页</a></li>
@@ -136,12 +137,12 @@
     });
 
     function initCounts() {
-       axios("/system/info").then(function (response) {
+        axios("/system/info").then(function (response) {
 
             const result = response.data.data;
             v.$data.studentNum = result.student;
             v.$data.facultyNum = result.faculty;
-            v.$data.courseNum  = result.course;
+            v.$data.courseNum = result.course;
         })
     }
 
@@ -158,7 +159,6 @@
             relation(response.data.data, "relationChart")
         })
     }
-
 
 
 </script>

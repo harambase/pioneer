@@ -3,7 +3,7 @@
 
 <head th:include="/common :: header('我的课程',true, false)"></head>
 <head>
-    <link rel="stylesheet" href="/static/styles/myCourse.css" >
+    <link rel="stylesheet" href="/static/styles/myCourse.css">
 </head>
 <body>
 <div id="wrapper">
@@ -36,7 +36,7 @@
                             <div class="panel panel-default">
                                 <div class="panel-body">
                                     <div class="firstStep clearfix" v-for="course in courseList">
-                                        <div class="lessons-item js-lessons-item g-clearfix" >
+                                        <div class="lessons-item js-lessons-item g-clearfix">
                                             <a href="#">
                                                 <div class="lessons-pic">
                                                     <img width="240" height="200" src="">
@@ -53,7 +53,8 @@
                                                             class="js-lesson-complete">{{}}</span></span>
                                                         <span class="space">出勤度：<span
                                                                 class="js-lesson-rate">{{}}</span></span>
-                                                        <span>教师：<span class="js-lesson-record">{{course.faculty}}</span></span>
+                                                        <span>教师：<span
+                                                                class="js-lesson-record">{{course.faculty}}</span></span>
                                                     </div>
                                                 </div>
                                                 <div class="lessons-operate">
@@ -115,7 +116,7 @@
             </div>
 
         </div>
-        <div class="panel-footer" id = footerPlaceholder">
+        <div class="panel-footer" id=footerPlaceholder">
             <div th:include="/common :: footer" id="copyright"></div>
         </div>
         <!-- /. PAGE INNER  -->
@@ -127,21 +128,22 @@
 <script>
 
     let myCourseVue = new Vue({
-        el:"#myCoursePge",
-        data:{
-            courseList:[],
-            teachList:[],
+        el: "#myCoursePge",
+        data: {
+            courseList: [],
+            teachList: [],
             pageMode: location.search.split("&")[0].split("=")[1],
         },
-        mounted: function(){
+        mounted: function () {
             init();
         }
     });
-    function init(){
-        axios.get('/course?mode=faculty').then(function(response){
+
+    function init() {
+        axios.get('/course?mode=faculty').then(function (response) {
             myCourseVue.$data.teachList = response.data.data;
         });
-        axios.get('/student/course?status=1').then(function(response){
+        axios.get('/student/course?status=1').then(function (response) {
             myCourseVue.$data.courseList = response.data.data;
         });
     }

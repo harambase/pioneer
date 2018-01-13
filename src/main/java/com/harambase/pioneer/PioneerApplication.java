@@ -8,7 +8,7 @@ import org.springframework.cache.annotation.EnableCaching;
 @SpringBootApplication
 public class PioneerApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(PioneerApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(PioneerApplication.class, args);
+    }
 }

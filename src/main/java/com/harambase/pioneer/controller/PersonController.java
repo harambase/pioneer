@@ -93,14 +93,14 @@ public class PersonController {
 
     @RequestMapping(value = "/profile/{userId}", method = RequestMethod.PUT)
     public ResponseEntity uploadProfile(@RequestParam(value = "file", required = false) MultipartFile file,
-                                        @PathVariable String userId){
+                                        @PathVariable String userId) {
         HaramMessage message = personService.upload(userId, file, "p");
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/info/{userId}", method = RequestMethod.PUT)
     public ResponseEntity updateInfo(@RequestParam(value = "file", required = false) MultipartFile file,
-                                     @PathVariable String userId){
+                                     @PathVariable String userId) {
         HaramMessage message = personService.upload(userId, file, "f");
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
@@ -108,8 +108,8 @@ public class PersonController {
     @RequestMapping(value = "/info/{userId}", method = RequestMethod.GET)
     public void studentTranscriptReport(@PathVariable(value = "userId") String userId, HttpServletResponse response) {
         HaramMessage message = personService.get(userId);
-        String userInfo = (String)((LinkedHashMap) message.getData()).get("userInfo");
-        if(StringUtils.isNotEmpty(userInfo)) {
+        String userInfo = (String) ((LinkedHashMap) message.getData()).get("userInfo");
+        if (StringUtils.isNotEmpty(userInfo)) {
             JSONObject info = JSONObject.parseObject(userInfo);
             FileUtil.downloadFile(info.getString("name"), info.getString("path"), response);
         }

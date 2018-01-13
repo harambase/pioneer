@@ -2,7 +2,7 @@ package com.harambase.pioneer.pojo;
 
 import java.io.Serializable;
 
-public class Advise implements Serializable{
+public class Advise implements Serializable {
 
     private Integer id;
 

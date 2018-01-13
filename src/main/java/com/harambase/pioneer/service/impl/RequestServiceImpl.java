@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.harambase.common.Config;
 import com.harambase.common.HaramMessage;
 import com.harambase.common.constant.FlagDict;
-import com.harambase.pioneer.pojo.Person;
 import com.harambase.pioneer.pojo.TempCourse;
 import com.harambase.pioneer.pojo.TempUser;
 import com.harambase.pioneer.server.RequestServer;
@@ -25,11 +24,9 @@ import java.util.LinkedHashMap;
 @Service
 public class RequestServiceImpl implements RequestService {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
     private final static String IP = Config.SERVER_IP;
     private final static int PORT = Config.SERVER_PORT;
-
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final RequestServer requestServer;
 
     @Autowired
@@ -101,7 +98,7 @@ public class RequestServiceImpl implements RequestService {
             String oldInfo = "";
             JSONObject courseJson = JSONObject.parseObject(tempCourse.getCourseJson());
 
-            if(StringUtils.isNotEmpty(courseJson.getString("courseInfo")))
+            if (StringUtils.isNotEmpty(courseJson.getString("courseInfo")))
                 oldInfo = (JSON.parseObject(courseJson.getString("courseInfo"))).getString("path");
 
             if (StringUtils.isNotEmpty(oldInfo)) {

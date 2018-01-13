@@ -2,11 +2,11 @@ package com.harambase.pioneer.security.factory;
 
 import com.harambase.common.Config;
 import com.harambase.pioneer.pojo.Person;
-import com.harambase.pioneer.security.SpringContextHolder;
 import com.harambase.pioneer.security.ShiroUser;
-import com.harambase.support.util.CollectionUtil;
+import com.harambase.pioneer.security.SpringContextHolder;
 import com.harambase.pioneer.server.PersonServer;
 import com.harambase.pioneer.server.RoleServer;
+import com.harambase.support.util.CollectionUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.shiro.authc.CredentialsException;
 import org.apache.shiro.authc.LockedAccountException;

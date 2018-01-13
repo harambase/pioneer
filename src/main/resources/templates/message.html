@@ -82,7 +82,8 @@
                                                 <input type="checkbox" id="inlineCheckbox01" value="option1">
                                                 <span class="select-all-label">全选</span>
                                             </label>
-                                            <button type="button" class="btn btn-icon refresh-button" onclick="messageTable.draw();">
+                                            <button type="button" class="btn btn-icon refresh-button"
+                                                    onclick="messageTable.draw();">
                                                 <i class="fa fa-refresh"></i>
                                             </button>
                                         </div>
@@ -252,10 +253,10 @@
                 this.activeIndex = 3;
                 messageTable.draw();
             },
-            write: function(){
+            write: function () {
                 this.showWrite = true;
             },
-            back: function(){
+            back: function () {
                 this.detail = false;
                 this.table = true;
             }
@@ -500,64 +501,64 @@
         columns: [
             {
                 "data": null, "title": "选择", "createdCell": function (nTd) {
-                let htmlStr =
-                    '<div class="check-td mail-checkbox">' +
-                    '     <label class="checkbox-inline custom-checkbox nowrap">' +
-                    '       <input type="checkbox">' +
-                    '       <span></span>' +
-                    '     </label>' +
-                    '</div>';
-                $(nTd).html(htmlStr);
-            }
+                    let htmlStr =
+                        '<div class="check-td mail-checkbox">' +
+                        '     <label class="checkbox-inline custom-checkbox nowrap">' +
+                        '       <input type="checkbox">' +
+                        '       <span></span>' +
+                        '     </label>' +
+                        '</div>';
+                    $(nTd).html(htmlStr);
+                }
             },
             {
                 "data": null, "title": "发件人", "createdCell": function (nTd, rowData) {
-                let htmlStr = '<div style="float: left">' +
-                    '<img style="border-radius: 23px; margin: 7px 0 7px 7px;" class="photo-td little-human little-human-picture" ' +
-                    '   src="' + rowData.pic + '">' +
-                    '</div>';
-                htmlStr +=
-                    '<div class="name-container" style="margin-top: 5%;float: right">' +
-                    '   <div>' +
-                    '       <span class="name">' + rowData.sender + '</span>' +
-                    '   </div>' +
-                    '   <div>' +
-                    '       <span class="tag label label-primary friend">' + rowData.tag + '</span>' +
-                    '   </div>' +
-                    '</div>';
-                $(nTd).html(htmlStr);
-            }, "width": "250px"
+                    let htmlStr = '<div style="float: left">' +
+                        '<img style="border-radius: 23px; margin: 7px 0 7px 7px;" class="photo-td little-human little-human-picture" ' +
+                        '   src="' + rowData.pic + '">' +
+                        '</div>';
+                    htmlStr +=
+                        '<div class="name-container" style="margin-top: 5%;float: right">' +
+                        '   <div>' +
+                        '       <span class="name">' + rowData.sender + '</span>' +
+                        '   </div>' +
+                        '   <div>' +
+                        '       <span class="tag label label-primary friend">' + rowData.tag + '</span>' +
+                        '   </div>' +
+                        '</div>';
+                    $(nTd).html(htmlStr);
+                }, "width": "250px"
             },
             {"data": "subject", "title": "主题"},
             {"data": "body", "title": "内容"},
             {"data": "date", "title": "发送时间"},
             {
                 "data": null, "title": "操作", "createdCell": function (nTd, rowData) {
-                if (rowData.status.toLowerCase() === "unread") {
-                    $(nTd).html('' +
-                        '<button class="btn btn-primary btn-info" style="width: 50%" onclick="viewDetail(\'' + rowData.id + '\')">查看消息</button>' +
-                        '<button class="btn btn-primary btn-danger" style="width: 50%" onclick="markAsRead(\'' + rowData.id + '\')">标为已读</button>');
-                }
-                if (rowData.status.toLowerCase() === "read") {
-                    $(nTd).html('' +
-                        '<button class="btn btn-primary btn-info" style="width: 50%" onclick="viewDetail(\'' + rowData.id + '\')">查看消息</button>' +
-                        '<button class="btn btn-primary btn-edit" style="width: 50%" onclick="markAsUnread(\'' + rowData.id + '\')">标为未读</button>');
-                }
-                if (rowData.status.toLowerCase() === "saved") {
-                    $(nTd).html('' +
-                        '<button class="btn btn-primary btn-info" style="width: 50%" onclick="viewDraft(\'' + rowData.id + '\')">查看消息</button>');
-                }
-                if (rowData.status.toLowerCase() === "trashed") {
-                    $(nTd).html('' +
-                        '<button class="btn btn-primary btn-info" style="width: 50%" onclick="viewDetail(\'' + rowData.id + '\')">查看消息</button>' +
-                        '<button class="btn btn-primary btn-danger" style="width: 50%" onclick="deleteMsg(\'' + rowData.id + '\')">永久删除</button>');
-                }
-                if (rowData.status.toLowerCase() === "sent") {
-                    $(nTd).html('' +
-                        '<button class="btn btn-primary btn-info" style="width: 50%" onclick="viewDetail(\'' + rowData.id + '\')">查看消息</button>');
-                }
+                    if (rowData.status.toLowerCase() === "unread") {
+                        $(nTd).html('' +
+                            '<button class="btn btn-primary btn-info" style="width: 50%" onclick="viewDetail(\'' + rowData.id + '\')">查看消息</button>' +
+                            '<button class="btn btn-primary btn-danger" style="width: 50%" onclick="markAsRead(\'' + rowData.id + '\')">标为已读</button>');
+                    }
+                    if (rowData.status.toLowerCase() === "read") {
+                        $(nTd).html('' +
+                            '<button class="btn btn-primary btn-info" style="width: 50%" onclick="viewDetail(\'' + rowData.id + '\')">查看消息</button>' +
+                            '<button class="btn btn-primary btn-edit" style="width: 50%" onclick="markAsUnread(\'' + rowData.id + '\')">标为未读</button>');
+                    }
+                    if (rowData.status.toLowerCase() === "saved") {
+                        $(nTd).html('' +
+                            '<button class="btn btn-primary btn-info" style="width: 50%" onclick="viewDraft(\'' + rowData.id + '\')">查看消息</button>');
+                    }
+                    if (rowData.status.toLowerCase() === "trashed") {
+                        $(nTd).html('' +
+                            '<button class="btn btn-primary btn-info" style="width: 50%" onclick="viewDetail(\'' + rowData.id + '\')">查看消息</button>' +
+                            '<button class="btn btn-primary btn-danger" style="width: 50%" onclick="deleteMsg(\'' + rowData.id + '\')">永久删除</button>');
+                    }
+                    if (rowData.status.toLowerCase() === "sent") {
+                        $(nTd).html('' +
+                            '<button class="btn btn-primary btn-info" style="width: 50%" onclick="viewDetail(\'' + rowData.id + '\')">查看消息</button>');
+                    }
 
-            }, "width": "300px"
+                }, "width": "300px"
             }
         ],
         "columnDefs": [{

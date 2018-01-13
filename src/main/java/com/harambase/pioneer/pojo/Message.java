@@ -2,7 +2,7 @@ package com.harambase.pioneer.pojo;
 
 import java.io.Serializable;
 
-public class Message implements Serializable{
+public class Message implements Serializable {
 
     private Integer id;
 

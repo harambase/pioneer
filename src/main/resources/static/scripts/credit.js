@@ -9,7 +9,7 @@ let creditVue = new Vue({
     },
     methods: {
         doUpdate: function () {
-            axios.put('/student/' + this.student.studentId, this.student).then(function(response){
+            axios.put('/student/' + this.student.studentId, this.student).then(function (response) {
                 if (response.data.code === 2001)
                     Showbo.Msg.alert("更新成功!", function () {
                         $("#editCredits").modal('hide');
@@ -76,9 +76,9 @@ let curStuTable = $("#studentTable").DataTable({
         {"data": "incomplete", "title": "未完成学分"},
         {
             "data": null, "title": "操作", "createdCell": function (nTd, rowData) {
-            $(nTd).html('<button class="btn btn-primary col-sm-12" ' +
-                'onclick="edit(\'' + rowData.studentId + '\',\'' + rowData.sname + '\',\'' + rowData.maxCredits + '\')">修改学分上限</button>');
-        }, "width": "180px"
+                $(nTd).html('<button class="btn btn-primary col-sm-12" ' +
+                    'onclick="edit(\'' + rowData.studentId + '\',\'' + rowData.sname + '\',\'' + rowData.maxCredits + '\')">修改学分上限</button>');
+            }, "width": "180px"
         }
     ],
     "columnDefs": [{

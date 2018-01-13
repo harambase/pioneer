@@ -24,22 +24,22 @@ public class PinServiceImpl implements PinService {
     @Override
     public HaramMessage generateAll(String startTime, String endTime, String roleString, String info, String remark) {
         HaramMessage retMessage = new HaramMessage();
-        if(roleString.contains(",")) {
+        if (roleString.contains(",")) {
             String msg = "返回信息：";
             HaramMessage message_1 = pinServer.generatAll(IP, PORT, startTime, endTime, Integer.valueOf(roleString.split(",")[0]), info, remark);
             HaramMessage message_2 = pinServer.generatAll(IP, PORT, startTime, endTime, Integer.valueOf(roleString.split(",")[1]), info, remark);
-            if(message_1.getCode() != 2001 || message_2.getCode() != 2001) {
+            if (message_1.getCode() != 2001 || message_2.getCode() != 2001) {
                 msg += message_1.getMsg();
                 msg += message_2.getMsg();
                 retMessage.setCode(FlagDict.FAIL.getV());
                 retMessage.setMsg(msg);
                 return retMessage;
-            }else{
+            } else {
                 retMessage.setCode(FlagDict.SUCCESS.getV());
                 retMessage.setMsg(FlagDict.SUCCESS.getM());
             }
             return retMessage;
-        }else {
+        } else {
             return pinServer.generatAll(IP, PORT, startTime, endTime, Integer.valueOf(roleString), info, remark);
         }
     }

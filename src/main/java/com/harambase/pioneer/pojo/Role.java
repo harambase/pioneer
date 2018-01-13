@@ -2,7 +2,7 @@ package com.harambase.pioneer.pojo;
 
 import java.io.Serializable;
 
-public class Role implements Serializable{
+public class Role implements Serializable {
 
     private Integer id;
 

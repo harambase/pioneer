@@ -24,6 +24,7 @@ import java.util.Map;
 /**
  * Request请求过滤包装
  * <p>
+ *
  * @author hubin
  * @Date 2014-5-8
  */
@@ -47,10 +48,9 @@ public class WafRequestWrapper extends HttpServletRequestWrapper {
 
 
     /**
-     * @Description 数组参数过滤
-     * @param parameter
-     * 				过滤参数
+     * @param parameter 过滤参数
      * @return
+     * @Description 数组参数过滤
      */
     @Override
     public String[] getParameterValues(String parameter) {
@@ -88,10 +88,9 @@ public class WafRequestWrapper extends HttpServletRequestWrapper {
     }
 
     /**
-     * @Description 参数过滤
-     * @param parameter
-     * 				过滤参数
+     * @param parameter 过滤参数
      * @return
+     * @Description 参数过滤
      */
     @Override
     public String getParameter(String parameter) {
@@ -100,10 +99,9 @@ public class WafRequestWrapper extends HttpServletRequestWrapper {
 
 
     /**
-     * @Description 请求头过滤
-     * @param name
-     * 				过滤内容
+     * @param name 过滤内容
      * @return
+     * @Description 请求头过滤
      */
     @Override
     public String getHeader(String name) {
@@ -112,8 +110,8 @@ public class WafRequestWrapper extends HttpServletRequestWrapper {
 
 
     /**
-     * @Description Cookie内容过滤
      * @return
+     * @Description Cookie内容过滤
      */
     @Override
     public Cookie[] getCookies() {
@@ -128,10 +126,9 @@ public class WafRequestWrapper extends HttpServletRequestWrapper {
     }
 
     /**
-     * @Description 过滤字符串内容
-     * @param rawValue
-     * 				待处理内容
+     * @param rawValue 待处理内容
      * @return
+     * @Description 过滤字符串内容
      */
     protected String filterParamString(String rawValue) {
         if (null == rawValue) {
