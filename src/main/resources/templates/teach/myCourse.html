@@ -33,17 +33,77 @@
                             我的课程
                         </div>
                         <div class="panel-body">
-                            <div class="exampleTable">
-                                <div id="firstStep" class="firstStepWrap" v-for="course in courseList">
-                                    <div class="firstStep clearfix">
-                                        <div class="item check">
-                                            <div class="img">
-                                                <img src="" alt="">
-                                            </div>
-                                            <h3>{{course.name}}</h3>
-                                            <p>{{course.faculty}} </p>
-                                            <p>{{course.time}}</p>
-                                            <p>{{course.day}}</p>
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="firstStep clearfix" v-for="course in courseList">
+                                        <div class="lessons-item js-lessons-item g-clearfix" >
+                                            <a href="#">
+                                                <div class="lessons-pic">
+                                                    <img width="240" height="200" src="">
+                                                </div>
+                                                <div class="lessons-info">
+                                                    <h3 class="info-tile">{{course.name}}</h3>
+
+                                                    <div class="lessons-live">
+                                                        <span class="space">课程周期: {{course.date}}</span>
+                                                        <span class="">课程时间：{{course.time}} {{course.day}}</span>
+                                                    </div>
+                                                    <div class="lessons-complete">
+                                                    <span class="space">作业完成度：<span
+                                                            class="js-lesson-complete">{{}}</span></span>
+                                                        <span class="space">出勤度：<span
+                                                                class="js-lesson-rate">{{}}</span></span>
+                                                        <span>教师：<span class="js-lesson-record">{{course.faculty}}</span></span>
+                                                    </div>
+                                                </div>
+                                                <div class="lessons-operate">
+                                                    <div class="status over">{{course.status}}</div>
+                                                    <div class="enter-class">进入课程</div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--End Advanced Tables -->
+                </div>
+                <div class="col-md-12">
+                    <!-- Advanced Tables -->
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            我教的课程
+                        </div>
+                        <div class="panel-body">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="firstStep clearfix" v-for="course in teachList">
+                                        <div class="lessons-item js-lessons-item g-clearfix">
+                                            <a href="#">
+                                                <div class="lessons-pic">
+                                                    <img width="240" height="200" src="">
+                                                </div>
+                                                <div class="lessons-info">
+                                                    <h3 class="info-tile">{{course.name}}</h3>
+
+                                                    <div class="lessons-live">
+                                                        <span class="space">课程周期: {{course.date}}</span>
+                                                        <span class="">课程时间：{{course.time}} {{course.day}}</span>
+                                                    </div>
+                                                    <div class="lessons-complete">
+                                                    <span class="space">作业完成度：<span
+                                                            class="js-lesson-complete">{{}}</span></span>
+                                                        <span class="space">直播出勤度：<span
+                                                                class="js-lesson-rate">{{}}</span></span>
+                                                        <span>录播完成度：<span class="js-lesson-record">{{}}</span></span>
+                                                    </div>
+                                                </div>
+                                                <div class="lessons-operate">
+                                                    <div class="status over">{{course.status}}</div>
+                                                    <div class="enter-class">进入课程</div>
+                                                </div>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -53,9 +113,10 @@
                     <!--End Advanced Tables -->
                 </div>
             </div>
-            <div id = footerPlaceholder">
-                <div th:include="/common :: footer" id="copyright"></div>
-            </div>
+
+        </div>
+        <div class="panel-footer" id = footerPlaceholder">
+            <div th:include="/common :: footer" id="copyright"></div>
         </div>
         <!-- /. PAGE INNER  -->
     </div>
@@ -73,17 +134,17 @@
             pageMode: location.search.split("&")[0].split("=")[1],
         },
         mounted: function(){
-            axios.get('/course?mode=faculty').then(function(response){
-                let teachList = response.data.data;
-                for(let i = 0; i<teachList.size; i++){
-                    let course
-                }
-            });
-            axios.get('/transcript?complete=0').then(function(response){
-                this.courseList = response.data.data;
-            });
+            init();
         }
-    })
+    });
+    function init(){
+        axios.get('/course?mode=faculty').then(function(response){
+            myCourseVue.$data.teachList = response.data.data;
+        });
+        axios.get('/student/course?status=1').then(function(response){
+            myCourseVue.$data.courseList = response.data.data;
+        });
+    }
 </script>
 </body>
 </html>

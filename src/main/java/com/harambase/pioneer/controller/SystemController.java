@@ -8,6 +8,7 @@ import com.harambase.pioneer.service.MonitorService;
 import com.harambase.pioneer.service.PersonService;
 import com.harambase.support.util.SessionUtil;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -50,7 +51,9 @@ public class SystemController {
 
                 //将用户信息放入session中
                 subject.getSession().setAttribute("user", person);
-                subject.getSession().setAttribute("profile", (JSON.parseObject(person.getProfile())).getString("path"));
+
+                if(StringUtils.isNotEmpty(person.getProfile()))
+                    subject.getSession().setAttribute("profile", (JSON.parseObject(person.getProfile())).getString("path"));
 
                 subject.login(token); //完成登录
 

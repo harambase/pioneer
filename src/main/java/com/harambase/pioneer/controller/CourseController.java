@@ -60,12 +60,12 @@ public class CourseController {
 
     @RequiresPermissions("user")
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity list(@RequestParam(value = "start") Integer start,
-                               @RequestParam(value = "length") Integer length,
-                               @RequestParam(value = "draw") Integer draw,
-                               @RequestParam(value = "search[value]") String search,
-                               @RequestParam(value = "order[0][dir]") String order,
-                               @RequestParam(value = "order[0][column]") String orderCol,
+    public ResponseEntity list(@RequestParam(value = "start", required = false, defaultValue = "0") Integer start,
+                               @RequestParam(value = "length", required = false, defaultValue = "100") Integer length,
+                               @RequestParam(value = "draw", required = false, defaultValue = "1") Integer draw,
+                               @RequestParam(value = "search[value]", required = false, defaultValue = "") String search,
+                               @RequestParam(value = "order[0][dir]", required = false, defaultValue = "") String order,
+                               @RequestParam(value = "order[0][column]",required = false, defaultValue = "") String orderCol,
                                @RequestParam(value = "mode", required = false) String mode,
                                @RequestParam(value = "info", required = false, defaultValue = "") String info,
                                @RequestParam(value = "facultyId", required = false, defaultValue = "") String facultyId) {

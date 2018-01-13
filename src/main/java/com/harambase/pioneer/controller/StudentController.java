@@ -67,4 +67,11 @@ public class StudentController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
+    @RequiresPermissions(value = {"admin", "teach", "student"}, logical = Logical.OR)
+    @RequestMapping(value = "/course", method = RequestMethod.GET)
+    public ResponseEntity courseList(@RequestParam(value = "status", required = false, defaultValue = "") String status) {
+        HaramMessage message = studentService.courseList(status, SessionUtil.getUserId());
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
 }

@@ -41,4 +41,9 @@ public class StudentServiceImpl implements StudentService {
     public HaramMessage getAvailableCredit(String studentid, String info) {
         return studentServer.getAvailableCredit(IP, PORT, studentid, info);
     }
+
+    @Override
+    public HaramMessage courseList(String status, String studentId) {
+        return studentServer.courseList(IP, PORT, status, studentId);
+    }
 }

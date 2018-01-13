@@ -51,4 +51,11 @@ public class StudentServer {
         Map params = new HashMap();
         return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
     }
+
+    public HaramMessage courseList(String ip, int port, String status, String studentId) {
+        String remotePath = "/student/" + studentId + "/course?status=" + status;
+        StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
+        Map params = new HashMap();
+        return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
+    }
 }

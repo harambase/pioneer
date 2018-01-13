@@ -40,12 +40,12 @@ public class TranscriptController {
 
     @RequiresPermissions(value = {"admin", "teach", "student", "faculty"}, logical = Logical.OR)
     @RequestMapping(value = {"/list", "/course/student"}, produces = "application/json", method = RequestMethod.GET)
-    public ResponseEntity listForTeach(@RequestParam(value = "start") Integer start,
-                                       @RequestParam(value = "length") Integer length,
-                                       @RequestParam(value = "draw") Integer draw,
-                                       @RequestParam(value = "search[value]") String search,
-                                       @RequestParam(value = "order[0][dir]") String order,
-                                       @RequestParam(value = "order[0][column]") String orderCol,
+    public ResponseEntity listForTeach(@RequestParam(value = "start", required = false, defaultValue = "0") Integer start,
+                                       @RequestParam(value = "length", required = false, defaultValue = "100") Integer length,
+                                       @RequestParam(value = "draw", required = false, defaultValue = "1") Integer draw,
+                                       @RequestParam(value = "search[value]", required = false, defaultValue = "") String search,
+                                       @RequestParam(value = "order[0][dir]", required = false, defaultValue = "") String order,
+                                       @RequestParam(value = "order[0][column]",required = false, defaultValue = "") String orderCol,
                                        @RequestParam(value = "crn", required = false) String crn,
                                        @RequestParam(value = "studentId", required = false) String studentId,
                                        @RequestParam(value = "info", required = false) String info) {
@@ -67,12 +67,12 @@ public class TranscriptController {
 
     @RequiresPermissions(value = {"admin", "student"}, logical = Logical.OR)
     @RequestMapping(produces = "application/json", method = RequestMethod.GET)
-    public ResponseEntity listForStudent(@RequestParam(value = "start") Integer start,
-                                         @RequestParam(value = "length") Integer length,
-                                         @RequestParam(value = "draw") Integer draw,
-                                         @RequestParam(value = "search[value]") String search,
-                                         @RequestParam(value = "order[0][dir]") String order,
-                                         @RequestParam(value = "order[0][column]") String orderCol,
+    public ResponseEntity listForStudent(@RequestParam(value = "start", required = false, defaultValue = "0") Integer start,
+                                         @RequestParam(value = "length", required = false, defaultValue = "100") Integer length,
+                                         @RequestParam(value = "draw", required = false, defaultValue = "1") Integer draw,
+                                         @RequestParam(value = "search[value]", required = false, defaultValue = "") String search,
+                                         @RequestParam(value = "order[0][dir]", required = false, defaultValue = "") String order,
+                                         @RequestParam(value = "order[0][column]",required = false, defaultValue = "") String orderCol,
                                          @RequestParam(value = "complete", required = false) String complete) {
 
         HaramMessage message = transcriptService.transcriptList(start, length, search, order, orderCol, SessionUtil.getUserId(), "", "", complete);
