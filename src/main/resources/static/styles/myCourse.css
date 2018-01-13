@@ -231,6 +231,10 @@ a:hover {
 }
 
 .lessons-item .lessons-operate .being {
+    background: #0bd651
+}
+
+.lessons-item .lessons-operate .before {
     background: #81b2ff
 }
 

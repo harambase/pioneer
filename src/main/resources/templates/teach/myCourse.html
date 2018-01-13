@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 
 <head th:include="/common :: header('我的课程',true, false)"></head>
 <head>
@@ -26,7 +26,8 @@
         </div>
         <div id="page-inner">
             <div class="row" id="myCoursePge">
-                <div class="col-md-12">
+
+                <div class="col-md-12" v-if="courseList.length > 0">
                     <!-- Advanced Tables -->
                     <div class="panel panel-primary">
                         <div class="panel-heading">
@@ -39,10 +40,10 @@
                                         <div class="lessons-item js-lessons-item g-clearfix">
                                             <a href="#">
                                                 <div class="lessons-pic">
-                                                    <img width="240" height="200" src="">
+                                                    <img width="200" height="200" src="/static/images/harambe.png">
                                                 </div>
                                                 <div class="lessons-info">
-                                                    <h3 class="info-tile">{{course.name}}</h3>
+                                                    <h3 class="info-tile">{{course.name}} ({{course.level}}/{{course.section}})</h3>
 
                                                     <div class="lessons-live">
                                                         <span class="space">课程周期: {{course.date}}</span>
@@ -58,7 +59,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="lessons-operate">
-                                                    <div class="status over">{{course.status}}</div>
+                                                    <div class="status being">进行中</div>
                                                     <div class="enter-class">进入课程</div>
                                                 </div>
                                             </a>
@@ -70,7 +71,7 @@
                     </div>
                     <!--End Advanced Tables -->
                 </div>
-                <div class="col-md-12">
+                <div class="col-md-12" v-if="teachList.length > 0">
                     <!-- Advanced Tables -->
                     <div class="panel panel-success">
                         <div class="panel-heading">
@@ -80,28 +81,35 @@
                             <div class="panel panel-default">
                                 <div class="panel-body">
                                     <div class="firstStep clearfix" v-for="course in teachList">
-                                        <div class="lessons-item js-lessons-item g-clearfix">
+                                        <div class="lessons-item js-lessons-item g-clearfix" v-if="course.status !== -1">
                                             <a href="#">
                                                 <div class="lessons-pic">
-                                                    <img width="240" height="200" src="">
+                                                    <img width="200" height="200" src="/static/images/harambe.png">
                                                 </div>
                                                 <div class="lessons-info">
-                                                    <h3 class="info-tile">{{course.name}}</h3>
+                                                    <h3 class="info-tile">{{course.name}} ({{course.level}}/{{course.section}})</h3>
 
                                                     <div class="lessons-live">
                                                         <span class="space">课程周期: {{course.date}}</span>
-                                                        <span class="">课程时间：{{course.time}} {{course.day}}</span>
+                                                        <span class="space">课程时间：{{course.time}}</span>
+                                                        <span class="">课程星期：{{course.day}}</span>
                                                     </div>
                                                     <div class="lessons-complete">
-                                                    <span class="space">作业完成度：<span
-                                                            class="js-lesson-complete">{{}}</span></span>
-                                                        <span class="space">直播出勤度：<span
-                                                                class="js-lesson-rate">{{}}</span></span>
-                                                        <span>录播完成度：<span class="js-lesson-record">{{}}</span></span>
+                                                    <span class="space">学生人数：
+                                                        <span class="js-lesson-complete">{{course.capacity-course.remain}}</span>
+                                                    </span>
+                                                        <span class="space">剩余：
+                                                            <span class="js-lesson-rate">{{course.remain}}</span>
+                                                        </span>
+                                                        <span>教室：
+                                                            <span class="js-lesson-record">{{course.classroom}}
+                                                            </span>
+                                                        </span>
                                                     </div>
                                                 </div>
                                                 <div class="lessons-operate">
-                                                    <div class="status over">{{course.status}}</div>
+                                                    <div class="status being" v-if="course.status === 0">进行中</div>
+                                                    <div class="status before" v-if="course.status === 1">未开始</div>
                                                     <div class="enter-class">进入课程</div>
                                                 </div>
                                             </a>
@@ -135,15 +143,19 @@
             pageMode: location.search.split("&")[0].split("=")[1],
         },
         mounted: function () {
-            init();
+            initTeachList();
+            initCourseList();
         }
     });
 
-    function init() {
+    function initTeachList() {
         axios.get('/course?mode=faculty').then(function (response) {
             myCourseVue.$data.teachList = response.data.data;
         });
-        axios.get('/student/course?status=1').then(function (response) {
+    }
+
+    function initCourseList(){
+        axios.get('/student/course?status=0').then(function (response) {
             myCourseVue.$data.courseList = response.data.data;
         });
     }
