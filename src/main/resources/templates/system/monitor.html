@@ -1,0 +1,165 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="/common :: header('先锋OA系统',false,false)"></head>
+<body>
+<div id="wrapper">
+
+    <div th:include="/common :: navtop" class="sidebar-collapse"></div>
+
+    <div th:include="/common :: navbar" class="sidebar-collapse"></div>
+
+    <div id="page-wrapper">
+        <div class="header">
+            <h1 class="page-header">
+                先锋OA系统
+                <small id="name"
+                       th:text="'Welcome back '+${session.user.lastName}+', '+${session.user.firstName} + '!'"></small>
+            </h1>
+            <ol class="breadcrumb">
+                <li class="active"><a href="/index">主页</a></li>
+            </ol>
+
+        </div>
+        <div id="page-inner">
+            <!-- /. ROW  -->
+            <div class="row" id="counts">
+                <div class="col-md-4 col-sm-12 col-xs-12">
+                    <div class="board">
+                        <div class="panel panel-primary">
+                            <div class="number">
+                                <h3>
+                                    <span>{{studentNum}}</span><br/>
+                                    <small>当前学生总数</small>
+                                </h3>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-user fa-5x red"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-12 col-xs-12">
+                    <div class="board">
+                        <div class="panel panel-primary">
+                            <div class="number">
+                                <h3>
+                                    <span>{{facultyNum}}</span><br/>
+                                    <small>当前教师总数</small>
+                                </h3>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-eye fa-5x blue"></i>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-12 col-xs-12">
+                    <div class="board">
+                        <div class="panel panel-primary">
+                            <div class="number">
+                                <h3>
+                                    <span>{{courseNum}}</span><br/>
+                                    <small>当前课程总数</small>
+                                </h3>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-book fa-5x green"></i>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 col-xs-12">
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            <div class="card-title">
+                                <div class="title">先锋用户组成情况表</div>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div id="exampleChart" style="width: 100%; height: 460px"></div>
+                        </div>
+                        <div class="panel-footer">
+                            图例：左图按类型分类,右图按性别分类。
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-xs-12">
+                    <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            <div class="card-title">
+                                <div class="title">先锋SFC关系表</div>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <div id="relationChart" style="width: 100%; height: 460px"></div>
+                        </div>
+                        <div class="panel-footer">
+                            图例：Student-Faculty-Course(SFC: 学生-教师-课程)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer" id=footerPlaceholder">
+            <div th:include="/common :: footer" id="copyright"></div>
+        </div>
+        <!-- /. PAGE INNER  -->
+    </div>
+    <!-- /. PAGE WRAPPER  -->
+</div><!-- /. WRAPPER  -->
+</body>
+<script>
+    window.sliderFirstNav = "0";
+</script>
+
+<div th:include="/common :: load_js(true,true,false)"></div>
+<script src="/static/scripts/index.js"></script>
+<script>
+    const v = new Vue({
+        el: '#counts',
+        data: {
+            studentNum: 0,
+            facultyNum: 0,
+            courseNum: 0
+        },
+        beforeCreate: function () {
+            initUserChart();
+            initRelationChart();
+            initCounts();
+        }
+    });
+
+    function initCounts() {
+        axios("/system/info").then(function (response) {
+
+            const result = response.data.data;
+            v.$data.studentNum = result.student;
+            v.$data.facultyNum = result.faculty;
+            v.$data.courseNum = result.course;
+        })
+    }
+
+    function initUserChart() {
+        axios("/system/user/count").then(function (response) {
+            const dataBeast = response.data.dataBeast;
+            const xAxisData = response.data.xAxisData;
+            exampleUserTop("exampleChart", dataBeast, xAxisData);
+        })
+    }
+
+    function initRelationChart() {
+        axios("/system/relation").then(function (response) {
+            relation(response.data.data, "relationChart")
+        })
+    }
+
+
+</script>
+</html>

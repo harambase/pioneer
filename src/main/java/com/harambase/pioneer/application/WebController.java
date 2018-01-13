@@ -45,18 +45,18 @@ public class WebController {
     }
 
     @RequiresPermissions("user")
-    @RequestMapping("/myCourse")
-    public String myCourse() {
-        return "teach/myCourse";
-    }
-
-    @RequiresPermissions("user")
     @RequestMapping("/personalCenter")
     public String personalCenter() {
         return "system/user";
     }
 
     //系统管理
+    @RequiresPermissions(value = {"system", "admin"}, logical = Logical.OR)
+    @RequestMapping("/system/monitor")
+    public String monitor() {
+        return "system/monitor";
+    }
+
     @RequiresPermissions(value = {"system", "admin"}, logical = Logical.OR)
     @RequestMapping("/system/user/manage")
     public String user() {

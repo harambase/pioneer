@@ -259,8 +259,6 @@
     <nav class="navbar-default navbar-side" role="navigation">
         <ul class="nav" id="main-menu">
             <li><a href="/index" class="active-menu"><i class="fa fa-dashboard"></i> 主页</a></li>
-            <li shiro:hasAnyPermissions="admin, student, faculty, teach"><a href="/myCourse"><i class="fa fa-book"></i>我的课程</a>
-            </li>
 
             <li><a href="#"><i class="fa fa-desktop"></i>教学系统<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
@@ -312,6 +310,7 @@
                     </li>
                     <li shiro:hasAnyPermissions="admin, system"><a href="/system/role">系统权限列表</a></li>
                     <li shiro:hasAnyPermissions="admin, system"><a href="/system/user/request">新用户申请管理</a></li>
+                    <li shiro:hasAnyPermissions="admin, system"><a href="/system/monitor">系统监控</a></li>
                 </ul>
             </li>
 

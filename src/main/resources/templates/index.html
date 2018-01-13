@@ -1,111 +1,128 @@
 ﻿<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 
-<head th:include="/common :: header('先锋OA系统',false,false)"></head>
+<head th:include="/common :: header('我的课程',true, false)"></head>
+<head>
+    <link rel="stylesheet" href="/static/styles/myCourse.css">
+</head>
 <body>
 <div id="wrapper">
-
+    <!--/. NAV TOP  -->
     <div th:include="/common :: navtop" class="sidebar-collapse"></div>
 
+    <!-- /. NAV SIDE  -->
     <div th:include="/common :: navbar" class="sidebar-collapse"></div>
-
     <div id="page-wrapper">
         <div class="header">
             <h1 class="page-header">
                 先锋OA系统
-                <small id="name"
-                       th:text="'Welcome back '+${session.user.lastName}+', '+${session.user.firstName} + '!'"></small>
+                <small>我的课程</small>
             </h1>
             <ol class="breadcrumb">
-                <li class="active"><a href="/index">主页</a></li>
+                <li><a href="/index">主页</a></li>
+                <li><a href="/myCourse" class="active">我的课程</a></li>
             </ol>
 
         </div>
         <div id="page-inner">
-            <!-- /. ROW  -->
-            <div class="row" id="counts">
-                <div class="col-md-4 col-sm-12 col-xs-12">
-                    <div class="board">
-                        <div class="panel panel-primary">
-                            <div class="number">
-                                <h3>
-                                    <span>{{studentNum}}</span><br/>
-                                    <small>当前学生总数</small>
-                                </h3>
-                            </div>
-                            <div class="icon">
-                                <i class="fa fa-user fa-5x red"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="row" id="myCoursePge">
 
-                <div class="col-md-4 col-sm-12 col-xs-12">
-                    <div class="board">
-                        <div class="panel panel-primary">
-                            <div class="number">
-                                <h3>
-                                    <span>{{facultyNum}}</span><br/>
-                                    <small>当前教师总数</small>
-                                </h3>
-                            </div>
-                            <div class="icon">
-                                <i class="fa fa-eye fa-5x blue"></i>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4 col-sm-12 col-xs-12">
-                    <div class="board">
-                        <div class="panel panel-primary">
-                            <div class="number">
-                                <h3>
-                                    <span>{{courseNum}}</span><br/>
-                                    <small>当前课程总数</small>
-                                </h3>
-                            </div>
-                            <div class="icon">
-                                <i class="fa fa-book fa-5x green"></i>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6 col-xs-12">
-                    <div class="panel panel-danger">
+                <div class="col-md-12" v-if="courseList.length > 0">
+                    <!-- Advanced Tables -->
+                    <div class="panel panel-primary">
                         <div class="panel-heading">
-                            <div class="card-title">
-                                <div class="title">先锋用户组成情况表</div>
-                            </div>
+                            我的课程
                         </div>
                         <div class="panel-body">
-                            <div id="exampleChart" style="width: 100%; height: 460px"></div>
-                        </div>
-                        <div class="panel-footer">
-                            图例：左图按类型分类,右图按性别分类。
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-xs-12">
-                    <div class="panel panel-danger">
-                        <div class="panel-heading">
-                            <div class="card-title">
-                                <div class="title">先锋SFC关系表</div>
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="firstStep clearfix" v-for="course in courseList">
+                                        <div class="lessons-item js-lessons-item g-clearfix">
+                                            <a href="#">
+                                                <div class="lessons-pic">
+                                                    <img width="200" height="200" src="/static/images/harambe.png">
+                                                </div>
+                                                <div class="lessons-info">
+                                                    <h3 class="info-tile">{{course.name}} ({{course.level}}/{{course.section}})</h3>
+
+                                                    <div class="lessons-live">
+                                                        <span class="space">课程周期: {{course.date}}</span>
+                                                        <span class="">课程时间：{{course.time}} {{course.day}}</span>
+                                                    </div>
+                                                    <div class="lessons-complete">
+                                                    <span class="space">作业完成度：<span
+                                                            class="js-lesson-complete">{{}}</span></span>
+                                                        <span class="space">出勤度：<span
+                                                                class="js-lesson-rate">{{}}</span></span>
+                                                        <span>教师：<span
+                                                                class="js-lesson-record">{{course.faculty}}</span></span>
+                                                    </div>
+                                                </div>
+                                                <div class="lessons-operate">
+                                                    <div class="status being">进行中</div>
+                                                    <div class="enter-class">进入课程</div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="panel-body">
-                            <div id="relationChart" style="width: 100%; height: 460px"></div>
+                    </div>
+                    <!--End Advanced Tables -->
+                </div>
+                <div class="col-md-12" v-if="teachList.length > 0">
+                    <!-- Advanced Tables -->
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            我教的课程
                         </div>
-                        <div class="panel-footer">
-                            图例：Student-Faculty-Course(SFC: 学生-教师-课程)
+                        <div class="panel-body">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="firstStep clearfix" v-for="course in teachList">
+                                        <div class="lessons-item js-lessons-item g-clearfix" v-if="course.status !== -1">
+                                            <a href="#">
+                                                <div class="lessons-pic">
+                                                    <img width="200" height="200" src="/static/images/harambe.png">
+                                                </div>
+                                                <div class="lessons-info">
+                                                    <h3 class="info-tile">{{course.name}} ({{course.level}}/{{course.section}})</h3>
+
+                                                    <div class="lessons-live">
+                                                        <span class="space">课程周期: {{course.date}}</span>
+                                                        <span class="space">课程时间：{{course.time}}</span>
+                                                        <span class="">课程星期：{{course.day}}</span>
+                                                    </div>
+                                                    <div class="lessons-complete">
+                                                    <span class="space">学生人数：
+                                                        <span class="js-lesson-complete">{{course.capacity-course.remain}}</span>
+                                                    </span>
+                                                        <span class="space">剩余：
+                                                            <span class="js-lesson-rate">{{course.remain}}</span>
+                                                        </span>
+                                                        <span>教室：
+                                                            <span class="js-lesson-record">{{course.classroom}}
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="lessons-operate">
+                                                    <div class="status being" v-if="course.status === 0">进行中</div>
+                                                    <div class="status before" v-if="course.status === 1">未开始</div>
+                                                    <div class="enter-class">进入课程</div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    <!--End Advanced Tables -->
                 </div>
             </div>
+
         </div>
         <div class="panel-footer" id=footerPlaceholder">
             <div th:include="/common :: footer" id="copyright"></div>
@@ -113,53 +130,35 @@
         <!-- /. PAGE INNER  -->
     </div>
     <!-- /. PAGE WRAPPER  -->
-</div><!-- /. WRAPPER  -->
-</body>
+</div>
+<!-- /. WRAPPER  -->
+<div th:include="/common :: load_js(true , false, false)"></div>
 <script>
-    window.sliderFirstNav = "0";
-</script>
 
-<div th:include="/common :: load_js(true,true,false)"></div>
-<script src="/static/scripts/index.js"></script>
-<script>
-    const v = new Vue({
-        el: '#counts',
+    let myCourseVue = new Vue({
+        el: "#myCoursePge",
         data: {
-            studentNum: 0,
-            facultyNum: 0,
-            courseNum: 0
+            courseList: [],
+            teachList: [],
+            pageMode: location.search.split("&")[0].split("=")[1],
         },
-        beforeCreate: function () {
-            initUserChart();
-            initRelationChart();
-            initCounts();
+        mounted: function () {
+            initTeachList();
+            initCourseList();
         }
     });
 
-    function initCounts() {
-        axios("/system/info").then(function (response) {
-
-            const result = response.data.data;
-            v.$data.studentNum = result.student;
-            v.$data.facultyNum = result.faculty;
-            v.$data.courseNum = result.course;
-        })
+    function initTeachList() {
+        axios.get('/course?mode=faculty').then(function (response) {
+            myCourseVue.$data.teachList = response.data.data;
+        });
     }
 
-    function initUserChart() {
-        axios("/system/user/count").then(function (response) {
-            const dataBeast = response.data.dataBeast;
-            const xAxisData = response.data.xAxisData;
-            exampleUserTop("exampleChart", dataBeast, xAxisData);
-        })
+    function initCourseList(){
+        axios.get('/student/course?status=0').then(function (response) {
+            myCourseVue.$data.courseList = response.data.data;
+        });
     }
-
-    function initRelationChart() {
-        axios("/system/relation").then(function (response) {
-            relation(response.data.data, "relationChart")
-        })
-    }
-
-
 </script>
+</body>
 </html>
