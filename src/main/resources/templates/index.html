@@ -1,10 +1,24 @@
 ﻿<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org">
 
-<head th:include="/common :: header('我的课程',true, false)"></head>
 <head>
+
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta content="" name="description"/>
+    <meta content="harambase" name="shilei"/>
+
+    <title>主页</title>
+
+    <link rel="stylesheet" href="/static/plugins/confirm/confirm.css">
+    <link rel="stylesheet" href="/static/plugins/bootstrap/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/static/plugins/font/font.css"/>
+    <link rel="stylesheet" href="/static/plugins/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/styles/custom-styles.css"/>
     <link rel="stylesheet" href="/static/styles/myCourse.css">
+
 </head>
+
 <body>
 <div id="wrapper">
     <!--/. NAV TOP  -->
@@ -16,13 +30,9 @@
         <div class="header">
             <h1 class="page-header">
                 先锋OA系统
-                <small>我的课程</small>
+                <small id="name"
+                       th:text="'Welcome back '+${session.user.lastName}+', '+${session.user.firstName} + '!'"></small>
             </h1>
-            <ol class="breadcrumb">
-                <li><a href="/index">主页</a></li>
-                <li><a href="/myCourse" class="active">我的课程</a></li>
-            </ol>
-
         </div>
         <div id="page-inner">
             <div class="row" id="myCoursePge">
@@ -31,7 +41,7 @@
                     <!-- Advanced Tables -->
                     <div class="panel panel-primary">
                         <div class="panel-heading">
-                            我的课程
+                            <h1 style="font-size: 20px">我的课程</h1>
                         </div>
                         <div class="panel-body">
                             <div class="panel panel-default">
@@ -43,17 +53,14 @@
                                                     <img width="200" height="200" src="/static/images/harambe.png">
                                                 </div>
                                                 <div class="lessons-info">
-                                                    <h3 class="info-tile">{{course.name}} ({{course.level}}/{{course.section}})</h3>
+                                                    <h3 class="info-tile">{{course.name}}
+                                                        ({{course.level}}/{{course.section}})</h3>
 
                                                     <div class="lessons-live">
                                                         <span class="space">课程周期: {{course.date}}</span>
                                                         <span class="">课程时间：{{course.time}} {{course.day}}</span>
                                                     </div>
                                                     <div class="lessons-complete">
-                                                    <span class="space">作业完成度：<span
-                                                            class="js-lesson-complete">{{}}</span></span>
-                                                        <span class="space">出勤度：<span
-                                                                class="js-lesson-rate">{{}}</span></span>
                                                         <span>教师：<span
                                                                 class="js-lesson-record">{{course.faculty}}</span></span>
                                                     </div>
@@ -73,21 +80,23 @@
                 </div>
                 <div class="col-md-12" v-if="teachList.length > 0">
                     <!-- Advanced Tables -->
-                    <div class="panel panel-success">
+                    <div class="panel panel-danger">
                         <div class="panel-heading">
-                            我教的课程
+                            <h1 style="font-size: 20px">我教的课程</h1>
                         </div>
                         <div class="panel-body">
                             <div class="panel panel-default">
                                 <div class="panel-body">
                                     <div class="firstStep clearfix" v-for="course in teachList">
-                                        <div class="lessons-item js-lessons-item g-clearfix" v-if="course.status !== -1">
+                                        <div class="lessons-item js-lessons-item g-clearfix"
+                                             v-if="course.status !== -1">
                                             <a href="#">
                                                 <div class="lessons-pic">
                                                     <img width="200" height="200" src="/static/images/harambe.png">
                                                 </div>
                                                 <div class="lessons-info">
-                                                    <h3 class="info-tile">{{course.name}} ({{course.level}}/{{course.section}})</h3>
+                                                    <h3 class="info-tile">{{course.name}}
+                                                        ({{course.level}}/{{course.section}})</h3>
 
                                                     <div class="lessons-live">
                                                         <span class="space">课程周期: {{course.date}}</span>
@@ -154,7 +163,7 @@
         });
     }
 
-    function initCourseList(){
+    function initCourseList() {
         axios.get('/student/course?status=0').then(function (response) {
             myCourseVue.$data.courseList = response.data.data;
         });
