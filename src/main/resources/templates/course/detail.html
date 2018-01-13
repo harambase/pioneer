@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:include="/common :: header('课程查询',true, true)"></head>
+
+<body>
+<div id="wrapper">
+    <!--/. NAV TOP  -->
+    <div th:include="/common :: navtop" class="sidebar-collapse"></div>
+
+    <!-- /. NAV SIDE  -->
+    <div th:include="/common :: navbar" class="sidebar-collapse"></div>
+    <div id="page-wrapper">
+        <div class="header">
+            <h1 class="page-header">
+                先锋课程系统
+                <small>我的课程</small>
+            </h1>
+        </div>
+        <div id="page-inner">
+            <div class="row" id="myCoursePge">
+
+                <div class="col-md-12" v-if="courseList.length > 0">
+                    <!-- Advanced Tables -->
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h1 style="font-size: 20px">我的课程</h1>
+                        </div>
+                        <div class="panel-body">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="firstStep clearfix" v-for="assignment in assignmentList">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--End Advanced Tables -->
+                </div>
+            </div>
+
+        </div>
+        <div class="panel-footer" id=footerPlaceholder">
+            <div th:include="/common :: footer" id="copyright"></div>
+        </div>
+        <!-- /. PAGE INNER  -->
+    </div>
+    <!-- /. PAGE WRAPPER  -->
+</div>
+<!-- /. WRAPPER  -->
+<div th:include="/common :: load_js(true , false, false)"></div>
+<script>
+
+    let myCourseVue = new Vue({
+        el: "#myCoursePge",
+        data: {
+            assignmentList: [],
+            pageMode: location.search.split("&")[0].split("=")[1],
+            crn: location.search.split("&")[1].split("=")[1],
+        },
+        mounted: function () {
+            initTeachList();
+            initCourseList();
+        }
+    });
+
+    function initTeachList() {
+        axios.get('/course?mode=faculty').then(function (response) {
+            myCourseVue.$data.teachList = response.data.data;
+        });
+    }
+
+    function initCourseList() {
+        axios.get('/student/course?status=0').then(function (response) {
+            myCourseVue.$data.courseList = response.data.data;
+        });
+    }
+</script>
+</body>
+</html>

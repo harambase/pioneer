@@ -615,11 +615,6 @@ div#sideNav:hover {
     margin-top: -5px;
 }
 
-.top-navbar .dropdown-menu > li > a:hover, .top-navbar .dropdown-menu > li > a:focus {
-    background: #F36A5A;
-    color: #dedfd7;
-}
-
 .dropdown-tasks {
     width: 255px;
 }

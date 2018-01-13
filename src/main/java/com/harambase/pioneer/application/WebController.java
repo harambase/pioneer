@@ -106,6 +106,12 @@ public class WebController {
         return "teach/tempCourse";
     }
 
+    @RequiresPermissions("user")
+    @RequestMapping("/course/detail")
+    public String courseDetail() {
+        return "course/detail";
+    }
+
     //教务管理
     @RequiresPermissions(value = {"teach", "admin"}, logical = Logical.OR)
     @RequestMapping("/teach/pin")

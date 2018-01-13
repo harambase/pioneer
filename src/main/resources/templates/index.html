@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml">
 
 <head>
 
@@ -48,7 +48,7 @@
                                 <div class="panel-body">
                                     <div class="firstStep clearfix" v-for="course in courseList">
                                         <div class="lessons-item js-lessons-item g-clearfix">
-                                            <a href="#">
+                                            <a :href="'/course/detail?pageMode=student&crn=' + course.crn">
                                                 <div class="lessons-pic">
                                                     <img width="200" height="200" src="/static/images/harambe.png">
                                                 </div>
@@ -90,7 +90,7 @@
                                     <div class="firstStep clearfix" v-for="course in teachList">
                                         <div class="lessons-item js-lessons-item g-clearfix"
                                              v-if="course.status !== -1">
-                                            <a href="#">
+                                            <a :href="'/course/detail?pageMode=faculty&crn=' + course.crn">
                                                 <div class="lessons-pic">
                                                     <img width="200" height="200" src="/static/images/harambe.png">
                                                 </div>
@@ -143,6 +143,10 @@
 <!-- /. WRAPPER  -->
 <div th:include="/common :: load_js(true , false, false)"></div>
 <script>
+
+    function goto(crn) {
+        window.location.href="/course/detail?pageMode=student&crn=" + crn;
+    }
 
     let myCourseVue = new Vue({
         el: "#myCoursePge",
