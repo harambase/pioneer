@@ -93,7 +93,7 @@ public class PersonServiceImpl implements PersonService {
                         oldFile.delete();
                     }
 
-                    fileUri = FileUtil.uploadFileToPath(file, "/upload/image/profile");
+                    fileUri = FileUtil.uploadFileToPath(file, "/image/profile");
 
                     jsonObject.put("name", name);
                     jsonObject.put("size", file.getSize());
@@ -130,7 +130,7 @@ public class PersonServiceImpl implements PersonService {
             message.setCode(FlagDict.FAIL.getV());
             return message;
         }
-        logger.info("注意：" + userId + "的文件任务完成！mode=" + mode);
+        logger.info("The file task - work mode is " + mode + " - for " + userId + " has completed!");
         message.setMsg("上传成功");
         message.setData(jsonObject);
         return message;

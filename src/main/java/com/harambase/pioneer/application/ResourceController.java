@@ -1,5 +1,6 @@
 package com.harambase.pioneer.application;
 
+import com.harambase.common.Config;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -17,6 +18,7 @@ public class ResourceController extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/static/images/**").addResourceLocations("classpath:/static/images/");
         registry.addResourceHandler("/static/data/**").addResourceLocations("classpath:/static/data/");
         registry.addResourceHandler("/static/upload/**").addResourceLocations("classpath:/static/upload/");
+        registry.addResourceHandler("/pioneer/**").addResourceLocations("file:" + Config.TEMP_FILE_PATH + "/image");
 
         super.addResourceHandlers(registry);
     }

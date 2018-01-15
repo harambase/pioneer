@@ -31,6 +31,11 @@ public class WebController {
         return "common/404";
     }
 
+    @RequestMapping("/test")
+    public String test(){
+        return "test";
+    }
+
     //只需要用户权限
     @RequiresPermissions("user")
     @RequestMapping("/index")

@@ -53,7 +53,7 @@ public class SystemController {
                 subject.getSession().setAttribute("user", person);
 
                 if (StringUtils.isNotEmpty(person.getProfile()))
-                    subject.getSession().setAttribute("profile", (JSON.parseObject(person.getProfile())).getString("path"));
+                    subject.getSession().setAttribute("profile", "/pioneer/" + (JSON.parseObject(person.getProfile())).getString("path"));
 
                 subject.login(token); //完成登录
 
