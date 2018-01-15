@@ -126,4 +126,11 @@ public class CourseServer {
         Map params = new HashMap();
         return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
     }
+
+    public HaramMessage studentList(String ip, int port, String crn, String search) {
+        String remotePath = "/course/student/" + crn + "?search=" + search;
+        StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
+        Map params = new HashMap();
+        return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
+    }
 }

@@ -17,7 +17,6 @@ public class ResourceController extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/static/plugins/**").addResourceLocations("classpath:/static/plugins/");
         registry.addResourceHandler("/static/images/**").addResourceLocations("classpath:/static/images/");
         registry.addResourceHandler("/static/data/**").addResourceLocations("classpath:/static/data/");
-        registry.addResourceHandler("/static/upload/**").addResourceLocations("classpath:/static/upload/");
         registry.addResourceHandler("/pioneer/**").addResourceLocations("file:" + Config.TEMP_FILE_PATH + "/image");
 
         super.addResourceHandlers(registry);

@@ -191,7 +191,7 @@
 
         }
 
-    }
+    };
     // Initializing ///
 
     $(document).ready(function () {

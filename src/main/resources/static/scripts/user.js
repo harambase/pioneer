@@ -288,7 +288,7 @@ $(function () {
             {
                 "data": "status", "title": "状态", "createdCell": function (nTd, rowData, row) {
                     if (rowData === "1") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:green;">已启用</p>');
-                    else if (rowData === "0") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:red; ">已禁用</p>')
+                    else if (rowData === "0") $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:red; ">已禁用</p>');
                     userVue.$data.userList.push(row);
                 }
             },

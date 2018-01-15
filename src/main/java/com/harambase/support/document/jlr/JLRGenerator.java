@@ -63,7 +63,7 @@ public class JLRGenerator {
             String var8 = "--output-directory=" + var4.getAbsolutePath();
             String var9 = "--aux-directory=" + var3.getParent();
             String var10 = var3.getAbsolutePath();
-            ProcessBuilder var11 = new ProcessBuilder(new String[]{var6, var7, var8, var9, var10});
+            ProcessBuilder var11 = new ProcessBuilder(var6, var7, var8, var9, var10);
             var11.redirectErrorStream(true);
             var11.directory(var5);
 

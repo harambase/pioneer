@@ -1,6 +1,7 @@
 package com.harambase.pioneer.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.harambase.common.Config;
 import com.harambase.common.HaramMessage;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -100,7 +102,7 @@ public class CourseServiceImpl implements CourseService {
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             message.setMsg("上传失败");
-            message.setCode(FlagDict.FAIL.getV());
+            message.setCode(FlagDict.SYSTEM_ERROR.getV());
             return message;
         }
 
@@ -112,6 +114,54 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public HaramMessage courseInfoList(String search) {
         return courseServer.courseInfoList(IP, PORT, search);
+    }
+
+    @Override
+    public HaramMessage getAssignmentList(String crn) {
+        HaramMessage message = courseServer.getCourseByCrn(IP, PORT, crn);
+
+        LinkedHashMap courseMap = (LinkedHashMap) message.getData();
+        String rawAssignment = (String) courseMap.get("assignment");
+
+        JSONArray assignmentList = new JSONArray();
+        if (StringUtils.isNotEmpty(rawAssignment)) {
+            assignmentList = JSONArray.parseArray(rawAssignment);
+        }
+
+        message.setData(assignmentList);
+        message.setCode(FlagDict.SUCCESS.getV());
+        message.setMsg(FlagDict.SUCCESS.getM());
+        return message;
+    }
+
+    @Override
+    public HaramMessage updateAssignment(String crn, JSONArray assignment) {
+        HaramMessage message = courseServer.getCourseByCrn(IP, PORT, crn);
+        LinkedHashMap courseMap = (LinkedHashMap) message.getData();
+        Course course = new Course();
+        try {
+            BeanUtils.populate(course, courseMap);
+            course.setAssignment(JSONArray.toJSONString(assignment));
+            message = courseServer.update(IP, PORT, crn, course);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+        return message;
+    }
+
+    @Override
+    public HaramMessage uploadAssignmentAttachment(String crn, MultipartFile multipartFile) {
+        return null;
+    }
+
+    @Override
+    public HaramMessage submitAssignment(String crn, String assignmentName, String createTime, String studentId, MultipartFile multipartFile) {
+        return null;
+    }
+
+    @Override
+    public HaramMessage studentList(String crn, String search) {
+        return courseServer.studentList(IP, PORT, crn, search);
     }
 
     @Override
@@ -127,11 +177,6 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public HaramMessage preCourseList(String crn) {
         return courseServer.preCourseList(IP, PORT, crn);
-    }
-
-    @Override
-    public HaramMessage countActiveCourse() {
-        return courseServer.countActiveCourse(IP, PORT);
     }
 
     @Override

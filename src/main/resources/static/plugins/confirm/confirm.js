@@ -15,7 +15,7 @@ Showbo.$ = function (Id, isFrame) {
     var o;
     if ("string" == typeof(Id)) o = document.getElementById(Id); else if ("object" == typeof(Id)) o = Id; else return null;
     return isFrame ? (Showbo.IsIE ? frames[Id] : o.contentWindow) : o;
-}
+};
 //按标签名称获取对象
 //页面的高和宽******************************
 Showbo.isStrict = document.compatMode == "CSS1Compat";
@@ -23,31 +23,31 @@ Showbo.BodyScale = {x: 0, y: 0, tx: 0, ty: 0};//（x，y）：当前的浏览器
 Showbo.getClientHeight = function () {/*if(Showbo.IsIE)*/
     return Showbo.isStrict ? document.documentElement.clientHeight : document.body.clientHeight;
     /*else return self.innerHeight;*/
-}
+};
 Showbo.getScrollHeight = function () {
     var h = !Showbo.isStrict ? document.body.scrollHeight : document.documentElement.scrollHeight;
     return Math.max(h, this.getClientHeight());
-}
+};
 Showbo.getHeight = function (full) {
     return full ? this.getScrollHeight() : this.getClientHeight();
-}
+};
 Showbo.getClientWidth = function () {/*if(Showbo.IsIE)*/
     return Showbo.isStrict ? document.documentElement.clientWidth : document.body.clientWidth;
     /*else return self.innerWidth;*/
-}
+};
 Showbo.getScrollWidth = function () {
     var w = !Showbo.isStrict ? document.body.scrollWidth : document.documentElement.scrollWidth;
     return Math.max(w, this.getClientWidth());
-}
+};
 Showbo.getWidth = function (full) {
     return full ? this.getScrollWidth() : this.getClientWidth();
-}
+};
 Showbo.initBodyScale = function () {
     Showbo.BodyScale.x = Showbo.getWidth(false);
     Showbo.BodyScale.y = Showbo.getHeight(false);
     Showbo.BodyScale.tx = Showbo.getWidth(true);
     Showbo.BodyScale.ty = Showbo.getHeight(true);
-}
+};
 //页面的高和宽******************************
 Showbo.Msg = {
     INFO: 'info',
@@ -108,14 +108,14 @@ Showbo.Msg = {
         btn.value = v;
         btn.onmouseover = function () {
             this.className = 'btnfocus';
-        }
+        };
         btn.onmouseout = function () {
             this.className = 'btn';
-        }
+        };
         btn.onclick = function () {
             Showbo.Msg.hide();
             if (fn) fn(p);
-        }
+        };
         return btn;
     },
     alert: function (msg, fn) {

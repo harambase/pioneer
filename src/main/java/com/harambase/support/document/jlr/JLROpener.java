@@ -25,7 +25,7 @@ public final class JLROpener {
         } else if (!var1.isFile()) {
             throw new FileNotFoundException("The file " + var1.getAbsolutePath() + " does not exist or is not a file!");
         } else {
-            ProcessBuilder var2 = new ProcessBuilder(new String[]{var0.getAbsolutePath(), var1.getAbsolutePath()});
+            ProcessBuilder var2 = new ProcessBuilder(var0.getAbsolutePath(), var1.getAbsolutePath());
             var2.start();
         }
     }
@@ -41,13 +41,13 @@ public final class JLROpener {
                     try {
                         Desktop.getDesktop().open(var0);
                     } catch (IOException var3) {
-                        JOptionPane.showMessageDialog((Component) null, "Could not open " + var0.getAbsolutePath() + newline + "The specified file has no associated application or the associated application fails to be launched!", "FileOpenError", 0);
+                        JOptionPane.showMessageDialog(null, "Could not open " + var0.getAbsolutePath() + newline + "The specified file has no associated application or the associated application fails to be launched!", "FileOpenError", 0);
                     }
                 } else {
-                    JOptionPane.showMessageDialog((Component) null, "Could not open " + var0.getAbsolutePath() + newline + "Desktop.Action.OPEN is not supported!", "FileOpenError", 0);
+                    JOptionPane.showMessageDialog(null, "Could not open " + var0.getAbsolutePath() + newline + "Desktop.Action.OPEN is not supported!", "FileOpenError", 0);
                 }
             } else {
-                JOptionPane.showMessageDialog((Component) null, "Could not open " + var0.getAbsolutePath() + newline + "Desktop is not supported on the current platform!", "FileOpenError", 0);
+                JOptionPane.showMessageDialog(null, "Could not open " + var0.getAbsolutePath() + newline + "Desktop is not supported on the current platform!", "FileOpenError", 0);
             }
 
         }
@@ -64,13 +64,13 @@ public final class JLROpener {
                     try {
                         Desktop.getDesktop().print(var0);
                     } catch (IOException var3) {
-                        JOptionPane.showMessageDialog((Component) null, "Could not print " + var0.getAbsolutePath() + newline + "The specified file has no associated application or the associated application fails to be launched!", "FileOpenError", 0);
+                        JOptionPane.showMessageDialog(null, "Could not print " + var0.getAbsolutePath() + newline + "The specified file has no associated application or the associated application fails to be launched!", "FileOpenError", 0);
                     }
                 } else {
-                    JOptionPane.showMessageDialog((Component) null, "Could not print " + var0.getAbsolutePath() + newline + "Desktop.Action.PRINT is not supported!", "FilePrintError", 0);
+                    JOptionPane.showMessageDialog(null, "Could not print " + var0.getAbsolutePath() + newline + "Desktop.Action.PRINT is not supported!", "FilePrintError", 0);
                 }
             } else {
-                JOptionPane.showMessageDialog((Component) null, "Could not print " + var0.getAbsolutePath() + newline + "Desktop is not supported on the current platform!", "FilePrintError", 0);
+                JOptionPane.showMessageDialog(null, "Could not print " + var0.getAbsolutePath() + newline + "Desktop is not supported on the current platform!", "FilePrintError", 0);
             }
 
         }

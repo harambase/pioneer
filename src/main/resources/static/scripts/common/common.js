@@ -73,7 +73,7 @@ function Base64() {
                 _keyStr.charAt(enc3) + _keyStr.charAt(enc4);
         }
         return output;
-    }
+    };
     // public method for decoding
     this.decode = function (input) {
         var output = "";
@@ -99,7 +99,7 @@ function Base64() {
         }
         output = _utf8_decode(output);
         return output;
-    }
+    };
     // private method for UTF-8 encoding
     _utf8_encode = function (string) {
         string = string.replace(/\r\n/g, "\n");
@@ -118,7 +118,7 @@ function Base64() {
             }
         }
         return utftext;
-    }
+    };
     // private method for UTF-8 decoding
     _utf8_decode = function (utftext) {
         var string = "";

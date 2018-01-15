@@ -53,7 +53,7 @@ public class JLRConverter {
         }
     }
 
-    public boolean parse(String var1, File var2, String var3) throws UnsupportedEncodingException, IOException {
+    public boolean parse(String var1, File var2, String var3) throws IOException {
         if (var2.getParentFile() != null && !var2.getParentFile().isDirectory() && !var2.getParentFile().mkdirs()) {
             this.errorMessage = "Could not createPerson directory: " + var2.getParentFile().getAbsolutePath();
             return false;
@@ -82,7 +82,7 @@ public class JLRConverter {
         }
     }
 
-    public boolean parse(File var1, File var2, String var3) throws UnsupportedEncodingException, IOException {
+    public boolean parse(File var1, File var2, String var3) throws IOException {
         if (var2.getParentFile() != null && !var2.getParentFile().isDirectory() && !var2.getParentFile().mkdirs()) {
             this.errorMessage = "Could not createPerson directory: " + var2.getParentFile().getAbsolutePath();
             return false;
