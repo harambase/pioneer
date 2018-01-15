@@ -1,5 +1,6 @@
 package com.harambase.pioneer.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.harambase.common.HaramMessage;
 import com.harambase.pioneer.pojo.Person;
@@ -7,8 +8,10 @@ import com.harambase.pioneer.service.PersonService;
 import com.harambase.support.util.FileUtil;
 import com.harambase.support.util.SessionUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -95,6 +98,11 @@ public class PersonController {
     public ResponseEntity uploadProfile(@RequestParam(value = "file", required = false) MultipartFile file,
                                         @PathVariable String userId) {
         HaramMessage message = personService.upload(userId, file, "p");
+        //更新页面头像信息
+        if(message.getCode() == 2001){
+            Subject subject = SecurityUtils.getSubject();
+            subject.getSession().setAttribute("profile", "/pioneer/" + ((JSONObject)message.getData()).getString("path"));
+        }
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
