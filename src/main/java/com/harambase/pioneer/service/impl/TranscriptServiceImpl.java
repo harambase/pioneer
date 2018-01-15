@@ -50,33 +50,32 @@ public class TranscriptServiceImpl implements TranscriptService {
     }
 
     @Override
-    public HaramMessage studentTranscriptReport(String studentid) {
+    public HaramMessage studentTranscriptReport(String studentId) {
 
         /* VTL Syntax information:
          * http://velocity.apache.org/engine/1.7/user-guide.html
          */
 
-        File projectDirectory = new File("");
-        File workingDirectory = new File(projectDirectory.getAbsolutePath() + File.separator + "src" + File.separator + "main" + File.separator + "resources" + File.separator + "tex");
+        File workingDirectory = new File(Config.serverPath + "/tex");
 
-        File template = new File(workingDirectory.getAbsolutePath() + File.separator + "transcriptTemplate.tex");
+        File template = new File(workingDirectory.getAbsolutePath() + "/transcriptTemplate.tex");
 
-        String dirPath = "/static/upload/document/studentReport/" + studentid + "/";
-        String inputTexPath = Config.serverPath + dirPath + studentid + ".tex";
+        String dirPath = "/document/studentReport/" + studentId + "/";
+        String inputTexPath = Config.TEMP_FILE_PATH + dirPath + studentId + ".tex";
         File reportTex = new File(inputTexPath);
 
         try {
             JLRConverter converter = new JLRConverter(workingDirectory);
 
             //学生信息TITLE
-            LinkedHashMap studentInfoMap = (LinkedHashMap) personServer.get(IP, PORT, studentid).getData();
+            LinkedHashMap studentInfoMap = (LinkedHashMap) personServer.get(IP, PORT, studentId).getData();
             converter.replace("sname", studentInfoMap.get("lastName") + ", " + studentInfoMap.get("firstName"));
             converter.replace("studentId", studentInfoMap.get("userId"));
             converter.replace("info", ReportUtil.infoConverter((String) studentInfoMap.get("info")));
             converter.replace("address", studentInfoMap.get("address"));
 
             //成绩详情
-            List<LinkedHashMap> transcriptList = (List<LinkedHashMap>) transcriptServer.transcriptList(IP, PORT, 1, Integer.MAX_VALUE, "", "", "", studentid, "", "", "").getData();
+            List<LinkedHashMap> transcriptList = (List<LinkedHashMap>) transcriptServer.transcriptList(IP, PORT, 1, Integer.MAX_VALUE, "", "", "", studentId, "", "", "").getData();
             Map<String, List<List<Object>>> transcripts = new HashMap<>();
             Set<String> infoSet = new HashSet<>();
             Map<String, String> infoNameSet = new HashMap<>();
@@ -123,7 +122,7 @@ public class TranscriptServiceImpl implements TranscriptService {
             converter.replace("transcriptList", transcripts);
 
             //学分TOTAL:
-            LinkedHashMap studentViewMap = (LinkedHashMap) studentServer.transcriptDetail(IP, PORT, studentid).getData();
+            LinkedHashMap studentViewMap = (LinkedHashMap) studentServer.transcriptDetail(IP, PORT, studentId).getData();
             int complete = (Integer) studentViewMap.get("complete");
             int progress = (Integer) studentViewMap.get("progress");
             int incomplete = (Integer) studentViewMap.get("incomplete");
@@ -139,13 +138,13 @@ public class TranscriptServiceImpl implements TranscriptService {
 
             //输出
             converter.parse(template, reportTex);
-            File projectDir = new File(Config.serverPath + dirPath);
+            File projectDir = new File(Config.TEMP_FILE_PATH + dirPath);
 
             //PDF生成
             JLRGenerator pdfGen = new JLRGenerator();
             pdfGen.generate(reportTex, projectDir, projectDir);
 
-            logger.info("Reporting task for " + studentid + " has completed.");
+            logger.info("Reporting task for " + studentId + " has completed.");
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -153,7 +152,7 @@ public class TranscriptServiceImpl implements TranscriptService {
 
         HaramMessage restMessage = new HaramMessage();
         restMessage.setCode(FlagDict.SUCCESS.getV());
-        restMessage.setData(dirPath + studentid + ".pdf");
+        restMessage.setData(dirPath + studentId + ".pdf");
         return restMessage;
     }
 }

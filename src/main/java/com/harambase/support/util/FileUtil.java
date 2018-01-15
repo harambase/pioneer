@@ -20,7 +20,7 @@ public class FileUtil {
         try {
             //中文支持
             fileName = new String(fileName.getBytes(), "ISO-8859-1");
-            String filePath = Config.serverPath + logicalPath;
+            String filePath = Config.TEMP_FILE_PATH + logicalPath;
 
             response.reset();
             response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName);
@@ -50,7 +50,7 @@ public class FileUtil {
             String fileName = file.getOriginalFilename();
 
             // 源文件目录
-            String dirName = FileWriterUtil.getSecondPathByHashCode(Config.serverPath + dirPath, fileName);
+            String dirName = FileWriterUtil.getSecondPathByHashCode(Config.TEMP_FILE_PATH + dirPath, fileName);
 
             // 获取当前文件存放路径
             String filePath = FileWriterUtil.getSingleFileDirName(fileName, dirName);
@@ -59,7 +59,7 @@ public class FileUtil {
             File imgFile = new File(filePath);
 
             // 写入文件到实际路径
-            String imgPath = filePath.substring(Config.serverPath.length(), filePath.length());
+            String imgPath = filePath.substring(Config.TEMP_FILE_PATH.length(), filePath.length());
             file.transferTo(imgFile);
 
             return imgPath;

@@ -42,6 +42,8 @@ public class Course {
 
     private String courseInfo;
 
+    private String assignment;
+
     //Extensions:
     private Integer remain;
 
@@ -253,4 +255,11 @@ public class Course {
         this.status = status;
     }
 
+    public String getAssignment() {
+        return assignment;
+    }
+
+    public void setAssignment(String assignment) {
+        this.assignment = assignment;
+    }
 }
