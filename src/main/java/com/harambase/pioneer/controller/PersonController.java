@@ -106,7 +106,7 @@ public class PersonController {
     }
 
     @RequestMapping(value = "/info/{userId}", method = RequestMethod.GET)
-    public void studentTranscriptReport(@PathVariable(value = "userId") String userId, HttpServletResponse response) {
+    public void downloadUserInfo(@PathVariable(value = "userId") String userId, HttpServletResponse response) {
         HaramMessage message = personService.get(userId);
         String userInfo = (String) ((LinkedHashMap) message.getData()).get("userInfo");
         if (StringUtils.isNotEmpty(userInfo)) {

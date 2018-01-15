@@ -1,5 +1,6 @@
 package com.harambase.pioneer.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.harambase.common.Config;
 import com.harambase.common.HaramMessage;
@@ -78,14 +79,13 @@ public class CourseServiceImpl implements CourseService {
             BeanUtils.populate(course, courseMap);
 
             //处理老的文件
-            String oldInfo = course.getCourseInfo();
-
-            if (StringUtils.isNotEmpty(oldInfo)) {
-                File oldfile = new File(Config.serverPath + oldInfo);
-                oldfile.delete();
+            if (StringUtils.isNotEmpty(course.getCourseInfo())) {
+                String oldInfoPath = (JSON.parseObject(course.getCourseInfo())).getString("path");
+                File oldFile = new File(Config.TEMP_FILE_PATH + oldInfoPath);
+                oldFile.delete();
             }
 
-            String fileUri = FileUtil.uploadFileToPath(file, "/static/upload/document/courseInfo");
+            String fileUri = FileUtil.uploadFileToPath(file, "/document/courseInfo");
             String name = file.getOriginalFilename();
 
             jsonObject.put("name", name);

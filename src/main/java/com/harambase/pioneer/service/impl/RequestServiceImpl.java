@@ -95,18 +95,15 @@ public class RequestServiceImpl implements RequestService {
             BeanUtils.populate(tempCourse, tempCourseMap);
 
             //处理老的文件
-            String oldInfo = "";
             JSONObject courseJson = JSONObject.parseObject(tempCourse.getCourseJson());
 
-            if (StringUtils.isNotEmpty(courseJson.getString("courseInfo")))
-                oldInfo = (JSON.parseObject(courseJson.getString("courseInfo"))).getString("path");
-
-            if (StringUtils.isNotEmpty(oldInfo)) {
-                File oldFile = new File(Config.serverPath + oldInfo);
+            if (StringUtils.isNotEmpty(courseJson.getString("courseInfo"))) {
+                String oldInfoPath = (JSON.parseObject(courseJson.getString("courseInfo"))).getString("path");
+                File oldFile = new File(Config.TEMP_FILE_PATH + oldInfoPath);
                 oldFile.delete();
             }
 
-            String fileUri = FileUtil.uploadFileToPath(file, "/static/upload/document/courseInfo");
+            String fileUri = FileUtil.uploadFileToPath(file, "/document/courseInfo");
             String name = file.getOriginalFilename();
 
             jsonObject.put("name", name);

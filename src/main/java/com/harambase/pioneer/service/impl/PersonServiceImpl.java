@@ -86,16 +86,14 @@ public class PersonServiceImpl implements PersonService {
 
             switch (mode) {
                 case "p":
-                    String oldProfile = "";
-                    if (person.getProfile() != null)
-                        oldProfile = (JSON.parseObject(person.getProfile())).getString("path");
 
-                    if (StringUtils.isNotEmpty(oldProfile)) {
-                        File oldFile = new File(Config.serverPath + oldProfile);
+                    if (StringUtils.isNotEmpty(person.getProfile())) {
+                        String oldProfilePath = (JSON.parseObject(person.getProfile())).getString("path");
+                        File oldFile = new File(Config.TEMP_FILE_PATH + oldProfilePath);
                         oldFile.delete();
                     }
 
-                    fileUri = FileUtil.uploadFileToPath(file, "/static/upload/image/profile");
+                    fileUri = FileUtil.uploadFileToPath(file, "/upload/image/profile");
 
                     jsonObject.put("name", name);
                     jsonObject.put("size", file.getSize());
@@ -106,16 +104,14 @@ public class PersonServiceImpl implements PersonService {
                     break;
 
                 case "f":
-                    String oldInfo = "";
-                    if (person.getUserInfo() != null)
-                        oldInfo = (JSON.parseObject(person.getUserInfo())).getString("path");
 
-                    if (StringUtils.isNotEmpty(oldInfo)) {
-                        File oldFile = new File(Config.serverPath + oldInfo);
+                    if (StringUtils.isNotEmpty(person.getUserInfo())) {
+                        String oldInfoPath = (JSON.parseObject(person.getUserInfo())).getString("path");
+                        File oldFile = new File(Config.TEMP_FILE_PATH + oldInfoPath);
                         oldFile.delete();
                     }
 
-                    fileUri = FileUtil.uploadFileToPath(file, "/static/upload/document/userInfo");
+                    fileUri = FileUtil.uploadFileToPath(file, "/document/userInfo");
 
                     jsonObject.put("name", name);
                     jsonObject.put("size", file.getSize());
@@ -134,7 +130,7 @@ public class PersonServiceImpl implements PersonService {
             message.setCode(FlagDict.FAIL.getV());
             return message;
         }
-
+        logger.info("注意：" + userId + "的文件任务完成！mode=" + mode);
         message.setMsg("上传成功");
         message.setData(jsonObject);
         return message;
