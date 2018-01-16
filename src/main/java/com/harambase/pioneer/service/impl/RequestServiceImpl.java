@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.harambase.common.Config;
 import com.harambase.common.HaramMessage;
 import com.harambase.common.constant.FlagDict;
+import com.harambase.pioneer.pojo.TempAdvise;
 import com.harambase.pioneer.pojo.TempCourse;
 import com.harambase.pioneer.pojo.TempUser;
 import com.harambase.pioneer.server.RequestServer;
@@ -126,6 +127,31 @@ public class RequestServiceImpl implements RequestService {
         message.setMsg("上传成功");
         message.setData(jsonObject);
         return message;
+    }
+
+    @Override
+    public HaramMessage registerTempAdvise(String studentId, JSONObject jsonObject) {
+        return requestServer.registerTempAdvise(IP, PORT, studentId, jsonObject);
+    }
+
+    @Override
+    public HaramMessage deleteTempAdviseById(Integer id) {
+        return requestServer.deleteTempAdviseById(IP, PORT, id);
+    }
+
+    @Override
+    public HaramMessage getTempAdvise(Integer id) {
+        return requestServer.getTempAdvise(IP, PORT, id);
+    }
+
+    @Override
+    public HaramMessage tempAdviseList(Integer start, Integer length, String search, String order, String orderCol) {
+        return requestServer.tempAdviseList(IP, PORT, start, length, search, order, orderCol);
+    }
+
+    @Override
+    public HaramMessage updateTempAdvise(Integer id, TempAdvise tempAdvise) {
+        return requestServer.updateTempAdvise(IP, PORT, id, tempAdvise);
     }
 
 }

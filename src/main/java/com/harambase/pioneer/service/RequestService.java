@@ -2,6 +2,7 @@ package com.harambase.pioneer.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.harambase.common.HaramMessage;
+import com.harambase.pioneer.pojo.TempAdvise;
 import com.harambase.pioneer.pojo.TempCourse;
 import com.harambase.pioneer.pojo.TempUser;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,4 +30,14 @@ public interface RequestService {
     HaramMessage getTempCourse(Integer id);
 
     HaramMessage uploadCourseInfo(Integer id, MultipartFile file);
+
+    HaramMessage registerTempAdvise(String studentId, JSONObject jsonObject);
+
+    HaramMessage deleteTempAdviseById(Integer id);
+
+    HaramMessage getTempAdvise(Integer id);
+
+    HaramMessage tempAdviseList(Integer start, Integer length, String search, String order, String orderCol);
+
+    HaramMessage updateTempAdvise(Integer id, TempAdvise tempAdvise);
 }

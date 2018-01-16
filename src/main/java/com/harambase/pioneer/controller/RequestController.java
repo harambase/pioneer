@@ -2,6 +2,7 @@ package com.harambase.pioneer.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.harambase.common.HaramMessage;
+import com.harambase.pioneer.pojo.TempAdvise;
 import com.harambase.pioneer.pojo.TempCourse;
 import com.harambase.pioneer.pojo.TempUser;
 import com.harambase.pioneer.service.RequestService;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -146,4 +148,43 @@ public class RequestController {
         message.put("recordsFiltered", ((LinkedHashMap) message.get("page")).get("totalRows"));
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
+
+    @RequiresPermissions(value = {"admin", "teach", "student"}, logical = Logical.OR)
+    @RequestMapping(value = "/advise", method = RequestMethod.POST)
+    public ResponseEntity newAdvisorRequest(@RequestBody JSONObject jsonObject) {
+        HaramMessage haramMessage = requestService.registerTempAdvise(SessionUtil.getUserId(), jsonObject);
+        return new ResponseEntity<>(haramMessage, HttpStatus.OK);
+    }
+
+    @RequiresPermissions(value = {"admin", "teach", "student"}, logical = Logical.OR)
+    @RequestMapping(value = "/advise/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity removeAdvisorRequest(@PathVariable Integer id) {
+        HaramMessage haramMessage = requestService.deleteTempAdviseById(id);
+        return new ResponseEntity<>(haramMessage, HttpStatus.OK);
+    }
+
+    @RequiresPermissions(value = {"admin", "teach", "student", "faculty"}, logical = Logical.OR)
+    @RequestMapping(value = "/advise/{id}", method = RequestMethod.GET)
+    public ResponseEntity getAdviseRequest(@PathVariable Integer id) {
+        HaramMessage haramMessage = requestService.getTempAdvise(id);
+        return new ResponseEntity<>(haramMessage, HttpStatus.OK);
+    }
+
+    @RequiresPermissions(value = {"admin", "teach", "faculty", "student"}, logical = Logical.OR)
+    @RequestMapping(value = "/course/{id}", produces = "application/json", method = RequestMethod.PUT)
+    public ResponseEntity updateAdviseRequest(@PathVariable Integer id, @RequestBody TempAdvise tempAdvise) {
+        HaramMessage message = requestService.updateTempAdvise(id, tempAdvise);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/course", produces = "application/json", method = RequestMethod.GET)
+    public ResponseEntity adviseList(@RequestParam(value = "start") Integer start,
+                                     @RequestParam(value = "length") Integer length,
+                                     @RequestParam(value = "search", required = false, defaultValue = "") String search,
+                                     @RequestParam(value = "order", required = false, defaultValue = "desc") String order,
+                                     @RequestParam(value = "orderCol", required = false, defaultValue = "0") String orderCol) {
+        HaramMessage message = requestService.tempAdviseList(start, length, search, order, orderCol);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
 }

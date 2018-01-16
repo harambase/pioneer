@@ -2,6 +2,7 @@ package com.harambase.pioneer.server;
 
 import com.alibaba.fastjson.JSONObject;
 import com.harambase.common.HaramMessage;
+import com.harambase.pioneer.pojo.TempAdvise;
 import com.harambase.pioneer.pojo.TempCourse;
 import com.harambase.pioneer.pojo.TempUser;
 import com.harambase.support.util.BuildUrlUtil;
@@ -114,5 +115,45 @@ public class RequestServer {
         StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
         Map params = new HashMap();
         return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
+    }
+
+    public HaramMessage tempAdviseList(String ip, int port, Integer start, Integer length, String search, String order, String orderCol) {
+        String remotePath = "/request/advise";
+        StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
+        requestUrl.append("?start=")
+                .append(start)
+                .append("&length=")
+                .append(length)
+                .append("&search=")
+                .append(search)
+                .append("&order=").append(order).append("&orderCol=").append(orderCol);
+        Map params = new HashMap();
+        return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
+    }
+
+    public HaramMessage updateTempAdvise(String ip, int port, Integer id, TempAdvise tempAdvise) {
+        String remotePath = "/request/advise/" + id;
+        StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
+        return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.PUT, tempAdvise);
+    }
+
+    public HaramMessage getTempAdvise(String ip, int port, Integer id) {
+        String remotePath = "/request/advise/" + id;
+        StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
+        Map params = new HashMap();
+        return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
+    }
+
+    public HaramMessage deleteTempAdviseById(String ip, int port, Integer id) {
+        String remotePath = "/request/advise/" + id;
+        StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
+        Map params = new HashMap();
+        return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.DELETE, params);
+    }
+
+    public HaramMessage registerTempAdvise(String ip, int port, String studentId, JSONObject jsonObject) {
+        String remotePath = "/request/advise/" + studentId;
+        StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
+        return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.POST, jsonObject);
     }
 }
