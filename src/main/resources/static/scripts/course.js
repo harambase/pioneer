@@ -438,7 +438,6 @@ let userSelect = $(".user").select2({
         },
         cache: true
     },
-    placeholder: '请分配所属集群',//默认文字提示
     language: "zh-CN",
     tags: false,//允许手动添加
     allowClear: true,//允许清空

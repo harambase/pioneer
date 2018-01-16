@@ -1,5 +1,7 @@
 package com.harambase.pioneer.application;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.web.ErrorAttributes;
 import org.springframework.boot.autoconfigure.web.ErrorController;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,7 @@ import java.util.Map;
 @Controller
 public class AppErrorController implements ErrorController {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     /**
      * Error Attributes in the Application
      */
@@ -52,7 +55,7 @@ public class AppErrorController implements ErrorController {
      */
     @RequestMapping(value = ERROR_PATH)
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> error(HttpServletRequest request) {
+    public ResponseEntity error(HttpServletRequest request) {
         Map<String, Object> body = getErrorAttributes(request, getTraceParameter(request));
         HttpStatus status = getStatus(request);
         return new ResponseEntity<>(body, status);
@@ -71,10 +74,7 @@ public class AppErrorController implements ErrorController {
 
     private boolean getTraceParameter(HttpServletRequest request) {
         String parameter = request.getParameter("trace");
-        if (parameter == null) {
-            return false;
-        }
-        return !"false".equals(parameter.toLowerCase());
+        return parameter != null && !"false".equals(parameter.toLowerCase());
     }
 
     private Map<String, Object> getErrorAttributes(HttpServletRequest request,
@@ -84,12 +84,12 @@ public class AppErrorController implements ErrorController {
     }
 
     private HttpStatus getStatus(HttpServletRequest request) {
-        Integer statusCode = (Integer) request
-                .getAttribute("javax.servlet.error.status_code");
+        Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
         if (statusCode != null) {
             try {
                 return HttpStatus.valueOf(statusCode);
-            } catch (Exception ex) {
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
             }
         }
         return HttpStatus.INTERNAL_SERVER_ERROR;
