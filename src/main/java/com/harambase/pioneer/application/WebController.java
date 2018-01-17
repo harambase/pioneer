@@ -30,6 +30,10 @@ public class WebController {
     public String pageNotFound() {
         return "common/404";
     }
+    @RequestMapping("/chatPage")
+    public String chat() {
+        return "common/chat";
+    }
 
     @RequestMapping("/test")
     public String test(){
