@@ -308,7 +308,7 @@
                                     <i class="fa fa-arrow-left"></i> 返回列表
                                 </button>
                                 <button class="btn btn-primary btn-info" type="button"
-                                        v-if="pageMode === 'view'"
+                                        v-if="pageMode === 'view' && url.indexOf('choose') === -1"
                                         onclick="window.location.href=basePath + '/course/view'">
                                     <i class="fa fa-arrow-left"></i> 返回查询列表
                                 </button>
@@ -316,6 +316,11 @@
                                         v-if="pageMode === 'manage'"
                                         v-on:click="showTable">
                                     <i class="fa fa-arrow-left"></i> 返回列表
+                                </button>
+                                <button class="btn btn-primary btn-info" type="button"
+                                        v-if="url.indexOf('choose') !== -1"
+                                        onclick="window.location.href=basePath + '/course/choose'">
+                                    <i class="fa fa-arrow-left"></i> 返回选课工作表
                                 </button>
                                 课程基本信息表
                             </div>

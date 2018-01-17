@@ -127,6 +127,12 @@ public class WebController {
         return "teach/course";
     }
 
+    @RequiresPermissions("user")
+    @RequestMapping("course/choose/detail")
+    public String courseChooseDetail() {
+        return "teach/course";
+    }
+
     //教务管理
     @RequiresPermissions(value = {"teach", "admin"}, logical = Logical.OR)
     @RequestMapping("/teach/pin")

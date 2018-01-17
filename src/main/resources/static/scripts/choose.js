@@ -67,7 +67,7 @@ function validate() {
         if (response.data.code === 2001) {
             initStudentInfo();
             courseTable.draw();
-            chooseVue   .$data.pinValidate = true;
+            chooseVue.$data.pinValidate = true;
         } else
             Showbo.Msg.alert("验证失败!", function () {
             });
@@ -81,6 +81,17 @@ function initPin() {
             initStudentInfo();
             courseTable.draw();
             chooseVue.$data.pinValidate = true;
+            if(isNotEmpty(window.localStorage.getItem("chooseVue"))){
+                let data = JSON.parse(window.localStorage.getItem("chooseVue"));
+                chooseVue.$data.pin = data.pin;
+                chooseVue.$data.tol_credits= data.tol_credits;
+                chooseVue.$data.use_credits= data.use_credits;
+                chooseVue.$data.ava_credits= data.ava_credits;
+                chooseVue.$data.counter= data.counter;
+                chooseVue.$data.crnList= data.crnList;
+                chooseVue.$data.worksheet= data.worksheet;
+                window.localStorage.clear();
+            }
         }
     })
 }
@@ -160,6 +171,11 @@ function removeFromWorkSheet(crn, credits) {
     chooseVue.$data.ava_credits = chooseVue.$data.tol_credits - chooseVue.$data.use_credits;
 }
 
+function toCourse(crn){
+    window.localStorage.setItem("chooseVue", JSON.stringify(chooseVue.$data));
+    window.location.href="/course/choose/detail?pageMode=view&crn=" + crn;
+}
+
 let courseTable = $("#newCourseTable").DataTable({
 
     "language": {
@@ -183,10 +199,10 @@ let courseTable = $("#newCourseTable").DataTable({
     },
     "pagingType": "full_numbers",
     "lengthMenu": [
-        [5],
-        [5]
+        [10],
+        [10]
     ],
-    pageLength: 5,
+    pageLength: 10,
     processing: true,
     serverSide: true,
 
@@ -207,7 +223,7 @@ let courseTable = $("#newCourseTable").DataTable({
         {"data": "crn", "title": "编号"},
         {
             "data": null, "title": "课程名（等级-班级）", "createdCell": function (nTd, rowData) {
-                $(nTd).html('<a style="line-height: 1.42857143;" title="查看课程详情" href="/course/view/detail?pageMode=view&crn=' + rowData.crn + '">' + rowData.name + " (" + rowData.level + "-" + rowData.section + ")" + '</a>');
+                $(nTd).html('<a style="line-height: 1.42857143;" title="查看课程详情" onclick="toCourse(\'' + rowData.crn + '\')">' + rowData.name + " (" + rowData.level + "-" + rowData.section + ")" + '</a>');
             }
         },
         {"data": "capacity", "title": "容量"},
