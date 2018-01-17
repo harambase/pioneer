@@ -62,7 +62,6 @@ let chooseVue = new Vue({
 });
 
 function validate() {
-
     axios.get('/pin/' + chooseVue.$data.pin).then(function (response) {
         if (response.data.code === 2001) {
             initStudentInfo();
@@ -81,15 +80,15 @@ function initPin() {
             initStudentInfo();
             courseTable.draw();
             chooseVue.$data.pinValidate = true;
-            if(isNotEmpty(window.localStorage.getItem("chooseVue"))){
+            if (isNotEmpty(window.localStorage.getItem("chooseVue"))) {
                 let data = JSON.parse(window.localStorage.getItem("chooseVue"));
                 chooseVue.$data.pin = data.pin;
-                chooseVue.$data.tol_credits= data.tol_credits;
-                chooseVue.$data.use_credits= data.use_credits;
-                chooseVue.$data.ava_credits= data.ava_credits;
-                chooseVue.$data.counter= data.counter;
-                chooseVue.$data.crnList= data.crnList;
-                chooseVue.$data.worksheet= data.worksheet;
+                chooseVue.$data.tol_credits = data.tol_credits;
+                chooseVue.$data.use_credits = data.use_credits;
+                chooseVue.$data.ava_credits = data.ava_credits;
+                chooseVue.$data.counter = data.counter;
+                chooseVue.$data.crnList = data.crnList;
+                chooseVue.$data.worksheet = data.worksheet;
                 window.localStorage.clear();
             }
         }
@@ -171,9 +170,9 @@ function removeFromWorkSheet(crn, credits) {
     chooseVue.$data.ava_credits = chooseVue.$data.tol_credits - chooseVue.$data.use_credits;
 }
 
-function toCourse(crn){
+function toCourse(crn) {
     window.localStorage.setItem("chooseVue", JSON.stringify(chooseVue.$data));
-    window.location.href="/course/choose/detail?pageMode=view&crn=" + crn;
+    window.location.href = "/course/choose/detail?pageMode=view&crn=" + crn;
 }
 
 let courseTable = $("#newCourseTable").DataTable({
