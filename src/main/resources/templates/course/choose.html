@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml">
 
-<head th:include="/common :: header('选课设置',true, true)"></head>
+<head th:include="/common :: header('新学期选课',true, true)"></head>
 <body>
 <div id="wrapper">
     <!--/. NAV TOP  -->
@@ -34,7 +34,7 @@
                         </div>
                         <div class="panel-body">
                             <div v-if="!pinValidate">
-                                <form class="form-horizontal">
+                                <form class="form-horizontal" onclick="return false;">
                                     <div class="col-md-12 col-sm-4">
                                         <div class="panel panel-danger">
                                             <div class="panel-heading">
@@ -50,7 +50,7 @@
                                                 </div>
                                                 <div class="col-sm-3">
                                                     <button style="width:150px;" class="btn btn-success"
-                                                            v-on:click="validate">
+                                                            onclick="validate()">
                                                         验证
                                                     </button>
                                                 </div>

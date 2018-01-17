@@ -54,16 +54,19 @@ let courseVue = new Vue({
         detail: false,
         showDocument: false,
         student: false,
+        confirm: false,
         pageMode: location.search.split("&")[0].split("=")[1],
         id: location.search.split("&")[1].split("=")[1],//maybe CRN
         url: location.pathname
     },
     mounted: function () {
 
-        if (isNotEmpty(this.id) && this.pageMode !== 'view')
-            initRequest(this.id);
-        if (this.pageMode === 'view')
-            showCourseDetail(this.id);
+        if (isNotEmpty(this.id)) {
+            if (this.pageMode !== 'view')
+                initRequest(this.id);
+            else
+                showCourseDetail(this.id);
+        }
 
         //执行一个laydate实例
         laydate.render({
@@ -133,6 +136,11 @@ let courseVue = new Vue({
             this.student = false;
         },
         tempCourseCreate: function () {
+            if(!this.confirm) {
+                Showbo.Msg.alert("请确认上述信息无误!", function () {
+                });
+                return;
+            }
             this.prepare();
 
             axios.post('/request/course/register', this.course).then(function (response) {
@@ -150,6 +158,12 @@ let courseVue = new Vue({
         },
 
         tempCourseUpdate: function () {
+            if(!this.confirm) {
+                Showbo.Msg.alert("请确认上述信息无误!", function () {
+                });
+                return;
+            }
+
             this.prepare();
 
             this.tempCourse.courseJson = JSON.stringify(this.course);
@@ -166,6 +180,12 @@ let courseVue = new Vue({
             })
         },
         tempCourseApprove: function () {
+            if(!this.confirm) {
+                Showbo.Msg.alert("请确认上述信息无误!", function () {
+                });
+                return;
+            }
+
             this.prepare();
 
             this.tempCourse.status = "1";
@@ -177,6 +197,12 @@ let courseVue = new Vue({
 
         },
         tempCourseDecline: function () {
+            if(!this.confirm) {
+                Showbo.Msg.alert("请确认上述信息无误!", function () {
+                });
+                return;
+            }
+
             if (isNotEmpty(this.course.comment)) {
                 this.tempCourse.status = "-1";
                 this.tempCourse.courseJson = JSON.stringify(this.course);
@@ -187,6 +213,12 @@ let courseVue = new Vue({
 
         },
         courseCreate: function () {
+            if(!this.confirm) {
+                Showbo.Msg.alert("请确认上述信息无误!", function () {
+                });
+                return;
+            }
+
             this.prepare();
 
             axios.post('/course', this.course).then(function (response) {
@@ -202,6 +234,12 @@ let courseVue = new Vue({
             })
         },
         courseUpdate: function () {
+            if(!this.confirm) {
+                Showbo.Msg.alert("请确认上述信息无误!", function () {
+                });
+                return;
+            }
+
             this.prepare();
             axios.put('/course/' + this.course.crn, this.course).then(function (response) {
                 if (response.data.code === 2001)

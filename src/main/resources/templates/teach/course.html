@@ -529,8 +529,7 @@
                                                     </div>
 
                                                 </div>
-                                                <div class="form-group"
-                                                     v-if="pageMode === 'create' || pageMode === 'manage' || pageMode === 'view'">
+                                                <div class="form-group">
                                                     <div class="col-sm-2">
                                                         <label class="col-sm-12 control-label">预修课程（可多选，可不选）:</label>
                                                     </div>
@@ -594,7 +593,7 @@
                                                     <div class="col-sm-3" v-if="pageMode !== 'view'">
                                                         <div class="checkbox3 checkbox-danger checkbox-inline checkbox-check checkbox-circle checkbox-light">
                                                             <input type="checkbox" id="yes"
-                                                                   name="confirm"
+                                                                   name="confirm" v-model="confirm"
                                                                    required
                                                                    :disabled="tempCourse.status==='0' && pageMode !== 'view'?false:true">
                                                             <label for="yes">确认</label>
@@ -634,13 +633,13 @@
                                                             :disabled="tempCourse.status==='0' && pageMode !== 'view'?false:true"
                                                             onclick="return false;">拒绝申请
                                                     </button>
-                                                    <button style="width:150px;" class="btn btn-primary"
+                                                    <button style="margin-left: 32%; width:150px;" class="btn btn-primary"
                                                             v-if="pageMode === 'request' && id === ''"
                                                             v-on:click="tempCourseCreate"
                                                             onclick="return false;">提交申请
                                                     </button>
-                                                    <button style="width:150px;" class="btn btn-danger"
-                                                            v-if="pageMode === 'request' && id !== ''"
+                                                    <button style="margin-left: 32%; width:150px;" class="btn btn-danger"
+                                                            v-if="pageMode === 'request' && id !== '' && tempCourse.status === '0'"
                                                             v-on:click="tempCourseUpdate"
                                                             onclick="return false;">修改申请
                                                     </button>

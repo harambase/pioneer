@@ -69,6 +69,7 @@ public class SystemController {
 
     @RequestMapping(value = "/logout")
     public void logout(HttpServletResponse response) throws Exception {
+        SecurityUtils.getSubject().logout();
         response.sendRedirect("/login");
     }
 
