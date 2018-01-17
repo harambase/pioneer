@@ -207,7 +207,7 @@
             {"data": "crn", "title": "编号"},
             {
                 "data": null, "title": "课程名（等级-班级）", "createdCell": function (nTd, rowData) {
-                    $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">' + rowData.name + " (" + rowData.level + "-" + rowData.section + ")" + '</p>');
+                    $(nTd).html('<a style="line-height: 1.42857143; padding-top: 0; color:blue;" href="/course/view/detail?pageMode=view&crn=' + rowData.crn + '">' + rowData.name + " (" + rowData.level + "-" + rowData.section + ")" + '</a>');
                 }
             },
             {"data": "capacity", "title": "容量"},

@@ -18,9 +18,9 @@
             </h1>
         </div>
         <div id="page-inner">
-            <div class="row" id="myCoursePge">
+            <div class="row" id="courseDetailPage">
 
-                <div class="col-md-12" v-if="courseList.length > 0">
+                <div class="col-md-12" v-if="assignmentList.length > 0">
                     <!-- Advanced Tables -->
                     <div class="panel panel-primary">
                         <div class="panel-heading">
@@ -49,33 +49,20 @@
     <!-- /. PAGE WRAPPER  -->
 </div>
 <!-- /. WRAPPER  -->
-<div th:include="/common :: load_js(true , false, false)"></div>
+<div th:include="/common :: load_js(true, false, false)"></div>
 <script>
 
     let myCourseVue = new Vue({
-        el: "#myCoursePge",
+        el: "#courseDetailPage",
         data: {
             assignmentList: [],
             pageMode: location.search.split("&")[0].split("=")[1],
             crn: location.search.split("&")[1].split("=")[1],
         },
         mounted: function () {
-            initTeachList();
-            initCourseList();
         }
     });
 
-    function initTeachList() {
-        axios.get('/course?mode=faculty').then(function (response) {
-            myCourseVue.$data.teachList = response.data.data;
-        });
-    }
-
-    function initCourseList() {
-        axios.get('/student/course?status=0').then(function (response) {
-            myCourseVue.$data.courseList = response.data.data;
-        });
-    }
 </script>
 </body>
 </html>

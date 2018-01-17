@@ -55,13 +55,15 @@ let courseVue = new Vue({
         showDocument: false,
         student: false,
         pageMode: location.search.split("&")[0].split("=")[1],
-        id: location.search.split("&")[1].split("=")[1],
+        id: location.search.split("&")[1].split("=")[1],//maybe CRN
         url: location.pathname
     },
     mounted: function () {
 
-        if (isNotEmpty(this.id))
+        if (isNotEmpty(this.id) && this.pageMode !== 'view')
             initRequest(this.id);
+        if (this.pageMode === 'view')
+            showCourseDetail(this.id);
 
         //执行一个laydate实例
         laydate.render({

@@ -35,7 +35,7 @@
             </h1>
         </div>
         <div id="page-inner">
-            <div class="row" id="myCoursePge">
+            <div class="row" id="myCoursePage">
 
                 <div class="col-md-12" v-if="courseList.length > 0">
                     <!-- Advanced Tables -->
@@ -141,7 +141,7 @@
     <!-- /. PAGE WRAPPER  -->
 </div>
 <!-- /. WRAPPER  -->
-<div th:include="/common :: load_js(true , false, false)"></div>
+<div th:include="/common :: load_js(false, false, false)"></div>
 <script>
 
     function goto(crn) {
@@ -149,7 +149,7 @@
     }
 
     let myCourseVue = new Vue({
-        el: "#myCoursePge",
+        el: "#myCoursePage",
         data: {
             courseList: [],
             teachList: [],
