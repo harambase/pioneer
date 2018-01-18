@@ -193,9 +193,10 @@
         serverSide: true,
 
         ajax: {
-            url: basePath + "/request/course?mode=faculty",
+            url: basePath + "/request/course",
             data: function (d) {
                 d.viewStatus = status;
+                d.mode = requestVue.$data.pageMode;
             }
         },
         columns: [
