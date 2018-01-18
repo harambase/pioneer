@@ -1,5 +1,6 @@
 package com.harambase.pioneer.server;
 
+import com.alibaba.fastjson.JSONObject;
 import com.harambase.common.HaramMessage;
 import com.harambase.pioneer.pojo.Course;
 import com.harambase.pioneer.pojo.dto.Option;
@@ -114,10 +115,10 @@ public class CourseServer {
         return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.DELETE, params);
     }
 
-    public HaramMessage reg2Course(String ip, int port, String studentId, String[] choices) {
+    public HaramMessage reg2Course(String ip, int port, String studentId, JSONObject choiceList) {
         String remotePath = "/course/" + studentId + "/choose";
         StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
-        return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, choices);
+        return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.POST, choiceList);
     }
 
     public HaramMessage courseInfoList(String ip, int port, String search) {

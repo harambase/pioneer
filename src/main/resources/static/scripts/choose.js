@@ -35,8 +35,10 @@ let chooseVue = new Vue({
                     choiceList.push(this.crnList[i]);
                 }
             }
-            //todo: 数组发送问题
-            axios.post('/course/choose', choiceList).then(function (response) {
+
+            axios.post('/course/choose',{
+                choiceList: choiceList
+            }).then(function (response) {
                 let failList = response.data.data.failList;
                 if (failList.length === 0)
                     Showbo.Msg.alert("全部注册成功!", function () {
@@ -112,10 +114,6 @@ function initStudentInfo() {
                 });
         });
     }
-}
-
-function showInfo(crn) {
-    window.location.href = basePath + "/course/view?crn=" + crn;
 }
 
 function addToWorkSheet(crn, credits) {
@@ -214,29 +212,29 @@ let courseTable = $("#newCourseTable").DataTable({
     columns: [
         {
             "data": null, "title": "操作", "createdCell": function (nTd, rowData) {
-                $(nTd).html(
-                    '<i href="#" style="cursor: pointer; margin-top:5px; color: green;" class="fa fa-plus" title="添入工作表" onclick="addToWorkSheet(\'' + rowData.crn + '\',\'' + rowData.credits + '\')"></i>'
-                );
-            }
+            $(nTd).html(
+                '<i style="cursor: pointer; margin-top:5px; color: green;" class="fa fa-plus" title="添入工作表" onclick="addToWorkSheet(\'' + rowData.crn + '\',\'' + rowData.credits + '\')"></i>'
+            );
+        }
         },
         {"data": "crn", "title": "编号"},
         {
             "data": null, "title": "课程名（等级-班级）", "createdCell": function (nTd, rowData) {
-                $(nTd).html('<a style="line-height: 1.42857143;" title="查看课程详情" onclick="toCourse(\'' + rowData.crn + '\')">' + rowData.name + " (" + rowData.level + "-" + rowData.section + ")" + '</a>');
-            }
+            $(nTd).html('<a style="line-height: 1.42857143;" title="查看课程详情" onclick="toCourse(\'' + rowData.crn + '\')">' + rowData.name + " (" + rowData.level + "-" + rowData.section + ")" + '</a>');
+        }
         },
         {"data": "capacity", "title": "容量"},
         {"data": "remain", "title": "剩余"},
         {
             "data": "status", "title": "状态", "createdCell": function (nTd, rowData) {
-                if (rowData === 1)
-                    $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">未开始</p>');
-                else if (rowData === 0)
-                    $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:green; ">进行中</p>');
-                else if (rowData === -1)
-                    $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:red; ">已结课</p>');
+            if (rowData === 1)
+                $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:blue; ">未开始</p>');
+            else if (rowData === 0)
+                $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:green; ">进行中</p>');
+            else if (rowData === -1)
+                $(nTd).html('<p style="line-height: 1.42857143; padding-top: 0; color:red; ">已结课</p>');
 
-            }
+        }
         },
         {"data": "date", "title": "起止时间"},
         {"data": "time", "title": "上课时间"},

@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -148,8 +149,8 @@ public class CourseController {
 
     @RequiresPermissions(value = {"admin", "student"}, logical = Logical.OR)
     @RequestMapping(value = "/choose", method = RequestMethod.POST)
-    public ResponseEntity courseChoice(@RequestParam(value = "choiceList[]") String[] choices) {
-        HaramMessage message = courseService.reg2Course(SessionUtil.getUserId(), choices);
+    public ResponseEntity courseChoice(@RequestBody JSONObject choiceList) {
+        HaramMessage message = courseService.reg2Course(SessionUtil.getUserId(), choiceList);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 

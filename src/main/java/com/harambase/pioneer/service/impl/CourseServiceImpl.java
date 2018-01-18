@@ -190,7 +190,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public HaramMessage reg2Course(String studentId, String[] choices) {
-        return courseServer.reg2Course(IP, PORT, studentId, choices);
+    public HaramMessage reg2Course(String studentId, JSONObject choiceList) {
+        return courseServer.reg2Course(IP, PORT, studentId, choiceList);
     }
 }
