@@ -6,6 +6,7 @@ import com.harambase.common.constant.FlagDict;
 import com.harambase.pioneer.pojo.Person;
 import com.harambase.pioneer.service.MonitorService;
 import com.harambase.pioneer.service.PersonService;
+import com.harambase.support.util.JWTUtil;
 import com.harambase.support.util.SessionUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -45,7 +46,8 @@ public class SystemController {
         HaramMessage message = personService.login(person);
         if (message.getCode() == 2001) {
             try {
-                BeanUtils.populate(person, (LinkedHashMap) message.getData());
+                LinkedHashMap personMap = (LinkedHashMap) message.getData();
+                BeanUtils.populate(person, personMap);
                 UsernamePasswordToken token = new UsernamePasswordToken(person.getUserId(), person.getPassword().toCharArray());
                 Subject subject = SecurityUtils.getSubject();
 
@@ -56,6 +58,7 @@ public class SystemController {
                     subject.getSession().setAttribute("profile", "/pioneer/" + (JSON.parseObject(person.getProfile())).getString("path"));
 
                 subject.login(token); //完成登录
+                message.setData(JWTUtil.sign(personMap));
 
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
