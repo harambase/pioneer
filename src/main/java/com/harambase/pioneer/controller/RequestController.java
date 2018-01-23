@@ -49,7 +49,6 @@ public class RequestController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
     @RequestMapping(value = "/user/register", method = RequestMethod.POST)
     public ResponseEntity registerNewUser(@RequestBody JSONObject jsonObject) {
         HaramMessage haramMessage = requestService.registerNewUser(jsonObject);

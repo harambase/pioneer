@@ -9,6 +9,7 @@ import com.harambase.pioneer.pojo.Person;
 import com.harambase.pioneer.server.PersonServer;
 import com.harambase.pioneer.service.PersonService;
 import com.harambase.support.util.FileUtil;
+import com.harambase.support.util.ReturnMsgUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -35,38 +36,73 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public HaramMessage login(Person person) {
-        return personServer.login(IP, PORT, person);
+        try {
+            return personServer.login(IP, PORT, person);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage createPerson(Person person) {
-        return personServer.create(IP, PORT, person);
+        try {
+            return personServer.create(IP, PORT, person);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage deletePerson(String userid) {
-        return personServer.delete(IP, PORT, userid);
+        try {
+            return personServer.delete(IP, PORT, userid);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage updatePerson(String userId, Person person) {
-        return personServer.update(IP, PORT, userId, person);
+        try {
+            return personServer.update(IP, PORT, userId, person);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage get(String userid) {
-        return personServer.get(IP, PORT, userid);
+        try {
+            return personServer.get(IP, PORT, userid);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage list(int start, int length, String search, String order, String orderColumn,
                              String type, String status) {
-        return personServer.list(IP, PORT, start, length, search, order, orderColumn, type, status);
+        try {
+            return personServer.list(IP, PORT, start, length, search, order, orderColumn, type, status);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage search(String search, String type, String status) {
-        return personServer.getPersonBySearch(IP, PORT, search, type, status);
+        try {
+            return personServer.getPersonBySearch(IP, PORT, search, type, status);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override

@@ -11,6 +11,7 @@ import com.harambase.pioneer.service.TranscriptService;
 import com.harambase.support.document.jlr.JLRConverter;
 import com.harambase.support.document.jlr.JLRGenerator;
 import com.harambase.support.util.ReportUtil;
+import com.harambase.support.util.ReturnMsgUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,9 +25,11 @@ import java.util.*;
 @Service
 public class TranscriptServiceImpl implements TranscriptService {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     private final static String IP = Config.SERVER_IP;
     private final static int PORT = Config.SERVER_PORT;
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     private final TranscriptServer transcriptServer;
     private final PersonServer personServer;
     private final StudentServer studentServer;
@@ -40,13 +43,23 @@ public class TranscriptServiceImpl implements TranscriptService {
 
     @Override
     public HaramMessage updateGrade(int id, Transcript transcript) {
-        return transcriptServer.updateByPrimaryKey(IP, PORT, id, transcript);
+        try {
+            return transcriptServer.updateByPrimaryKey(IP, PORT, id, transcript);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage transcriptList(int start, int length, String search, String order, String orderColumn, String studentId, String crn,
                                        String info, String complete) {
-        return transcriptServer.transcriptList(IP, PORT, start, length, search, order, orderColumn, studentId, crn, info, complete);
+        try {
+            return transcriptServer.transcriptList(IP, PORT, start, length, search, order, orderColumn, studentId, crn, info, complete);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override

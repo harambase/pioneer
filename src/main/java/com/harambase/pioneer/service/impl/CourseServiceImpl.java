@@ -11,6 +11,7 @@ import com.harambase.pioneer.pojo.dto.Option;
 import com.harambase.pioneer.server.CourseServer;
 import com.harambase.pioneer.service.CourseService;
 import com.harambase.support.util.FileUtil;
+import com.harambase.support.util.ReturnMsgUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -29,9 +30,11 @@ import java.util.Map;
 @Service
 public class CourseServiceImpl implements CourseService {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     private final static String IP = Config.SERVER_IP;
     private final static int PORT = Config.SERVER_PORT;
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     private final CourseServer courseServer;
 
     @Autowired
@@ -41,32 +44,62 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public HaramMessage create(Course course) {
-        return courseServer.create(IP, PORT, course);
+        try {
+            return courseServer.create(IP, PORT, course);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage delete(String crn) {
-        return courseServer.delete(IP, PORT, crn);
+        try {
+            return courseServer.delete(IP, PORT, crn);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage update(String crn, Course course) {
-        return courseServer.update(IP, PORT, crn, course);
+        try {
+            return courseServer.update(IP, PORT, crn, course);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage getCourseByCrn(String crn) {
-        return courseServer.getCourseByCrn(IP, PORT, crn);
+        try {
+            return courseServer.getCourseByCrn(IP, PORT, crn);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage courseList(int start, int length, String search, String order, String orderColumn, String facultyid, String info) {
-        return courseServer.courseList(IP, PORT, start, length, search, order, orderColumn, facultyid, info);
+        try {
+            return courseServer.courseList(IP, PORT, start, length, search, order, orderColumn, facultyid, info);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage courseTreeList(String facultyid, String info) {
-        return courseServer.courseTreeList(IP, PORT, facultyid, info);
+        try {
+            return courseServer.courseTreeList(IP, PORT, facultyid, info);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
@@ -113,7 +146,12 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public HaramMessage courseInfoList(String search) {
-        return courseServer.courseInfoList(IP, PORT, search);
+        try {
+            return courseServer.courseInfoList(IP, PORT, search);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
@@ -161,36 +199,71 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public HaramMessage studentList(String crn, String search) {
-        return courseServer.studentList(IP, PORT, crn, search);
+        try {
+            return courseServer.studentList(IP, PORT, crn, search);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage getCourseBySearch(String search, String status) {
-        return courseServer.getCourseBySearch(IP, PORT, search, status);
+        try {
+            return courseServer.getCourseBySearch(IP, PORT, search, status);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage assignFac2Cou(String crn, String facultyId) {
-        return courseServer.assignFac2Cou(IP, PORT, crn, facultyId);
+        try {
+            return courseServer.assignFac2Cou(IP, PORT, crn, facultyId);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage preCourseList(String crn) {
-        return courseServer.preCourseList(IP, PORT, crn);
+        try {
+            return courseServer.preCourseList(IP, PORT, crn);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage addStu2Cou(String crn, String studentId, Option option) {
-        return courseServer.addStu2Cou(IP, PORT, crn, studentId, option);
+        try {
+            return courseServer.addStu2Cou(IP, PORT, crn, studentId, option);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage removeStuFromCou(String crn, String studentId) {
-        return courseServer.removeStuFromCou(IP, PORT, crn, studentId);
+        try {
+            return courseServer.removeStuFromCou(IP, PORT, crn, studentId);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage reg2Course(String studentId, JSONObject choiceList) {
-        return courseServer.reg2Course(IP, PORT, studentId, choiceList);
+        try {
+            return courseServer.reg2Course(IP, PORT, studentId, choiceList);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 }

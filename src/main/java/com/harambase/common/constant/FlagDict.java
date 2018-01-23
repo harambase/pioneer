@@ -12,7 +12,7 @@ public enum FlagDict {
     UNMET_PREREQ("预选课程未完成", 2008),
     COURSE_DISABLED("课程禁止选课", 2009),
     MAX_CAPACITY("课程容量达到上限", 2010),
-    TIME_CONFLICT("该教师时间冲突", 2011),
+    TIME_CONFLICT("时间冲突", 2011),
     PIN_EXISTS("该时段识别码已生成", 2012);
 
     private String m;

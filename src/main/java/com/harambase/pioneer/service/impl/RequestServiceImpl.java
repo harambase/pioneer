@@ -11,6 +11,7 @@ import com.harambase.pioneer.pojo.TempUser;
 import com.harambase.pioneer.server.RequestServer;
 import com.harambase.pioneer.service.RequestService;
 import com.harambase.support.util.FileUtil;
+import com.harambase.support.util.ReturnMsgUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -37,52 +38,102 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public HaramMessage deleteTempUser(Integer id) {
-        return requestServer.deleteTempUser(IP, PORT, id);
+        try {
+            return requestServer.deleteTempUser(IP, PORT, id);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage registerNewUser(JSONObject jsonObject) {
-        return requestServer.registerNewUser(IP, PORT, jsonObject);
+        try {
+            return requestServer.registerNewUser(IP, PORT, jsonObject);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage updateTempUser(Integer id, TempUser tempUser) {
-        return requestServer.updateTempUser(IP, PORT, id, tempUser);
+        try {
+            return requestServer.updateTempUser(IP, PORT, id, tempUser);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage tempUserList(int start, int length, String search, String order, String orderColumn, String viewStatus) {
-        return requestServer.tempUserList(IP, PORT, start, length, search, order, orderColumn, viewStatus);
+        try {
+            return requestServer.tempUserList(IP, PORT, start, length, search, order, orderColumn, viewStatus);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage updateTempCourse(Integer id, TempCourse tempCourse) {
-        return requestServer.updateTempCourse(IP, PORT, id, tempCourse);
+        try {
+            return requestServer.updateTempCourse(IP, PORT, id, tempCourse);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage registerNewCourse(String facultyId, JSONObject jsonObject) {
-        return requestServer.registerNewCourse(IP, PORT, facultyId, jsonObject);
+        try {
+            return requestServer.registerNewCourse(IP, PORT, facultyId, jsonObject);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage deleteTempCourse(Integer id) {
-        return requestServer.deleteTempCourse(IP, PORT, id);
+        try {
+            return requestServer.deleteTempCourse(IP, PORT, id);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage tempCourseList(Integer start, Integer length, String search, String order, String orderCol, String viewStatus, String facultyId) {
-        return requestServer.tempCourseList(IP, PORT, start, length, search, order, orderCol, viewStatus, facultyId);
+        try {
+            return requestServer.tempCourseList(IP, PORT, start, length, search, order, orderCol, viewStatus, facultyId);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage getTempUser(Integer id) {
-        return requestServer.getTempUser(IP, PORT, id);
+        try {
+            return requestServer.getTempUser(IP, PORT, id);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage getTempCourse(Integer id) {
-        return requestServer.getTempCourse(IP, PORT, id);
+        try {
+            return requestServer.getTempCourse(IP, PORT, id);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
@@ -131,27 +182,52 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public HaramMessage registerTempAdvise(String studentId, JSONObject jsonObject) {
-        return requestServer.registerTempAdvise(IP, PORT, studentId, jsonObject);
+        try {
+            return requestServer.registerTempAdvise(IP, PORT, studentId, jsonObject);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage deleteTempAdviseById(Integer id) {
-        return requestServer.deleteTempAdviseById(IP, PORT, id);
+        try {
+            return requestServer.deleteTempAdviseById(IP, PORT, id);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage getTempAdvise(Integer id) {
-        return requestServer.getTempAdvise(IP, PORT, id);
+        try {
+            return requestServer.getTempAdvise(IP, PORT, id);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage tempAdviseList(Integer start, Integer length, String search, String order, String orderCol) {
-        return requestServer.tempAdviseList(IP, PORT, start, length, search, order, orderCol);
+        try {
+            return requestServer.tempAdviseList(IP, PORT, start, length, search, order, orderCol);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage updateTempAdvise(Integer id, TempAdvise tempAdvise) {
-        return requestServer.updateTempAdvise(IP, PORT, id, tempAdvise);
+        try {
+            return requestServer.updateTempAdvise(IP, PORT, id, tempAdvise);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
 }

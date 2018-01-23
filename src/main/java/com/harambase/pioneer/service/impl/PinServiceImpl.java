@@ -5,11 +5,16 @@ import com.harambase.common.HaramMessage;
 import com.harambase.common.constant.FlagDict;
 import com.harambase.pioneer.server.PinServer;
 import com.harambase.pioneer.service.PinService;
+import com.harambase.support.util.ReturnMsgUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PinServiceImpl implements PinService {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final static String IP = Config.SERVER_IP;
     private final static int PORT = Config.SERVER_PORT;
@@ -46,41 +51,81 @@ public class PinServiceImpl implements PinService {
 
     @Override
     public HaramMessage generateOne(String startTime, String endTime, int role, String info, String remark, String userId) {
-        return pinServer.generateOne(IP, PORT, startTime, endTime, role, info, remark, userId);
+        try {
+            return pinServer.generateOne(IP, PORT, startTime, endTime, role, info, remark, userId);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage deleteSingleByPin(String pin) {
-        return pinServer.deleteSingleByPin(IP, PORT, pin);
+        try {
+            return pinServer.deleteSingleByPin(IP, PORT, pin);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage deleteAllByInfo(String info) {
-        return pinServer.deleteAllByInfo(IP, PORT, info);
+        try {
+            return pinServer.deleteAllByInfo(IP, PORT, info);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage validate(Integer pinNum) {
-        return pinServer.validate(IP, PORT, pinNum);
+        try {
+            return pinServer.validate(IP, PORT, pinNum);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage listByInfo(int start, int length, String search, String order, String orderColumn, String info) {
-        return pinServer.listByInfo(IP, PORT, start, length, search, order, orderColumn, info);
+        try {
+            return pinServer.listByInfo(IP, PORT, start, length, search, order, orderColumn, info);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage sendFacultyPin(String info, String senderId) {
-        return pinServer.sendFacultyPin(IP, PORT, info, senderId);
+        try {
+            return pinServer.sendFacultyPin(IP, PORT, info, senderId);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage getAllInfo() {
-        return pinServer.getAllInfo(IP, PORT);
+        try {
+            return pinServer.getAllInfo(IP, PORT);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override
     public HaramMessage sendAdvisorPin(String info, String senderId) {
-        return pinServer.sendAdvisorPin(IP, PORT, info, senderId);
+        try {
+            return pinServer.sendAdvisorPin(IP, PORT, info, senderId);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 }
