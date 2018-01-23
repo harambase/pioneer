@@ -162,7 +162,8 @@ public class ShiroConfig {
         hashMap.put("/chatPage", "anon");
         hashMap.put("/login", "anon");
         hashMap.put("/system/login", "anon");
-        hashMap.put("/request/user/registerNewUser", "anon");
+        hashMap.put("/register", "anon");
+        hashMap.put("/request/user/register", "anon");
         hashMap.put("/index", "authc");
         hashMap.put("/**", "authc");
 

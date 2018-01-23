@@ -18,7 +18,7 @@ public class WebController {
 
     @RequestMapping("/register")
     public String signUp() {
-        return "registerNewUser";
+        return "register";
     }
 
     @RequestMapping("/403")
