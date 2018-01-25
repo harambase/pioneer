@@ -6,11 +6,13 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 /**
  * Created by rajeevkumarsingh on 24/07/17.
  */
 @Controller
+@CrossOrigin
 public class ChatController {
 
     @MessageMapping("/chat.sendMessage")

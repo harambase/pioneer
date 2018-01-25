@@ -153,6 +153,8 @@ public class ShiroConfig {
          */
 
         Map<String, String> hashMap = new HashMap<>();
+        hashMap.put("/index", "authc");
+//        hashMap.put("/**", "authc");
         hashMap.put("/static/**", "anon");
         hashMap.put("/common/**", "anon");
         hashMap.put("/system/**", "anon");
@@ -164,8 +166,6 @@ public class ShiroConfig {
         hashMap.put("/register", "anon");
         hashMap.put("/system/login", "anon");
         hashMap.put("/request/user/register", "anon");
-        hashMap.put("/index", "authc");
-        hashMap.put("/**", "authc");
 
         shiroFilter.setFilterChainDefinitionMap(hashMap);
 
