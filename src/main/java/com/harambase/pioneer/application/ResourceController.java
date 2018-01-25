@@ -2,10 +2,12 @@ package com.harambase.pioneer.application;
 
 import com.harambase.common.Config;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @Controller
+@CrossOrigin
 public class ResourceController extends WebMvcConfigurerAdapter {
 
     @Override
