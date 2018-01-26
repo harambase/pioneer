@@ -14,7 +14,7 @@
     <licenses>
         <license>
             <name>MIT license</name>
-            <url>https://raw.githubusercontent.com/szerhusenBC/jwt-spring-security-demo/master/LICENSE</url>
+            <!--<url>https://raw.githubusercontent.com/szerhusenBC/jwt-spring-security-demo/master/LICENSE</url>-->
         </license>
     </licenses>
 

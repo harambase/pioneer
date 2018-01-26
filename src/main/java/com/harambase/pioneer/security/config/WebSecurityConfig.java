@@ -1,7 +1,7 @@
 package com.harambase.pioneer.security.config;
 
 import com.harambase.pioneer.security.JwtAuthenticationEntryPoint;
-import com.harambase.pioneer.security.JwtAuthenticationTokenFilter;
+//import com.harambase.pioneer.security.JwtAuthenticationTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -41,10 +41,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public JwtAuthenticationTokenFilter authenticationTokenFilterBean() throws Exception {
-        return new JwtAuthenticationTokenFilter();
-    }
+//    @Bean
+//    public JwtAuthenticationTokenFilter authenticationTokenFilterBean() throws Exception {
+//        return new JwtAuthenticationTokenFilter();
+//    }
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -70,16 +70,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.css",
                         "/**/*.js"
                 ).permitAll()
-
-                // Un-secure H2 Database
-                .antMatchers("/h2-console/**/**").permitAll()
-
-                .antMatchers("/auth/**").permitAll()
+                .antMatchers("/auth").permitAll()
                 .anyRequest().authenticated();
 
         // Custom JWT based security filter
-        httpSecurity
-                .addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
+//        httpSecurity
+//                .addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
 
         // disable page caching
         httpSecurity
