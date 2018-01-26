@@ -2,8 +2,6 @@ package com.harambase.pioneer.controller;
 
 import com.harambase.common.HaramMessage;
 import com.harambase.pioneer.server.RoleServer;
-import org.apache.shiro.authz.annotation.Logical;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -25,7 +23,7 @@ public class RoleController {
         this.roleServer = roleServer;
     }
 
-    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity list(@RequestParam(value = "start") Integer start,
                                @RequestParam(value = "length") Integer length,

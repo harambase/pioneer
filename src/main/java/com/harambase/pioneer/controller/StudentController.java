@@ -4,8 +4,6 @@ import com.harambase.common.HaramMessage;
 import com.harambase.pioneer.pojo.Student;
 import com.harambase.pioneer.service.StudentService;
 import com.harambase.support.util.SessionUtil;
-import org.apache.shiro.authz.annotation.Logical;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,28 +26,28 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @RequiresPermissions(value = {"admin", "student"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "student"}, logical = Logical.OR)
     @RequestMapping(value = "/{studentId}/transcript", method = RequestMethod.GET)
     public ResponseEntity getTranscriptDetail(@PathVariable(value = "studentId") String studentid) {
         HaramMessage haramMessage = studentService.transcriptDetail(studentid);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "student", "teach"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "student", "teach"}, logical = Logical.OR)
     @RequestMapping(value = "/{studentId}/available/credit", method = RequestMethod.GET)
     public ResponseEntity getAvailableCredit(@PathVariable(value = "studentId") String studentId) {
         HaramMessage haramMessage = studentService.getAvailableCredit(studentId, (String) SessionUtil.getPin().get("info"));
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "student"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "student"}, logical = Logical.OR)
     @RequestMapping(value = "/{studentId}", method = RequestMethod.PUT)
     public ResponseEntity update(@PathVariable String studentId, @RequestBody Student student) {
         HaramMessage haramMessage = studentService.update(studentId, student);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "teach", "system"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "teach", "system"}, logical = Logical.OR)
     @RequestMapping(produces = "application/json", method = RequestMethod.GET)
     public ResponseEntity list(@RequestParam(value = "start") Integer start,
                                @RequestParam(value = "length") Integer length,
@@ -67,7 +65,7 @@ public class StudentController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "teach", "student"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "teach", "student"}, logical = Logical.OR)
     @RequestMapping(value = "/course", method = RequestMethod.GET)
     public ResponseEntity courseList(@RequestParam(value = "status", required = false, defaultValue = "") String status) {
         HaramMessage message = studentService.courseList(status, SessionUtil.getUserId());

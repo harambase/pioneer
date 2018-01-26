@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.harambase.pioneer.pojo.Person;
 
 import java.io.UnsupportedEncodingException;
 import java.util.LinkedHashMap;
@@ -30,25 +31,34 @@ public class JWTUtil {
                     .withClaim("info", (String) user.get("info"))
                     .withClaim("type", (String) user.get("type"))
                     .withClaim("roleId", (String) user.get("roleId"))
-                    .withClaim("birthday", (String) user.get("birthday"))
-                    .withClaim("email", (String) user.get("email"))
-                    .withClaim("tel", (String) user.get("tel"))
-                    .withClaim("qq", (String) user.get("qq"))
-                    .withClaim("weChat", (String) user.get("weChat"))
-                    .withClaim("dorm", (String) user.get("dorm"))
-                    .withClaim("gender", (String) user.get("gender"))
-                    .withClaim("createTime", (String) user.get("createTime"))
-                    .withClaim("updateTime", (String) user.get("updateTime"))
-                    .withClaim("baseInfo", (String) user.get("baseInfo"))
-                    .withClaim("comment", (String) user.get("comment"))
                     .withClaim("profile", (String) user.get("profile"))
                     .withClaim("userInfo", (String) user.get("userInfo"))
-                    .withClaim("address", (String) user.get("address"))
                     .build();
             DecodedJWT jwt = verifier.verify(token);
             return true;
         } catch (Exception exception) {
             return false;
+        }
+    }
+    public static String sign(Person user, String password){
+        try {
+            Algorithm algorithm = Algorithm.HMAC256(password);
+
+            String token = JWT.create()
+                    .withClaim("username",  user.getUsername())
+                    .withClaim("userId",    user.getUserId())
+                    .withClaim("firstName", user.getFirstName())
+                    .withClaim("lastName",  user.getLastName())
+                    .withClaim("status",    user.getStatus())
+                    .withClaim("info",      user.getInfo())
+                    .withClaim("type",      user.getType())
+                    .withClaim("roleId",    user.getRoleId())
+                    .withClaim("profile",   user.getProfile())
+                    .withClaim("userInfo",  user.getUserInfo())
+                    .sign(algorithm);
+            return token;
+        } catch (UnsupportedEncodingException e) {
+            return null;
         }
     }
 
@@ -65,20 +75,8 @@ public class JWTUtil {
                     .withClaim("info", (String) user.get("info"))
                     .withClaim("type", (String) user.get("type"))
                     .withClaim("roleId", (String) user.get("roleId"))
-                    .withClaim("birthday", (String) user.get("birthday"))
-                    .withClaim("email", (String) user.get("email"))
-                    .withClaim("tel", (String) user.get("tel"))
-                    .withClaim("qq", (String) user.get("qq"))
-                    .withClaim("weChat", (String) user.get("weChat"))
-                    .withClaim("dorm", (String) user.get("dorm"))
-                    .withClaim("gender", (String) user.get("gender"))
-                    .withClaim("createTime", (String) user.get("createTime"))
-                    .withClaim("updateTime", (String) user.get("updateTime"))
-                    .withClaim("baseInfo", (String) user.get("baseInfo"))
-                    .withClaim("comment", (String) user.get("comment"))
                     .withClaim("profile", (String) user.get("profile"))
                     .withClaim("userInfo", (String) user.get("userInfo"))
-                    .withClaim("address", (String) user.get("address"))
                     .sign(algorithm);
             return token;
         } catch (UnsupportedEncodingException e) {

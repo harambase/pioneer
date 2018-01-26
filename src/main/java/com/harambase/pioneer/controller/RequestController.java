@@ -9,8 +9,6 @@ import com.harambase.pioneer.service.RequestService;
 import com.harambase.support.util.FileUtil;
 import com.harambase.support.util.SessionUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.authz.annotation.Logical;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,14 +32,14 @@ public class RequestController {
         this.requestService = requestService;
     }
 
-    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
     public ResponseEntity getUserRequest(@PathVariable Integer id) {
         HaramMessage message = requestService.getTempUser(id);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
     @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT)
     public ResponseEntity updateUserRequest(@PathVariable Integer id, @RequestBody TempUser tempUser) {
         tempUser.setOperatorId(SessionUtil.getUserId());
@@ -55,14 +53,14 @@ public class RequestController {
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
     @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
     public ResponseEntity deleteTempUser(@PathVariable Integer id) {
         HaramMessage haramMessage = requestService.deleteTempUser(id);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
     @RequestMapping(value = "/user", produces = "application/json", method = RequestMethod.GET)
     public ResponseEntity userList(@RequestParam(value = "start") Integer start,
                                    @RequestParam(value = "length") Integer length,
@@ -79,7 +77,7 @@ public class RequestController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
     @RequestMapping(value = "/course/{id}", method = RequestMethod.PUT)
     public ResponseEntity updateCourseRequest(@PathVariable Integer id, @RequestBody TempCourse tempCourse) {
         tempCourse.setOperatorId(SessionUtil.getUserId());
@@ -87,14 +85,14 @@ public class RequestController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
     @RequestMapping(value = "/course/{id}", method = RequestMethod.GET)
     public ResponseEntity getCourseRequest(@PathVariable Integer id) {
         HaramMessage message = requestService.getTempCourse(id);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
     @RequestMapping(value = "/course/register", method = RequestMethod.POST)
     public ResponseEntity registerNewCourse(@RequestBody JSONObject jsonObject) {
         String facultyId = SessionUtil.getUserId();
@@ -102,21 +100,21 @@ public class RequestController {
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
     @RequestMapping(value = "/course/info/{id}", method = RequestMethod.PUT)
     public ResponseEntity uploadCourseInfo(@RequestParam MultipartFile file, @PathVariable Integer id) {
         HaramMessage message = requestService.uploadCourseInfo(id, file);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
     @RequestMapping(value = "/course/{id}", method = RequestMethod.DELETE)
     public ResponseEntity deleteTempCourse(@PathVariable Integer id) {
         HaramMessage haramMessage = requestService.deleteTempCourse(id);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
     @RequestMapping(value = "/course/info/{id}", method = RequestMethod.GET)
     public void downloadCourseInfo(@PathVariable Integer id, HttpServletResponse response) {
         HaramMessage message = requestService.getTempCourse(id);
@@ -127,7 +125,7 @@ public class RequestController {
         }
     }
 
-    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
     @RequestMapping(value = "/course", produces = "application/json", method = RequestMethod.GET)
     public ResponseEntity courseList(@RequestParam(value = "start") Integer start,
                                      @RequestParam(value = "length") Integer length,
@@ -148,35 +146,35 @@ public class RequestController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "teach", "student"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "teach", "student"}, logical = Logical.OR)
     @RequestMapping(value = "/advise", method = RequestMethod.POST)
     public ResponseEntity newAdvisorRequest(@RequestBody JSONObject jsonObject) {
         HaramMessage haramMessage = requestService.registerTempAdvise(SessionUtil.getUserId(), jsonObject);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "teach", "student"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "teach", "student"}, logical = Logical.OR)
     @RequestMapping(value = "/advise/{id}", method = RequestMethod.DELETE)
     public ResponseEntity removeAdvisorRequest(@PathVariable Integer id) {
         HaramMessage haramMessage = requestService.deleteTempAdviseById(id);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "teach", "student", "faculty"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "teach", "student", "faculty"}, logical = Logical.OR)
     @RequestMapping(value = "/advise/{id}", method = RequestMethod.GET)
     public ResponseEntity getAdviseRequest(@PathVariable Integer id) {
         HaramMessage haramMessage = requestService.getTempAdvise(id);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "teach", "faculty", "student"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "teach", "faculty", "student"}, logical = Logical.OR)
     @RequestMapping(value = "/advise/{id}", produces = "application/json", method = RequestMethod.PUT)
     public ResponseEntity updateAdviseRequest(@PathVariable Integer id, @RequestBody TempAdvise tempAdvise) {
         HaramMessage message = requestService.updateTempAdvise(id, tempAdvise);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "teach", "faculty", "student"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "teach", "faculty", "student"}, logical = Logical.OR)
     @RequestMapping(value = "/advise ", produces = "application/json", method = RequestMethod.GET)
     public ResponseEntity adviseList(@RequestParam(value = "start") Integer start,
                                      @RequestParam(value = "length") Integer length,

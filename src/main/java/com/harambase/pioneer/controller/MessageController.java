@@ -4,7 +4,6 @@ import com.harambase.common.HaramMessage;
 import com.harambase.pioneer.pojo.Message;
 import com.harambase.pioneer.service.MessageService;
 import com.harambase.support.util.SessionUtil;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +23,7 @@ public class MessageController {
         this.messageService = messageService;
     }
 
-    @RequiresPermissions("user")
+    //@RequiresPermissions("user")
     @RequestMapping(produces = "application/json", method = RequestMethod.POST)
     public ResponseEntity create(@RequestBody Message message) {
         message.setSenderId(SessionUtil.getUserId());
@@ -32,14 +31,14 @@ public class MessageController {
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @RequiresPermissions("user")
+    //@RequiresPermissions("user")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity delete(@PathVariable(value = "id") Integer id) {
         HaramMessage haramMessage = messageService.delete(id);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @RequiresPermissions("user")
+    //@RequiresPermissions("user")
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity update(@PathVariable(value = "id") Integer id,
                                  @RequestBody Message message) {
@@ -47,7 +46,7 @@ public class MessageController {
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @RequiresPermissions("user")
+    //@RequiresPermissions("user")
     @RequestMapping(value = "/{id}/status", method = RequestMethod.PUT)
     public ResponseEntity updateStatus(@PathVariable(value = "id") Integer id,
                                        @RequestParam(value = "status") String status) {
@@ -55,14 +54,14 @@ public class MessageController {
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @RequiresPermissions("user")
+    //@RequiresPermissions("user")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity get(@RequestParam(value = "id") Integer id) {
         HaramMessage haramMessage = messageService.get(id);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @RequiresPermissions("user")
+    //@RequiresPermissions("user")
     @RequestMapping(value = "/count", method = RequestMethod.GET)
     public ResponseEntity count(@RequestParam(value = "status") String status,
                                 @RequestParam(value = "box") String box) {
@@ -71,7 +70,7 @@ public class MessageController {
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @RequiresPermissions("user")
+    //@RequiresPermissions("user")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ResponseEntity list(@RequestParam(value = "start") Integer start,
                                @RequestParam(value = "length") Integer length,
