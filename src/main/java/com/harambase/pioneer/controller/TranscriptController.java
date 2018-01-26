@@ -6,8 +6,6 @@ import com.harambase.pioneer.service.TranscriptService;
 import com.harambase.support.util.FileUtil;
 import com.harambase.support.util.SessionUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.authz.annotation.Logical;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +28,7 @@ public class TranscriptController {
         this.transcriptService = transcriptService;
     }
 
-    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
     @RequestMapping(value = "/{id}", produces = "application/json", method = RequestMethod.PUT)
     public ResponseEntity update(@PathVariable Integer id, @RequestBody Transcript transcript) {
         transcript.setOperatorId(SessionUtil.getUserId());
@@ -38,7 +36,7 @@ public class TranscriptController {
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "teach", "student", "faculty"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "teach", "student", "faculty"}, logical = Logical.OR)
     @RequestMapping(value = {"/list", "/course/student"}, produces = "application/json", method = RequestMethod.GET)
     public ResponseEntity listForTeach(@RequestParam(value = "start", required = false, defaultValue = "0") Integer start,
                                        @RequestParam(value = "length", required = false, defaultValue = "100") Integer length,
@@ -65,7 +63,7 @@ public class TranscriptController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "student"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "student"}, logical = Logical.OR)
     @RequestMapping(produces = "application/json", method = RequestMethod.GET)
     public ResponseEntity listForStudent(@RequestParam(value = "start", required = false, defaultValue = "0") Integer start,
                                          @RequestParam(value = "length", required = false, defaultValue = "100") Integer length,
@@ -82,14 +80,14 @@ public class TranscriptController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
     @RequestMapping(value = "/{studentId}/report", method = RequestMethod.GET)
     public void studentTranscriptReport(@PathVariable(value = "studentId") String studentId, HttpServletResponse response) {
         HaramMessage haramMessage = transcriptService.studentTranscriptReport(studentId);
         FileUtil.downloadFile(studentId + "_transcript_report.pdf", (String) haramMessage.getData(), response);
     }
 
-    @RequiresPermissions(value = {"admin", "student"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "student"}, logical = Logical.OR)
     @RequestMapping(value = "/report", method = RequestMethod.GET)
     public void transcriptReport(@RequestParam(required = false) String studentId, HttpServletResponse response) {
         if (StringUtils.isEmpty(studentId))

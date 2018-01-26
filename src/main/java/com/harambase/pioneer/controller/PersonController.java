@@ -1,6 +1,5 @@
 package com.harambase.pioneer.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.harambase.common.HaramMessage;
 import com.harambase.pioneer.pojo.Person;
@@ -8,10 +7,6 @@ import com.harambase.pioneer.service.PersonService;
 import com.harambase.support.util.FileUtil;
 import com.harambase.support.util.SessionUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.annotation.Logical;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,28 +28,28 @@ public class PersonController {
         this.personService = personService;
     }
 
-    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
     @RequestMapping(produces = "application/json", method = RequestMethod.POST)
     public ResponseEntity create(@RequestBody Person person) {
         HaramMessage message = personService.createPerson(person);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
     @RequestMapping(value = "/{userId}", method = RequestMethod.DELETE)
     public ResponseEntity delete(@PathVariable("userId") String userid) {
         HaramMessage message = personService.deletePerson(userid);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
     @RequestMapping(value = "/{userId}", produces = "application/json", method = RequestMethod.PUT)
     public ResponseEntity update(@PathVariable("userId") String userid, @RequestBody Person person) {
         HaramMessage message = personService.updatePerson(userid, person);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
     @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
     public ResponseEntity get(@PathVariable(value = "userId") String userId) {
         HaramMessage haramMessage = personService.get(userId);
@@ -68,7 +63,7 @@ public class PersonController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public ResponseEntity search(@RequestParam(value = "search", required = false) String search,
                                  @RequestParam(value = "type", required = false) String type,
@@ -77,7 +72,7 @@ public class PersonController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity list(@RequestParam(value = "start") Integer start,
                                @RequestParam(value = "length") Integer length,
@@ -100,8 +95,8 @@ public class PersonController {
         HaramMessage message = personService.upload(userId, file, "p");
         //更新页面头像信息
         if(message.getCode() == 2001){
-            Subject subject = SecurityUtils.getSubject();
-            subject.getSession().setAttribute("profile", "/pioneer/" + ((JSONObject)message.getData()).getString("path"));
+//            Subject subject = SecurityUtils.getSubject();
+//            subject.getSession().setAttribute("profile", "/pioneer/" + ((JSONObject)message.getData()).getString("path"));
         }
         return new ResponseEntity<>(message, HttpStatus.OK);
     }

@@ -4,8 +4,6 @@ import com.harambase.common.HaramMessage;
 import com.harambase.common.constant.FlagDict;
 import com.harambase.pioneer.service.PinService;
 import com.harambase.support.util.SessionUtil;
-import org.apache.shiro.authz.annotation.Logical;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +23,7 @@ public class PinController {
         this.pinService = pinService;
     }
 
-    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity create(@RequestParam(value = "startTime") String startTime,
                                  @RequestParam(value = "endTime") String endTime,
@@ -36,7 +34,7 @@ public class PinController {
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
     @RequestMapping(value = "/{userId}", method = RequestMethod.POST)
     public ResponseEntity createOne(@RequestParam(value = "startTime") String startTime,
                                     @RequestParam(value = "endTime") String endTime,
@@ -48,21 +46,21 @@ public class PinController {
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
     @RequestMapping(value = "/{pin}", method = RequestMethod.DELETE)
     public ResponseEntity delete(@PathVariable(value = "pin") String pin) {
         HaramMessage haramMessage = pinService.deleteSingleByPin(pin);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
     @RequestMapping(value = "/{info}/all", method = RequestMethod.DELETE)
     public ResponseEntity deleteAll(@PathVariable(value = "info") String info) {
         HaramMessage haramMessage = pinService.deleteAllByInfo(info);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @RequiresPermissions("user")
+//    @RequiresPermissions("user")
     @RequestMapping(value = "/{pin}", method = RequestMethod.GET)
     public ResponseEntity validate(@PathVariable(value = "pin") Integer pin) {
         HaramMessage haramMessage = pinService.validate(pin);
@@ -71,7 +69,7 @@ public class PinController {
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @RequiresPermissions("user")
+//    @RequiresPermissions("user")
     @RequestMapping(value = "/session", method = RequestMethod.GET)
     public ResponseEntity sessionValidate() {
         LinkedHashMap pin = SessionUtil.getPin();
@@ -87,28 +85,28 @@ public class PinController {
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
     @RequestMapping(value = "/send/faculty/{info}", method = RequestMethod.GET)
     public ResponseEntity sendFacultyPin(@PathVariable(value = "info") String info) {
         HaramMessage haramMessage = pinService.sendFacultyPin(info, SessionUtil.getUserId());
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
     @RequestMapping(value = "/send/advisor/{info}", method = RequestMethod.GET)
     public ResponseEntity sendAdvisorPin(@PathVariable(value = "info") String info) {
         HaramMessage haramMessage = pinService.sendAdvisorPin(info, SessionUtil.getUserId());
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     public ResponseEntity getAllInfo() {
         HaramMessage haramMessage = pinService.getAllInfo();
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
+//    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
     @RequestMapping(produces = "application/json", method = RequestMethod.GET)
     public ResponseEntity list(@RequestParam(value = "start") Integer start,
                                @RequestParam(value = "length") Integer length,

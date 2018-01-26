@@ -4,8 +4,6 @@ import com.harambase.common.HaramMessage;
 import com.harambase.pioneer.pojo.Advise;
 import com.harambase.pioneer.service.AdviseService;
 import com.harambase.support.util.SessionUtil;
-import org.apache.shiro.authz.annotation.Logical;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,21 +23,21 @@ public class AdviseController {
         this.adviseService = adviseService;
     }
 
-    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
+    //    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
     @RequestMapping(produces = "application/json", method = RequestMethod.POST)
-    public ResponseEntity create(@RequestBody Advise advise) {
+    public ResponseEntity create(@RequestBody Advise advise, @RequestHeader String token) {
         HaramMessage message = adviseService.assignMentor(advise);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
+    //    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity delete(@PathVariable(value = "id") Integer id) {
         HaramMessage message = adviseService.removeMentor(id);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
+    //    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
     @RequestMapping(value = "/{id}", produces = "application/json", method = RequestMethod.PUT)
     public ResponseEntity update(@PathVariable Integer id,
                                  @RequestParam(value = "studentId") String studentId,
@@ -48,14 +46,14 @@ public class AdviseController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "teach", "student", "faculty"}, logical = Logical.OR)
+    //    @RequiresPermissions(value = {"admin", "teach", "student", "faculty"}, logical = Logical.OR)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity get(@RequestParam(value = "id") Integer id) {
         HaramMessage message = adviseService.getMentor(id);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @RequiresPermissions(value = {"admin", "teach", "student", "faculty"}, logical = Logical.OR)
+    //    @RequiresPermissions(value = {"admin", "teach", "student", "faculty"}, logical = Logical.OR)
     @RequestMapping(value = "/list", produces = "application/json", method = RequestMethod.GET)
     public ResponseEntity list(@RequestParam(value = "start") Integer start,
                                @RequestParam(value = "length") Integer length,
