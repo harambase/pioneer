@@ -6,7 +6,6 @@ import com.harambase.common.constant.FlagDict;
 import com.harambase.pioneer.pojo.Person;
 import com.harambase.pioneer.service.MonitorService;
 import com.harambase.pioneer.service.PersonService;
-import com.harambase.support.util.JWTUtil;
 import com.harambase.support.util.SessionUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -58,7 +57,6 @@ public class SystemController {
                     subject.getSession().setAttribute("profile", "/pioneer/" + (JSON.parseObject(person.getProfile())).getString("path"));
 
                 subject.login(token); //完成登录
-                message.setData(JWTUtil.sign(personMap));
 
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
