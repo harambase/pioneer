@@ -13,7 +13,7 @@ public class SessionUtil {
 
     public static String getUserId() {
 //        return ((Person) SecurityUtils.getSubject().getSession().getAttribute("user")).getUserId();
-        return null;
+        return "9201701000";
     }
 
     public static LinkedHashMap getPin() {
