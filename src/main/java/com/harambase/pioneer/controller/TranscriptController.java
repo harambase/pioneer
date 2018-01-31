@@ -2,9 +2,9 @@ package com.harambase.pioneer.controller;
 
 import com.harambase.pioneer.common.HaramMessage;
 import com.harambase.pioneer.server.pojo.base.Transcript;
-import com.harambase.pioneer.service.TranscriptService;
 import com.harambase.pioneer.common.support.util.FileUtil;
 import com.harambase.pioneer.helper.SessionUtil;
+import com.harambase.pioneer.service.TranscriptService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
