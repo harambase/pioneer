@@ -1,31 +1,31 @@
 package com.harambase.pioneer.service.impl;
 
 import com.harambase.pioneer.common.HaramMessage;
-import com.harambase.pioneer.server.StudentServer;
-import com.harambase.pioneer.server.pojo.base.Student;
-import com.harambase.pioneer.service.StudentService;
+import com.harambase.pioneer.server.AdviseServer;
+import com.harambase.pioneer.server.pojo.base.Advise;
+import com.harambase.pioneer.service.AdviseService;
 import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
-public class StudentServiceImpl implements StudentService {
+@Component
+public class AdviseServerCaller implements AdviseService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private final StudentServer studentServer;
+    private final AdviseServer adviseServer;
 
     @Autowired
-    public StudentServiceImpl(StudentServer studentServer) {
-        this.studentServer = studentServer;
+    public AdviseServerCaller(AdviseServer adviseServer) {
+        this.adviseServer = adviseServer;
     }
 
     @Override
-    public HaramMessage transcriptDetail(String studentid) {
+    public HaramMessage advisingList(int start, int length, String search, String order, String orderColumn, String studentId, String facultyId) {
         try {
-            return studentServer.getTranscriptDetail(studentid);
+            return adviseServer.list(start, length, search, order, orderColumn, studentId, facultyId);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -33,9 +33,9 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public HaramMessage update(String studentId, Student student) {
+    public HaramMessage updateAdvise(Integer id, String studentId, String facultyId) {
         try {
-            return studentServer.update(studentId, student);
+            return adviseServer.update(id, studentId, facultyId);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -43,9 +43,9 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public HaramMessage studentList(int start, int length, String search, String order, String orderColumn, String status) {
+    public HaramMessage assignMentor(Advise advise) {
         try {
-            return studentServer.list(start, length, search, order, orderColumn, status);
+            return adviseServer.create(advise);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -53,9 +53,9 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public HaramMessage getAvailableCredit(String studentid, String info) {
+    public HaramMessage removeMentor(Integer id) {
         try {
-            return studentServer.getAvailableCredit(studentid, info);
+            return adviseServer.delete(id);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -63,12 +63,13 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public HaramMessage courseList(String status, String studentId) {
+    public HaramMessage getMentor(Integer id) {
         try {
-            return studentServer.courseList(status, studentId);
+            return adviseServer.get(id);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
         }
     }
+
 }

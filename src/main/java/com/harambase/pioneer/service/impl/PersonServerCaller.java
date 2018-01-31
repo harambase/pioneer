@@ -15,20 +15,21 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.LinkedHashMap;
 
-@Service
-public class PersonServiceImpl implements PersonService {
+@Component
+public class PersonServerCaller implements PersonService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final PersonServer personServer;
 
     @Autowired
-    public PersonServiceImpl(PersonServer personServer) {
+    public PersonServerCaller(PersonServer personServer) {
         this.personServer = personServer;
     }
 

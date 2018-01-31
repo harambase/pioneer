@@ -4,15 +4,16 @@ import com.harambase.pioneer.common.HaramMessage;
 import com.harambase.pioneer.server.MonitorServer;
 import com.harambase.pioneer.service.MonitorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Service
-public class MonitorServiceImpl implements MonitorService {
+@Component
+public class MonitorServerCaller implements MonitorService {
 
     private final MonitorServer monitorServer;
 
     @Autowired
-    public MonitorServiceImpl(MonitorServer monitorServer) {
+    public MonitorServerCaller(MonitorServer monitorServer) {
         this.monitorServer = monitorServer;
     }
 

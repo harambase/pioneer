@@ -8,17 +8,18 @@ import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Service
-public class PinServiceImpl implements PinService {
+@Component
+public class PinServerCaller implements PinService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     
     private final PinServer pinServer;
 
     @Autowired
-    public PinServiceImpl(PinServer pinServer) {
+    public PinServerCaller(PinServer pinServer) {
         this.pinServer = pinServer;
     }
 

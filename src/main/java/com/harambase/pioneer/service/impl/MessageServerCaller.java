@@ -8,17 +8,18 @@ import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Service
-public class MessageServiceImpl implements MessageService {
+@Component
+public class MessageServerCaller implements MessageService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final MessageServer messageServer;
 
     @Autowired
-    public MessageServiceImpl(MessageServer messageServer) {
+    public MessageServerCaller(MessageServer messageServer) {
         this.messageServer = messageServer;
     }
 

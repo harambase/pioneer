@@ -17,20 +17,21 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.LinkedHashMap;
 
-@Service
-public class RequestServiceImpl implements RequestService {
+@Component
+public class RequestServerCaller implements RequestService {
     
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final RequestServer requestServer;
 
     @Autowired
-    public RequestServiceImpl(RequestServer requestServer) {
+    public RequestServerCaller(RequestServer requestServer) {
         this.requestServer = requestServer;
     }
 

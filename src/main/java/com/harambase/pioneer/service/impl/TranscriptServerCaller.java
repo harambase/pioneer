@@ -18,14 +18,15 @@ import com.harambase.pioneer.service.TranscriptService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.text.DecimalFormat;
 import java.util.*;
 
-@Service
-public class TranscriptServiceImpl implements TranscriptService {
+@Component
+public class TranscriptServerCaller implements TranscriptService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -34,7 +35,7 @@ public class TranscriptServiceImpl implements TranscriptService {
     private final StudentServer studentServer;
 
     @Autowired
-    public TranscriptServiceImpl(TranscriptServer transcriptServer, PersonServer personServer, StudentServer studentServer) {
+    public TranscriptServerCaller(TranscriptServer transcriptServer, PersonServer personServer, StudentServer studentServer) {
         this.transcriptServer = transcriptServer;
         this.studentServer = studentServer;
         this.personServer = personServer;

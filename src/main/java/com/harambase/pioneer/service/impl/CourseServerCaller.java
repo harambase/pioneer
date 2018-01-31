@@ -17,6 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,15 +27,15 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 
-@Service
-public class CourseServiceImpl implements CourseService {
+@Component
+public class CourseServerCaller implements CourseService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final CourseServer courseServer;
 
     @Autowired
-    public CourseServiceImpl(CourseServer courseServer) {
+    public CourseServerCaller(CourseServer courseServer) {
         this.courseServer = courseServer;
     }
 
