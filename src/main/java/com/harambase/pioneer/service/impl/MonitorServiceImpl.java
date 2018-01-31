@@ -1,7 +1,6 @@
 package com.harambase.pioneer.service.impl;
 
-import com.harambase.common.Config;
-import com.harambase.common.HaramMessage;
+import com.harambase.pioneer.common.HaramMessage;
 import com.harambase.pioneer.server.MonitorServer;
 import com.harambase.pioneer.service.MonitorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +8,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class MonitorServiceImpl implements MonitorService {
-
-    private final static String IP = Config.SERVER_IP;
-    private final static int PORT = Config.SERVER_PORT;
 
     private final MonitorServer monitorServer;
 
@@ -22,16 +18,16 @@ public class MonitorServiceImpl implements MonitorService {
 
     @Override
     public HaramMessage systemInfo() {
-        return monitorServer.systemInfo(IP, PORT);
+        return monitorServer.systemInfo();
     }
 
     @Override
     public HaramMessage getRelationChart() {
-        return monitorServer.getRelationChart(IP, PORT);
+        return monitorServer.relationChart();
     }
 
     @Override
     public HaramMessage getUserChart() {
-        return monitorServer.getUserChart(IP, PORT);
+        return monitorServer.userCount();
     }
 }

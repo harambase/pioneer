@@ -1,7 +1,7 @@
 package com.harambase.pioneer.service;
 
-import com.harambase.common.HaramMessage;
-import com.harambase.pioneer.pojo.Person;
+import com.harambase.pioneer.common.HaramMessage;
+import com.harambase.pioneer.server.pojo.base.Person;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface PersonService {

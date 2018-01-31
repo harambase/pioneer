@@ -1,6 +1,6 @@
 package com.harambase.pioneer.security.controller;
 
-import com.harambase.common.HaramMessage;
+import com.harambase.pioneer.common.HaramMessage;
 import com.harambase.pioneer.security.JwtAuthenticationRequest;
 import com.harambase.pioneer.security.JwtTokenUtil;
 import com.harambase.pioneer.security.http.HttpKit;
@@ -8,7 +8,6 @@ import com.harambase.pioneer.security.service.JwtAuthenticationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mobile.device.Device;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

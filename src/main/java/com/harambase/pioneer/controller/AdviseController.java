@@ -1,9 +1,9 @@
 package com.harambase.pioneer.controller;
 
-import com.harambase.common.HaramMessage;
-import com.harambase.pioneer.pojo.Advise;
+import com.harambase.pioneer.common.HaramMessage;
+import com.harambase.pioneer.server.pojo.base.Advise;
 import com.harambase.pioneer.service.AdviseService;
-import com.harambase.support.util.SessionUtil;
+import com.harambase.pioneer.helper.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,12 +1,9 @@
 package com.harambase.pioneer.security.service;
 
-import com.harambase.common.Config;
-import com.harambase.common.HaramMessage;
-import com.harambase.pioneer.pojo.Person;
+import com.harambase.pioneer.common.HaramMessage;
 import com.harambase.pioneer.security.JwtUserFactory;
 import com.harambase.pioneer.server.PersonServer;
-import com.harambase.pioneer.service.PersonService;
-import com.harambase.support.util.ReturnMsgUtil;
+import com.harambase.pioneer.server.pojo.base.Person;
 import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,9 +24,6 @@ public class JwtUserDetailsServiceImpl implements UserDetailsService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private final static String IP = Config.SERVER_IP;
-    private final static int PORT = Config.SERVER_PORT;
-
     private final PersonServer personServer;
 
     @Autowired
@@ -40,12 +34,11 @@ public class JwtUserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
-            HaramMessage message = personServer.get(IP, PORT, username);
+            HaramMessage message = personServer.get(username);
             if (message.getData() == null) {
                 throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
             } else {
-                Person person = new Person();
-                BeanUtils.populate(person, (LinkedHashMap) message.getData());
+                Person person = (Person) message.getData();
                 return JwtUserFactory.create(person);
             }
 

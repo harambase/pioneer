@@ -1,9 +1,9 @@
 package com.harambase.pioneer.controller;
 
-import com.harambase.common.HaramMessage;
-import com.harambase.common.constant.FlagDict;
+import com.harambase.pioneer.common.HaramMessage;
+import com.harambase.pioneer.common.constant.FlagDict;
 import com.harambase.pioneer.service.PinService;
-import com.harambase.support.util.SessionUtil;
+import com.harambase.pioneer.helper.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,7 +48,7 @@ public class PinController {
 
 //    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
     @RequestMapping(value = "/{pin}", method = RequestMethod.DELETE)
-    public ResponseEntity delete(@PathVariable(value = "pin") String pin) {
+    public ResponseEntity delete(@PathVariable(value = "pin") Integer pin) {
         HaramMessage haramMessage = pinService.deleteSingleByPin(pin);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
@@ -63,7 +63,7 @@ public class PinController {
 //    @RequiresPermissions("user")
     @RequestMapping(value = "/{pin}", method = RequestMethod.GET)
     public ResponseEntity validate(@PathVariable(value = "pin") Integer pin) {
-        HaramMessage haramMessage = pinService.validate(pin);
+        HaramMessage haramMessage = pinService.validate(pin, SessionUtil.getUserId());
         if (haramMessage.getCode() == FlagDict.SUCCESS.getV())
             SessionUtil.setPin(haramMessage.getData());
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
@@ -75,7 +75,7 @@ public class PinController {
         LinkedHashMap pin = SessionUtil.getPin();
         HaramMessage haramMessage;
         if (pin != null) {
-            haramMessage = pinService.validate((Integer) pin.get("pin"));
+            haramMessage = pinService.validate((Integer) pin.get("pin"), SessionUtil.getUserId());
             if (haramMessage.getCode() == FlagDict.SUCCESS.getV())
                 SessionUtil.setPin(haramMessage.getData());
         } else {

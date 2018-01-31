@@ -1,7 +1,6 @@
 package com.harambase.pioneer.security;
 
-import com.harambase.pioneer.pojo.Person;
-import com.harambase.pioneer.pojo.Role;
+import com.harambase.pioneer.server.pojo.base.Person;
 import io.jsonwebtoken.lang.Collections;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

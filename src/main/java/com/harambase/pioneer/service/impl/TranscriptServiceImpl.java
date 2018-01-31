@@ -1,18 +1,20 @@
 package com.harambase.pioneer.service.impl;
 
-import com.harambase.common.Config;
-import com.harambase.common.HaramMessage;
-import com.harambase.common.constant.FlagDict;
-import com.harambase.pioneer.pojo.Transcript;
+import com.harambase.pioneer.common.Config;
+import com.harambase.pioneer.common.HaramMessage;
+import com.harambase.pioneer.common.constant.FlagDict;
+import com.harambase.pioneer.common.support.document.jlr.JLRConverter;
+import com.harambase.pioneer.common.support.document.jlr.JLRGenerator;
+import com.harambase.pioneer.common.support.util.ReportUtil;
+import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
 import com.harambase.pioneer.server.PersonServer;
 import com.harambase.pioneer.server.StudentServer;
 import com.harambase.pioneer.server.TranscriptServer;
+import com.harambase.pioneer.server.pojo.base.Person;
+import com.harambase.pioneer.server.pojo.base.Transcript;
+import com.harambase.pioneer.server.pojo.view.StudentView;
+import com.harambase.pioneer.server.pojo.view.TranscriptView;
 import com.harambase.pioneer.service.TranscriptService;
-import com.harambase.support.document.jlr.JLRConverter;
-import com.harambase.support.document.jlr.JLRGenerator;
-import com.harambase.support.util.ReportUtil;
-import com.harambase.support.util.ReturnMsgUtil;
-import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +28,6 @@ import java.util.*;
 public class TranscriptServiceImpl implements TranscriptService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    private final static String IP = Config.SERVER_IP;
-    private final static int PORT = Config.SERVER_PORT;
 
     private final TranscriptServer transcriptServer;
     private final PersonServer personServer;
@@ -44,7 +43,7 @@ public class TranscriptServiceImpl implements TranscriptService {
     @Override
     public HaramMessage updateGrade(int id, Transcript transcript) {
         try {
-            return transcriptServer.updateByPrimaryKey(IP, PORT, id, transcript);
+            return transcriptServer.update(id, transcript);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -55,7 +54,7 @@ public class TranscriptServiceImpl implements TranscriptService {
     public HaramMessage transcriptList(int start, int length, String search, String order, String orderColumn, String studentId, String crn,
                                        String info, String complete) {
         try {
-            return transcriptServer.transcriptList(IP, PORT, start, length, search, order, orderColumn, studentId, crn, info, complete);
+            return transcriptServer.list(start, length, search, order, orderColumn, studentId, crn, info, complete);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -81,32 +80,29 @@ public class TranscriptServiceImpl implements TranscriptService {
             JLRConverter converter = new JLRConverter(workingDirectory);
 
             //学生信息TITLE
-            LinkedHashMap studentInfoMap = (LinkedHashMap) personServer.get(IP, PORT, studentId).getData();
-            converter.replace("sname", studentInfoMap.get("lastName") + ", " + studentInfoMap.get("firstName"));
-            converter.replace("studentId", studentInfoMap.get("userId"));
-            converter.replace("info", ReportUtil.infoConverter((String) studentInfoMap.get("info")));
-            converter.replace("address", studentInfoMap.get("address"));
+            Person student = (Person) personServer.get(studentId).getData();
+            converter.replace("sname", student.getLastName() + ", " + student.getFirstName());
+            converter.replace("studentId", student.getUserId());
+            converter.replace("info", ReportUtil.infoConverter(student.getInfo()));
+            converter.replace("address", student.getAddress());
 
             //成绩详情
-            List<LinkedHashMap> transcriptList = (List<LinkedHashMap>) transcriptServer.transcriptList(IP, PORT, 1, Integer.MAX_VALUE, "", "", "", studentId, "", "", "").getData();
+            List<TranscriptView> transcriptList = (List<TranscriptView>) transcriptServer.list(1, Integer.MAX_VALUE, "", "", "", studentId, "", "", "").getData();
             Map<String, List<List<Object>>> transcripts = new HashMap<>();
             Set<String> infoSet = new HashSet<>();
             Map<String, String> infoNameSet = new HashMap<>();
 
-            for (LinkedHashMap transcriptView : transcriptList) {
-                infoSet.add((String) transcriptView.get("info"));
+            for (TranscriptView transcriptView : transcriptList) {
+                infoSet.add(transcriptView.getInfo());
             }
 
             int qualityPoints = 0;
 
             for (String info : infoSet) {
                 List<List<Object>> transcriptInfoList = new ArrayList<>();
-                for (LinkedHashMap transcriptMap : transcriptList) {
-                    if (transcriptMap.get("info").equals(info)) {
+                for (TranscriptView transcript : transcriptList) {
+                    if (transcript.getInfo().equals(info)) {
                         List<Object> transcriptDetail = new ArrayList<>();
-
-                        Transcript transcript = new Transcript();
-                        BeanUtils.populate(transcript, transcriptMap);
 
                         transcriptDetail.add(transcript.getCrn());
                         transcriptDetail.add(transcript.getCname());
@@ -135,10 +131,10 @@ public class TranscriptServiceImpl implements TranscriptService {
             converter.replace("transcriptList", transcripts);
 
             //学分TOTAL:
-            LinkedHashMap studentViewMap = (LinkedHashMap) studentServer.transcriptDetail(IP, PORT, studentId).getData();
-            int complete = (Integer) studentViewMap.get("complete");
-            int progress = (Integer) studentViewMap.get("progress");
-            int incomplete = (Integer) studentViewMap.get("incomplete");
+            StudentView studentViewMap = (StudentView) studentServer.getTranscriptDetail(studentId).getData();
+            int complete = studentViewMap.getComplete();
+            int progress = studentViewMap.getProgress();
+            int incomplete = studentViewMap.getIncomplete();
             int total = complete + progress + incomplete;
 
             double gpa = (double) qualityPoints / (double) (complete + incomplete);

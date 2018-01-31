@@ -6,7 +6,7 @@
 
     <groupId>com.harambase</groupId>
     <artifactId>pioneer</artifactId>
-    <version>1.0</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
     <name>harambase Maven Webapp</name>
     <url>http://maven.apache.org</url>
@@ -44,6 +44,18 @@
     </profiles>
 
     <dependencies>
+
+        <dependency>
+            <groupId>com.harambase.pioneer</groupId>
+            <artifactId>pioneer-common-package</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.harambase.pioneer</groupId>
+            <artifactId>pioneer-server</artifactId>
+            <version>1.0.0</version>
+        </dependency>
 
         <!--thymeleaf非严格模式-->
         <dependency>

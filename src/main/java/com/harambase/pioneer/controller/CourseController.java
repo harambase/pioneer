@@ -2,12 +2,12 @@ package com.harambase.pioneer.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.harambase.common.HaramMessage;
-import com.harambase.pioneer.pojo.Course;
-import com.harambase.pioneer.pojo.dto.Option;
+import com.harambase.pioneer.common.HaramMessage;
+import com.harambase.pioneer.server.pojo.base.Course;
+import com.harambase.pioneer.server.pojo.dto.Option;
 import com.harambase.pioneer.service.CourseService;
-import com.harambase.support.util.FileUtil;
-import com.harambase.support.util.SessionUtil;
+import com.harambase.pioneer.common.support.util.FileUtil;
+import com.harambase.pioneer.helper.SessionUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -172,7 +172,11 @@ public class CourseController {
         String courseInfo = (String) ((LinkedHashMap) message.getData()).get("courseInfo");
         if (StringUtils.isNotEmpty(courseInfo)) {
             JSONObject info = JSONObject.parseObject(courseInfo);
-            FileUtil.downloadFile(info.getString("name"), info.getString("path"), response);
+            try {
+                FileUtil.downloadFile(info.getString("name"), info.getString("path"), response);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

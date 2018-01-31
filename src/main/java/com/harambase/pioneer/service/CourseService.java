@@ -2,13 +2,10 @@ package com.harambase.pioneer.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.harambase.common.HaramMessage;
-import com.harambase.pioneer.pojo.Course;
-import com.harambase.pioneer.pojo.dto.Option;
+import com.harambase.pioneer.common.HaramMessage;
+import com.harambase.pioneer.server.pojo.base.Course;
+import com.harambase.pioneer.server.pojo.dto.Option;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.LinkedHashMap;
-import java.util.List;
 
 public interface CourseService {
 

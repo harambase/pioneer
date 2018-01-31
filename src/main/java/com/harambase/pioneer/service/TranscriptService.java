@@ -1,7 +1,7 @@
 package com.harambase.pioneer.service;
 
-import com.harambase.common.HaramMessage;
-import com.harambase.pioneer.pojo.Transcript;
+import com.harambase.pioneer.common.HaramMessage;
+import com.harambase.pioneer.server.pojo.base.Transcript;
 
 public interface TranscriptService {
 

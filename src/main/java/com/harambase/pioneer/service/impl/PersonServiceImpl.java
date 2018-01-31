@@ -2,14 +2,14 @@ package com.harambase.pioneer.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.harambase.common.Config;
-import com.harambase.common.HaramMessage;
-import com.harambase.common.constant.FlagDict;
-import com.harambase.pioneer.pojo.Person;
+import com.harambase.pioneer.common.Config;
+import com.harambase.pioneer.common.HaramMessage;
+import com.harambase.pioneer.common.constant.FlagDict;
+import com.harambase.pioneer.common.support.util.FileUtil;
+import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
 import com.harambase.pioneer.server.PersonServer;
+import com.harambase.pioneer.server.pojo.base.Person;
 import com.harambase.pioneer.service.PersonService;
-import com.harambase.support.util.FileUtil;
-import com.harambase.support.util.ReturnMsgUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -24,8 +24,6 @@ import java.util.LinkedHashMap;
 @Service
 public class PersonServiceImpl implements PersonService {
 
-    private final static String IP = Config.SERVER_IP;
-    private final static int PORT = Config.SERVER_PORT;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final PersonServer personServer;
 
@@ -37,7 +35,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public HaramMessage login(Person person) {
         try {
-            return personServer.login(IP, PORT, person);
+            return personServer.login(person);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -47,7 +45,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public HaramMessage createPerson(Person person) {
         try {
-            return personServer.create(IP, PORT, person);
+            return personServer.create(person);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -57,7 +55,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public HaramMessage deletePerson(String userid) {
         try {
-            return personServer.delete(IP, PORT, userid);
+            return personServer.delete(userid);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -67,7 +65,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public HaramMessage updatePerson(String userId, Person person) {
         try {
-            return personServer.update(IP, PORT, userId, person);
+            return personServer.update(userId, person);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -77,7 +75,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public HaramMessage get(String userid) {
         try {
-            return personServer.get(IP, PORT, userid);
+            return personServer.get(userid);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -88,7 +86,7 @@ public class PersonServiceImpl implements PersonService {
     public HaramMessage list(int start, int length, String search, String order, String orderColumn,
                              String type, String status) {
         try {
-            return personServer.list(IP, PORT, start, length, search, order, orderColumn, type, status);
+            return personServer.list(start, length, search, order, orderColumn, type, status);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -98,7 +96,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public HaramMessage search(String search, String type, String status) {
         try {
-            return personServer.getPersonBySearch(IP, PORT, search, type, status);
+            return personServer.search(search, type, status);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -112,7 +110,7 @@ public class PersonServiceImpl implements PersonService {
         JSONObject jsonObject = new JSONObject();
 
         try {
-            LinkedHashMap personMap = (LinkedHashMap) personServer.get(IP, PORT, userId).getData();
+            LinkedHashMap personMap = (LinkedHashMap) personServer.get(userId).getData();
             Person person = new Person();
             BeanUtils.populate(person, personMap);
             String name = file.getOriginalFilename();
@@ -157,7 +155,7 @@ public class PersonServiceImpl implements PersonService {
                     break;
             }
 
-            message = personServer.update(IP, PORT, userId, person);
+            message = personServer.update(userId, person);
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

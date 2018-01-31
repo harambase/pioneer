@@ -1,15 +1,13 @@
 package com.harambase.pioneer.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.harambase.common.HaramMessage;
-import com.harambase.common.constant.FlagDict;
-import com.harambase.pioneer.pojo.Person;
+import com.harambase.pioneer.common.HaramMessage;
+import com.harambase.pioneer.common.constant.FlagDict;
+import com.harambase.pioneer.helper.JWTUtil;
+import com.harambase.pioneer.server.pojo.base.Person;
 import com.harambase.pioneer.service.MonitorService;
 import com.harambase.pioneer.service.PersonService;
-import com.harambase.support.util.JWTUtil;
-import com.harambase.support.util.SessionUtil;
+import com.harambase.pioneer.helper.SessionUtil;
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +40,7 @@ public class SystemController {
         HaramMessage message = personService.login(person);
         if (message.getCode() == 2001) {
             try {
-                LinkedHashMap personMap = (LinkedHashMap) message.getData();
-                BeanUtils.populate(person, personMap);
+                person = (Person) message.getData();
 //                UsernamePasswordToken token = new UsernamePasswordToken(person.getUserId(), person.getPassword().toCharArray());
 //                Subject subject = SecurityUtils.getSubject();
 
@@ -54,7 +51,7 @@ public class SystemController {
 //                    subject.getSession().setAttribute("profile", "/pioneer/" + (JSON.parseObject(person.getProfile())).getString("path"));
 
 //                subject.login(token); //完成登录
-                message.setData(JWTUtil.sign(personMap));
+                message.setData(JWTUtil.sign(person, person.getPassword()));
 
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);

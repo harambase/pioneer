@@ -3,15 +3,15 @@ package com.harambase.pioneer.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.harambase.common.Config;
-import com.harambase.common.HaramMessage;
-import com.harambase.common.constant.FlagDict;
-import com.harambase.pioneer.pojo.Course;
-import com.harambase.pioneer.pojo.dto.Option;
+import com.harambase.pioneer.common.Config;
+import com.harambase.pioneer.common.HaramMessage;
+import com.harambase.pioneer.common.constant.FlagDict;
 import com.harambase.pioneer.server.CourseServer;
+import com.harambase.pioneer.server.pojo.base.Course;
+import com.harambase.pioneer.server.pojo.dto.Option;
 import com.harambase.pioneer.service.CourseService;
-import com.harambase.support.util.FileUtil;
-import com.harambase.support.util.ReturnMsgUtil;
+import com.harambase.pioneer.common.support.util.FileUtil;
+import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -31,9 +30,6 @@ import java.util.Map;
 public class CourseServiceImpl implements CourseService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    private final static String IP = Config.SERVER_IP;
-    private final static int PORT = Config.SERVER_PORT;
 
     private final CourseServer courseServer;
 
@@ -45,7 +41,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public HaramMessage create(Course course) {
         try {
-            return courseServer.create(IP, PORT, course);
+            return courseServer.create(course);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -55,7 +51,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public HaramMessage delete(String crn) {
         try {
-            return courseServer.delete(IP, PORT, crn);
+            return courseServer.delete(crn);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -65,7 +61,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public HaramMessage update(String crn, Course course) {
         try {
-            return courseServer.update(IP, PORT, crn, course);
+            return courseServer.update(crn, course);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -75,7 +71,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public HaramMessage getCourseByCrn(String crn) {
         try {
-            return courseServer.getCourseByCrn(IP, PORT, crn);
+            return courseServer.get(crn);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -85,7 +81,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public HaramMessage courseList(int start, int length, String search, String order, String orderColumn, String facultyid, String info) {
         try {
-            return courseServer.courseList(IP, PORT, start, length, search, order, orderColumn, facultyid, info);
+            return courseServer.list(start, length, search, order, orderColumn, facultyid, info);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -95,7 +91,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public HaramMessage courseTreeList(String facultyid, String info) {
         try {
-            return courseServer.courseTreeList(IP, PORT, facultyid, info);
+            return courseServer.zTreeList(facultyid, info);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -109,7 +105,7 @@ public class CourseServiceImpl implements CourseService {
         JSONObject jsonObject = new JSONObject();
 
         try {
-            LinkedHashMap courseMap = (LinkedHashMap) courseServer.getCourseByCrn(IP, PORT, crn).getData();
+            LinkedHashMap courseMap = (LinkedHashMap) courseServer.get(crn).getData();
             Course course = new Course();
             BeanUtils.populate(course, courseMap);
 
@@ -130,7 +126,7 @@ public class CourseServiceImpl implements CourseService {
 
             course.setCourseInfo(jsonObject.toJSONString());
 
-            message = courseServer.update(IP, PORT, crn, course);
+            message = courseServer.update(crn, course);
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -147,7 +143,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public HaramMessage courseInfoList(String search) {
         try {
-            return courseServer.courseInfoList(IP, PORT, search);
+            return courseServer.listInfo(search);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -156,7 +152,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public HaramMessage getAssignmentList(String crn) {
-        HaramMessage message = courseServer.getCourseByCrn(IP, PORT, crn);
+        HaramMessage message = courseServer.get(crn);
 
         LinkedHashMap courseMap = (LinkedHashMap) message.getData();
         String rawAssignment = (String) courseMap.get("assignment");
@@ -174,13 +170,13 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public HaramMessage updateAssignment(String crn, JSONArray assignment) {
-        HaramMessage message = courseServer.getCourseByCrn(IP, PORT, crn);
+        HaramMessage message = courseServer.get(crn);
         LinkedHashMap courseMap = (LinkedHashMap) message.getData();
         Course course = new Course();
         try {
             BeanUtils.populate(course, courseMap);
             course.setAssignment(JSONArray.toJSONString(assignment));
-            message = courseServer.update(IP, PORT, crn, course);
+            message = courseServer.update(crn, course);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
@@ -200,7 +196,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public HaramMessage studentList(String crn, String search) {
         try {
-            return courseServer.studentList(IP, PORT, crn, search);
+            return courseServer.studentList(crn, search);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -210,7 +206,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public HaramMessage getCourseBySearch(String search, String status) {
         try {
-            return courseServer.getCourseBySearch(IP, PORT, search, status);
+            return courseServer.search(search, status);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -220,7 +216,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public HaramMessage assignFac2Cou(String crn, String facultyId) {
         try {
-            return courseServer.assignFac2Cou(IP, PORT, crn, facultyId);
+            return courseServer.assignFac2Course(crn, facultyId);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -230,7 +226,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public HaramMessage preCourseList(String crn) {
         try {
-            return courseServer.preCourseList(IP, PORT, crn);
+            return courseServer.preCourseList(crn);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -240,7 +236,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public HaramMessage addStu2Cou(String crn, String studentId, Option option) {
         try {
-            return courseServer.addStu2Cou(IP, PORT, crn, studentId, option);
+            return courseServer.assignStu2Course(crn, studentId, option);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -250,7 +246,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public HaramMessage removeStuFromCou(String crn, String studentId) {
         try {
-            return courseServer.removeStuFromCou(IP, PORT, crn, studentId);
+            return courseServer.removeStuFromCourse(crn, studentId);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -260,7 +256,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public HaramMessage reg2Course(String studentId, JSONObject choiceList) {
         try {
-            return courseServer.reg2Course(IP, PORT, studentId, choiceList);
+            return courseServer.courseChoice(studentId, choiceList);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();

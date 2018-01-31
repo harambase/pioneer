@@ -1,10 +1,10 @@
-package com.harambase.support.util;
+package com.harambase.pioneer.helper;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.harambase.pioneer.pojo.Person;
+import com.harambase.pioneer.server.pojo.base.Person;
 
 import java.io.UnsupportedEncodingException;
 import java.util.LinkedHashMap;
@@ -14,9 +14,9 @@ public class JWTUtil {
     /**
      * 校验token是否正确
      *
-     * @param token    密钥
-     * @param user 用户
-     * @param secret   用户的密码
+     * @param token  密钥
+     * @param user   用户
+     * @param secret 用户的密码
      * @return 是否正确
      */
     public static boolean verify(String token, LinkedHashMap user, String secret) {
@@ -40,21 +40,22 @@ public class JWTUtil {
             return false;
         }
     }
-    public static String sign(Person user, String password){
+
+    public static String sign(Person user, String password) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(password);
 
             String token = JWT.create()
-                    .withClaim("username",  user.getUsername())
-                    .withClaim("userId",    user.getUserId())
+                    .withClaim("username", user.getUsername())
+                    .withClaim("userId", user.getUserId())
                     .withClaim("firstName", user.getFirstName())
-                    .withClaim("lastName",  user.getLastName())
-                    .withClaim("status",    user.getStatus())
-                    .withClaim("info",      user.getInfo())
-                    .withClaim("type",      user.getType())
-                    .withClaim("roleId",    user.getRoleId())
-                    .withClaim("profile",   user.getProfile())
-                    .withClaim("userInfo",  user.getUserInfo())
+                    .withClaim("lastName", user.getLastName())
+                    .withClaim("status", user.getStatus())
+                    .withClaim("info", user.getInfo())
+                    .withClaim("type", user.getType())
+                    .withClaim("roleId", user.getRoleId())
+                    .withClaim("profile", user.getProfile())
+                    .withClaim("userInfo", user.getUserInfo())
                     .sign(algorithm);
             return token;
         } catch (UnsupportedEncodingException e) {
@@ -84,4 +85,3 @@ public class JWTUtil {
         }
     }
 }
-

@@ -1,11 +1,11 @@
 package com.harambase.pioneer.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.harambase.common.HaramMessage;
-import com.harambase.pioneer.pojo.Person;
+import com.harambase.pioneer.helper.SessionUtil;
+import com.harambase.pioneer.common.HaramMessage;
+import com.harambase.pioneer.server.pojo.base.Person;
 import com.harambase.pioneer.service.PersonService;
-import com.harambase.support.util.FileUtil;
-import com.harambase.support.util.SessionUtil;
+import com.harambase.pioneer.common.support.util.FileUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -114,7 +114,11 @@ public class PersonController {
         String userInfo = (String) ((LinkedHashMap) message.getData()).get("userInfo");
         if (StringUtils.isNotEmpty(userInfo)) {
             JSONObject info = JSONObject.parseObject(userInfo);
-            FileUtil.downloadFile(info.getString("name"), info.getString("path"), response);
+            try {
+                FileUtil.downloadFile(info.getString("name"), info.getString("path"), response);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

@@ -1,10 +1,10 @@
 package com.harambase.pioneer.service;
 
-import com.harambase.common.HaramMessage;
+import com.harambase.pioneer.common.HaramMessage;
 
 public interface PinService {
 
-    HaramMessage validate(Integer pin);
+    HaramMessage validate(Integer pin, String userId);
 
     HaramMessage generateAll(String startTime, String endTime, String role, String info, String remark);
 
@@ -12,7 +12,7 @@ public interface PinService {
 
     HaramMessage deleteAllByInfo(String info);
 
-    HaramMessage deleteSingleByPin(String pin);
+    HaramMessage deleteSingleByPin(Integer pin);
 
     HaramMessage listByInfo(int start, int length, String search, String order, String orderColumn, String info);
 

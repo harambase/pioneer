@@ -1,10 +1,10 @@
 package com.harambase.pioneer.controller;
 
-import com.harambase.common.HaramMessage;
-import com.harambase.pioneer.pojo.Transcript;
+import com.harambase.pioneer.common.HaramMessage;
+import com.harambase.pioneer.server.pojo.base.Transcript;
 import com.harambase.pioneer.service.TranscriptService;
-import com.harambase.support.util.FileUtil;
-import com.harambase.support.util.SessionUtil;
+import com.harambase.pioneer.common.support.util.FileUtil;
+import com.harambase.pioneer.helper.SessionUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -84,7 +84,11 @@ public class TranscriptController {
     @RequestMapping(value = "/{studentId}/report", method = RequestMethod.GET)
     public void studentTranscriptReport(@PathVariable(value = "studentId") String studentId, HttpServletResponse response) {
         HaramMessage haramMessage = transcriptService.studentTranscriptReport(studentId);
-        FileUtil.downloadFile(studentId + "_transcript_report.pdf", (String) haramMessage.getData(), response);
+        try {
+            FileUtil.downloadFile(studentId + "_transcript_report.pdf", (String) haramMessage.getData(), response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 //    @RequiresPermissions(value = {"admin", "student"}, logical = Logical.OR)
@@ -93,6 +97,10 @@ public class TranscriptController {
         if (StringUtils.isEmpty(studentId))
             studentId = SessionUtil.getUserId();
         HaramMessage haramMessage = transcriptService.studentTranscriptReport(studentId);
-        FileUtil.downloadFile(studentId + "_transcript_report.pdf", (String) haramMessage.getData(), response);
+        try {
+            FileUtil.downloadFile(studentId + "_transcript_report.pdf", (String) haramMessage.getData(), response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

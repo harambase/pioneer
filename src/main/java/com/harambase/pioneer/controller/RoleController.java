@@ -1,6 +1,6 @@
 package com.harambase.pioneer.controller;
 
-import com.harambase.common.HaramMessage;
+import com.harambase.pioneer.common.HaramMessage;
 import com.harambase.pioneer.server.RoleServer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

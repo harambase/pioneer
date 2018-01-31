@@ -1,9 +1,9 @@
 package com.harambase.pioneer.controller;
 
-import com.harambase.common.HaramMessage;
-import com.harambase.pioneer.pojo.Student;
+import com.harambase.pioneer.common.HaramMessage;
+import com.harambase.pioneer.server.pojo.base.Student;
 import com.harambase.pioneer.service.StudentService;
-import com.harambase.support.util.SessionUtil;
+import com.harambase.pioneer.helper.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,10 +55,9 @@ public class StudentController {
                                @RequestParam(value = "search[value]") String search,
                                @RequestParam(value = "order[0][dir]") String order,
                                @RequestParam(value = "order[0][column]") String orderCol,
-                               @RequestParam(value = "type", required = false) String type,
                                @RequestParam(value = "status", required = false) String status) {
 
-        HaramMessage message = studentService.studentList(start, length, search, order, orderCol, type, status);
+        HaramMessage message = studentService.studentList(start, length, search, order, orderCol, status);
         message.put("draw", draw);
         message.put("recordsTotal", ((LinkedHashMap) message.get("page")).get("totalRows"));
         message.put("recordsFiltered", ((LinkedHashMap) message.get("page")).get("totalRows"));

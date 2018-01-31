@@ -1,10 +1,10 @@
 package com.harambase.pioneer.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.harambase.common.HaramMessage;
-import com.harambase.pioneer.pojo.TempAdvise;
-import com.harambase.pioneer.pojo.TempCourse;
-import com.harambase.pioneer.pojo.TempUser;
+import com.harambase.pioneer.common.HaramMessage;
+import com.harambase.pioneer.server.pojo.base.TempAdvise;
+import com.harambase.pioneer.server.pojo.base.TempCourse;
+import com.harambase.pioneer.server.pojo.base.TempUser;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface RequestService {

@@ -2,16 +2,16 @@ package com.harambase.pioneer.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.harambase.common.Config;
-import com.harambase.common.HaramMessage;
-import com.harambase.common.constant.FlagDict;
-import com.harambase.pioneer.pojo.TempAdvise;
-import com.harambase.pioneer.pojo.TempCourse;
-import com.harambase.pioneer.pojo.TempUser;
+import com.harambase.pioneer.common.Config;
+import com.harambase.pioneer.common.HaramMessage;
+import com.harambase.pioneer.common.constant.FlagDict;
 import com.harambase.pioneer.server.RequestServer;
+import com.harambase.pioneer.server.pojo.base.TempAdvise;
+import com.harambase.pioneer.server.pojo.base.TempCourse;
+import com.harambase.pioneer.server.pojo.base.TempUser;
 import com.harambase.pioneer.service.RequestService;
-import com.harambase.support.util.FileUtil;
-import com.harambase.support.util.ReturnMsgUtil;
+import com.harambase.pioneer.common.support.util.FileUtil;
+import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -25,9 +25,7 @@ import java.util.LinkedHashMap;
 
 @Service
 public class RequestServiceImpl implements RequestService {
-
-    private final static String IP = Config.SERVER_IP;
-    private final static int PORT = Config.SERVER_PORT;
+    
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final RequestServer requestServer;
 
@@ -39,7 +37,7 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public HaramMessage deleteTempUser(Integer id) {
         try {
-            return requestServer.deleteTempUser(IP, PORT, id);
+            return requestServer.removeUserRequest(id);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -49,7 +47,7 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public HaramMessage registerNewUser(JSONObject jsonObject) {
         try {
-            return requestServer.registerNewUser(IP, PORT, jsonObject);
+            return requestServer.register(jsonObject);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -59,7 +57,7 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public HaramMessage updateTempUser(Integer id, TempUser tempUser) {
         try {
-            return requestServer.updateTempUser(IP, PORT, id, tempUser);
+            return requestServer.updateRequest(id, tempUser);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -69,7 +67,7 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public HaramMessage tempUserList(int start, int length, String search, String order, String orderColumn, String viewStatus) {
         try {
-            return requestServer.tempUserList(IP, PORT, start, length, search, order, orderColumn, viewStatus);
+            return requestServer.userList(start, length, search, order, orderColumn, viewStatus);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -79,7 +77,7 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public HaramMessage updateTempCourse(Integer id, TempCourse tempCourse) {
         try {
-            return requestServer.updateTempCourse(IP, PORT, id, tempCourse);
+            return requestServer.updateCourseRequest(id, tempCourse);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -89,7 +87,7 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public HaramMessage registerNewCourse(String facultyId, JSONObject jsonObject) {
         try {
-            return requestServer.registerNewCourse(IP, PORT, facultyId, jsonObject);
+            return requestServer.registerNewCourse(facultyId, jsonObject);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -99,7 +97,7 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public HaramMessage deleteTempCourse(Integer id) {
         try {
-            return requestServer.deleteTempCourse(IP, PORT, id);
+            return requestServer.removeCourseRequest(id);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -109,7 +107,7 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public HaramMessage tempCourseList(Integer start, Integer length, String search, String order, String orderCol, String viewStatus, String facultyId) {
         try {
-            return requestServer.tempCourseList(IP, PORT, start, length, search, order, orderCol, viewStatus, facultyId);
+            return requestServer.courseList(start, length, search, order, orderCol, viewStatus, facultyId);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -119,7 +117,7 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public HaramMessage getTempUser(Integer id) {
         try {
-            return requestServer.getTempUser(IP, PORT, id);
+            return requestServer.getUserRequest(id);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -129,7 +127,7 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public HaramMessage getTempCourse(Integer id) {
         try {
-            return requestServer.getTempCourse(IP, PORT, id);
+            return requestServer.getCourseRequest(id);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -142,7 +140,8 @@ public class RequestServiceImpl implements RequestService {
         JSONObject jsonObject = new JSONObject();
 
         try {
-            LinkedHashMap tempCourseMap = (LinkedHashMap) requestServer.getTempCourse(IP, PORT, id).getData();
+            //todo: LinkedHashMap->tempCourse
+            LinkedHashMap tempCourseMap = (LinkedHashMap) requestServer.getCourseRequest(id).getData();
             TempCourse tempCourse = new TempCourse();
             BeanUtils.populate(tempCourse, tempCourseMap);
 
@@ -166,7 +165,7 @@ public class RequestServiceImpl implements RequestService {
             courseJson.put("courseInfo", jsonObject.toJSONString());
 
             tempCourse.setCourseJson(courseJson.toJSONString());
-            message = requestServer.updateTempCourse(IP, PORT, id, tempCourse);
+            message = requestServer.updateCourseRequest(id, tempCourse);
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -183,7 +182,7 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public HaramMessage registerTempAdvise(String studentId, JSONObject jsonObject) {
         try {
-            return requestServer.registerTempAdvise(IP, PORT, studentId, jsonObject);
+            return requestServer.newAdvisorRequest(studentId, jsonObject);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -193,7 +192,7 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public HaramMessage deleteTempAdviseById(Integer id) {
         try {
-            return requestServer.deleteTempAdviseById(IP, PORT, id);
+            return requestServer.removeAdvisorRequest(id);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -203,7 +202,7 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public HaramMessage getTempAdvise(Integer id) {
         try {
-            return requestServer.getTempAdvise(IP, PORT, id);
+            return requestServer.getAdviseRequest(id);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -213,7 +212,7 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public HaramMessage tempAdviseList(Integer start, Integer length, String search, String order, String orderCol) {
         try {
-            return requestServer.tempAdviseList(IP, PORT, start, length, search, order, orderCol);
+            return requestServer.adviseList(start, length, search, order, orderCol);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -223,7 +222,7 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public HaramMessage updateTempAdvise(Integer id, TempAdvise tempAdvise) {
         try {
-            return requestServer.updateTempAdvise(IP, PORT, id, tempAdvise);
+            return requestServer.updateAdviseRequest(id, tempAdvise);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
