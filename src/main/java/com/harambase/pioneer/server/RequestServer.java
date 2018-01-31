@@ -32,15 +32,7 @@ public class RequestServer {
     public HaramMessage registerNewUser(String ip, int port, JSONObject jsonObject) {
         String remotePath = "/request/user/registerNewUser";
         StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
-
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set("Content-UserType", "application/json;charset=UTF-8");
-        HttpEntity httpEntity = new HttpEntity<>(jsonObject, httpHeaders);
-
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<HaramMessage> responseMessage = restTemplate.exchange(requestUrl.toString(), HttpMethod.POST, httpEntity, HaramMessage.class);
-
-        return responseMessage.getBody();
+        return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.POST, jsonObject);
     }
 
     public HaramMessage updateTempUser(String ip, int port, int id, TempUser tempUser) {

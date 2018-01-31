@@ -8,6 +8,8 @@ import com.harambase.pioneer.application.SessionHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,8 @@ import java.util.LinkedHashMap;
 @CrossOrigin
 @RequestMapping(value = "/transcript")
 public class TranscriptController {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final TranscriptService transcriptService;
 
@@ -86,7 +90,11 @@ public class TranscriptController {
     @RequestMapping(value = "/{studentId}/report", method = RequestMethod.GET)
     public void studentTranscriptReport(@PathVariable(value = "studentId") String studentId, HttpServletResponse response) {
         HaramMessage haramMessage = transcriptService.studentTranscriptReport(studentId);
-        FileUtil.downloadFile(studentId + "_transcript_report.pdf", (String) haramMessage.getData(), response);
+        try {
+            FileUtil.downloadFile(studentId + "_transcript_report.pdf", (String) haramMessage.getData(), response);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
     }
 
     @RequiresPermissions(value = {"admin", "student"}, logical = Logical.OR)
@@ -95,6 +103,10 @@ public class TranscriptController {
         if (StringUtils.isEmpty(studentId))
             studentId = SessionHelper.getUserId();
         HaramMessage haramMessage = transcriptService.studentTranscriptReport(studentId);
-        FileUtil.downloadFile(studentId + "_transcript_report.pdf", (String) haramMessage.getData(), response);
+        try {
+            FileUtil.downloadFile(studentId + "_transcript_report.pdf", (String) haramMessage.getData(), response);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
     }
 }

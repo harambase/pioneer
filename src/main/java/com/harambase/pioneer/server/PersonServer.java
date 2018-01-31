@@ -19,18 +19,9 @@ import java.util.Map;
 public class PersonServer {
 
     public HaramMessage login(String ip, int port, Person person) {
-
         String remotePath = "/user/login";
         StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
-
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set("Content-UserType", "application/json;charset=UTF-8");
-        HttpEntity httpEntity = new HttpEntity<>(person, httpHeaders);
-
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<HaramMessage> responseMessage = restTemplate.exchange(requestUrl.toString(), HttpMethod.POST, httpEntity, HaramMessage.class);
-
-        return responseMessage.getBody();
+        return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.POST, person);
     }
 
     public HaramMessage create(String ip, int port, Person person) {
@@ -56,14 +47,7 @@ public class PersonServer {
         String remotePath = "/user/" + userid;
         StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
         Map params = new HashMap();
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set("Content-UserType", "application/json;charset=UTF-8");
-        HttpEntity httpEntity = new HttpEntity<>(params, httpHeaders);
-
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<HaramMessage> responseMessage = restTemplate.exchange(requestUrl.toString(), HttpMethod.GET, httpEntity, HaramMessage.class);
-
-        return responseMessage.getBody();
+        return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.GET, params);
     }
 
     public HaramMessage list(String ip, int port, int start, int length, String search, String order,

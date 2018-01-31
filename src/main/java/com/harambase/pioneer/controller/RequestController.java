@@ -11,6 +11,8 @@ import com.harambase.pioneer.application.SessionHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,8 @@ import java.util.LinkedHashMap;
 @RequestMapping("/request")
 
 public class RequestController {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final RequestService requestService;
 
@@ -122,7 +126,11 @@ public class RequestController {
         JSONObject courseJson = JSONObject.parseObject((String) ((LinkedHashMap) message.getData()).get("courseJson"));
         if (StringUtils.isNotEmpty(courseJson.getString("courseInfo"))) {
             JSONObject info = JSONObject.parseObject(courseJson.getString("courseInfo"));
-            FileUtil.downloadFile(info.getString("name"), info.getString("path"), response);
+            try {
+                FileUtil.downloadFile(info.getString("name"), info.getString("path"), response);
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+            }
         }
     }
 

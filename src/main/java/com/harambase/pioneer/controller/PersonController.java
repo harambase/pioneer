@@ -11,6 +11,8 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,8 @@ import java.util.LinkedHashMap;
 @RestController
 @RequestMapping(value = "/user")
 public class PersonController {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final PersonService personService;
 
@@ -118,7 +122,11 @@ public class PersonController {
         String userInfo = (String) ((LinkedHashMap) message.getData()).get("userInfo");
         if (StringUtils.isNotEmpty(userInfo)) {
             JSONObject info = JSONObject.parseObject(userInfo);
-            FileUtil.downloadFile(info.getString("name"), info.getString("path"), response);
+            try {
+                FileUtil.downloadFile(info.getString("name"), info.getString("path"), response);
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+            }
         }
     }
 }
