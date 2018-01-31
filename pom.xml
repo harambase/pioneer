@@ -4,11 +4,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.harambase</groupId>
+    <groupId>com.harambase.pioneer</groupId>
     <artifactId>pioneer</artifactId>
     <version>1.0.1</version>
     <packaging>jar</packaging>
-    <name>harambase Maven Webapp</name>
+    <name>Pioneer Backend WebApp</name>
     <url>http://maven.apache.org</url>
 
     <licenses>
@@ -33,18 +33,7 @@
         <springboot.version>1.5.8.RELEASE</springboot.version>
     </properties>
 
-    <profiles>
-        <profile>
-            <id>dev</id>
-            <properties>
-                <server.ip>localhost</server.ip>
-                <server.port>8080</server.port>
-            </properties>
-        </profile>
-    </profiles>
-
     <dependencies>
-
         <dependency>
             <groupId>com.harambase.pioneer</groupId>
             <artifactId>pioneer-common-package</artifactId>
