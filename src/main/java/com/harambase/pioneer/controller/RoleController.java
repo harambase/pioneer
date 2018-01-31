@@ -1,6 +1,6 @@
 package com.harambase.pioneer.controller;
 
-import com.harambase.common.HaramMessage;
+import com.harambase.pioneer.common.HaramMessage;
 import com.harambase.pioneer.server.RoleServer;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;

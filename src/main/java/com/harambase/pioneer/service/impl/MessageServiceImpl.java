@@ -1,11 +1,11 @@
 package com.harambase.pioneer.service.impl;
 
-import com.harambase.common.Config;
-import com.harambase.common.HaramMessage;
+import com.harambase.pioneer.common.Config;
+import com.harambase.pioneer.common.HaramMessage;
 import com.harambase.pioneer.pojo.Message;
 import com.harambase.pioneer.server.MessageServer;
 import com.harambase.pioneer.service.MessageService;
-import com.harambase.support.util.ReturnMsgUtil;
+import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

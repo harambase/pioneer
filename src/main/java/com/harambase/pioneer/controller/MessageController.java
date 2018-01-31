@@ -1,9 +1,9 @@
 package com.harambase.pioneer.controller;
 
-import com.harambase.common.HaramMessage;
+import com.harambase.pioneer.common.HaramMessage;
 import com.harambase.pioneer.pojo.Message;
 import com.harambase.pioneer.service.MessageService;
-import com.harambase.support.util.SessionUtil;
+import com.harambase.pioneer.application.SessionHelper;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,7 +27,7 @@ public class MessageController {
     @RequiresPermissions("user")
     @RequestMapping(produces = "application/json", method = RequestMethod.POST)
     public ResponseEntity create(@RequestBody Message message) {
-        message.setSenderId(SessionUtil.getUserId());
+        message.setSenderId(SessionHelper.getUserId());
         HaramMessage haramMessage = messageService.create(message);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
@@ -66,7 +66,7 @@ public class MessageController {
     @RequestMapping(value = "/count", method = RequestMethod.GET)
     public ResponseEntity count(@RequestParam(value = "status") String status,
                                 @RequestParam(value = "box") String box) {
-        String userid = SessionUtil.getUserId();
+        String userid = SessionHelper.getUserId();
         HaramMessage haramMessage = messageService.countMessageByStatus(userid, box.toLowerCase(), status.toLowerCase());
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
@@ -81,7 +81,7 @@ public class MessageController {
                                @RequestParam(value = "order[0][column]") String orderCol,
                                @RequestParam(value = "box") String box) {
 
-        String userid = SessionUtil.getUserId();
+        String userid = SessionHelper.getUserId();
         HaramMessage message = messageService.list(start, length, search, order, orderCol, userid, box);
         message.put("draw", draw);
         message.put("recordsTotal", ((LinkedHashMap) message.get("page")).get("totalRows"));

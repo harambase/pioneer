@@ -1,17 +1,17 @@
 package com.harambase.pioneer.service.impl;
 
-import com.harambase.common.Config;
-import com.harambase.common.HaramMessage;
-import com.harambase.common.constant.FlagDict;
+import com.harambase.pioneer.common.Config;
+import com.harambase.pioneer.common.HaramMessage;
+import com.harambase.pioneer.common.constant.FlagDict;
 import com.harambase.pioneer.pojo.Transcript;
 import com.harambase.pioneer.server.PersonServer;
 import com.harambase.pioneer.server.StudentServer;
 import com.harambase.pioneer.server.TranscriptServer;
 import com.harambase.pioneer.service.TranscriptService;
-import com.harambase.support.document.jlr.JLRConverter;
-import com.harambase.support.document.jlr.JLRGenerator;
-import com.harambase.support.util.ReportUtil;
-import com.harambase.support.util.ReturnMsgUtil;
+import com.harambase.pioneer.common.support.document.jlr.JLRConverter;
+import com.harambase.pioneer.common.support.document.jlr.JLRGenerator;
+import com.harambase.pioneer.common.support.util.ReportUtil;
+import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,7 +68,6 @@ public class TranscriptServiceImpl implements TranscriptService {
         /* VTL Syntax information:
          * http://velocity.apache.org/engine/1.7/user-guide.html
          */
-
         File workingDirectory = new File(Config.serverPath + "/tex");
 
         File template = new File(workingDirectory.getAbsolutePath() + "/transcriptTemplate.tex");

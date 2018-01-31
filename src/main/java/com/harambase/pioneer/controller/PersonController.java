@@ -1,12 +1,11 @@
 package com.harambase.pioneer.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.harambase.common.HaramMessage;
+import com.harambase.pioneer.common.HaramMessage;
 import com.harambase.pioneer.pojo.Person;
 import com.harambase.pioneer.service.PersonService;
-import com.harambase.support.util.FileUtil;
-import com.harambase.support.util.SessionUtil;
+import com.harambase.pioneer.common.support.util.FileUtil;
+import com.harambase.pioneer.application.SessionHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.Logical;
@@ -64,7 +63,7 @@ public class PersonController {
     @RequestMapping(value = "/current", method = RequestMethod.GET)
     public ResponseEntity getCurrentUser() {
         HaramMessage message = new HaramMessage();
-        message.setData(SessionUtil.getUser());
+        message.setData(SessionHelper.getUser());
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 

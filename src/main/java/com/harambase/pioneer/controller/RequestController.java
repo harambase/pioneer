@@ -1,13 +1,13 @@
 package com.harambase.pioneer.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.harambase.common.HaramMessage;
+import com.harambase.pioneer.common.HaramMessage;
 import com.harambase.pioneer.pojo.TempAdvise;
 import com.harambase.pioneer.pojo.TempCourse;
 import com.harambase.pioneer.pojo.TempUser;
 import com.harambase.pioneer.service.RequestService;
-import com.harambase.support.util.FileUtil;
-import com.harambase.support.util.SessionUtil;
+import com.harambase.pioneer.common.support.util.FileUtil;
+import com.harambase.pioneer.application.SessionHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -19,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.LinkedHashMap;
-import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -44,7 +43,7 @@ public class RequestController {
     @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
     @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT)
     public ResponseEntity updateUserRequest(@PathVariable Integer id, @RequestBody TempUser tempUser) {
-        tempUser.setOperatorId(SessionUtil.getUserId());
+        tempUser.setOperatorId(SessionHelper.getUserId());
         HaramMessage message = requestService.updateTempUser(id, tempUser);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
@@ -82,7 +81,7 @@ public class RequestController {
     @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
     @RequestMapping(value = "/course/{id}", method = RequestMethod.PUT)
     public ResponseEntity updateCourseRequest(@PathVariable Integer id, @RequestBody TempCourse tempCourse) {
-        tempCourse.setOperatorId(SessionUtil.getUserId());
+        tempCourse.setOperatorId(SessionHelper.getUserId());
         HaramMessage message = requestService.updateTempCourse(id, tempCourse);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
@@ -97,7 +96,7 @@ public class RequestController {
     @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
     @RequestMapping(value = "/course/register", method = RequestMethod.POST)
     public ResponseEntity registerNewCourse(@RequestBody JSONObject jsonObject) {
-        String facultyId = SessionUtil.getUserId();
+        String facultyId = SessionHelper.getUserId();
         HaramMessage haramMessage = requestService.registerNewCourse(facultyId, jsonObject);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
@@ -139,7 +138,7 @@ public class RequestController {
                                      @RequestParam(value = "mode", required = false) String mode) {
         String facultyId = "";
         if (StringUtils.isNotEmpty(mode) && mode.equals("faculty"))
-            facultyId = SessionUtil.getUserId();
+            facultyId = SessionHelper.getUserId();
 
         HaramMessage message = requestService.tempCourseList(start, length, search, order, orderCol, viewStatus, facultyId);
         message.put("draw", draw);
@@ -151,7 +150,7 @@ public class RequestController {
     @RequiresPermissions(value = {"admin", "teach", "student"}, logical = Logical.OR)
     @RequestMapping(value = "/advise", method = RequestMethod.POST)
     public ResponseEntity newAdvisorRequest(@RequestBody JSONObject jsonObject) {
-        HaramMessage haramMessage = requestService.registerTempAdvise(SessionUtil.getUserId(), jsonObject);
+        HaramMessage haramMessage = requestService.registerTempAdvise(SessionHelper.getUserId(), jsonObject);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 

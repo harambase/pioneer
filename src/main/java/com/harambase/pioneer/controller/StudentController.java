@@ -1,9 +1,9 @@
 package com.harambase.pioneer.controller;
 
-import com.harambase.common.HaramMessage;
+import com.harambase.pioneer.common.HaramMessage;
 import com.harambase.pioneer.pojo.Student;
 import com.harambase.pioneer.service.StudentService;
-import com.harambase.support.util.SessionUtil;
+import com.harambase.pioneer.application.SessionHelper;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ public class StudentController {
     @RequiresPermissions(value = {"admin", "student", "teach"}, logical = Logical.OR)
     @RequestMapping(value = "/{studentId}/available/credit", method = RequestMethod.GET)
     public ResponseEntity getAvailableCredit(@PathVariable(value = "studentId") String studentId) {
-        HaramMessage haramMessage = studentService.getAvailableCredit(studentId, (String) SessionUtil.getPin().get("info"));
+        HaramMessage haramMessage = studentService.getAvailableCredit(studentId, (String) SessionHelper.getPin().get("info"));
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
@@ -70,7 +70,7 @@ public class StudentController {
     @RequiresPermissions(value = {"admin", "teach", "student"}, logical = Logical.OR)
     @RequestMapping(value = "/course", method = RequestMethod.GET)
     public ResponseEntity courseList(@RequestParam(value = "status", required = false, defaultValue = "") String status) {
-        HaramMessage message = studentService.courseList(status, SessionUtil.getUserId());
+        HaramMessage message = studentService.courseList(status, SessionHelper.getUserId());
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 

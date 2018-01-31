@@ -1,12 +1,12 @@
 package com.harambase.pioneer.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.harambase.common.HaramMessage;
-import com.harambase.common.constant.FlagDict;
+import com.harambase.pioneer.common.HaramMessage;
+import com.harambase.pioneer.common.constant.FlagDict;
 import com.harambase.pioneer.pojo.Person;
 import com.harambase.pioneer.service.MonitorService;
 import com.harambase.pioneer.service.PersonService;
-import com.harambase.support.util.SessionUtil;
+import com.harambase.pioneer.application.SessionHelper;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -77,8 +77,8 @@ public class SystemController {
     @RequestMapping(value = "/swagger")
     @RequiresPermissions("admin")
     public void swagger(HttpServletResponse response) throws Exception {
-        response.setHeader("userId", SessionUtil.getUserId());
-        response.sendRedirect("http://localhost:8080/?userId=" + SessionUtil.getUserId());
+        response.setHeader("userId", SessionHelper.getUserId());
+        response.sendRedirect("http://localhost:8080/?userId=" + SessionHelper.getUserId());
     }
 
     @RequestMapping(value = "/info", method = RequestMethod.GET)

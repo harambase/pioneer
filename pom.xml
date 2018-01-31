@@ -4,13 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.harambase</groupId>
-    <artifactId>pioneer</artifactId>
+    <groupId>com.harambase.pioneer</groupId>
+    <artifactId>pioneer-core</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
-    <name>harambase Maven Webapp</name>
+    <name>pioneer core</name>
     <url>http://maven.apache.org</url>
-
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -31,6 +30,12 @@
     </profiles>
 
     <dependencies>
+
+        <dependency>
+            <groupId>com.harambase.pioneer</groupId>
+            <artifactId>pioneer-common-package</artifactId>
+            <version>1.0</version>
+        </dependency>
 
         <!-- 添加shiro支持 -->
         <dependency>
@@ -160,7 +165,7 @@
     </dependencies>
 
     <build>
-        <finalName>pioneer</finalName>
+        <finalName>pioneer-core</finalName>
         <sourceDirectory>src/main/java</sourceDirectory>
         <resources>
             <resource>

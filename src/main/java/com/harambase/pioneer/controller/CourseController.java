@@ -2,12 +2,12 @@ package com.harambase.pioneer.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.harambase.common.HaramMessage;
+import com.harambase.pioneer.common.HaramMessage;
 import com.harambase.pioneer.pojo.Course;
 import com.harambase.pioneer.pojo.dto.Option;
 import com.harambase.pioneer.service.CourseService;
-import com.harambase.support.util.FileUtil;
-import com.harambase.support.util.SessionUtil;
+import com.harambase.pioneer.common.support.util.FileUtil;
+import com.harambase.pioneer.application.SessionHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -19,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.LinkedHashMap;
-import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -73,9 +72,9 @@ public class CourseController {
                                @RequestParam(value = "facultyId", required = false, defaultValue = "") String facultyId) {
 
         if (StringUtils.isNotEmpty(mode) && mode.equals("faculty"))
-            facultyId = SessionUtil.getUserId();
-        if (StringUtils.isNotEmpty(mode) && mode.equals("choose") && SessionUtil.getPin() != null)
-            info = (String) SessionUtil.getPin().get("info");
+            facultyId = SessionHelper.getUserId();
+        if (StringUtils.isNotEmpty(mode) && mode.equals("choose") && SessionHelper.getPin() != null)
+            info = (String) SessionHelper.getPin().get("info");
 
         HaramMessage message = courseService.courseList(start, length, search, order, orderCol, facultyId, info);
         message.put("draw", draw);
@@ -99,9 +98,9 @@ public class CourseController {
         String facultyId = "";
         String info = "";
         if (mode != null && mode.equals("faculty"))
-            facultyId = SessionUtil.getUserId();
+            facultyId = SessionHelper.getUserId();
         if (mode != null && mode.equals("choose"))
-            info = (String) SessionUtil.getPin().get("info");
+            info = (String) SessionHelper.getPin().get("info");
 
         HaramMessage message = courseService.courseTreeList(facultyId, info);
         return new ResponseEntity<>(message, HttpStatus.OK);
@@ -150,7 +149,7 @@ public class CourseController {
     @RequiresPermissions(value = {"admin", "student"}, logical = Logical.OR)
     @RequestMapping(value = "/choose", method = RequestMethod.POST)
     public ResponseEntity courseChoice(@RequestBody JSONObject choiceList) {
-        HaramMessage message = courseService.reg2Course(SessionUtil.getUserId(), choiceList);
+        HaramMessage message = courseService.reg2Course(SessionHelper.getUserId(), choiceList);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
@@ -206,7 +205,7 @@ public class CourseController {
                                            @RequestParam String assignmentName,
                                            @RequestParam String createTime,
                                            @RequestParam MultipartFile multipartFile){
-        HaramMessage message = courseService.submitAssignment(crn, assignmentName, createTime, SessionUtil.getUserId(), multipartFile);
+        HaramMessage message = courseService.submitAssignment(crn, assignmentName, createTime, SessionHelper.getUserId(), multipartFile);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 

@@ -1,6 +1,6 @@
 package com.harambase.pioneer.service;
 
-import com.harambase.common.HaramMessage;
+import com.harambase.pioneer.common.HaramMessage;
 
 public interface PinService {
 

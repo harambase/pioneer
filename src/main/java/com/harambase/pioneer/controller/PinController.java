@@ -1,9 +1,9 @@
 package com.harambase.pioneer.controller;
 
-import com.harambase.common.HaramMessage;
-import com.harambase.common.constant.FlagDict;
+import com.harambase.pioneer.common.HaramMessage;
+import com.harambase.pioneer.common.constant.FlagDict;
 import com.harambase.pioneer.service.PinService;
-import com.harambase.support.util.SessionUtil;
+import com.harambase.pioneer.application.SessionHelper;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,19 +67,19 @@ public class PinController {
     public ResponseEntity validate(@PathVariable(value = "pin") Integer pin) {
         HaramMessage haramMessage = pinService.validate(pin);
         if (haramMessage.getCode() == FlagDict.SUCCESS.getV())
-            SessionUtil.setPin(haramMessage.getData());
+            SessionHelper.setPin(haramMessage.getData());
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
     @RequiresPermissions("user")
     @RequestMapping(value = "/session", method = RequestMethod.GET)
     public ResponseEntity sessionValidate() {
-        LinkedHashMap pin = SessionUtil.getPin();
+        LinkedHashMap pin = SessionHelper.getPin();
         HaramMessage haramMessage;
         if (pin != null) {
             haramMessage = pinService.validate((Integer) pin.get("pin"));
             if (haramMessage.getCode() == FlagDict.SUCCESS.getV())
-                SessionUtil.setPin(haramMessage.getData());
+                SessionHelper.setPin(haramMessage.getData());
         } else {
             haramMessage = new HaramMessage();
             haramMessage.setCode(FlagDict.FAIL.getV());
@@ -90,14 +90,14 @@ public class PinController {
     @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
     @RequestMapping(value = "/send/faculty/{info}", method = RequestMethod.GET)
     public ResponseEntity sendFacultyPin(@PathVariable(value = "info") String info) {
-        HaramMessage haramMessage = pinService.sendFacultyPin(info, SessionUtil.getUserId());
+        HaramMessage haramMessage = pinService.sendFacultyPin(info, SessionHelper.getUserId());
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
     @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
     @RequestMapping(value = "/send/advisor/{info}", method = RequestMethod.GET)
     public ResponseEntity sendAdvisorPin(@PathVariable(value = "info") String info) {
-        HaramMessage haramMessage = pinService.sendAdvisorPin(info, SessionUtil.getUserId());
+        HaramMessage haramMessage = pinService.sendAdvisorPin(info, SessionHelper.getUserId());
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 

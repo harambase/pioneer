@@ -1,12 +1,12 @@
 package com.harambase.pioneer.server;
 
 import com.alibaba.fastjson.JSONObject;
-import com.harambase.common.HaramMessage;
+import com.harambase.pioneer.common.HaramMessage;
 import com.harambase.pioneer.pojo.TempAdvise;
 import com.harambase.pioneer.pojo.TempCourse;
 import com.harambase.pioneer.pojo.TempUser;
-import com.harambase.support.util.BuildUrlUtil;
-import com.harambase.support.util.RestTemplateUtil;
+import com.harambase.pioneer.common.support.util.BuildUrlUtil;
+import com.harambase.pioneer.common.support.util.RestTemplateUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;

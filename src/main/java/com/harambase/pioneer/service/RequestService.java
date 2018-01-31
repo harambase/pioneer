@@ -1,7 +1,7 @@
 package com.harambase.pioneer.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.harambase.common.HaramMessage;
+import com.harambase.pioneer.common.HaramMessage;
 import com.harambase.pioneer.pojo.TempAdvise;
 import com.harambase.pioneer.pojo.TempCourse;
 import com.harambase.pioneer.pojo.TempUser;
