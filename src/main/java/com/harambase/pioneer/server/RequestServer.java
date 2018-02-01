@@ -30,7 +30,7 @@ public class RequestServer {
     }
 
     public HaramMessage registerNewUser(String ip, int port, JSONObject jsonObject) {
-        String remotePath = "/request/user/registerNewUser";
+        String remotePath = "/request/user/register";
         StringBuilder requestUrl = BuildUrlUtil.buildUrl(remotePath, ip, port);
         return RestTemplateUtil.sendRestRequest(requestUrl.toString(), HttpMethod.POST, jsonObject);
     }
