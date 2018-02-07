@@ -40,29 +40,21 @@ public class SystemController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final MonitorService monitorService;
-    private final PersonService personService;
-    private final PasswordEncoder passwordEncoder;
     private final TokenHelper tokenHelper;
     private final AuthenticationManager authenticationManager;
     private final DeviceProvider deviceProvider;
 
     @Autowired
-    public SystemController(MonitorService monitorService,
-                            PersonService personService,
-                            PasswordEncoder passwordEncoder,
-                            TokenHelper tokenHelper,
+    public SystemController(MonitorService monitorService, TokenHelper tokenHelper,
                             AuthenticationManager authenticationManager,
                             DeviceProvider deviceProvider) {
 
         this.monitorService = monitorService;
-        this.personService = personService;
-        this.passwordEncoder = passwordEncoder;
         this.tokenHelper = tokenHelper;
         this.authenticationManager = authenticationManager;
         this.deviceProvider = deviceProvider;
     }
 
-    //@PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest, Device device) {
 
