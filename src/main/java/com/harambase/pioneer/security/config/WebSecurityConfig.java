@@ -1,38 +1,52 @@
 package com.harambase.pioneer.security.config;
 
-import com.harambase.pioneer.security.JwtAuthenticationEntryPoint;
-//import com.harambase.pioneer.security.JwtAuthenticationTokenFilter;
+import com.harambase.pioneer.security.security.TokenHelper;
+import com.harambase.pioneer.security.security.auth.RestAuthenticationEntryPoint;
+import com.harambase.pioneer.security.security.auth.TokenAuthenticationFilter;
+import com.harambase.pioneer.security.service.impl.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
-@SuppressWarnings("SpringJavaAutowiringInspection")
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private JwtAuthenticationEntryPoint unauthorizedHandler;
+    private final CustomUserDetailsService jwtUserDetailsService;
+    private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
+    private final TokenHelper tokenHelper;
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    public WebSecurityConfig(CustomUserDetailsService jwtUserDetailsService,
+                             RestAuthenticationEntryPoint restAuthenticationEntryPoint,
+                             TokenHelper tokenHelper) {
+        this.jwtUserDetailsService = jwtUserDetailsService;
+        this.restAuthenticationEntryPoint = restAuthenticationEntryPoint;
+        this.tokenHelper = tokenHelper;
+    }
 
     @Autowired
-    public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        authenticationManagerBuilder
-                .userDetailsService(this.userDetailsService)
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(jwtUserDetailsService)
                 .passwordEncoder(passwordEncoder());
     }
 
@@ -41,43 +55,56 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-//    @Bean
-//    public JwtAuthenticationTokenFilter authenticationTokenFilterBean() throws Exception {
-//        return new JwtAuthenticationTokenFilter();
-//    }
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
 
     @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity
-                // we don't need CSRF because our token is invulnerable
-                .csrf().disable()
-
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-
-                // don't create session
+    protected void configure(HttpSecurity http) throws Exception {
+        List<RequestMatcher> csrfMethods = new ArrayList<>();
+        Arrays.asList("POST", "PUT", "PATCH", "DELETE")
+                .forEach(method -> csrfMethods.add(new AntPathRequestMatcher("/**", method)));
+        http
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-
+                .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
                 .authorizeRequests()
-                //.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-
-                // allow anonymous resource requests
                 .antMatchers(
+                        HttpMethod.GET,
                         "/",
+                        "/webjars/**",
+                        "/*.html",
                         "/favicon.ico",
-                        "/**/**",
-                        "/**"
-                ).permitAll();
-//                .antMatchers("/auth").permitAll();
-//                .anyRequest().authenticated();
+                        "/**/*.html",
+                        "/**/*.css",
+                        "/**/*.js"
+                ).permitAll()
+                .antMatchers("/auth/**").permitAll()
+                .anyRequest().authenticated().and()
+                .addFilterBefore(new TokenAuthenticationFilter(tokenHelper, jwtUserDetailsService), BasicAuthenticationFilter.class);
 
-        // Custom JWT based security filter
-//        httpSecurity
-//                .addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
+        http.csrf().disable();
+    }
 
-        // disable page caching
-        httpSecurity
-                .headers()
-                .frameOptions().sameOrigin()  // required to set for H2 else H2 Console will be blank.
-                .cacheControl();
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        // TokenAuthenticationFilter will ignore the below paths
+        web.ignoring().antMatchers(
+                HttpMethod.POST,
+                "/auth/login"
+        );
+        web.ignoring().antMatchers(
+                HttpMethod.GET,
+                "/",
+                "/webjars/**",
+                "/*.html",
+                "/favicon.ico",
+                "/**/*.html",
+                "/**/*.css",
+                "/**/*.js"
+        );
+
     }
 }

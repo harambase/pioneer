@@ -12,9 +12,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -25,32 +27,30 @@ public class SystemController {
 
     private final MonitorService monitorService;
     private final PersonService personService;
+    private final PasswordEncoder passwordEncoder;
+
 
     @Autowired
     public SystemController(MonitorService monitorService,
-                            PersonService personService) {
+                            PersonService personService,
+                            PasswordEncoder passwordEncoder) {
         this.monitorService = monitorService;
         this.personService = personService;
+        this.passwordEncoder = passwordEncoder;
     }
 
+    //@PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity login(@RequestBody Person person) {
+        person.setPassword(passwordEncoder.encode(person.getPassword()));
         HaramMessage message = personService.login(person);
         if (message.getCode() == 2001) {
             try {
                 person = (Person) message.getData();
-//                UsernamePasswordToken token = new UsernamePasswordToken(person.getUserId(), person.getPassword().toCharArray());
-//                Subject subject = SecurityUtils.getSubject();
-
-                //将用户信息放入session中
-//                subject.getSession().setAttribute("user", person);
-
-//                if (StringUtils.isNotEmpty(person.getProfile()))
-//                    subject.getSession().setAttribute("profile", "/pioneer/" + (JSON.parseObject(person.getProfile())).getString("path"));
-
-//                subject.login(token); //完成登录
-                message.setData(JWTUtil.sign(person, person.getPassword()));
-
+                long nowMillis = System.currentTimeMillis();
+                message.setData(JWTUtil.sign(person, nowMillis));
+                message.setMsg(FlagDict.SUCCESS.getM());
+                message.setCode(FlagDict.SUCCESS.getV());
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
                 message.setMsg(FlagDict.SYSTEM_ERROR.getM());
@@ -69,6 +69,7 @@ public class SystemController {
 
     @RequestMapping(value = "/swagger")
     //@RequiresPermissions("admin")
+    //@PreAuthorize("hasRole('USER')")
     public void swagger(HttpServletResponse response) throws Exception {
         response.setHeader("userId", SessionUtil.getUserId());
         response.sendRedirect("http://localhost:8080/?userId=" + SessionUtil.getUserId());

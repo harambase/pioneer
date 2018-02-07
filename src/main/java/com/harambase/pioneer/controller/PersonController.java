@@ -1,6 +1,7 @@
 package com.harambase.pioneer.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.harambase.pioneer.helper.JWTUtil;
 import com.harambase.pioneer.helper.SessionUtil;
 import com.harambase.pioneer.common.HaramMessage;
 import com.harambase.pioneer.server.pojo.base.Person;
@@ -57,9 +58,9 @@ public class PersonController {
     }
 
     @RequestMapping(value = "/current", method = RequestMethod.GET)
-    public ResponseEntity getCurrentUser() {
+    public ResponseEntity getCurrentUser(@RequestHeader String token) {
         HaramMessage message = new HaramMessage();
-        message.setData(SessionUtil.getUser());
+//        message.setData(JWTUtil.getUser());
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 

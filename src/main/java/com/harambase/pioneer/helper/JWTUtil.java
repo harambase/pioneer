@@ -7,6 +7,8 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.harambase.pioneer.server.pojo.base.Person;
 
 import java.io.UnsupportedEncodingException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedHashMap;
 
 public class JWTUtil {
@@ -41,11 +43,21 @@ public class JWTUtil {
         }
     }
 
-    public static String sign(Person user, String password) {
+    public static String sign(Person user, long nowMillis) {
         try {
-            Algorithm algorithm = Algorithm.HMAC256(password);
 
-            String token = JWT.create()
+            Algorithm algorithm = Algorithm.HMAC256(String.valueOf(nowMillis));
+
+            Calendar now = Calendar.getInstance();
+            now.set(Calendar.MINUTE, 60);
+
+            Date issuedAt = new Date(nowMillis);
+            Date expiresAt = new Date(now.getTimeInMillis());
+
+            return JWT.create()
+                    .withExpiresAt(expiresAt)
+                    .withIssuedAt(issuedAt)
+                    .withIssuer(user.getUserId())
                     .withClaim("username", user.getUsername())
                     .withClaim("userId", user.getUserId())
                     .withClaim("firstName", user.getFirstName())
@@ -57,7 +69,7 @@ public class JWTUtil {
                     .withClaim("profile", user.getProfile())
                     .withClaim("userInfo", user.getUserInfo())
                     .sign(algorithm);
-            return token;
+
         } catch (UnsupportedEncodingException e) {
             return null;
         }

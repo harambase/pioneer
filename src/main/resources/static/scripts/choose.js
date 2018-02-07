@@ -97,7 +97,6 @@ function initPin() {
     })
 }
 
-
 function initStudentInfo() {
     axios.get('/user/current').then(function (response) {
         initStudent(response.data.data.userId);
