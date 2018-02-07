@@ -30,22 +30,22 @@ public class TokenHelper {
 
     private final TimeProvider timeProvider
             ;
-    private SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS512;
+    private SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS256;
 
     @Autowired
     public TokenHelper(TimeProvider timeProvider){
         this.timeProvider = timeProvider;
     }
 
-    public String getUsernameFromToken(String token) {
-        String username;
+    public String getUserIdFromToken(String token) {
+        String userId;
         try {
             final Claims claims = this.getAllClaimsFromToken(token);
-            username = claims.getSubject();
+            userId = claims.getSubject();
         } catch (Exception e) {
-            username = null;
+            userId = null;
         }
-        return username;
+        return userId;
     }
 
     private Date getIssuedAtDateFromToken(String token) {
@@ -87,11 +87,11 @@ public class TokenHelper {
         return refreshedToken;
     }
 
-    public String generateToken(String username, Device device) {
+    public String generateToken(String userId, Device device) {
         String audience = generateAudience(device);
         return Jwts.builder()
                 .setIssuer(APP_NAME)
-                .setSubject(username)
+                .setSubject(userId)//NOTICE HERE: USERID REPLACE USERNAME
                 .setAudience(audience)
                 .setIssuedAt(timeProvider.now())
                 .setExpiration(generateExpirationDate(device))
@@ -135,11 +135,11 @@ public class TokenHelper {
 
     public Boolean validateToken(String token, UserDetails userDetails) {
 //        Person user = (Person) userDetails;
-        final String username = getUsernameFromToken(token);
+        final String userId = getUserIdFromToken(token);
 //        final Date created = getIssuedAtDateFromToken(token);
         return (
-                username != null &&
-                        username.equals(userDetails.getUsername())
+                userId != null &&
+                        userId.equals(userDetails.getUsername())
 //                        && !isCreatedBeforeLastPasswordReset(created, user.getLastPasswordResetDate())
         );
     }

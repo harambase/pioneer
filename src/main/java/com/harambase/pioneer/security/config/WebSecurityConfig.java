@@ -3,7 +3,7 @@ package com.harambase.pioneer.security.config;
 import com.harambase.pioneer.security.security.TokenHelper;
 import com.harambase.pioneer.security.security.auth.RestAuthenticationEntryPoint;
 import com.harambase.pioneer.security.security.auth.TokenAuthenticationFilter;
-import com.harambase.pioneer.security.service.impl.CustomUserDetailsService;
+import com.harambase.pioneer.security.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -81,6 +81,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.js"
                 ).permitAll()
                 .antMatchers("/auth/**").permitAll()
+                .antMatchers("/system/login").permitAll()
                 .anyRequest().authenticated().and()
                 .addFilterBefore(new TokenAuthenticationFilter(tokenHelper, jwtUserDetailsService), BasicAuthenticationFilter.class);
 

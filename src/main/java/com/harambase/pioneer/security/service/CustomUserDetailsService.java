@@ -1,6 +1,6 @@
-package com.harambase.pioneer.security.service.impl;
+package com.harambase.pioneer.security.service;
 
-import com.harambase.pioneer.pojo.User;
+import com.harambase.pioneer.security.model.User;
 import com.harambase.pioneer.server.PersonServer;
 import com.harambase.pioneer.server.pojo.base.Person;
 import org.slf4j.Logger;

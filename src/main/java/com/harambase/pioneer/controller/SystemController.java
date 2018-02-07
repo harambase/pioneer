@@ -1,8 +1,12 @@
 package com.harambase.pioneer.controller;
 
+import com.harambase.pioneer.common.DeviceProvider;
 import com.harambase.pioneer.common.HaramMessage;
 import com.harambase.pioneer.common.constant.FlagDict;
-import com.harambase.pioneer.helper.JWTUtil;
+import com.harambase.pioneer.security.model.User;
+import com.harambase.pioneer.security.model.UserTokenState;
+import com.harambase.pioneer.security.security.TokenHelper;
+import com.harambase.pioneer.security.security.auth.JwtAuthenticationRequest;
 import com.harambase.pioneer.server.pojo.base.Person;
 import com.harambase.pioneer.helper.SessionUtil;
 import com.harambase.pioneer.service.MonitorService;
@@ -11,16 +15,26 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mobile.device.Device;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
+import java.io.IOException;
+import java.security.Principal;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/system")
+@RequestMapping(value = "/system", produces = MediaType.APPLICATION_JSON_VALUE)
 public class SystemController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -28,37 +42,82 @@ public class SystemController {
     private final MonitorService monitorService;
     private final PersonService personService;
     private final PasswordEncoder passwordEncoder;
-
+    private final TokenHelper tokenHelper;
+    private final AuthenticationManager authenticationManager;
+    private final DeviceProvider deviceProvider;
 
     @Autowired
     public SystemController(MonitorService monitorService,
                             PersonService personService,
-                            PasswordEncoder passwordEncoder) {
+                            PasswordEncoder passwordEncoder,
+                            TokenHelper tokenHelper,
+                            AuthenticationManager authenticationManager,
+                            DeviceProvider deviceProvider) {
+
         this.monitorService = monitorService;
         this.personService = personService;
         this.passwordEncoder = passwordEncoder;
+        this.tokenHelper = tokenHelper;
+        this.authenticationManager = authenticationManager;
+        this.deviceProvider = deviceProvider;
     }
 
     //@PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity login(@RequestBody Person person) {
-        person.setPassword(passwordEncoder.encode(person.getPassword()));
-        HaramMessage message = personService.login(person);
-        if (message.getCode() == 2001) {
-            try {
-                person = (Person) message.getData();
-                long nowMillis = System.currentTimeMillis();
-                message.setData(JWTUtil.sign(person, nowMillis));
-                message.setMsg(FlagDict.SUCCESS.getM());
-                message.setCode(FlagDict.SUCCESS.getV());
-            } catch (Exception e) {
-                logger.error(e.getMessage(), e);
-                message.setMsg(FlagDict.SYSTEM_ERROR.getM());
-                message.setCode(FlagDict.SYSTEM_ERROR.getV());
-                return new ResponseEntity<>(message, HttpStatus.OK);
-            }
+    public ResponseEntity createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest, Device device) {
+
+        HaramMessage haramMessage = new HaramMessage();
+        try {
+            //System.out.println(passwordEncoder.encode(authenticationRequest.getPassword()));
+            // Perform the security
+            final Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            authenticationRequest.getUsername(),
+                            authenticationRequest.getPassword()
+                    )
+            );
+
+            // Inject into security context
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            // token creation
+            User user = (User) authentication.getPrincipal();
+            String jws = tokenHelper.generateToken(user.getUserId(), device);
+            int expiresIn = tokenHelper.getExpiredIn(device);
+
+            // Return the token
+
+            haramMessage.setData(new UserTokenState(jws, expiresIn));
+            haramMessage.setCode(FlagDict.SUCCESS.getV());
+            return new ResponseEntity<>(haramMessage , HttpStatus.OK);
+
+        } catch (AuthenticationException e) {
+            logger.error(e.getMessage(), e);
+            haramMessage.setCode(FlagDict.FAIL.getV());
+            return new ResponseEntity<>(haramMessage , HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(message, HttpStatus.OK);
+
+    }
+
+    @PreAuthorize("hasRole('USER')")
+    @RequestMapping(value = "/token/refresh", method = RequestMethod.POST)
+    public ResponseEntity<?> refreshAuthenticationToken(HttpServletRequest request, Principal principal) {
+
+        String authToken = tokenHelper.getToken(request);
+
+        Device device = deviceProvider.getCurrentDevice(request);
+
+        if (authToken != null && principal != null) {
+
+            // TODO check user password last update
+            String refreshedToken = tokenHelper.refreshToken(authToken, device);
+            int expiresIn = tokenHelper.getExpiredIn(device);
+
+            return ResponseEntity.ok(new UserTokenState(refreshedToken, expiresIn));
+        } else {
+            UserTokenState userTokenState = new UserTokenState();
+            return ResponseEntity.accepted().body(userTokenState);
+        }
     }
 
     @RequestMapping(value = "/logout")

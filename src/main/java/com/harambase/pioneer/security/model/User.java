@@ -1,4 +1,4 @@
-package com.harambase.pioneer.pojo;
+package com.harambase.pioneer.security.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.harambase.pioneer.common.constant.RoleType;
@@ -15,27 +15,26 @@ import java.util.List;
 public class User implements UserDetails, Serializable {
 
     private String userId;
+
     private String username;
-    private String firstName;
-    private String lastName;
+
     private String password;
+
     private String type;
-    private String roleId;
+
     private boolean enabled;
 
     private List<Authority> authorities;
 
     public User(Person person) {
+
         this.password = person.getPassword();
         this.userId = person.getUserId();
-        this.username = person.getUsername();
-        this.firstName = person.getFirstName();
-        this.lastName = person.getLastName();
+        this.username = person.getUserId();//NOTICE HERE USE USERID AS USERNAME
         this.enabled = person.getStatus().equals("1");
-        this.type = person.getType();
-        this.roleId = person.getRoleId();
         this.authorities = new ArrayList<>();
-        for (String role_id : roleId.split("/")) {
+
+        for (String role_id : person.getRoleId().split("/")) {
             if (StringUtils.isNotEmpty(role_id)) {
                 Authority authority = new Authority();
                 authority.setId(Long.parseLong(role_id));
@@ -64,7 +63,6 @@ public class User implements UserDetails, Serializable {
                     case "8":
                         authority.setName(RoleType.ADVISOR.getRoleName());
                         break;
-
                 }
                 authorities.add(authority);
             }
@@ -88,27 +86,6 @@ public class User implements UserDetails, Serializable {
         this.username = username == null ? null : username.trim();
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName == null ? null : firstName.trim();
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName == null ? null : lastName.trim();
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -123,6 +100,11 @@ public class User implements UserDetails, Serializable {
 
     public void setType(String type) {
         this.type = type == null ? null : type.trim();
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.authorities;
     }
 
     @JsonIgnore
@@ -145,7 +127,7 @@ public class User implements UserDetails, Serializable {
 
     @Override
     public boolean isEnabled() {
-        return enabled;
+        return this.enabled;
     }
 
 }

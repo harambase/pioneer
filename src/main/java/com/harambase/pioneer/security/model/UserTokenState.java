@@ -1,4 +1,4 @@
-package com.harambase.pioneer.security;
+package com.harambase.pioneer.security.model;
 
 /**
  * Created by fan.jin on 2016-10-17.

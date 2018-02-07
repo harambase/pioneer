@@ -1,8 +1,6 @@
 package com.harambase.pioneer.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.harambase.pioneer.helper.JWTUtil;
-import com.harambase.pioneer.helper.SessionUtil;
 import com.harambase.pioneer.common.HaramMessage;
 import com.harambase.pioneer.server.pojo.base.Person;
 import com.harambase.pioneer.common.support.util.FileUtil;

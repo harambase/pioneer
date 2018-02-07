@@ -15,7 +15,6 @@ import java.io.IOException;
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     private TokenHelper tokenHelper;
-
     private UserDetailsService userDetailsService;
 
     public TokenAuthenticationFilter(TokenHelper tokenHelper, UserDetailsService userDetailsService) {
@@ -24,18 +23,16 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     }
 
     @Override
-    public void doFilterInternal(
-            HttpServletRequest request,
-            HttpServletResponse response,
-            FilterChain chain
-    ) throws IOException, ServletException {
+    public void doFilterInternal(HttpServletRequest request,
+                                 HttpServletResponse response,
+                                 FilterChain chain) throws IOException, ServletException {
 
         String username;
         String authToken = tokenHelper.getToken(request);
 
         if (authToken != null) {
             // get username from token
-            username = tokenHelper.getUsernameFromToken(authToken);
+            username = tokenHelper.getUserIdFromToken(authToken);
             if (username != null) {
                 // get user
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);

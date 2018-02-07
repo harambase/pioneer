@@ -1,4 +1,4 @@
-package com.harambase.pioneer.pojo;
+package com.harambase.pioneer.security.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
