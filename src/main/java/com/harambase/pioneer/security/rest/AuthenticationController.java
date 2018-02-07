@@ -1,6 +1,7 @@
 package com.harambase.pioneer.security.rest;
 
 import com.harambase.pioneer.common.DeviceProvider;
+import com.harambase.pioneer.pojo.User;
 import com.harambase.pioneer.security.UserTokenState;
 import com.harambase.pioneer.security.security.TokenHelper;
 import com.harambase.pioneer.security.security.auth.JwtAuthenticationRequest;
@@ -14,6 +15,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,6 +35,9 @@ public class AuthenticationController {
     private final DeviceProvider deviceProvider;
 
     @Autowired
+    PasswordEncoder passwordEncoder;
+
+    @Autowired
     public AuthenticationController(TokenHelper tokenHelper,
                                     AuthenticationManager authenticationManager,
                                     DeviceProvider deviceProvider) {
@@ -46,6 +51,7 @@ public class AuthenticationController {
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest,
                                                        HttpServletResponse response, Device device) throws AuthenticationException, IOException {
 
+//        System.out.println(passwordEncoder.encode(authenticationRequest.getPassword()));
         // Perform the security
         final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -58,7 +64,7 @@ public class AuthenticationController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // token creation
-        Person user = (Person) authentication.getPrincipal();
+        User user = (User) authentication.getPrincipal();
         String jws = tokenHelper.generateToken(user.getUsername(), device);
         int expiresIn = tokenHelper.getExpiredIn(device);
 

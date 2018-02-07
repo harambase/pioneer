@@ -19,9 +19,9 @@ public class User implements UserDetails, Serializable {
     private String firstName;
     private String lastName;
     private String password;
-    private String status;
     private String type;
     private String roleId;
+    private boolean enabled;
 
     private List<Authority> authorities;
 
@@ -31,7 +31,7 @@ public class User implements UserDetails, Serializable {
         this.username = person.getUsername();
         this.firstName = person.getFirstName();
         this.lastName = person.getLastName();
-        this.status = person.getStatus();
+        this.enabled = person.getStatus().equals("1");
         this.type = person.getType();
         this.roleId = person.getRoleId();
         this.authorities = new ArrayList<>();
@@ -39,7 +39,7 @@ public class User implements UserDetails, Serializable {
             if (StringUtils.isNotEmpty(role_id)) {
                 Authority authority = new Authority();
                 authority.setId(Long.parseLong(role_id));
-                switch (role_id){
+                switch (role_id) {
                     case "1":
                         authority.setName(RoleType.USER.getRoleName());
                         break;
@@ -117,14 +117,6 @@ public class User implements UserDetails, Serializable {
         this.password = password == null ? null : password.trim();
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status == null ? null : status.trim();
-    }
-
     public String getType() {
         return type;
     }
@@ -153,7 +145,7 @@ public class User implements UserDetails, Serializable {
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return enabled;
     }
 
 }
