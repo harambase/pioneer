@@ -101,55 +101,55 @@ public class SystemController {
 
     @PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/token/refresh", method = RequestMethod.POST)
-    public ResponseEntity<?> refreshAuthenticationToken(HttpServletRequest request, Principal principal) {
-
+    public ResponseEntity refreshAuthenticationToken(HttpServletRequest request, Principal principal) {
+        HaramMessage haramMessage = new HaramMessage();
+        
         String authToken = tokenHelper.getToken(request);
-
-        Device device = deviceProvider.getCurrentDevice(request);
+        Device device = deviceProvider.getCurrentDevice(request);        
 
         if (authToken != null && principal != null) {
-
-            // TODO check user password last update
             String refreshedToken = tokenHelper.refreshToken(authToken, device);
-            int expiresIn = tokenHelper.getExpiredIn(device);
-
-            return ResponseEntity.ok(new UserTokenState(refreshedToken, expiresIn));
+            int expiresIn = tokenHelper.getExpiredIn(device);            
+            haramMessage.setData(new UserTokenState(refreshedToken, expiresIn));
         } else {
-            UserTokenState userTokenState = new UserTokenState();
-            return ResponseEntity.accepted().body(userTokenState);
+            haramMessage.setData(new UserTokenState());
         }
+        
+        haramMessage.setCode(FlagDict.SUCCESS.getV());
+        return new ResponseEntity<>(haramMessage , HttpStatus.OK);
     }
 
     @RequestMapping(value = "/logout")
-    public void logout(HttpServletResponse response) throws Exception {
+    public void logout(HttpServletRequest request, HttpServletResponse response) throws Exception {
 //        SecurityUtils.getSubject().logout();
+        String authToken = tokenHelper.getToken(request);
+
         response.sendRedirect("/login");
     }
 
     @RequestMapping(value = "/swagger")
-    //@RequiresPermissions("admin")
-    //@PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     public void swagger(HttpServletResponse response) throws Exception {
         response.setHeader("userId", SessionUtil.getUserId());
         response.sendRedirect("http://localhost:8080/?userId=" + SessionUtil.getUserId());
     }
 
     @RequestMapping(value = "/info", method = RequestMethod.GET)
-    //@RequiresPermissions("user")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity systemInfo() {
         HaramMessage message = monitorService.systemInfo();
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/relation", method = RequestMethod.GET)
-    //@RequiresPermissions("user")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity relationChart() {
         HaramMessage haramMessage = monitorService.getRelationChart();
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/user/count", method = RequestMethod.GET)
-    //@RequiresPermissions("user")
+    @PreAuthorize("hasRole('USER')")
     public ResponseEntity userCount() {
         HaramMessage haramMessage = monitorService.getUserChart();
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
