@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.harambase.pioneer.common.HaramMessage;
 import com.harambase.pioneer.common.Page;
 import com.harambase.pioneer.common.support.util.FileUtil;
-import com.harambase.pioneer.helper.SessionUtil;
+import com.harambase.pioneer.helper.TokenHelper;
 import com.harambase.pioneer.server.pojo.base.Course;
 import com.harambase.pioneer.server.pojo.dto.Option;
 import com.harambase.pioneer.service.CourseService;
@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.LinkedHashMap;
 
@@ -68,10 +69,11 @@ public class CourseController {
                                @RequestParam(value = "orderCol", required = false, defaultValue = "0") String orderCol,
                                @RequestParam(value = "mode", required = false) String mode,
                                @RequestParam(value = "info", required = false, defaultValue = "") String info,
-                               @RequestParam(value = "facultyId", required = false, defaultValue = "") String facultyId) {
+                               @RequestParam(value = "facultyId", required = false, defaultValue = "") String facultyId,
+                               HttpServletRequest request) {
 
         if (StringUtils.isNotEmpty(mode) && mode.equals("faculty"))
-            facultyId = SessionUtil.getUserId();
+            facultyId = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));
         if (StringUtils.isNotEmpty(mode) && mode.equals("choose") && SessionUtil.getPin() != null)
             info = (String) SessionUtil.getPin().get("info");
 
@@ -91,12 +93,13 @@ public class CourseController {
 
     //    @RequiresPermissions("user")
     @RequestMapping(value = "/zTree/list", method = RequestMethod.GET)
-    public ResponseEntity zTreeList(@RequestParam(value = "mode", required = false) String mode) {
+    public ResponseEntity zTreeList(@RequestParam(value = "mode", required = false) String mode,
+                                    HttpServletRequest request) {
 
         String facultyId = "";
         String info = "";
         if (mode != null && mode.equals("faculty"))
-            facultyId = SessionUtil.getUserId();
+            facultyId = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));
         if (mode != null && mode.equals("choose"))
             info = (String) SessionUtil.getPin().get("info");
 
@@ -146,8 +149,8 @@ public class CourseController {
 
     //    @RequiresPermissions(value = {"admin", "student"}, logical = Logical.OR)
     @RequestMapping(value = "/choose", method = RequestMethod.POST)
-    public ResponseEntity courseChoice(@RequestBody JSONObject choiceList) {
-        HaramMessage message = courseService.reg2Course(SessionUtil.getUserId(), choiceList);
+    public ResponseEntity courseChoice(@RequestBody JSONObject choiceList, HttpServletRequest request) {
+        HaramMessage message = courseService.reg2Course(TokenHelper.getUserIdFromToken(TokenHelper.getToken(request)), choiceList);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
@@ -206,8 +209,9 @@ public class CourseController {
     public ResponseEntity submitAssignment(@PathVariable String crn,
                                            @RequestParam String assignmentName,
                                            @RequestParam String createTime,
-                                           @RequestParam MultipartFile multipartFile) {
-        HaramMessage message = courseService.submitAssignment(crn, assignmentName, createTime, SessionUtil.getUserId(), multipartFile);
+                                           @RequestParam MultipartFile multipartFile,
+                                           HttpServletRequest request) {
+        HaramMessage message = courseService.submitAssignment(crn, assignmentName, createTime, TokenHelper.getUserIdFromToken(TokenHelper.getToken(request)), multipartFile);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 

@@ -1,4 +1,4 @@
-package com.harambase.pioneer.security.security.auth;
+package com.harambase.pioneer.security.auth;
 
 public class JwtAuthenticationRequest {
     private String username;

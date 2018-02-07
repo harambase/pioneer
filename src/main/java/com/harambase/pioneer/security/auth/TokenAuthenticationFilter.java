@@ -1,6 +1,6 @@
-package com.harambase.pioneer.security.security.auth;
+package com.harambase.pioneer.security.auth;
 
-import com.harambase.pioneer.security.security.TokenHelper;
+import com.harambase.pioneer.helper.TokenHelper;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,11 +14,9 @@ import java.io.IOException;
 
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
-    private TokenHelper tokenHelper;
-    private UserDetailsService userDetailsService;
+       private UserDetailsService userDetailsService;
 
-    public TokenAuthenticationFilter(TokenHelper tokenHelper, UserDetailsService userDetailsService) {
-        this.tokenHelper = tokenHelper;
+    public TokenAuthenticationFilter(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
@@ -28,15 +26,15 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                                  FilterChain chain) throws IOException, ServletException {
 
         String username;
-        String authToken = tokenHelper.getToken(request);
+        String authToken = TokenHelper.getToken(request);
 
         if (authToken != null) {
             // get username from token
-            username = tokenHelper.getUserIdFromToken(authToken);
+            username = TokenHelper.getUserIdFromToken(authToken);
             if (username != null) {
                 // get user
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                if (tokenHelper.validateToken(authToken, userDetails)) {
+                if (TokenHelper.validateToken(authToken, userDetails)) {
                     // create authentication
                     TokenBasedAuthentication authentication = new TokenBasedAuthentication(userDetails);
                     authentication.setToken(authToken);

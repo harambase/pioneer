@@ -1043,7 +1043,7 @@ $.extend( $.validator, {
 				element = this.findByName( element.name );
 			}
 
-			// Always apply ignore security
+			// Always apply ignore auth
 			return $( element ).not( this.settings.ignore )[ 0 ];
 		},
 

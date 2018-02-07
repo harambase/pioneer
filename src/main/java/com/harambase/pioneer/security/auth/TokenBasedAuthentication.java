@@ -1,4 +1,4 @@
-package com.harambase.pioneer.security.security.auth;
+package com.harambase.pioneer.security.auth;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;

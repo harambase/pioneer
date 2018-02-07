@@ -1,9 +1,9 @@
 package com.harambase.pioneer.controller;
 
 import com.harambase.pioneer.common.HaramMessage;
+import com.harambase.pioneer.helper.TokenHelper;
 import com.harambase.pioneer.server.pojo.base.Transcript;
 import com.harambase.pioneer.common.support.util.FileUtil;
-import com.harambase.pioneer.helper.SessionUtil;
 import com.harambase.pioneer.service.TranscriptService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class TranscriptController {
 //    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
     @RequestMapping(value = "/{id}", produces = "application/json", method = RequestMethod.PUT)
     public ResponseEntity update(@PathVariable Integer id, @RequestBody Transcript transcript) {
-        transcript.setOperatorId(SessionUtil.getUserId());
+        transcript.setOperatorId(TokenHelper.getUserIdFromToken(TokenHelper.getToken(request)));
         HaramMessage haramMessage = transcriptService.updateGrade(id, transcript);
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
@@ -73,7 +73,7 @@ public class TranscriptController {
                                          @RequestParam(value = "order[0][column]", required = false, defaultValue = "") String orderCol,
                                          @RequestParam(value = "complete", required = false) String complete) {
 
-        HaramMessage message = transcriptService.transcriptList(start, length, search, order, orderCol, SessionUtil.getUserId(), "", "", complete);
+        HaramMessage message = transcriptService.transcriptList(start, length, search, order, orderCol, TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));, "", "", complete);
         message.put("draw", draw);
         message.put("recordsTotal", ((LinkedHashMap) message.get("page")).get("totalRows"));
         message.put("recordsFiltered", ((LinkedHashMap) message.get("page")).get("totalRows"));
@@ -95,7 +95,7 @@ public class TranscriptController {
     @RequestMapping(value = "/report", method = RequestMethod.GET)
     public void transcriptReport(@RequestParam(required = false) String studentId, HttpServletResponse response) {
         if (StringUtils.isEmpty(studentId))
-            studentId = SessionUtil.getUserId();
+            studentId = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));;
         HaramMessage haramMessage = transcriptService.studentTranscriptReport(studentId);
         try {
             FileUtil.downloadFile(studentId + "_transcript_report.pdf", (String) haramMessage.getData(), response);

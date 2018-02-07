@@ -141,7 +141,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    var VISUAL_CODING_STAGES = ['echarts', 'chart', 'component'];
 
-	    // TODO Transform first or security first
+	    // TODO Transform first or auth first
 	    var PROCESSOR_STAGES = ['transform', 'filter', 'statistic'];
 
 	    function createRegisterEventWithLowercaseName(method) {
@@ -1724,7 +1724,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	         *        If query attribute is null/undefined or has no index/id/name,
 	         *        do not filtering by query conditions, which is convenient for
 	         *        no-payload situations or when target of action is global.
-	         * @param {Function} [condition.security] parameter: component, return boolean.
+	         * @param {Function} [condition.auth] parameter: component, return boolean.
 	         * @return {Array.<module:echarts/model/Component>}
 	         */
 	        findComponents: function (condition) {
@@ -18154,7 +18154,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        __webpack_require__(104), 'line'
 	    ));
 
-	    // Down sample after security
+	    // Down sample after auth
 	    echarts.registerProcessor('statistic', zrUtil.curry(
 	        __webpack_require__(105), 'line'
 	    ));
@@ -19062,7 +19062,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 
 	    /**
-	     * Data security
+	     * Data auth
 	     * @param {string|Array.<string>}
 	     * @param {Function} cb
 	     * @param {boolean} [stack=false]
@@ -44694,15 +44694,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	            yAxisIndex: null,       // Default all vertical category axis.
 	            angleAxisIndex: null,
 	            radiusAxisIndex: null,
-	            filterMode: 'filter',   // Possible values: 'security' or 'empty'.
-	                                    // 'security': data items which are out of window will be removed.
+	            filterMode: 'filter',   // Possible values: 'auth' or 'empty'.
+	                                    // 'auth': data items which are out of window will be removed.
 	                                    //           This option is applicable when filtering outliers.
 	                                    // 'empty': data items which are out of window will be set to empty.
 	                                    //          This option is applicable when user should not neglect
 	                                    //          that there are some data items out of window.
 	                                    // Taking line chart as an example, line will be broken in
 	                                    // the filtered points when filterModel is set to 'empty', but
-	                                    // be connected when set to 'security'.
+	                                    // be connected when set to 'auth'.
 
 	            throttle: 100,          // Dispatch action by the fixed rate, avoid frequency.
 	                                    // default 100. Do not throttle when use null/undefined.
@@ -47015,8 +47015,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	            // but should not be based on full raw data. Thus sliding
 	            // x-dataZoom will change both ranges of xAxis and yAxis,
 	            // while sliding y-dataZoom will only change the range of yAxis.
-	            // So we should security x-axis after reset x-axis immediately,
-	            // and then reset y-axis and security y-axis.
+	            // So we should auth x-axis after reset x-axis immediately,
+	            // and then reset y-axis and auth y-axis.
 	            dataZoomModel.eachTargetAxis(filterSingleAxis);
 	        });
 

@@ -1,14 +1,15 @@
 package com.harambase.pioneer.controller;
 
 import com.harambase.pioneer.common.HaramMessage;
+import com.harambase.pioneer.helper.TokenHelper;
 import com.harambase.pioneer.server.pojo.base.Advise;
-import com.harambase.pioneer.helper.SessionUtil;
 import com.harambase.pioneer.service.AdviseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.LinkedHashMap;
 
 @RestController
@@ -63,10 +64,11 @@ public class AdviseController {
                                @RequestParam(value = "order[0][column]") String orderCol,
                                @RequestParam(value = "studentid", required = false) String studentid,
                                @RequestParam(value = "facultyid", required = false) String facultyid,
-                               @RequestParam(value = "mode", required = false) String mode) {
+                               @RequestParam(value = "mode", required = false) String mode,
+                               HttpServletRequest request) {
 
         if (mode != null && mode.equals("faculty"))
-            facultyid = SessionUtil.getUserId();
+            facultyid = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));
         HaramMessage message = adviseService.advisingList(start, length, search, order, orderCol, studentid, facultyid);
         message.put("draw", draw);
         message.put("recordsTotal", ((LinkedHashMap) message.get("page")).get("totalRows"));

@@ -1,8 +1,8 @@
 package com.harambase.pioneer.controller;
 
 import com.harambase.pioneer.common.HaramMessage;
+import com.harambase.pioneer.helper.TokenHelper;
 import com.harambase.pioneer.server.pojo.base.Student;
-import com.harambase.pioneer.helper.SessionUtil;
 import com.harambase.pioneer.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -67,7 +67,7 @@ public class StudentController {
 //    @RequiresPermissions(value = {"admin", "teach", "student"}, logical = Logical.OR)
     @RequestMapping(value = "/course", method = RequestMethod.GET)
     public ResponseEntity courseList(@RequestParam(value = "status", required = false, defaultValue = "") String status) {
-        HaramMessage message = studentService.courseList(status, SessionUtil.getUserId());
+        HaramMessage message = studentService.courseList(status, TokenHelper.getUserIdFromToken(TokenHelper.getToken(request)));
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 

@@ -1,4 +1,4 @@
-package com.harambase.pioneer.security.service;
+package com.harambase.pioneer.security;
 
 import com.harambase.pioneer.security.model.User;
 import com.harambase.pioneer.server.PersonServer;

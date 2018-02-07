@@ -1,9 +1,7 @@
-package com.harambase.pioneer.security.config;
+package com.harambase.pioneer.security;
 
-import com.harambase.pioneer.security.security.TokenHelper;
-import com.harambase.pioneer.security.security.auth.RestAuthenticationEntryPoint;
-import com.harambase.pioneer.security.security.auth.TokenAuthenticationFilter;
-import com.harambase.pioneer.security.service.CustomUserDetailsService;
+import com.harambase.pioneer.security.auth.RestAuthenticationEntryPoint;
+import com.harambase.pioneer.security.auth.TokenAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,15 +31,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomUserDetailsService jwtUserDetailsService;
     private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
-    private final TokenHelper tokenHelper;
 
     @Autowired
     public WebSecurityConfig(CustomUserDetailsService jwtUserDetailsService,
-                             RestAuthenticationEntryPoint restAuthenticationEntryPoint,
-                             TokenHelper tokenHelper) {
+                             RestAuthenticationEntryPoint restAuthenticationEntryPoint) {
         this.jwtUserDetailsService = jwtUserDetailsService;
         this.restAuthenticationEntryPoint = restAuthenticationEntryPoint;
-        this.tokenHelper = tokenHelper;
     }
 
     @Autowired
@@ -60,14 +55,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         List<RequestMatcher> csrfMethods = new ArrayList<>();
         Arrays.asList("POST", "PUT", "PATCH", "DELETE")
                 .forEach(method -> csrfMethods.add(new AntPathRequestMatcher("/**", method)));
-        http
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
                 .authorizeRequests()
                 .antMatchers(
@@ -80,22 +73,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.css",
                         "/**/*.js"
                 ).permitAll()
-                .antMatchers("/auth/**").permitAll()
                 .antMatchers("/system/login").permitAll()
+                .antMatchers("/request/user/register").permitAll()
                 .anyRequest().authenticated().and()
-                .addFilterBefore(new TokenAuthenticationFilter(tokenHelper, jwtUserDetailsService), BasicAuthenticationFilter.class);
+                .addFilterBefore(new TokenAuthenticationFilter(jwtUserDetailsService), BasicAuthenticationFilter.class);
 
         http.csrf().disable();
     }
 
-
     @Override
     public void configure(WebSecurity web) throws Exception {
         // TokenAuthenticationFilter will ignore the below paths
-        web.ignoring().antMatchers(
-                HttpMethod.POST,
-                "/auth/login"
-        );
+        web.ignoring().antMatchers(HttpMethod.POST, "/system/login");
+        web.ignoring().antMatchers(HttpMethod.POST, "/request/user/register");
         web.ignoring().antMatchers(
                 HttpMethod.GET,
                 "/",

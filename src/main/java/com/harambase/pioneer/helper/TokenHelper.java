@@ -1,18 +1,14 @@
-package com.harambase.pioneer.security.security;
+package com.harambase.pioneer.helper;
 
-import com.harambase.pioneer.common.TimeProvider;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mobile.device.Device;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
-@Component
 public class TokenHelper {
 
     //expires_in: 3600 # 60 minutes
@@ -28,19 +24,12 @@ public class TokenHelper {
     private static final String AUDIENCE_MOBILE = "mobile";
     private static final String AUDIENCE_TABLET = "tablet";
 
-    private final TimeProvider timeProvider
-            ;
-    private SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS256;
+    private static final SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS256;
 
-    @Autowired
-    public TokenHelper(TimeProvider timeProvider){
-        this.timeProvider = timeProvider;
-    }
-
-    public String getUserIdFromToken(String token) {
+    public static String getUserIdFromToken(String token) {
         String userId;
         try {
-            final Claims claims = this.getAllClaimsFromToken(token);
+            final Claims claims = TokenHelper.getAllClaimsFromToken(token);
             userId = claims.getSubject();
         } catch (Exception e) {
             userId = null;
@@ -48,10 +37,10 @@ public class TokenHelper {
         return userId;
     }
 
-    private Date getIssuedAtDateFromToken(String token) {
+    private static Date getIssuedAtDateFromToken(String token) {
         Date issueAt;
         try {
-            final Claims claims = this.getAllClaimsFromToken(token);
+            final Claims claims = TokenHelper.getAllClaimsFromToken(token);
             issueAt = claims.getIssuedAt();
         } catch (Exception e) {
             issueAt = null;
@@ -59,10 +48,10 @@ public class TokenHelper {
         return issueAt;
     }
 
-    public String getAudienceFromToken(String token) {
+    public static String getAudienceFromToken(String token) {
         String audience;
         try {
-            final Claims claims = this.getAllClaimsFromToken(token);
+            final Claims claims = TokenHelper.getAllClaimsFromToken(token);
             audience = claims.getAudience();
         } catch (Exception e) {
             audience = null;
@@ -70,11 +59,11 @@ public class TokenHelper {
         return audience;
     }
 
-    public String refreshToken(String token, Device device) {
+    public static String refreshToken(String token, Device device) {
         String refreshedToken;
-        Date a = timeProvider.now();
+        Date a = new Date();
         try {
-            final Claims claims = this.getAllClaimsFromToken(token);
+            final Claims claims = TokenHelper.getAllClaimsFromToken(token);
             claims.setIssuedAt(a);
             refreshedToken = Jwts.builder()
                     .setClaims(claims)
@@ -87,19 +76,19 @@ public class TokenHelper {
         return refreshedToken;
     }
 
-    public String generateToken(String userId, Device device) {
+    public static String generateToken(String userId, Device device) {
         String audience = generateAudience(device);
         return Jwts.builder()
                 .setIssuer(APP_NAME)
                 .setSubject(userId)//NOTICE HERE: USERID REPLACE USERNAME
                 .setAudience(audience)
-                .setIssuedAt(timeProvider.now())
+                .setIssuedAt(new Date())
                 .setExpiration(generateExpirationDate(device))
                 .signWith(SIGNATURE_ALGORITHM, SECRET)
                 .compact();
     }
 
-    private String generateAudience(Device device) {
+    private static String generateAudience(Device device) {
         String audience = AUDIENCE_UNKNOWN;
         if (device.isNormal()) {
             audience = AUDIENCE_WEB;
@@ -111,7 +100,7 @@ public class TokenHelper {
         return audience;
     }
 
-    private Claims getAllClaimsFromToken(String token) {
+    private static Claims getAllClaimsFromToken(String token) {
         Claims claims;
         try {
             claims = Jwts.parser()
@@ -124,19 +113,19 @@ public class TokenHelper {
         return claims;
     }
 
-    private Date generateExpirationDate(Device device) {
+    private static Date generateExpirationDate(Device device) {
         long expiresIn = device.isTablet() || device.isMobile() ? MOBILE_EXPIRES_IN : EXPIRES_IN;
-        return new Date(timeProvider.now().getTime() + expiresIn * 1000);
+        return new Date(new Date().getTime() + expiresIn * 1000);
     }
 
-    public int getExpiredIn(Device device) {
+    public static int getExpiredIn(Device device) {
         return device.isMobile() || device.isTablet() ? MOBILE_EXPIRES_IN : EXPIRES_IN;
     }
 
-    public Boolean validateToken(String token, UserDetails userDetails) {
+    public static Boolean validateToken(String token, UserDetails userDetails) {
 //        Person user = (Person) userDetails;
         final String userId = getUserIdFromToken(token);
-//        final Date created = getIssuedAtDateFromToken(token);
+        final Date created = getIssuedAtDateFromToken(token);
         return (
                 userId != null &&
                         userId.equals(userDetails.getUsername())
@@ -144,16 +133,16 @@ public class TokenHelper {
         );
     }
 
-    private Boolean isCreatedBeforeLastPasswordReset(Date created, Date lastPasswordReset) {
+    private static Boolean isCreatedBeforeLastPasswordReset(Date created, Date lastPasswordReset) {
         return (lastPasswordReset != null && created.before(lastPasswordReset));
     }
 
-    public String getToken(HttpServletRequest request) {
+    public static String getToken(HttpServletRequest request) {
         /**
          *  Getting the token from Authentication header
          *  e.g Bearer your_token
          */
-        String authHeader = getAuthHeaderFromHeader(request);
+        String authHeader = TokenHelper.getAuthHeaderFromHeader(request);
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             return authHeader.substring(7);
         }
@@ -161,7 +150,7 @@ public class TokenHelper {
         return null;
     }
 
-    private String getAuthHeaderFromHeader(HttpServletRequest request) {
+    private static String getAuthHeaderFromHeader(HttpServletRequest request) {
         return request.getHeader(AUTH_HEADER);
     }
 
