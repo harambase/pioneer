@@ -1,6 +1,6 @@
 package com.harambase.pioneer.server;
 
-import com.harambase.pioneer.common.HaramMessage;
+import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.server.pojo.base.Message;
 import com.harambase.pioneer.server.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,27 +16,27 @@ public class MessageServer {
         this.messageService = messageService;
     }
 
-    public HaramMessage create(Message message) {
+    public ResultMap create(Message message) {
         return messageService.createMessage(message);
     }
 
-    public HaramMessage delete(Integer id) {
+    public ResultMap delete(Integer id) {
         return messageService.delete(id);
     }
 
-    public HaramMessage update(Integer id, Message message) {
+    public ResultMap update(Integer id, Message message) {
         return messageService.update(id, message);
     }
 
-    public HaramMessage updateStatus(Integer id, String status) {
+    public ResultMap updateStatus(Integer id, String status) {
         return messageService.updateStatus(id, status);
     }
 
-    public HaramMessage get(Integer id) {
+    public ResultMap get(Integer id) {
         return messageService.getMessageView(id);
     }
 
-    public HaramMessage count(String status, String box, String userId) {
+    public ResultMap count(String status, String box, String userId) {
 
         String receiverId = null;
         String senderid = null;
@@ -53,7 +53,7 @@ public class MessageServer {
         return messageService.countMessageByStatus(receiverId, senderid, box.toLowerCase(), status.toLowerCase());
     }
 
-    public HaramMessage list(Integer start, Integer length, String search, String order, String orderCol, String box, String userId) {
+    public ResultMap list(Integer start, Integer length, String search, String order, String orderCol, String box, String userId) {
         String receiverId = null;
         String senderid = null;
 

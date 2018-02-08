@@ -1,6 +1,6 @@
 package com.harambase.pioneer.server;
 
-import com.harambase.pioneer.common.HaramMessage;
+import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.server.pojo.base.Advise;
 import com.harambase.pioneer.server.service.AdviseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,23 +16,23 @@ public class AdviseServer {
         this.adviseService = adviseService;
     }
 
-    public HaramMessage create(Advise advise) {
+    public ResultMap create(Advise advise) {
         return adviseService.assignMentor(advise);
     }
 
-    public HaramMessage delete(Integer id) {
+    public ResultMap delete(Integer id) {
         return adviseService.removeMentor(id);
     }
 
-    public HaramMessage update(Integer id, String studentId, String facultyId) {
+    public ResultMap update(Integer id, String studentId, String facultyId) {
         return adviseService.updateAdvise(id, studentId, facultyId);
     }
 
-    public HaramMessage get(Integer id) {
+    public ResultMap get(Integer id) {
         return adviseService.getMentor(id);
     }
 
-    public HaramMessage list(Integer start, Integer length, String search, String order, String orderCol, String studentId, String facultyId) {
+    public ResultMap list(Integer start, Integer length, String search, String order, String orderCol, String studentId, String facultyId) {
         return adviseService.advisingList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderCol, studentId, facultyId);
     }
 

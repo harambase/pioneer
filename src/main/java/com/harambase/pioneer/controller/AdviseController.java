@@ -1,6 +1,7 @@
 package com.harambase.pioneer.controller;
 
-import com.harambase.pioneer.common.HaramMessage;
+import com.harambase.pioneer.common.Page;
+import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.helper.TokenHelper;
 import com.harambase.pioneer.server.pojo.base.Advise;
 import com.harambase.pioneer.service.AdviseService;
@@ -27,14 +28,14 @@ public class AdviseController {
     //    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
     @RequestMapping(produces = "application/json", method = RequestMethod.POST)
     public ResponseEntity create(@RequestBody Advise advise, @RequestHeader String token) {
-        HaramMessage message = adviseService.assignMentor(advise);
+        ResultMap message = adviseService.assignMentor(advise);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     //    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity delete(@PathVariable(value = "id") Integer id) {
-        HaramMessage message = adviseService.removeMentor(id);
+        ResultMap message = adviseService.removeMentor(id);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
@@ -43,14 +44,14 @@ public class AdviseController {
     public ResponseEntity update(@PathVariable Integer id,
                                  @RequestParam(value = "studentId") String studentId,
                                  @RequestParam(value = "facultyId") String facultyId) {
-        HaramMessage message = adviseService.updateAdvise(id, studentId, facultyId);
+        ResultMap message = adviseService.updateAdvise(id, studentId, facultyId);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     //    @RequiresPermissions(value = {"admin", "teach", "student", "faculty"}, logical = Logical.OR)
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity get(@RequestParam(value = "id") Integer id) {
-        HaramMessage message = adviseService.getMentor(id);
+        ResultMap message = adviseService.getMentor(id);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
@@ -58,7 +59,6 @@ public class AdviseController {
     @RequestMapping(value = "/list", produces = "application/json", method = RequestMethod.GET)
     public ResponseEntity list(@RequestParam(value = "start") Integer start,
                                @RequestParam(value = "length") Integer length,
-                               @RequestParam(value = "draw") Integer draw,
                                @RequestParam(value = "search[value]") String search,
                                @RequestParam(value = "order[0][dir]") String order,
                                @RequestParam(value = "order[0][column]") String orderCol,
@@ -69,10 +69,8 @@ public class AdviseController {
 
         if (mode != null && mode.equals("faculty"))
             facultyid = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));
-        HaramMessage message = adviseService.advisingList(start, length, search, order, orderCol, studentid, facultyid);
-        message.put("draw", draw);
-        message.put("recordsTotal", ((LinkedHashMap) message.get("page")).get("totalRows"));
-        message.put("recordsFiltered", ((LinkedHashMap) message.get("page")).get("totalRows"));
+        ResultMap message = adviseService.advisingList(start, length, search, order, orderCol, studentid, facultyid);
+        message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 

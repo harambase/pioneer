@@ -3,8 +3,8 @@ package com.harambase.pioneer.service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.harambase.pioneer.common.Config;
-import com.harambase.pioneer.common.HaramMessage;
-import com.harambase.pioneer.common.constant.FlagDict;
+import com.harambase.pioneer.common.ResultMap;
+import com.harambase.pioneer.common.constant.SystemConst;
 import com.harambase.pioneer.server.RequestServer;
 import com.harambase.pioneer.server.pojo.base.TempAdvise;
 import com.harambase.pioneer.server.pojo.base.TempCourse;
@@ -34,7 +34,7 @@ public class RequestService{
     }
 
     
-    public HaramMessage deleteTempUser(Integer id) {
+    public ResultMap deleteTempUser(Integer id) {
         try {
             return requestServer.removeUserRequest(id);
         } catch (Exception e) {
@@ -44,7 +44,7 @@ public class RequestService{
     }
 
     
-    public HaramMessage registerNewUser(JSONObject jsonObject) {
+    public ResultMap registerNewUser(JSONObject jsonObject) {
         try {
             return requestServer.register(jsonObject);
         } catch (Exception e) {
@@ -54,7 +54,7 @@ public class RequestService{
     }
 
     
-    public HaramMessage updateTempUser(Integer id, TempUser tempUser) {
+    public ResultMap updateTempUser(Integer id, TempUser tempUser) {
         try {
             return requestServer.updateRequest(id, tempUser);
         } catch (Exception e) {
@@ -64,7 +64,7 @@ public class RequestService{
     }
 
     
-    public HaramMessage tempUserList(int start, int length, String search, String order, String orderColumn, String viewStatus) {
+    public ResultMap tempUserList(int start, int length, String search, String order, String orderColumn, String viewStatus) {
         try {
             return requestServer.userList(start, length, search, order, orderColumn, viewStatus);
         } catch (Exception e) {
@@ -74,7 +74,7 @@ public class RequestService{
     }
 
     
-    public HaramMessage updateTempCourse(Integer id, TempCourse tempCourse) {
+    public ResultMap updateTempCourse(Integer id, TempCourse tempCourse) {
         try {
             return requestServer.updateCourseRequest(id, tempCourse);
         } catch (Exception e) {
@@ -84,7 +84,7 @@ public class RequestService{
     }
 
     
-    public HaramMessage registerNewCourse(String facultyId, JSONObject jsonObject) {
+    public ResultMap registerNewCourse(String facultyId, JSONObject jsonObject) {
         try {
             return requestServer.registerNewCourse(facultyId, jsonObject);
         } catch (Exception e) {
@@ -94,7 +94,7 @@ public class RequestService{
     }
 
     
-    public HaramMessage deleteTempCourse(Integer id) {
+    public ResultMap deleteTempCourse(Integer id) {
         try {
             return requestServer.removeCourseRequest(id);
         } catch (Exception e) {
@@ -104,7 +104,7 @@ public class RequestService{
     }
 
     
-    public HaramMessage tempCourseList(Integer start, Integer length, String search, String order, String orderCol, String viewStatus, String facultyId) {
+    public ResultMap tempCourseList(Integer start, Integer length, String search, String order, String orderCol, String viewStatus, String facultyId) {
         try {
             return requestServer.courseList(start, length, search, order, orderCol, viewStatus, facultyId);
         } catch (Exception e) {
@@ -114,7 +114,7 @@ public class RequestService{
     }
 
     
-    public HaramMessage getTempUser(Integer id) {
+    public ResultMap getTempUser(Integer id) {
         try {
             return requestServer.getUserRequest(id);
         } catch (Exception e) {
@@ -124,7 +124,7 @@ public class RequestService{
     }
 
     
-    public HaramMessage getTempCourse(Integer id) {
+    public ResultMap getTempCourse(Integer id) {
         try {
             return requestServer.getCourseRequest(id);
         } catch (Exception e) {
@@ -134,8 +134,8 @@ public class RequestService{
     }
 
     
-    public HaramMessage uploadCourseInfo(Integer id, MultipartFile file) {
-        HaramMessage message = new HaramMessage();
+    public ResultMap uploadCourseInfo(Integer id, MultipartFile file) {
+        ResultMap message = new ResultMap();
         JSONObject jsonObject = new JSONObject();
 
         try {
@@ -169,7 +169,7 @@ public class RequestService{
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             message.setMsg("上传失败");
-            message.setCode(FlagDict.FAIL.getV());
+            message.setCode(SystemConst.FAIL.getCode());
             return message;
         }
 
@@ -179,7 +179,7 @@ public class RequestService{
     }
 
     
-    public HaramMessage registerTempAdvise(String studentId, JSONObject jsonObject) {
+    public ResultMap registerTempAdvise(String studentId, JSONObject jsonObject) {
         try {
             return requestServer.newAdvisorRequest(studentId, jsonObject);
         } catch (Exception e) {
@@ -189,7 +189,7 @@ public class RequestService{
     }
 
     
-    public HaramMessage deleteTempAdviseById(Integer id) {
+    public ResultMap deleteTempAdviseById(Integer id) {
         try {
             return requestServer.removeAdvisorRequest(id);
         } catch (Exception e) {
@@ -199,7 +199,7 @@ public class RequestService{
     }
 
     
-    public HaramMessage getTempAdvise(Integer id) {
+    public ResultMap getTempAdvise(Integer id) {
         try {
             return requestServer.getAdviseRequest(id);
         } catch (Exception e) {
@@ -209,7 +209,7 @@ public class RequestService{
     }
 
     
-    public HaramMessage tempAdviseList(Integer start, Integer length, String search, String order, String orderCol) {
+    public ResultMap tempAdviseList(Integer start, Integer length, String search, String order, String orderCol) {
         try {
             return requestServer.adviseList(start, length, search, order, orderCol);
         } catch (Exception e) {
@@ -219,7 +219,7 @@ public class RequestService{
     }
 
     
-    public HaramMessage updateTempAdvise(Integer id, TempAdvise tempAdvise) {
+    public ResultMap updateTempAdvise(Integer id, TempAdvise tempAdvise) {
         try {
             return requestServer.updateAdviseRequest(id, tempAdvise);
         } catch (Exception e) {

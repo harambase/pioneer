@@ -3,8 +3,8 @@ package com.harambase.pioneer.service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.harambase.pioneer.common.Config;
-import com.harambase.pioneer.common.HaramMessage;
-import com.harambase.pioneer.common.constant.FlagDict;
+import com.harambase.pioneer.common.ResultMap;
+import com.harambase.pioneer.common.constant.SystemConst;
 import com.harambase.pioneer.common.support.util.FileUtil;
 import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
 import com.harambase.pioneer.server.PersonServer;
@@ -32,7 +32,7 @@ public class PersonService {
     }
 
     
-    public HaramMessage login(Person person) {
+    public ResultMap login(Person person) {
         try {
             return personServer.login(person);
         } catch (Exception e) {
@@ -42,7 +42,7 @@ public class PersonService {
     }
 
     
-    public HaramMessage createPerson(Person person) {
+    public ResultMap createPerson(Person person) {
         try {
             return personServer.create(person);
         } catch (Exception e) {
@@ -52,7 +52,7 @@ public class PersonService {
     }
 
     
-    public HaramMessage deletePerson(String userid) {
+    public ResultMap deletePerson(String userid) {
         try {
             return personServer.delete(userid);
         } catch (Exception e) {
@@ -62,7 +62,7 @@ public class PersonService {
     }
 
     
-    public HaramMessage updatePerson(String userId, Person person) {
+    public ResultMap updatePerson(String userId, Person person) {
         try {
             return personServer.update(userId, person);
         } catch (Exception e) {
@@ -72,7 +72,7 @@ public class PersonService {
     }
 
     
-    public HaramMessage get(String userid) {
+    public ResultMap get(String userid) {
         try {
             return personServer.get(userid);
         } catch (Exception e) {
@@ -82,7 +82,7 @@ public class PersonService {
     }
 
     
-    public HaramMessage list(int start, int length, String search, String order, String orderColumn,
+    public ResultMap list(int start, int length, String search, String order, String orderColumn,
                              String type, String status) {
         try {
             return personServer.list(start, length, search, order, orderColumn, type, status);
@@ -93,7 +93,7 @@ public class PersonService {
     }
 
     
-    public HaramMessage search(String search, String type, String status) {
+    public ResultMap search(String search, String type, String status) {
         try {
             return personServer.search(search, type, status);
         } catch (Exception e) {
@@ -103,9 +103,9 @@ public class PersonService {
     }
 
     
-    public HaramMessage upload(String userId, MultipartFile file, String mode) {
+    public ResultMap upload(String userId, MultipartFile file, String mode) {
 
-        HaramMessage message = new HaramMessage();
+        ResultMap message = new ResultMap();
         JSONObject jsonObject = new JSONObject();
 
         try {
@@ -159,7 +159,7 @@ public class PersonService {
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             message.setMsg("上传失败");
-            message.setCode(FlagDict.FAIL.getV());
+            message.setCode(SystemConst.FAIL.getCode());
             return message;
         }
         logger.info("The file task - work mode is " + mode + " - for " + userId + " has completed!");

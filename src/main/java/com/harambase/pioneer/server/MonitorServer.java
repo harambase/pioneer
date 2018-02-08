@@ -1,6 +1,6 @@
 package com.harambase.pioneer.server;
 
-import com.harambase.pioneer.common.HaramMessage;
+import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.server.service.MonitorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,15 +15,15 @@ public class MonitorServer {
         this.monitorService = monitorService;
     }
 
-    public HaramMessage systemInfo() {
+    public ResultMap systemInfo() {
         return monitorService.getSystemCount();
     }
 
-    public HaramMessage relationChart() {
+    public ResultMap relationChart() {
         return monitorService.getRelationChart();
     }
 
-    public HaramMessage userCount() {
+    public ResultMap userCount() {
         return monitorService.userChart();
     }
 

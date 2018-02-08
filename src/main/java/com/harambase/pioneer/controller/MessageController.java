@@ -1,6 +1,7 @@
 package com.harambase.pioneer.controller;
 
-import com.harambase.pioneer.common.HaramMessage;
+import com.harambase.pioneer.common.ResultMap;
+import com.harambase.pioneer.common.Page;
 import com.harambase.pioneer.helper.TokenHelper;
 import com.harambase.pioneer.server.pojo.base.Message;
 import com.harambase.pioneer.service.MessageService;
@@ -26,42 +27,40 @@ public class MessageController {
 
     //@RequiresPermissions("user")
     @RequestMapping(produces = "application/json", method = RequestMethod.POST)
-    public ResponseEntity create(@RequestBody Message message) {
-        message.setSenderId(SessionUtil.getUserId());
-        HaramMessage haramMessage = messageService.create(message);
-        return new ResponseEntity<>(haramMessage, HttpStatus.OK);
+    public ResponseEntity create(@RequestBody Message message, HttpServletRequest request) {
+        message.setSenderId(TokenHelper.getUserIdFromToken(TokenHelper.getToken(request)));
+        ResultMap ResultMap = messageService.create(message);
+        return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
     //@RequiresPermissions("user")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity delete(@PathVariable(value = "id") Integer id) {
-        HaramMessage haramMessage = messageService.delete(id);
-        return new ResponseEntity<>(haramMessage, HttpStatus.OK);
+        ResultMap ResultMap = messageService.delete(id);
+        return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
     //@RequiresPermissions("user")
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity update(@PathVariable(value = "id") Integer id,
                                  @RequestBody Message message) {
-        HaramMessage haramMessage = messageService.update(id, message);
-        return new ResponseEntity<>(haramMessage, HttpStatus.OK);
+        ResultMap ResultMap = messageService.update(id, message);
+        return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
     //@RequiresPermissions("user")
     @RequestMapping(value = "/{id}/status", method = RequestMethod.PUT)
     public ResponseEntity updateStatus(@PathVariable(value = "id") Integer id,
                                        @RequestParam(value = "status") String status) {
-        HaramMessage haramMessage = messageService.updateStatus(id, status);
-        return new ResponseEntity<>(haramMessage, HttpStatus.OK);
+        ResultMap ResultMap = messageService.updateStatus(id, status);
+        return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
     //@RequiresPermissions("user")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity get(@RequestParam(value = "id") Integer id,
-                              HttpServletRequest request) {
-        TokenHelper.validateToken(TokenHelper.getToken(request))
-        HaramMessage haramMessage = messageService.get(id);
-        return new ResponseEntity<>(haramMessage, HttpStatus.OK);
+    public ResponseEntity get(@RequestParam(value = "id") Integer id) {
+        ResultMap ResultMap = messageService.get(id);
+        return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
     //@RequiresPermissions("user")
@@ -70,26 +69,23 @@ public class MessageController {
                                 @RequestParam(value = "box") String box,
                                 HttpServletRequest request) {
         String userId = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));
-        HaramMessage haramMessage = messageService.countMessageByStatus(useId, box.toLowerCase(), status.toLowerCase());
-        return new ResponseEntity<>(haramMessage, HttpStatus.OK);
+        ResultMap ResultMap = messageService.countMessageByStatus(userId, box.toLowerCase(), status.toLowerCase());
+        return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
     //@RequiresPermissions("user")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ResponseEntity list(@RequestParam(value = "start") Integer start,
                                @RequestParam(value = "length") Integer length,
-                               @RequestParam(value = "draw") Integer draw,
                                @RequestParam(value = "search[value]") String search,
                                @RequestParam(value = "order[0][dir]") String order,
                                @RequestParam(value = "order[0][column]") String orderCol,
                                @RequestParam(value = "box") String box,
                                HttpServletRequest request) {
 
-        String userid = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));
-        HaramMessage message = messageService.list(start, length, search, order, orderCol, userid, box);
-        message.put("draw", draw);
-        message.put("recordsTotal", ((LinkedHashMap) message.get("page")).get("totalRows"));
-        message.put("recordsFiltered", ((LinkedHashMap) message.get("page")).get("totalRows"));
+        String userId = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));
+        ResultMap message = messageService.list(start, length, search, order, orderCol, userId, box);
+        message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 

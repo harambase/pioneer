@@ -1,6 +1,6 @@
 package com.harambase.pioneer.service;
 
-import com.harambase.pioneer.common.HaramMessage;
+import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.server.StudentServer;
 import com.harambase.pioneer.server.pojo.base.Student;
 import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
@@ -22,7 +22,7 @@ public class StudentService {
     }
 
     
-    public HaramMessage transcriptDetail(String studentid) {
+    public ResultMap transcriptDetail(String studentid) {
         try {
             return studentServer.getTranscriptDetail(studentid);
         } catch (Exception e) {
@@ -32,7 +32,7 @@ public class StudentService {
     }
 
     
-    public HaramMessage update(String studentId, Student student) {
+    public ResultMap update(String studentId, Student student) {
         try {
             return studentServer.update(studentId, student);
         } catch (Exception e) {
@@ -42,7 +42,7 @@ public class StudentService {
     }
 
     
-    public HaramMessage studentList(int start, int length, String search, String order, String orderColumn, String status) {
+    public ResultMap studentList(int start, int length, String search, String order, String orderColumn, String status) {
         try {
             return studentServer.list(start, length, search, order, orderColumn, status);
         } catch (Exception e) {
@@ -52,7 +52,7 @@ public class StudentService {
     }
 
     
-    public HaramMessage getAvailableCredit(String studentid, String info) {
+    public ResultMap getAvailableCredit(String studentid, String info) {
         try {
             return studentServer.getAvailableCredit(studentid, info);
         } catch (Exception e) {
@@ -62,7 +62,7 @@ public class StudentService {
     }
 
     
-    public HaramMessage courseList(String status, String studentId) {
+    public ResultMap courseList(String status, String studentId) {
         try {
             return studentServer.courseList(status, studentId);
         } catch (Exception e) {

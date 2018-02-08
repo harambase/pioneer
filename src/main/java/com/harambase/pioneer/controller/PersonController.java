@@ -1,7 +1,8 @@
 package com.harambase.pioneer.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.harambase.pioneer.common.HaramMessage;
+import com.harambase.pioneer.common.ResultMap;
+import com.harambase.pioneer.common.Page;
 import com.harambase.pioneer.server.pojo.base.Person;
 import com.harambase.pioneer.common.support.util.FileUtil;
 import com.harambase.pioneer.service.PersonService;
@@ -30,34 +31,34 @@ public class PersonController {
 //    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
     @RequestMapping(produces = "application/json", method = RequestMethod.POST)
     public ResponseEntity create(@RequestBody Person person) {
-        HaramMessage message = personService.createPerson(person);
+        ResultMap message = personService.createPerson(person);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
 //    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
     @RequestMapping(value = "/{userId}", method = RequestMethod.DELETE)
     public ResponseEntity delete(@PathVariable("userId") String userid) {
-        HaramMessage message = personService.deletePerson(userid);
+        ResultMap message = personService.deletePerson(userid);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
 //    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
     @RequestMapping(value = "/{userId}", produces = "application/json", method = RequestMethod.PUT)
     public ResponseEntity update(@PathVariable("userId") String userid, @RequestBody Person person) {
-        HaramMessage message = personService.updatePerson(userid, person);
+        ResultMap message = personService.updatePerson(userid, person);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
 //    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
     @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
     public ResponseEntity get(@PathVariable(value = "userId") String userId) {
-        HaramMessage haramMessage = personService.get(userId);
-        return new ResponseEntity<>(haramMessage, HttpStatus.OK);
+        ResultMap ResultMap = personService.get(userId);
+        return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/current", method = RequestMethod.GET)
     public ResponseEntity getCurrentUser(@RequestHeader String token) {
-        HaramMessage message = new HaramMessage();
+        ResultMap message = new ResultMap();
 //        message.setData(JWTUtil.getUser());
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
@@ -67,7 +68,7 @@ public class PersonController {
     public ResponseEntity search(@RequestParam(value = "search", required = false) String search,
                                  @RequestParam(value = "type", required = false) String type,
                                  @RequestParam(value = "status", required = false) String status) {
-        HaramMessage message = personService.search(search, type, status);
+        ResultMap message = personService.search(search, type, status);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
@@ -75,23 +76,20 @@ public class PersonController {
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity list(@RequestParam(value = "start") Integer start,
                                @RequestParam(value = "length") Integer length,
-                               @RequestParam(value = "draw") Integer draw,
                                @RequestParam(value = "search[value]") String search,
                                @RequestParam(value = "order[0][dir]") String order,
                                @RequestParam(value = "order[0][column]") String orderCol,
                                @RequestParam(value = "type", required = false) String type,
                                @RequestParam(value = "status", required = false) String status) {
-        HaramMessage message = personService.list(start, length, search, order, orderCol, type, status);
-        message.put("draw", draw);
-        message.put("recordsTotal", ((LinkedHashMap) message.get("page")).get("totalRows"));
-        message.put("recordsFiltered", ((LinkedHashMap) message.get("page")).get("totalRows"));
+        ResultMap message = personService.list(start, length, search, order, orderCol, type, status);
+        message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/profile/{userId}", method = RequestMethod.PUT)
     public ResponseEntity uploadProfile(@RequestParam(value = "file", required = false) MultipartFile file,
                                         @PathVariable String userId) {
-        HaramMessage message = personService.upload(userId, file, "p");
+        ResultMap message = personService.upload(userId, file, "p");
         //更新页面头像信息
         if(message.getCode() == 2001){
 //            Subject subject = SecurityUtils.getSubject();
@@ -103,13 +101,13 @@ public class PersonController {
     @RequestMapping(value = "/info/{userId}", method = RequestMethod.PUT)
     public ResponseEntity updateInfo(@RequestParam(value = "file", required = false) MultipartFile file,
                                      @PathVariable String userId) {
-        HaramMessage message = personService.upload(userId, file, "f");
+        ResultMap message = personService.upload(userId, file, "f");
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/info/{userId}", method = RequestMethod.GET)
     public void downloadUserInfo(@PathVariable(value = "userId") String userId, HttpServletResponse response) {
-        HaramMessage message = personService.get(userId);
+        ResultMap message = personService.get(userId);
         String userInfo = (String) ((LinkedHashMap) message.getData()).get("userInfo");
         if (StringUtils.isNotEmpty(userInfo)) {
             JSONObject info = JSONObject.parseObject(userInfo);

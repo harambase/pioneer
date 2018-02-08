@@ -1,6 +1,7 @@
 package com.harambase.pioneer.controller;
 
-import com.harambase.pioneer.common.HaramMessage;
+import com.harambase.pioneer.common.ResultMap;
+import com.harambase.pioneer.common.Page;
 import com.harambase.pioneer.helper.TokenHelper;
 import com.harambase.pioneer.server.pojo.base.Transcript;
 import com.harambase.pioneer.common.support.util.FileUtil;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -30,35 +32,30 @@ public class TranscriptController {
 
 //    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
     @RequestMapping(value = "/{id}", produces = "application/json", method = RequestMethod.PUT)
-    public ResponseEntity update(@PathVariable Integer id, @RequestBody Transcript transcript) {
+    public ResponseEntity update(@PathVariable Integer id, @RequestBody Transcript transcript, HttpServletRequest request) {
         transcript.setOperatorId(TokenHelper.getUserIdFromToken(TokenHelper.getToken(request)));
-        HaramMessage haramMessage = transcriptService.updateGrade(id, transcript);
-        return new ResponseEntity<>(haramMessage, HttpStatus.OK);
+        ResultMap ResultMap = transcriptService.updateGrade(id, transcript);
+        return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
 //    @RequiresPermissions(value = {"admin", "teach", "student", "faculty"}, logical = Logical.OR)
     @RequestMapping(value = {"/list", "/course/student"}, produces = "application/json", method = RequestMethod.GET)
     public ResponseEntity listForTeach(@RequestParam(value = "start", required = false, defaultValue = "0") Integer start,
                                        @RequestParam(value = "length", required = false, defaultValue = "100") Integer length,
-                                       @RequestParam(value = "draw", required = false, defaultValue = "1") Integer draw,
                                        @RequestParam(value = "search[value]", required = false, defaultValue = "") String search,
                                        @RequestParam(value = "order[0][dir]", required = false, defaultValue = "") String order,
                                        @RequestParam(value = "order[0][column]", required = false, defaultValue = "") String orderCol,
                                        @RequestParam(value = "crn", required = false) String crn,
                                        @RequestParam(value = "studentId", required = false) String studentId,
                                        @RequestParam(value = "info", required = false) String info) {
-        HaramMessage message;
+        ResultMap message;
         if (StringUtils.isNotEmpty(crn) || StringUtils.isNotEmpty(studentId) || StringUtils.isNotEmpty(info)) {
             message = transcriptService.transcriptList(start, length, search, order, orderCol, studentId, crn, info, "");
-            message.put("draw", draw);
-            message.put("recordsTotal", ((LinkedHashMap) message.get("page")).get("totalRows"));
-            message.put("recordsFiltered", ((LinkedHashMap) message.get("page")).get("totalRows"));
+            message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         } else {
-            message = new HaramMessage();
+            message = new ResultMap();
             message.setData(new ArrayList<>());
-            message.put("draw", draw);
             message.put("recordsTotal", 0);
-            message.put("recordsFiltered", 0);
         }
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
@@ -67,25 +64,23 @@ public class TranscriptController {
     @RequestMapping(produces = "application/json", method = RequestMethod.GET)
     public ResponseEntity listForStudent(@RequestParam(value = "start", required = false, defaultValue = "0") Integer start,
                                          @RequestParam(value = "length", required = false, defaultValue = "100") Integer length,
-                                         @RequestParam(value = "draw", required = false, defaultValue = "1") Integer draw,
-                                         @RequestParam(value = "search[value]", required = false, defaultValue = "") String search,
-                                         @RequestParam(value = "order[0][dir]", required = false, defaultValue = "") String order,
-                                         @RequestParam(value = "order[0][column]", required = false, defaultValue = "") String orderCol,
-                                         @RequestParam(value = "complete", required = false) String complete) {
+                                         @RequestParam(value = "search", required = false, defaultValue = "") String search,
+                                         @RequestParam(value = "order", required = false, defaultValue = "") String order,
+                                         @RequestParam(value = "orderCol", required = false, defaultValue = "") String orderCol,
+                                         @RequestParam(value = "complete", required = false) String complete,
+                                         HttpServletRequest request) {
 
-        HaramMessage message = transcriptService.transcriptList(start, length, search, order, orderCol, TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));, "", "", complete);
-        message.put("draw", draw);
-        message.put("recordsTotal", ((LinkedHashMap) message.get("page")).get("totalRows"));
-        message.put("recordsFiltered", ((LinkedHashMap) message.get("page")).get("totalRows"));
+        ResultMap message = transcriptService.transcriptList(start, length, search, order, orderCol, TokenHelper.getUserIdFromToken(TokenHelper.getToken(request)), "", "", complete);
+        message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
 //    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
     @RequestMapping(value = "/{studentId}/report", method = RequestMethod.GET)
     public void studentTranscriptReport(@PathVariable(value = "studentId") String studentId, HttpServletResponse response) {
-        HaramMessage haramMessage = transcriptService.studentTranscriptReport(studentId);
+        ResultMap ResultMap = transcriptService.studentTranscriptReport(studentId);
         try {
-            FileUtil.downloadFile(studentId + "_transcript_report.pdf", (String) haramMessage.getData(), response);
+            FileUtil.downloadFile(studentId + "_transcript_report.pdf", (String) ResultMap.getData(), response);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -93,12 +88,12 @@ public class TranscriptController {
 
 //    @RequiresPermissions(value = {"admin", "student"}, logical = Logical.OR)
     @RequestMapping(value = "/report", method = RequestMethod.GET)
-    public void transcriptReport(@RequestParam(required = false) String studentId, HttpServletResponse response) {
+    public void transcriptReport(@RequestParam(required = false) String studentId, HttpServletResponse response, HttpServletRequest request) {
         if (StringUtils.isEmpty(studentId))
             studentId = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));;
-        HaramMessage haramMessage = transcriptService.studentTranscriptReport(studentId);
+        ResultMap ResultMap = transcriptService.studentTranscriptReport(studentId);
         try {
-            FileUtil.downloadFile(studentId + "_transcript_report.pdf", (String) haramMessage.getData(), response);
+            FileUtil.downloadFile(studentId + "_transcript_report.pdf", (String) ResultMap.getData(), response);
         } catch (Exception e) {
             e.printStackTrace();
         }

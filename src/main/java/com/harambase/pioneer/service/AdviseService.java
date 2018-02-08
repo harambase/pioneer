@@ -1,6 +1,6 @@
 package com.harambase.pioneer.service;
 
-import com.harambase.pioneer.common.HaramMessage;
+import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.server.AdviseServer;
 import com.harambase.pioneer.server.pojo.base.Advise;
 import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
@@ -22,7 +22,7 @@ public class AdviseService {
     }
 
     
-    public HaramMessage advisingList(int start, int length, String search, String order, String orderColumn, String studentId, String facultyId) {
+    public ResultMap advisingList(int start, int length, String search, String order, String orderColumn, String studentId, String facultyId) {
         try {
             return adviseServer.list(start, length, search, order, orderColumn, studentId, facultyId);
         } catch (Exception e) {
@@ -32,7 +32,7 @@ public class AdviseService {
     }
 
     
-    public HaramMessage updateAdvise(Integer id, String studentId, String facultyId) {
+    public ResultMap updateAdvise(Integer id, String studentId, String facultyId) {
         try {
             return adviseServer.update(id, studentId, facultyId);
         } catch (Exception e) {
@@ -42,7 +42,7 @@ public class AdviseService {
     }
 
     
-    public HaramMessage assignMentor(Advise advise) {
+    public ResultMap assignMentor(Advise advise) {
         try {
             return adviseServer.create(advise);
         } catch (Exception e) {
@@ -52,7 +52,7 @@ public class AdviseService {
     }
 
     
-    public HaramMessage removeMentor(Integer id) {
+    public ResultMap removeMentor(Integer id) {
         try {
             return adviseServer.delete(id);
         } catch (Exception e) {
@@ -62,7 +62,7 @@ public class AdviseService {
     }
 
     
-    public HaramMessage getMentor(Integer id) {
+    public ResultMap getMentor(Integer id) {
         try {
             return adviseServer.get(id);
         } catch (Exception e) {

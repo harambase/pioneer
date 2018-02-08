@@ -4,8 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.harambase.pioneer.common.Config;
-import com.harambase.pioneer.common.HaramMessage;
-import com.harambase.pioneer.common.constant.FlagDict;
+import com.harambase.pioneer.common.ResultMap;
+import com.harambase.pioneer.common.constant.SystemConst;
 import com.harambase.pioneer.server.CourseServer;
 import com.harambase.pioneer.server.pojo.base.Course;
 import com.harambase.pioneer.server.pojo.dto.Option;
@@ -37,7 +37,7 @@ public class CourseService {
     }
 
     
-    public HaramMessage create(Course course) {
+    public ResultMap create(Course course) {
         try {
             return courseServer.create(course);
         } catch (Exception e) {
@@ -47,7 +47,7 @@ public class CourseService {
     }
 
     
-    public HaramMessage delete(String crn) {
+    public ResultMap delete(String crn) {
         try {
             return courseServer.delete(crn);
         } catch (Exception e) {
@@ -57,7 +57,7 @@ public class CourseService {
     }
 
     
-    public HaramMessage update(String crn, Course course) {
+    public ResultMap update(String crn, Course course) {
         try {
             return courseServer.update(crn, course);
         } catch (Exception e) {
@@ -67,7 +67,7 @@ public class CourseService {
     }
 
     
-    public HaramMessage getCourseByCrn(String crn) {
+    public ResultMap getCourseByCrn(String crn) {
         try {
             return courseServer.get(crn);
         } catch (Exception e) {
@@ -77,7 +77,7 @@ public class CourseService {
     }
 
     
-    public HaramMessage courseList(int start, int length, String search, String order, String orderColumn, String facultyid, String info) {
+    public ResultMap courseList(int start, int length, String search, String order, String orderColumn, String facultyid, String info) {
         try {
             return courseServer.list(start, length, search, order, orderColumn, facultyid, info);
         } catch (Exception e) {
@@ -87,7 +87,7 @@ public class CourseService {
     }
 
     
-    public HaramMessage courseTreeList(String facultyid, String info) {
+    public ResultMap courseTreeList(String facultyid, String info) {
         try {
             return courseServer.zTreeList(facultyid, info);
         } catch (Exception e) {
@@ -96,8 +96,8 @@ public class CourseService {
         }
     }
     
-    public HaramMessage uploadInfo(String crn, MultipartFile file) {
-        HaramMessage message = new HaramMessage();
+    public ResultMap uploadInfo(String crn, MultipartFile file) {
+        ResultMap message = new ResultMap();
         Map<String, Object> map = new HashMap<>();
         JSONObject jsonObject = new JSONObject();
 
@@ -128,7 +128,7 @@ public class CourseService {
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             message.setMsg("上传失败");
-            message.setCode(FlagDict.SYSTEM_ERROR.getV());
+            message.setCode(SystemConst.SYSTEM_ERROR.getCode());
             return message;
         }
 
@@ -138,7 +138,7 @@ public class CourseService {
     }
 
     
-    public HaramMessage courseInfoList(String search) {
+    public ResultMap courseInfoList(String search) {
         try {
             return courseServer.listInfo(search);
         } catch (Exception e) {
@@ -148,8 +148,8 @@ public class CourseService {
     }
 
     
-    public HaramMessage getAssignmentList(String crn) {
-        HaramMessage message = courseServer.get(crn);
+    public ResultMap getAssignmentList(String crn) {
+        ResultMap message = courseServer.get(crn);
 
         LinkedHashMap courseMap = (LinkedHashMap) message.getData();
         String rawAssignment = (String) courseMap.get("assignment");
@@ -160,14 +160,14 @@ public class CourseService {
         }
 
         message.setData(assignmentList);
-        message.setCode(FlagDict.SUCCESS.getV());
-        message.setMsg(FlagDict.SUCCESS.getM());
+        message.setCode(SystemConst.SUCCESS.getCode());
+        message.setMsg(SystemConst.SUCCESS.getMsg());
         return message;
     }
 
     
-    public HaramMessage updateAssignment(String crn, JSONArray assignment) {
-        HaramMessage message = courseServer.get(crn);
+    public ResultMap updateAssignment(String crn, JSONArray assignment) {
+        ResultMap message = courseServer.get(crn);
         LinkedHashMap courseMap = (LinkedHashMap) message.getData();
         Course course = new Course();
         try {
@@ -181,17 +181,17 @@ public class CourseService {
     }
 
     
-    public HaramMessage uploadAssignmentAttachment(String crn, MultipartFile multipartFile) {
+    public ResultMap uploadAssignmentAttachment(String crn, MultipartFile multipartFile) {
         return null;
     }
 
     
-    public HaramMessage submitAssignment(String crn, String assignmentName, String createTime, String studentId, MultipartFile multipartFile) {
+    public ResultMap submitAssignment(String crn, String assignmentName, String createTime, String studentId, MultipartFile multipartFile) {
         return null;
     }
 
     
-    public HaramMessage studentList(String crn, String search) {
+    public ResultMap studentList(String crn, String search) {
         try {
             return courseServer.studentList(crn, search);
         } catch (Exception e) {
@@ -201,7 +201,7 @@ public class CourseService {
     }
 
     
-    public HaramMessage getCourseBySearch(String search, String status) {
+    public ResultMap getCourseBySearch(String search, String status) {
         try {
             return courseServer.search(search, status);
         } catch (Exception e) {
@@ -211,7 +211,7 @@ public class CourseService {
     }
 
     
-    public HaramMessage assignFac2Cou(String crn, String facultyId) {
+    public ResultMap assignFac2Cou(String crn, String facultyId) {
         try {
             return courseServer.assignFac2Course(crn, facultyId);
         } catch (Exception e) {
@@ -221,7 +221,7 @@ public class CourseService {
     }
 
     
-    public HaramMessage preCourseList(String crn) {
+    public ResultMap preCourseList(String crn) {
         try {
             return courseServer.preCourseList(crn);
         } catch (Exception e) {
@@ -231,7 +231,7 @@ public class CourseService {
     }
 
     
-    public HaramMessage addStu2Cou(String crn, String studentId, Option option) {
+    public ResultMap addStu2Cou(String crn, String studentId, Option option) {
         try {
             return courseServer.assignStu2Course(crn, studentId, option);
         } catch (Exception e) {
@@ -241,7 +241,7 @@ public class CourseService {
     }
 
     
-    public HaramMessage removeStuFromCou(String crn, String studentId) {
+    public ResultMap removeStuFromCou(String crn, String studentId) {
         try {
             return courseServer.removeStuFromCourse(crn, studentId);
         } catch (Exception e) {
@@ -251,7 +251,7 @@ public class CourseService {
     }
 
     
-    public HaramMessage reg2Course(String studentId, JSONObject choiceList) {
+    public ResultMap reg2Course(String studentId, JSONObject choiceList) {
         try {
             return courseServer.courseChoice(studentId, choiceList);
         } catch (Exception e) {

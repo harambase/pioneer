@@ -1,12 +1,12 @@
 package com.harambase.pioneer.controller;
 
+import com.harambase.pioneer.common.ResultMap;
+import com.harambase.pioneer.common.constant.SystemConst;
 import com.harambase.pioneer.helper.DeviceHelper;
-import com.harambase.pioneer.common.HaramMessage;
-import com.harambase.pioneer.common.constant.FlagDict;
-import com.harambase.pioneer.security.model.User;
-import com.harambase.pioneer.security.model.UserTokenState;
 import com.harambase.pioneer.helper.TokenHelper;
 import com.harambase.pioneer.security.auth.JwtAuthenticationRequest;
+import com.harambase.pioneer.security.model.User;
+import com.harambase.pioneer.security.model.UserTokenState;
 import com.harambase.pioneer.service.MonitorService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +51,7 @@ public class SystemController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest, Device device) {
 
-        HaramMessage haramMessage = new HaramMessage();
+        ResultMap haramMessage = new ResultMap();
         try {
             //System.out.println(passwordEncoder.encode(authenticationRequest.getPassword()));
             // Perform the auth
@@ -73,22 +73,22 @@ public class SystemController {
             // Return the token
 
             haramMessage.setData(new UserTokenState(jws, expiresIn));
-            haramMessage.setCode(FlagDict.SUCCESS.getV());
-            return new ResponseEntity<>(haramMessage , HttpStatus.OK);
+            haramMessage.setCode(SystemConst.SUCCESS.getCode());
+            return new ResponseEntity<>(haramMessage, HttpStatus.OK);
 
         } catch (AuthenticationException e) {
             logger.error(e.getMessage(), e);
-            haramMessage.setCode(FlagDict.FAIL.getV());
-            return new ResponseEntity<>(haramMessage , HttpStatus.INTERNAL_SERVER_ERROR);
+            haramMessage.setCode(SystemConst.FAIL.getCode());
+            return new ResponseEntity<>(haramMessage, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
 
     @PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/token/refresh", method = RequestMethod.POST)
-        public ResponseEntity refreshAuthenticationToken(HttpServletRequest request, Principal principal) {
-        HaramMessage haramMessage = new HaramMessage();
-        
+    public ResponseEntity refreshAuthenticationToken(HttpServletRequest request, Principal principal) {
+        ResultMap haramMessage = new ResultMap();
+
         String authToken = TokenHelper.getToken(request);
         Device device = deviceHelper.getCurrentDevice(request);
 
@@ -99,9 +99,9 @@ public class SystemController {
         } else {
             haramMessage.setData(new UserTokenState());
         }
-        
-        haramMessage.setCode(FlagDict.SUCCESS.getV());
-        return new ResponseEntity<>(haramMessage , HttpStatus.OK);
+
+        haramMessage.setCode(SystemConst.SUCCESS.getCode());
+        return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/logout")
@@ -122,21 +122,21 @@ public class SystemController {
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     @PreAuthorize("hasAnyRole('SYSTEM','ADMIN')")
     public ResponseEntity systemInfo() {
-        HaramMessage message = monitorService.systemInfo();
+        ResultMap message = monitorService.systemInfo();
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/relation", method = RequestMethod.GET)
     @PreAuthorize("hasAnyRole('SYSTEM','ADMIN')")
     public ResponseEntity relationChart() {
-        HaramMessage haramMessage = monitorService.getRelationChart();
+        ResultMap haramMessage = monitorService.getRelationChart();
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/user/count", method = RequestMethod.GET)
     @PreAuthorize("hasAnyRole('SYSTEM','ADMIN')")
     public ResponseEntity userCount() {
-        HaramMessage haramMessage = monitorService.getUserChart();
+        ResultMap haramMessage = monitorService.getUserChart();
         return new ResponseEntity<>(haramMessage, HttpStatus.OK);
     }
 

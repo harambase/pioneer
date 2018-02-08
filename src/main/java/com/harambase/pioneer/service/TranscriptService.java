@@ -1,8 +1,8 @@
 package com.harambase.pioneer.service;
 
 import com.harambase.pioneer.common.Config;
-import com.harambase.pioneer.common.HaramMessage;
-import com.harambase.pioneer.common.constant.FlagDict;
+import com.harambase.pioneer.common.ResultMap;
+import com.harambase.pioneer.common.constant.SystemConst;
 import com.harambase.pioneer.common.support.document.jlr.JLRConverter;
 import com.harambase.pioneer.common.support.document.jlr.JLRGenerator;
 import com.harambase.pioneer.common.support.util.ReportUtil;
@@ -39,8 +39,8 @@ public class TranscriptService {
         this.personServer = personServer;
     }
 
-    
-    public HaramMessage updateGrade(int id, Transcript transcript) {
+
+    public ResultMap updateGrade(int id, Transcript transcript) {
         try {
             return transcriptServer.update(id, transcript);
         } catch (Exception e) {
@@ -49,9 +49,9 @@ public class TranscriptService {
         }
     }
 
-    
-    public HaramMessage transcriptList(int start, int length, String search, String order, String orderColumn, String studentId, String crn,
-                                       String info, String complete) {
+
+    public ResultMap transcriptList(int start, int length, String search, String order, String orderColumn, String studentId, String crn,
+                                    String info, String complete) {
         try {
             return transcriptServer.list(start, length, search, order, orderColumn, studentId, crn, info, complete);
         } catch (Exception e) {
@@ -60,8 +60,8 @@ public class TranscriptService {
         }
     }
 
-    
-    public HaramMessage studentTranscriptReport(String studentId) {
+
+    public ResultMap studentTranscriptReport(String studentId) {
 
         /* VTL Syntax information:
          * http://velocity.apache.org/engine/1.7/user-guide.html
@@ -158,8 +158,8 @@ public class TranscriptService {
             logger.error(e.getMessage(), e);
         }
 
-        HaramMessage restMessage = new HaramMessage();
-        restMessage.setCode(FlagDict.SUCCESS.getV());
+        ResultMap restMessage = new ResultMap();
+        restMessage.setCode(SystemConst.SUCCESS.getCode());
         restMessage.setData(dirPath + studentId + ".pdf");
         return restMessage;
     }

@@ -1,6 +1,7 @@
 package com.harambase.pioneer.controller;
 
-import com.harambase.pioneer.common.HaramMessage;
+import com.harambase.pioneer.common.ResultMap;
+import com.harambase.pioneer.common.Page;
 import com.harambase.pioneer.server.RoleServer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,14 +28,11 @@ public class RoleController {
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity list(@RequestParam(value = "start") Integer start,
                                @RequestParam(value = "length") Integer length,
-                               @RequestParam(value = "draw") Integer draw,
                                @RequestParam(value = "search[value]") String search,
                                @RequestParam(value = "order[0][dir]") String order,
                                @RequestParam(value = "order[0][column]") String orderCol) {
-        HaramMessage message = roleServer.list(search, order, orderCol);
-        message.put("draw", draw);
-        message.put("recordsTotal", ((LinkedHashMap) message.get("page")).get("totalRows"));
-        message.put("recordsFiltered", ((LinkedHashMap) message.get("page")).get("totalRows"));
+        ResultMap message = roleServer.list(search, order, orderCol);
+        message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 }

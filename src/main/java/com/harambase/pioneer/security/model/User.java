@@ -1,7 +1,7 @@
 package com.harambase.pioneer.security.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.harambase.pioneer.common.constant.RoleType;
+import com.harambase.pioneer.common.constant.RoleConst;
 import com.harambase.pioneer.server.pojo.base.Person;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.GrantedAuthority;
@@ -40,28 +40,28 @@ public class User implements UserDetails, Serializable {
                 authority.setId(Long.parseLong(role_id));
                 switch (role_id) {
                     case "1":
-                        authority.setName(RoleType.USER.getRoleName());
+                        authority.setName(RoleConst.USER.getRoleName());
                         break;
                     case "2":
-                        authority.setName(RoleType.ADMIN.getRoleName());
+                        authority.setName(RoleConst.ADMIN.getRoleName());
                         break;
                     case "3":
-                        authority.setName(RoleType.TEACH.getRoleName());
+                        authority.setName(RoleConst.TEACH.getRoleName());
                         break;
                     case "4":
-                        authority.setName(RoleType.LOGISTIC.getRoleName());
+                        authority.setName(RoleConst.LOGISTIC.getRoleName());
                         break;
                     case "5":
-                        authority.setName(RoleType.SYSTEM.getRoleName());
+                        authority.setName(RoleConst.SYSTEM.getRoleName());
                         break;
                     case "6":
-                        authority.setName(RoleType.STUDENT.getRoleName());
+                        authority.setName(RoleConst.STUDENT.getRoleName());
                         break;
                     case "7":
-                        authority.setName(RoleType.FACULTY.getRoleName());
+                        authority.setName(RoleConst.FACULTY.getRoleName());
                         break;
                     case "8":
-                        authority.setName(RoleType.ADVISOR.getRoleName());
+                        authority.setName(RoleConst.ADVISOR.getRoleName());
                         break;
                 }
                 authorities.add(authority);
