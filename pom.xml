@@ -5,10 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.harambase.pioneer</groupId>
-    <artifactId>pioneer</artifactId>
+    <artifactId>pioneer-core</artifactId>
     <version>1.0.1</version>
     <packaging>jar</packaging>
-    <name>Pioneer Backend WebApp</name>
+    <name>Pioneer Core</name>
     <url>http://maven.apache.org</url>
 
     <licenses>
