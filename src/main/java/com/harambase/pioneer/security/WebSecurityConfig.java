@@ -20,8 +20,6 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -62,8 +60,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         List<RequestMatcher> csrfMethods = new ArrayList<>();
 
+        //解决跨域的问题，和Header向添加Authorization token时的校验
         CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
-        configuration.setAllowedHeaders(Arrays.asList("Authorization"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "content-type"));
 
         Arrays.asList("POST", "PUT", "PATCH", "DELETE")
                 .forEach(method -> csrfMethods.add(new AntPathRequestMatcher("/**", method)));
