@@ -66,7 +66,7 @@ public class CourseController {
                                @RequestParam(value = "length", required = false, defaultValue = "100") Integer length,
                                @RequestParam(value = "search", required = false, defaultValue = "") String search,
                                @RequestParam(value = "order", required = false, defaultValue = "desc") String order,
-                               @RequestParam(value = "orderCol", required = false, defaultValue = "0") String orderCol,
+                               @RequestParam(value = "orderCol", required = false, defaultValue = "crn") String orderCol,
                                @RequestParam(value = "mode", required = false) String mode,
                                @RequestParam(value = "info", required = false, defaultValue = "") String info,
                                @RequestParam(value = "facultyId", required = false, defaultValue = "") String facultyId,
