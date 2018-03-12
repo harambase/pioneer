@@ -62,6 +62,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         //解决跨域的问题，和Header向添加Authorization token时的校验
         CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "content-type"));
 
         Arrays.asList("POST", "PUT", "PATCH", "DELETE")
@@ -82,6 +83,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 ).permitAll()
                 .antMatchers("/system/login").permitAll()
                 .antMatchers("/request/user/register").permitAll()
+                .antMatchers("/transcript/report").permitAll()
                 .anyRequest().authenticated().and()
                 .addFilterBefore(new TokenAuthenticationFilter(jwtUserDetailsService), BasicAuthenticationFilter.class);
 

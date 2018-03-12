@@ -88,14 +88,15 @@ public class TranscriptController {
 
 //    @RequiresPermissions(value = {"admin", "student"}, logical = Logical.OR)
     @RequestMapping(value = "/report", method = RequestMethod.GET)
-    public void transcriptReport(@RequestParam(required = false) String studentId, HttpServletResponse response, HttpServletRequest request) {
-        if (StringUtils.isEmpty(studentId))
-            studentId = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));;
-        ResultMap ResultMap = transcriptService.studentTranscriptReport(studentId);
-        try {
-            FileUtil.downloadFile(studentId + "_transcript_report.pdf", (String) ResultMap.getData(), response);
-        } catch (Exception e) {
-            e.printStackTrace();
+    public void transcriptReport(@RequestParam String token, HttpServletResponse response, HttpServletRequest request) {
+        if (StringUtils.isNotEmpty(token)) {
+            String studentId = TokenHelper.getUserIdFromToken(token);
+            ResultMap ResultMap = transcriptService.studentTranscriptReport(studentId);
+            try {
+                FileUtil.downloadFile(studentId + "_transcript_report.pdf", (String) ResultMap.getData(), response);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

@@ -39,28 +39,28 @@ public class User implements UserDetails, Serializable {
                 Authority authority = new Authority();
                 authority.setId(Long.parseLong(role_id));
                 switch (role_id) {
-                    case "1":
+                    case "0":
                         authority.setName(RoleConst.USER.getRoleName());
                         break;
-                    case "2":
+                    case "1":
                         authority.setName(RoleConst.ADMIN.getRoleName());
                         break;
-                    case "3":
+                    case "2":
                         authority.setName(RoleConst.TEACH.getRoleName());
                         break;
-                    case "4":
+                    case "3":
                         authority.setName(RoleConst.LOGISTIC.getRoleName());
                         break;
-                    case "5":
+                    case "4":
                         authority.setName(RoleConst.SYSTEM.getRoleName());
                         break;
-                    case "6":
+                    case "5":
                         authority.setName(RoleConst.STUDENT.getRoleName());
                         break;
-                    case "7":
+                    case "6":
                         authority.setName(RoleConst.FACULTY.getRoleName());
                         break;
-                    case "8":
+                    case "7":
                         authority.setName(RoleConst.ADVISOR.getRoleName());
                         break;
                 }

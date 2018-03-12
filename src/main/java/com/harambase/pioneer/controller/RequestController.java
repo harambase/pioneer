@@ -65,9 +65,9 @@ public class RequestController {
     @RequestMapping(value = "/user", produces = "application/json", method = RequestMethod.GET)
     public ResponseEntity userList(@RequestParam(value = "start") Integer start,
                                    @RequestParam(value = "length") Integer length,
-                                   @RequestParam(value = "search[value]") String search,
-                                   @RequestParam(value = "order[0][dir]") String order,
-                                   @RequestParam(value = "order[0][column]") String orderCol,
+                                   @RequestParam(value = "search") String search,
+                                   @RequestParam(value = "order") String order,
+                                   @RequestParam(value = "order") String orderCol,
                                    @RequestParam(value = "viewStatus") String viewStatus) {
 
         ResultMap message = requestService.tempUserList(start, length, search, order, orderCol, viewStatus);
@@ -131,10 +131,10 @@ public class RequestController {
     @RequestMapping(value = "/course", produces = "application/json", method = RequestMethod.GET)
     public ResponseEntity courseList(@RequestParam(value = "start") Integer start,
                                      @RequestParam(value = "length") Integer length,
-                                     @RequestParam(value = "search[value]") String search,
-                                     @RequestParam(value = "order[0][dir]") String order,
-                                     @RequestParam(value = "order[0][column]") String orderCol,
-                                     @RequestParam(value = "viewStatus") String viewStatus,
+                                     @RequestParam(value = "search", required = false, defaultValue = "") String search,
+                                     @RequestParam(value = "order", required = false, defaultValue = "asc") String order,
+                                     @RequestParam(value = "orderCol", required = false, defaultValue = "crn") String orderCol,
+                                     @RequestParam(value = "viewStatus", required = false, defaultValue = "") String viewStatus,
                                      @RequestParam(value = "mode", required = false) String mode,
                                      HttpServletRequest request) {
         String facultyId = "";

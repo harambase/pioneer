@@ -86,7 +86,7 @@ public class TranscriptService {
             converter.replace("address", student.getAddress());
 
             //成绩详情
-            List<TranscriptView> transcriptList = (List<TranscriptView>) transcriptServer.list(1, Integer.MAX_VALUE, "", "", "", studentId, "", "", "").getData();
+            List<TranscriptView> transcriptList = (List<TranscriptView>) transcriptServer.list(1, Integer.MAX_VALUE, "", "", "crn", studentId, "", "", "").getData();
             Map<String, List<List<Object>>> transcripts = new HashMap<>();
             Set<String> infoSet = new HashSet<>();
             Map<String, String> infoNameSet = new HashMap<>();
@@ -130,10 +130,10 @@ public class TranscriptService {
             converter.replace("transcriptList", transcripts);
 
             //学分TOTAL:
-            StudentView studentViewMap = (StudentView) studentServer.getTranscriptDetail(studentId).getData();
-            int complete = studentViewMap.getComplete();
-            int progress = studentViewMap.getProgress();
-            int incomplete = studentViewMap.getIncomplete();
+            LinkedHashMap studentViewMap = (LinkedHashMap) studentServer.getTranscriptDetail(studentId).getData();
+            int complete = (int)studentViewMap.get("complete");
+            int progress = (int)studentViewMap.get("progress");
+            int incomplete = (int)studentViewMap.get("incomplete");
             int total = complete + progress + incomplete;
 
             double gpa = (double) qualityPoints / (double) (complete + incomplete);
