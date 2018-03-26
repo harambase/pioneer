@@ -139,10 +139,7 @@ public class RequestService{
         JSONObject jsonObject = new JSONObject();
 
         try {
-            //todo: LinkedHashMap->tempCourse
-            LinkedHashMap tempCourseMap = (LinkedHashMap) requestServer.getCourseRequest(id).getData();
-            TempCourse tempCourse = new TempCourse();
-            BeanUtils.populate(tempCourse, tempCourseMap);
+            TempCourse tempCourse = (TempCourse) requestServer.getCourseRequest(id).getData();
 
             //处理老的文件
             JSONObject courseJson = JSONObject.parseObject(tempCourse.getCourseJson());

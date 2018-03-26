@@ -136,7 +136,7 @@ let courseVue = new Vue({
             this.student = false;
         },
         tempCourseCreate: function () {
-            if(!this.confirm) {
+            if (!this.confirm) {
                 Showbo.Msg.alert("请确认上述信息无误!", function () {
                 });
                 return;
@@ -158,7 +158,7 @@ let courseVue = new Vue({
         },
 
         tempCourseUpdate: function () {
-            if(!this.confirm) {
+            if (!this.confirm) {
                 Showbo.Msg.alert("请确认上述信息无误!", function () {
                 });
                 return;
@@ -180,7 +180,7 @@ let courseVue = new Vue({
             })
         },
         tempCourseApprove: function () {
-            if(!this.confirm) {
+            if (!this.confirm) {
                 Showbo.Msg.alert("请确认上述信息无误!", function () {
                 });
                 return;
@@ -197,7 +197,7 @@ let courseVue = new Vue({
 
         },
         tempCourseDecline: function () {
-            if(!this.confirm) {
+            if (!this.confirm) {
                 Showbo.Msg.alert("请确认上述信息无误!", function () {
                 });
                 return;
@@ -213,7 +213,7 @@ let courseVue = new Vue({
 
         },
         courseCreate: function () {
-            if(!this.confirm) {
+            if (!this.confirm) {
                 Showbo.Msg.alert("请确认上述信息无误!", function () {
                 });
                 return;
@@ -234,7 +234,7 @@ let courseVue = new Vue({
             })
         },
         courseUpdate: function () {
-            if(!this.confirm) {
+            if (!this.confirm) {
                 Showbo.Msg.alert("请确认上述信息无误!", function () {
                 });
                 return;

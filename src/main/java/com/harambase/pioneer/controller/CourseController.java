@@ -2,12 +2,13 @@ package com.harambase.pioneer.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.common.Page;
+import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.common.support.util.FileUtil;
 import com.harambase.pioneer.helper.TokenHelper;
 import com.harambase.pioneer.server.pojo.base.Course;
 import com.harambase.pioneer.server.pojo.dto.Option;
+import com.harambase.pioneer.server.pojo.view.CourseView;
 import com.harambase.pioneer.service.CourseService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -164,15 +165,17 @@ public class CourseController {
 
     //    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
     @RequestMapping(value = "/info/{crn}", method = RequestMethod.GET)
-    public void downloadCourseInfo(@PathVariable String crn, HttpServletResponse response) {
-        ResultMap message = courseService.getCourseByCrn(crn);
-        String courseInfo = (String) ((LinkedHashMap) message.getData()).get("courseInfo");
-        if (StringUtils.isNotEmpty(courseInfo)) {
-            JSONObject info = JSONObject.parseObject(courseInfo);
-            try {
-                FileUtil.downloadFile(info.getString("name"), info.getString("path"), response);
-            } catch (Exception e) {
-                e.printStackTrace();
+    public void downloadCourseInfo(@PathVariable String crn, @RequestParam String token, HttpServletResponse response) {
+        if (StringUtils.isNotEmpty(token)) {
+            ResultMap message = courseService.getCourseByCrn(crn);
+            String courseInfo = ((CourseView) message.getData()).getCourseInfo();
+            if (StringUtils.isNotEmpty(courseInfo)) {
+                JSONObject info = JSONObject.parseObject(courseInfo);
+                try {
+                    FileUtil.downloadFile(info.getString("name"), info.getString("path"), response);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
