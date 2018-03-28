@@ -30,7 +30,7 @@
                         <form method="post" id="loginForm">
                             <div id="formsAuthenticationArea">
                                 <div id="userNameArea">
-                                    <input id="userId" v-model="user.userId" class="text fullWidth" placeholder="用户ID"
+                                    <input id="userId" v-model="user.username" class="text fullWidth" placeholder="用户ID"
                                            minlength="10" maxlength="10" isDigits="true" required>
                                 </div>
                                 <div id="passwordArea">
@@ -70,7 +70,7 @@
         el: '#loginForm',
         data: {
             user: {
-                userId: "",
+                username: "",
                 password: ""
             }
         },

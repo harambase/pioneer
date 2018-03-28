@@ -109,9 +109,7 @@ public class PersonService {
         JSONObject jsonObject = new JSONObject();
 
         try {
-            LinkedHashMap personMap = (LinkedHashMap) personServer.get(userId).getData();
-            Person person = new Person();
-            BeanUtils.populate(person, personMap);
+            Person person = (Person) personServer.get(userId).getData();
             String name = file.getOriginalFilename();
 
             String fileUri;

@@ -5,6 +5,7 @@ import com.harambase.pioneer.common.Page;
 import com.harambase.pioneer.server.RoleServer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,13 +25,13 @@ public class RoleController {
         this.roleServer = roleServer;
     }
 
-//    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity list(@RequestParam(value = "start") Integer start,
-                               @RequestParam(value = "length") Integer length,
-                               @RequestParam(value = "search[value]") String search,
-                               @RequestParam(value = "order[0][dir]") String order,
-                               @RequestParam(value = "order[0][column]") String orderCol) {
+    @PreAuthorize("hasAnyRole('SYSTEM','ADMIN')")
+    public ResponseEntity list(@RequestParam(value = "start", required = false, defaultValue = "0") Integer start,
+                               @RequestParam(value = "length", required = false, defaultValue = "100") Integer length,
+                               @RequestParam(value = "search", required = false, defaultValue = "") String search,
+                               @RequestParam(value = "order", required = false, defaultValue = "desc") String order,
+                               @RequestParam(value = "orderCol", required = false, defaultValue = "role_id") String orderCol) {
         ResultMap message = roleServer.list(search, order, orderCol);
         message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         return new ResponseEntity<>(message, HttpStatus.OK);
