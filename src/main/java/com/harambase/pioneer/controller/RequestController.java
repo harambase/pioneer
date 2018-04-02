@@ -18,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.LinkedHashMap;
 
 @RestController
 @CrossOrigin
@@ -63,15 +62,29 @@ public class RequestController {
 
     //    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
     @RequestMapping(value = "/user", produces = "application/json", method = RequestMethod.GET)
-    public ResponseEntity userList(@RequestParam(value = "start") Integer start,
-                                   @RequestParam(value = "length") Integer length,
-                                   @RequestParam(value = "search") String search,
-                                   @RequestParam(value = "order") String order,
-                                   @RequestParam(value = "order") String orderCol,
-                                   @RequestParam(value = "viewStatus") String viewStatus) {
+    public ResponseEntity userList(@RequestParam(value = "start", required = false, defaultValue = "0") Integer start,
+                                   @RequestParam(value = "length", required = false, defaultValue = "100") Integer length,
+                                   @RequestParam(value = "search", required = false, defaultValue = "") String search,
+                                   @RequestParam(value = "order", required = false, defaultValue = "desc") String order,
+                                   @RequestParam(value = "orderCol", required = false, defaultValue = "user_id") String orderCol,
+                                   @RequestParam(value = "viewStatus", required = false, defaultValue = "") String viewStatus) {
 
         ResultMap message = requestService.tempUserList(start, length, search, order, orderCol, viewStatus);
         message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/user/profile/{id}", method = RequestMethod.PUT)
+    public ResponseEntity uploadProfile(@RequestParam(value = "file", required = false) MultipartFile file,
+                                        @PathVariable Integer id) {
+        ResultMap message = requestService.tempUserUpload(id, file, "p");
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/user/info/{id}", method = RequestMethod.PUT)
+    public ResponseEntity updateInfo(@RequestParam(value = "file", required = false) MultipartFile file,
+                                     @PathVariable Integer id) {
+        ResultMap message = requestService.tempUserUpload(id, file, "f");
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 

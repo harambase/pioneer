@@ -44,8 +44,8 @@ public class PersonController {
 
 //    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
     @RequestMapping(value = "/{userId}", produces = "application/json", method = RequestMethod.PUT)
-    public ResponseEntity update(@PathVariable("userId") String userid, @RequestBody Person person) {
-        ResultMap message = personService.updatePerson(userid, person);
+    public ResponseEntity update(@PathVariable("userId") String userId, @RequestBody Person person) {
+        ResultMap message = personService.updatePerson(userId, person);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
@@ -90,11 +90,6 @@ public class PersonController {
     public ResponseEntity uploadProfile(@RequestParam(value = "file", required = false) MultipartFile file,
                                         @PathVariable String userId) {
         ResultMap message = personService.upload(userId, file, "p");
-        //更新页面头像信息
-        if(message.getCode() == 2001){
-//            Subject subject = SecurityUtils.getSubject();
-//            subject.getSession().setAttribute("profile", "/pioneer/" + ((JSONObject)message.getData()).getString("path"));
-        }
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
