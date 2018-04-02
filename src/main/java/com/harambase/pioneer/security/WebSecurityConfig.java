@@ -88,6 +88,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/transcript/report").permitAll()
                 .antMatchers("/course/info/**").permitAll()
                 .antMatchers("/request/course/info/**").permitAll()
+                .antMatchers("/request/user/info/**").permitAll()
                 .anyRequest().authenticated().and()
                 .addFilterBefore(new TokenAuthenticationFilter(jwtUserDetailsService), BasicAuthenticationFilter.class);
 

@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.LinkedHashMap;
 
 @RestController
 @CrossOrigin
@@ -82,10 +83,24 @@ public class RequestController {
     }
 
     @RequestMapping(value = "/user/info/{id}", method = RequestMethod.PUT)
-    public ResponseEntity updateInfo(@RequestParam(value = "file", required = false) MultipartFile file,
+    public ResponseEntity uploadInfo(@RequestParam(value = "file", required = false) MultipartFile file,
                                      @PathVariable Integer id) {
         ResultMap message = requestService.tempUserUpload(id, file, "f");
         return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/user/info/{id}", method = RequestMethod.GET)
+    public void downloadUserInfo(@PathVariable(value = "id") Integer id, HttpServletResponse response) {
+        ResultMap message = requestService.getTempUser(id);
+        String userInfo = JSONObject.parseObject(((TempUser) message.getData()).getUserJson()).getString("userInfo");
+        if (StringUtils.isNotEmpty(userInfo)) {
+            JSONObject info = JSONObject.parseObject(userInfo);
+            try {
+                FileUtil.downloadFile(info.getString("name"), info.getString("path"), response);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     //    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)

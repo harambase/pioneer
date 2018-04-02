@@ -270,7 +270,7 @@ public class RequestService {
                     jsonObject.put("type", name.substring(name.lastIndexOf(".") + 1));
                     jsonObject.put("path", fileUri);
 
-                    person.put("baseInfo", jsonObject.toJSONString());
+                    person.put("userInfo", jsonObject.toJSONString());
                     tempUser.setUserJson(JSON.toJSONString(person));
                     break;
             }

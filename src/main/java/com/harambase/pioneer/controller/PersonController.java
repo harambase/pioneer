@@ -103,7 +103,7 @@ public class PersonController {
     @RequestMapping(value = "/info/{userId}", method = RequestMethod.GET)
     public void downloadUserInfo(@PathVariable(value = "userId") String userId, HttpServletResponse response) {
         ResultMap message = personService.get(userId);
-        String userInfo = (String) ((LinkedHashMap) message.getData()).get("userInfo");
+        String userInfo = ((Person) message.getData()).getUserInfo();
         if (StringUtils.isNotEmpty(userInfo)) {
             JSONObject info = JSONObject.parseObject(userInfo);
             try {
