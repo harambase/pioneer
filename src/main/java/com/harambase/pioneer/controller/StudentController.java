@@ -52,14 +52,14 @@ public class StudentController {
 
 //    @RequiresPermissions(value = {"admin", "teach", "system"}, logical = Logical.OR)
     @RequestMapping(produces = "application/json", method = RequestMethod.GET)
-    public ResponseEntity list(@RequestParam(value = "start") Integer start,
-                               @RequestParam(value = "length") Integer length,
-                               @RequestParam(value = "search[value]") String search,
-                               @RequestParam(value = "order[0][dir]") String order,
-                               @RequestParam(value = "order[0][column]") String orderCol,
+    public ResponseEntity list(@RequestParam(value = "start", required = false, defaultValue = "0") Integer start,
+                               @RequestParam(value = "length", required = false, defaultValue = "100") Integer length,
+                               @RequestParam(value = "search", required = false, defaultValue = "") String search,
+                               @RequestParam(value = "order", required = false, defaultValue = "desc") String order,
+                               @RequestParam(value = "orderCol", required = false, defaultValue = "student_id") String orderCol,
                                @RequestParam(value = "status", required = false) String status) {
 
-        ResultMap message = studentService.studentList(start, length, search, order, orderCol, status);
+        ResultMap message = studentService.studentList(start * length - 1, length, search, order, orderCol, status);
         message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
