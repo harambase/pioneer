@@ -5,6 +5,7 @@ import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.common.constant.SystemConst;
 import com.harambase.pioneer.common.support.document.jlr.JLRConverter;
 import com.harambase.pioneer.common.support.document.jlr.JLRGenerator;
+import com.harambase.pioneer.common.support.util.FileUtil;
 import com.harambase.pioneer.common.support.util.ReportUtil;
 import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
 import com.harambase.pioneer.server.PersonServer;
@@ -12,7 +13,6 @@ import com.harambase.pioneer.server.StudentServer;
 import com.harambase.pioneer.server.TranscriptServer;
 import com.harambase.pioneer.server.pojo.base.Person;
 import com.harambase.pioneer.server.pojo.base.Transcript;
-import com.harambase.pioneer.server.pojo.view.StudentView;
 import com.harambase.pioneer.server.pojo.view.TranscriptView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -86,7 +88,8 @@ public class TranscriptService {
             converter.replace("address", student.getAddress());
 
             //成绩详情
-            List<TranscriptView> transcriptList = (List<TranscriptView>) transcriptServer.list(1, Integer.MAX_VALUE, "", "", "crn", studentId, "", "", "").getData();
+            List<TranscriptView> transcriptList = (List<TranscriptView>) transcriptServer.list(1, Integer.MAX_VALUE, "", "", "crn",
+                    studentId, "", "", "").getData();
             Map<String, List<List<Object>>> transcripts = new HashMap<>();
             Set<String> infoSet = new HashSet<>();
             Map<String, String> infoNameSet = new HashMap<>();
@@ -131,9 +134,9 @@ public class TranscriptService {
 
             //学分TOTAL:
             LinkedHashMap studentViewMap = (LinkedHashMap) studentServer.getTranscriptDetail(studentId).getData();
-            int complete = (int)studentViewMap.get("complete");
-            int progress = (int)studentViewMap.get("progress");
-            int incomplete = (int)studentViewMap.get("incomplete");
+            int complete = (int) studentViewMap.get("complete");
+            int progress = (int) studentViewMap.get("progress");
+            int incomplete = (int) studentViewMap.get("incomplete");
             int total = complete + progress + incomplete;
 
             double gpa = (double) qualityPoints / (double) (complete + incomplete);
@@ -161,6 +164,40 @@ public class TranscriptService {
         ResultMap restMessage = new ResultMap();
         restMessage.setCode(SystemConst.SUCCESS.getCode());
         restMessage.setData(dirPath + studentId + ".pdf");
+        return restMessage;
+    }
+
+    public ResultMap allTranscripts(String info) {
+        FileOutputStream fos = null;
+        String csvPath = Config.TEMP_FILE_PATH + "all_transcript_report.csv";
+        ResultMap message = null;
+
+        try {
+            fos = new FileOutputStream(new File(csvPath), true);
+            Field[] titleList = TranscriptView.class.getDeclaredFields();
+            List<TranscriptView> transcriptViewList = (List<TranscriptView>) transcriptServer.list(1, Integer.MAX_VALUE, "", "asc",
+                    "crn", "", "", info, "").getData();
+
+            StringBuilder exportInfoSb = new StringBuilder();
+            for (int i = 0; i < titleList.length; i++){
+                if (i != 0) exportInfoSb.append(",");
+                exportInfoSb.append("\"" + titleList[i].getName() + "\"");
+            }
+            for (int i = 0; i < transcriptViewList.size(); i++) {
+                if (i != 0) exportInfoSb.append(",");
+                exportInfoSb.append("\"" + transcriptViewList.get(i) + "\"");
+            }
+            exportInfoSb.append("\n");
+            fos.write(exportInfoSb.toString().getBytes("UTF-8"));
+
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+
+        logger.info("Reporting task for all students has completed.");
+        ResultMap restMessage = new ResultMap();
+        restMessage.setCode(SystemConst.SUCCESS.getCode());
+        restMessage.setData("all_transcript_report.csv");
         return restMessage;
     }
 }

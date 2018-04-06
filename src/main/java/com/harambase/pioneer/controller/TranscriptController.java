@@ -42,15 +42,15 @@ public class TranscriptController {
     @RequestMapping(value = {"/list", "/course/student"}, produces = "application/json", method = RequestMethod.GET)
     public ResponseEntity listForTeach(@RequestParam(value = "start", required = false, defaultValue = "0") Integer start,
                                        @RequestParam(value = "length", required = false, defaultValue = "100") Integer length,
-                                       @RequestParam(value = "search[value]", required = false, defaultValue = "") String search,
-                                       @RequestParam(value = "order[0][dir]", required = false, defaultValue = "") String order,
-                                       @RequestParam(value = "order[0][column]", required = false, defaultValue = "") String orderCol,
+                                       @RequestParam(value = "search", required = false, defaultValue = "") String search,
+                                       @RequestParam(value = "order", required = false, defaultValue = "") String order,
+                                       @RequestParam(value = "orderCol", required = false, defaultValue = "id") String orderCol,
                                        @RequestParam(value = "crn", required = false) String crn,
                                        @RequestParam(value = "studentId", required = false) String studentId,
                                        @RequestParam(value = "info", required = false) String info) {
         ResultMap message;
         if (StringUtils.isNotEmpty(crn) || StringUtils.isNotEmpty(studentId) || StringUtils.isNotEmpty(info)) {
-            message = transcriptService.transcriptList(start, length, search, order, orderCol, studentId, crn, info, "");
+            message = transcriptService.transcriptList(start * length - 1, length, search, order, orderCol, studentId, crn, info, "");
             message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         } else {
             message = new ResultMap();
@@ -70,7 +70,7 @@ public class TranscriptController {
                                          @RequestParam(value = "complete", required = false) String complete,
                                          HttpServletRequest request) {
 
-        ResultMap message = transcriptService.transcriptList(start, length, search, order, orderCol, TokenHelper.getUserIdFromToken(TokenHelper.getToken(request)), "", "", complete);
+        ResultMap message = transcriptService.transcriptList(start * length - 1, length, search, order, orderCol, TokenHelper.getUserIdFromToken(TokenHelper.getToken(request)), "", "", complete);
         message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
@@ -94,6 +94,19 @@ public class TranscriptController {
             ResultMap ResultMap = transcriptService.studentTranscriptReport(studentId);
             try {
                 FileUtil.downloadFile(studentId + "_transcript_report.pdf", (String) ResultMap.getData(), response);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @RequestMapping(value = "/all/report", method = RequestMethod.GET)
+    public void transcriptAllReport(@RequestParam String token,
+                                    @RequestParam(required = false) String info, HttpServletResponse response, HttpServletRequest request) {
+        if (StringUtils.isNotEmpty(token)) {
+            ResultMap ResultMap = transcriptService.allTranscripts(info);
+            try {
+                FileUtil.downloadFile("all_transcript_report.csv", (String) ResultMap.getData(), response);
             } catch (Exception e) {
                 e.printStackTrace();
             }
