@@ -5,7 +5,6 @@ import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.common.constant.SystemConst;
 import com.harambase.pioneer.common.support.document.jlr.JLRConverter;
 import com.harambase.pioneer.common.support.document.jlr.JLRGenerator;
-import com.harambase.pioneer.common.support.util.FileUtil;
 import com.harambase.pioneer.common.support.util.ReportUtil;
 import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
 import com.harambase.pioneer.server.PersonServer;
@@ -14,6 +13,7 @@ import com.harambase.pioneer.server.TranscriptServer;
 import com.harambase.pioneer.server.pojo.base.Person;
 import com.harambase.pioneer.server.pojo.base.Transcript;
 import com.harambase.pioneer.server.pojo.view.TranscriptView;
+import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.util.*;
@@ -173,25 +174,46 @@ public class TranscriptService {
         ResultMap message = null;
 
         try {
-            fos = new FileOutputStream(new File(csvPath), true);
+            File outputFile = new File(csvPath);
+            if(outputFile.exists()) {
+                outputFile.delete();
+                outputFile = new File(csvPath);
+            }
+            fos = new FileOutputStream(outputFile, true);
+            //Solve for Chinese Character errors while using excel:
+            fos.write(new byte[]{(byte)0xEF,(byte)0xBB,(byte)0xBF});
+
             Field[] titleList = TranscriptView.class.getDeclaredFields();
             List<TranscriptView> transcriptViewList = (List<TranscriptView>) transcriptServer.list(1, Integer.MAX_VALUE, "", "asc",
                     "crn", "", "", info, "").getData();
 
             StringBuilder exportInfoSb = new StringBuilder();
-            for (int i = 0; i < titleList.length; i++){
+            for (int i = 0; i < titleList.length; i++) {
                 if (i != 0) exportInfoSb.append(",");
                 exportInfoSb.append("\"" + titleList[i].getName() + "\"");
             }
-            for (int i = 0; i < transcriptViewList.size(); i++) {
-                if (i != 0) exportInfoSb.append(",");
-                exportInfoSb.append("\"" + transcriptViewList.get(i) + "\"");
-            }
             exportInfoSb.append("\n");
+            for (int i = 0; i < transcriptViewList.size(); i++) {
+                Map<String, String> tvMap = BeanUtils.describe(transcriptViewList.get(i));
+                for (int j = 0; j < titleList.length; j++) {
+                    if (j != 0) exportInfoSb.append(",");
+                    exportInfoSb.append("\"" + tvMap.get(titleList[j].getName()) + "\"");
+                }
+                exportInfoSb.append("\n");
+            }
+            exportInfoSb.append("total records:," + transcriptViewList.size());
             fos.write(exportInfoSb.toString().getBytes("UTF-8"));
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    logger.error(e.getMessage(), e);
+                }
+            }
         }
 
         logger.info("Reporting task for all students has completed.");
