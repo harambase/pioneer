@@ -26,6 +26,8 @@ public class User implements UserDetails, Serializable {
 
     private List<Authority> authorities;
 
+    private String[] roles;
+
     public User(Person person) {
 
         this.password = person.getPassword();
@@ -33,8 +35,9 @@ public class User implements UserDetails, Serializable {
         this.username = person.getUserId();//NOTICE HERE USE USERID AS USERNAME
         this.enabled = person.getStatus().equals("1");
         this.authorities = new ArrayList<>();
+        this.roles = person.getRoleId().split("/");
 
-        for (String role_id : person.getRoleId().split("/")) {
+        for (String role_id : roles) {
             if (StringUtils.isNotEmpty(role_id)) {
                 Authority authority = new Authority();
                 authority.setId(Long.parseLong(role_id));
@@ -102,6 +105,13 @@ public class User implements UserDetails, Serializable {
         this.type = type == null ? null : type.trim();
     }
 
+    public String[] getRoles(){
+        return this.roles;
+    }
+
+    public void setRoles(String[] roles){
+        this.roles = roles;
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.authorities;

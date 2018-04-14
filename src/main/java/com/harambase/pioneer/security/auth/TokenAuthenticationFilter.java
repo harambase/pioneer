@@ -14,7 +14,7 @@ import java.io.IOException;
 
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
-       private UserDetailsService userDetailsService;
+    private UserDetailsService userDetailsService;
 
     public TokenAuthenticationFilter(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;

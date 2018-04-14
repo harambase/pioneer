@@ -7,6 +7,7 @@ import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.common.constant.SystemConst;
 import com.harambase.pioneer.common.support.util.FileUtil;
 import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
+import com.harambase.pioneer.security.model.User;
 import com.harambase.pioneer.server.PersonServer;
 import com.harambase.pioneer.server.pojo.base.Person;
 import org.apache.commons.beanutils.BeanUtils;
@@ -166,4 +167,10 @@ public class PersonService {
         return message;
     }
 
+    public Person verifyUser(Person user) {
+        Person existUser = (Person) personServer.get(user.getUserId()).getData();
+        return existUser != null &&
+                existUser.getBirthday().equals(user.getBirthday()) &&
+                existUser.getTel().equals(user.getTel()) ? existUser : null;
+    }
 }

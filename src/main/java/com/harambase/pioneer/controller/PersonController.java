@@ -8,8 +8,11 @@ import com.harambase.pioneer.common.support.util.FileUtil;
 import com.harambase.pioneer.service.PersonService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,9 +31,15 @@ public class PersonController {
         this.personService = personService;
     }
 
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
 //    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
     @RequestMapping(produces = "application/json", method = RequestMethod.POST)
     public ResponseEntity create(@RequestBody Person person) {
+        person.setPassword(passwordEncoder().encode(person.getPassword()));
         ResultMap message = personService.createPerson(person);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }

@@ -7,7 +7,7 @@ import org.springframework.mobile.device.Device;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
+import java.util.*;
 
 public class TokenHelper {
 
@@ -76,14 +76,17 @@ public class TokenHelper {
         return refreshedToken;
     }
 
-    public static String generateToken(String userId, Device device) {
+    public static String generateToken(String userId, String[] role, Device device) {
         String audience = generateAudience(device);
-        return Jwts.builder()
-                .setIssuer(APP_NAME)
+        Claims claimsWithRole = Jwts.claims().setIssuer(APP_NAME)
                 .setSubject(userId)//NOTICE HERE: USERID REPLACE USERNAME
                 .setAudience(audience)
                 .setIssuedAt(new Date())
-                .setExpiration(generateExpirationDate(device))
+                .setExpiration(generateExpirationDate(device));
+        claimsWithRole.put("rol", role);
+
+        return Jwts.builder()
+                .setClaims(claimsWithRole)
                 .signWith(SIGNATURE_ALGORITHM, SECRET)
                 .compact();
     }

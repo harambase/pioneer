@@ -7,10 +7,13 @@ import com.harambase.pioneer.helper.TokenHelper;
 import com.harambase.pioneer.security.auth.JwtAuthenticationRequest;
 import com.harambase.pioneer.security.model.User;
 import com.harambase.pioneer.security.model.UserTokenState;
+import com.harambase.pioneer.server.pojo.base.Person;
 import com.harambase.pioneer.service.MonitorService;
+import com.harambase.pioneer.service.PersonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +24,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,23 +40,31 @@ public class SystemController {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final MonitorService monitorService;
+    private final PersonService personService;
     private final AuthenticationManager authenticationManager;
     private final DeviceHelper deviceHelper;
 
     @Autowired
     public SystemController(MonitorService monitorService,
+                            PersonService personService,
                             AuthenticationManager authenticationManager,
                             DeviceHelper deviceHelper) {
 
         this.monitorService = monitorService;
         this.authenticationManager = authenticationManager;
         this.deviceHelper = deviceHelper;
+        this.personService = personService;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest, Device device) {
 
-        ResultMap haramMessage = new ResultMap();
+        ResultMap resultMap = new ResultMap();
         try {
             //System.out.println(passwordEncoder.encode(authenticationRequest.getPassword()));
             // Perform the auth
@@ -67,27 +80,45 @@ public class SystemController {
 
             // token creation
             User user = (User) authentication.getPrincipal();
-            String jws = TokenHelper.generateToken(user.getUserId(), device);
+            String jws = TokenHelper.generateToken(user.getUserId(), user.getRoles(), device);
             int expiresIn = TokenHelper.getExpiredIn(device);
 
             // Return the token
 
-            haramMessage.setData(new UserTokenState(jws, expiresIn));
-            haramMessage.setCode(SystemConst.SUCCESS.getCode());
-            return new ResponseEntity<>(haramMessage, HttpStatus.OK);
-
+            resultMap.setData(new UserTokenState(jws, expiresIn));
+            resultMap.setCode(SystemConst.SUCCESS.getCode());
         } catch (AuthenticationException e) {
             logger.error(e.getMessage(), e);
-            haramMessage.setCode(SystemConst.FAIL.getCode());
-            return new ResponseEntity<>(haramMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+            resultMap.setCode(SystemConst.FAIL.getCode());
         }
+        return new ResponseEntity<>(resultMap, HttpStatus.OK);
+    }
 
+    @RequestMapping(value = "/user/verify", method = RequestMethod.POST)
+    public ResponseEntity verifyUser(@RequestBody Person user){
+        ResultMap resultMap = new ResultMap();
+        Person p = personService.verifyUser(user);
+        if(p != null){
+            resultMap.setData(p);
+            resultMap.setCode(SystemConst.SUCCESS.getCode());
+        }
+        else
+            resultMap.setCode(SystemConst.FAIL.getCode());
+
+        return new ResponseEntity<>(resultMap, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/user/reset/password/{userId}", method = RequestMethod.PUT)
+    public ResponseEntity passwordReset(@PathVariable String userId, @RequestBody Person user){
+        user.setPassword(passwordEncoder().encode(user.getPassword()));
+        ResultMap resultMap = personService.updatePerson(userId, user);
+        return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 
     @PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/token/refresh", method = RequestMethod.POST)
     public ResponseEntity refreshAuthenticationToken(HttpServletRequest request, Principal principal) {
-        ResultMap haramMessage = new ResultMap();
+        ResultMap resultMap = new ResultMap();
 
         String authToken = TokenHelper.getToken(request);
         Device device = deviceHelper.getCurrentDevice(request);
@@ -95,13 +126,13 @@ public class SystemController {
         if (authToken != null && principal != null) {
             String refreshedToken = TokenHelper.refreshToken(authToken, device);
             int expiresIn = TokenHelper.getExpiredIn(device);
-            haramMessage.setData(new UserTokenState(refreshedToken, expiresIn));
+            resultMap.setData(new UserTokenState(refreshedToken, expiresIn));
         } else {
-            haramMessage.setData(new UserTokenState());
+            resultMap.setData(new UserTokenState());
         }
 
-        haramMessage.setCode(SystemConst.SUCCESS.getCode());
-        return new ResponseEntity<>(haramMessage, HttpStatus.OK);
+        resultMap.setCode(SystemConst.SUCCESS.getCode());
+        return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/logout")
@@ -129,15 +160,15 @@ public class SystemController {
     @RequestMapping(value = "/relation", method = RequestMethod.GET)
     @PreAuthorize("hasAnyRole('SYSTEM','ADMIN')")
     public ResponseEntity relationChart() {
-        ResultMap haramMessage = monitorService.getRelationChart();
-        return new ResponseEntity<>(haramMessage, HttpStatus.OK);
+        ResultMap resultMap = monitorService.getRelationChart();
+        return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/user/count", method = RequestMethod.GET)
     @PreAuthorize("hasAnyRole('SYSTEM','ADMIN')")
     public ResponseEntity userCount() {
-        ResultMap haramMessage = monitorService.getUserChart();
-        return new ResponseEntity<>(haramMessage, HttpStatus.OK);
+        ResultMap resultMap = monitorService.getUserChart();
+        return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 
 }
