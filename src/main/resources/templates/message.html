@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:v-on="http://www.w3.org/1999/xhtml"
+      xmlns:v-bind="http://www.w3.org/1999/xhtml">
+    <head th:include="/common :: header('消息中心',false, true)"></head>
+<head>
+    <link rel="stylesheet" href="/static/plugins/blur-admin/vendor-2cae343ef1.css">
+    <link rel="stylesheet" href="/static/plugins/blur-admin/app-bce21c2366.css">
+</head>
+<body data-gr-c-s-loaded="true" class="blur-theme">
+<div id="wrapper">
+    <!--/. NAV TOP  -->
+    <div th:include="/common :: navtop" class="sidebar-collapse"></div>
+
+    <!-- /. NAV SIDE  -->
+    <div th:include="/common :: navbar" class="sidebar-collapse"></div>
+
+    <div id="page-wrapper">
+        <div class="header">
+            <h1 class="page-header">
+                先锋OA系统
+                <small>消息中心</small>
+            </h1>
+        </div>
+
+        <div id="page-inner">
+            <div class="row">
+                <div class="col-md-12" id="messagePage">
+                    <div class="panel panel-default xmedium-panel mail-panel animated zoomIn">
+                        <div class="panel-body">
+                            <div class="letter-layout ">
+                                <div class="mail-navigation-container">
+                                    <div class="text-center">
+                                        <button v-on:click="write" type="button" class="btn btn-default compose-button">
+                                            写信息
+                                        </button>
+                                    </div>
+                                    <div v-on:click="inbox" class="mail-navigation"
+                                         v-bind:class="{active:activeIndex==0}">
+                                        收件箱 <span class="new-mails">{{unread}}</span>
+                                    </div>
+                                    <div v-on:click="sent" class="mail-navigation"
+                                         v-bind:class="{active:activeIndex==1}">
+                                        已发送
+                                    </div>
+                                    <div v-on:click="important" class="mail-navigation"
+                                         v-bind:class="{active:activeIndex==2}">
+                                        重要信息 <span class="new-mails">{{important}}</span>
+                                    </div>
+                                    <div v-on:click="draft" class="mail-navigation"
+                                         v-bind:class="{active:activeIndex==3}">
+                                        草稿箱 <span class="new-mails">{{saved}}</span>
+                                    </div>
+                                    <div v-on:click="trash" class="mail-navigation"
+                                         v-bind:class="{active:activeIndex==4}">
+                                        垃圾箱 <span class="new-mails">{{trashed}}</span>
+                                    </div>
+                                    <div class="labels">
+                                        <div class="labels-title"></div>
+                                        <div class="labels-container">
+                                            <div class="label-item">
+                                                <span class="tag label friend">紧急</span>
+                                            </div>
+                                            <div class="label-item">
+                                                <span class="tag label work">重要</span>
+                                            </div>
+                                            <div class="label-item">
+                                                <span class="tag label family">一般</span>
+                                            </div>
+                                            <div class="label-item">
+                                                <span class="tag label study">完结</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- uiView: -->
+                                <ui-view id="table" class="" v-show="table">
+                                    <div class="side-message-navigation  expanded">
+                                        <div class="mail-messages-control side-message-navigation-item">
+                                            <div class="toggle-navigation-container">
+                                                <a class="collapse-navigation-link ion-navicon"></a>
+                                            </div>
+                                            <label class="checkbox-inline custom-checkbox nowrap">
+                                                <input type="checkbox" id="inlineCheckbox01" value="option1">
+                                                <span class="select-all-label">全选</span>
+                                            </label>
+                                            <button type="button" class="btn btn-icon refresh-button"
+                                                    onclick="messageTable.draw();">
+                                                <i class="fa fa-refresh"></i>
+                                            </button>
+                                        </div>
+                                        <table class="table table-striped table-bordered table-hover" id="messageTable"
+                                               style="width: 100%;"></table>
+                                    </div>
+                                </ui-view>
+                                <ui id="detail" v-if="detail">
+                                    <div class="message-container expanded">
+                                        <div class="message">
+                                            <div class="row">
+                                                <div class="toggle-navigation-container detail-page">
+                                                    <a class="collapse-navigation-link ion-navicon"></a>
+                                                </div>
+                                                <button id="back" type="button" v-on:click="back"
+                                                        class="back-button btn btn-default btn-with-icon">
+                                                    <i class="fa fa-arrow-left"></i>返回
+                                                </button>
+                                            </div>
+                                            <div class="person-info row">
+                                                <div id="senderInfo" class="col-lg-4 col-md-12 no-padding">
+                                                </div>
+                                                <div id="contactInfo" class="col-lg-4 col-md-6 col-xs-12 no-padding">
+                                                </div>
+                                                <div id="roleInfo" class="col-lg-4 col-md-6 col-xs-12 no-padding">
+                                                </div>
+                                            </div>
+                                            <div class="row"></div>
+                                            <div class="line"></div>
+
+                                            <div id="subject" class="message-details"></div>
+                                            <div class="line"></div>
+
+                                            <div id="body" class="message-body"></div>
+                                            <div class="line"></div>
+
+                                            <!--<div id="attachment" class="attachment">
+                                                 <span class="file-links">1 Attachment -
+                                                     <a href="http://akveo.com/blur-admin/">查看</a> |
+                                                     <a href="http://akveo.com/blur-admin/">下载</a></span>
+                                                <div>
+                                                    <i class="file-icon ion-document"></i>
+                                                    <span class="file-name">file.doc</span>
+                                                </div>
+                                            </div>-->
+                                            <div class="line"></div>
+                                            <div class="answer-container">
+                                                <button type="button" class="btn btn-with-icon">
+                                                    <i class="fa fa-mail-reply"></i>回复
+                                                </button>
+                                                <button type="button" class="btn btn-with-icon">
+                                                    <i class="fa fa-mail-forward"></i>转发
+                                                </button>
+                                                <button type="button" class="btn btn-with-icon"><i
+                                                        class="fa fa-print"></i>打印
+                                                </button>
+                                                <button type="button" class="btn btn-with-icon"><i
+                                                        class="fa fa-trash"></i>删除
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ui>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id=footerPlaceholder">
+                <div th:include="/common :: footer" id="copyright"></div>
+            </div>
+        </div>
+        <!-- /. PAGE INNER  -->
+    </div>
+    <!-- /. PAGE INNER  -->
+    <div id="writeMail" class="modal-dialog modal-compose" v-if="showWrite">
+        <div class="modal-content">
+            <div class="compose-header"><span>写新信息</span>
+                <span class="header-controls">
+                    <i id="close" class="fa fa-close"></i>
+                </span>
+            </div>
+            <div>
+                <select class="js-example-basic-multiple form-control compose-input col-xs-12 user" multiple="multiple">
+                </select>
+                <input class="form-control compose-input" placeholder="主题" v-model="subject">
+                <div class="compose-container">
+                    <textarea class=" form-control" style="height: 300px; background-color: white;"
+                              v-model="body"></textarea>
+                </div>
+            </div>
+            <div class="compose-footer clearfix">
+                <button v-on:click="send" type="button" class="btn btn-send col-xs-4">发送</button>
+                <button v-on:click="save" type="button" class="btn btn-send col-xs-4">保存为草稿</button>
+                <button v-on:click="quit" type="button" class="btn btn-send col-xs-4">取消</button>
+            </div>
+        </div>
+    </div>
+    <!-- /. PAGE WRAPPER  -->
+</div>
+<!--load_js(table,chart,select2)-->
+<div th:include="/common :: load_js(true , false, true)"></div>
+<script>
+    let messageVue = new Vue({
+        el: "#messagePage",
+        data: {
+            unread: 0,
+            important: 0,
+            saved: 0,
+            trashed: 0,
+            box: "inbox",
+            activeIndex: 0,
+            showWrite: false,
+            detail: false,
+            table: true
+        },
+        mounted: function () {
+            this.init();
+        },
+        methods: {
+            init: function () {
+                this.initImportant();
+                this.initUnread();
+                this.initDraft();
+                this.initTrash();
+            },
+            initImportant: function () {
+                axios.get('/message/count?status=unread&box=important').then(function (response) {
+                    this.important = response.data.data;
+                });
+            },
+
+            initUnread: function () {
+                axios.get('/message/count?status=unread&box=inbox').then(function (response) {
+                    this.unread = response.data.data;
+                });
+            },
+
+            initDraft: function () {
+                axios.get('/message/count?status=saved&box=draft').then(function (response) {
+                    this.saved = response.data.data;
+                });
+            },
+
+            initTrash: function () {
+                axios.get('/message/count?status=trashed&box=trash').then(function (response) {
+                    this.trashed = response.data.data;
+                });
+            },
+            inbox: function () {
+                this.box = "inbox";
+                this.activeIndex = 0;
+                messageTable.draw();
+            },
+            sent: function () {
+                this.box = "sent";
+                this.activeIndex = 1;
+                messageTable.draw();
+            },
+            draft: function () {
+                this.box = "draft";
+                this.activeIndex = 2;
+                messageTable.draw();
+            },
+            important: function () {
+                this.box = "important";
+                this.activeIndex = 3;
+                messageTable.draw();
+            },
+            write: function () {
+                this.showWrite = true;
+            },
+            back: function () {
+                this.detail = false;
+                this.table = true;
+            }
+        }
+    });
+
+    function markAsRead(id) {
+        let status = "read";
+        sendStatusUpdateAjax(id, status);
+    }
+
+    function markAsUnread(id) {
+        let status = "unread";
+        sendStatusUpdateAjax(id, status);
+    }
+
+    function sendStatusUpdateAjax(id, status) {
+        axios.put('/message/' + id + '/status?status=' + status).then(function (response) {
+            if (response.data.code === 2001) {
+                messageVue.init();
+                messageTable.draw();
+            }
+            else
+                Showbo.Msg.alert("消息更新失败!", function () {
+                });
+        });
+    }
+
+    function deleteMsg(id) {
+        Showbo.Msg.confirm("确认删除该用户？", function () {
+            if ($(".btnfocus").val() !== "取消") {
+                axios.delete('/message/' + id).then(function (response) {
+                    if (response.data.code === 2001) {
+                        messageVue.init();
+                        messageTable.draw();
+                    }
+                    else
+                        Showbo.Msg.alert("消息删除失败!", function () {
+                        });
+                });
+            }
+        });
+    }
+
+    function viewDraft(id) {
+        axios.get('/message/' + id).then(function (response) {
+            messageVue.$data.showWrite = true;
+            writeVue.$data.message = response.data.data;
+        });
+    }
+
+    function viewDetail(id) {
+        markAsRead(id);
+        axios.get('/message/' + id).then(function (response) {
+            if (response.data.code === 2001) {
+                let message = response.data.data;
+                messageVue.$data.detail = true;
+                messageVue.$data.table = false;
+                let senderInfo =
+                    '<img class="human-picture" src="' + message.pic + '">' +
+                    '   <div class="name"><h2 class="name-h ng-binding">发件人：' + message.sender + '</h2>' +
+                    '       <div>' +
+                    '           <span class="mail-tag tag label family">' + message.tag + '</span>' +
+                    '       </div>' +
+                    '   </div>';
+                $("#senderInfo").html(senderInfo);
+
+                let contactInfo =
+                    '<div class="contact-info phone-email">' +
+                    '    <div>' +
+                    '       <i class="fa fa-phone-square fa-2x"></i> ' +
+                    '       <span class="phone"> ' + message.tel + '</span>' +
+                    '    </div>' +
+                    '    <div>' +
+                    '       <i class="fa fa-envelope-square fa-2x"></i> ' +
+                    '       <span class="email"> ' + message.email + '</span>' +
+                    '    </div>' +
+                    '</div>';
+                $("#contactInfo").html(contactInfo);
+
+                let roleInfo =
+                    '<div class="contact-info position-address">' +
+                    '   <div>' +
+                    '       <i class="fa fa-user-circle fa-2x"></i>' +
+                    '       <span class="position">Technical Chef</span>' +
+                    '   </div>' +
+                    '   <div>' +
+                    '       <i class="fa fa-address-card fa-2x"></i>' +
+                    '       <span class="address">12 Nezavisimosti st. Vilnius, Lithuania</span>' +
+                    '   </div>' +
+                    '</div>';
+                $("#roleInfo").html(roleInfo);
+
+                let subject =
+                    '<span class="subject ng-binding">' + message.subject + '</span>' +
+                    '<span class="date ng-binding">• ' + message.date + ' </span>';
+                $("#subject").html(subject);
+
+                let body = '<p>' + message.body + '</p>';
+                $("#body").html(body);
+            }
+            else
+                Showbo.Msg.alert("消息获取失败", function () {
+                });
+
+        });
+    }
+
+    let writeVue = new Vue({
+        el: "#writeMail",
+        data: {
+            message: {
+                receiverId: "",
+                body: "",
+                subject: "",
+                title: "",
+                tag: "",
+                status: ""
+            },
+            receivers: "",
+            body: "",
+            subject: ""
+        },
+        methods: {
+            send: function () {
+                let receiverList = $(".user").val();
+                for (let i = 0; i < receiverList.length; i++)
+                    this.message.receiverId += receiverList[i] + "/";
+                this.status = "unread";
+                this.sendWrite();
+            },
+            save: function () {
+                let receiverList = $(".user").val();
+                for (let i = 0; i < receiverList.length; i++)
+                    this.message.receiverId += receiverList[i] + "/";
+                this.status = "saved";
+                this.sendWrite();
+            },
+            quit: function () {
+                $("#writeMail").modal('hide');
+                this.message = {
+                    receiverId: "",
+                    body: "",
+                    subject: "",
+                    title: "",
+                    tag: "",
+                    status: ""
+                }
+            },
+            sendWrite: function () {
+                axios.post('/message', this.message).then(function (response) {
+                    if (response.data.code === 2001) {
+                        messageTable.draw();
+                        this.quit();
+                    }
+                    else
+                        Showbo.Msg.alert("发送失败", function () {
+                        });
+                })
+            }
+        }
+    });
+
+    $(".user").select2({
+        ajax: {
+            url: basePath + "/user?status=1",
+            type: "GET",
+            delay: 250,
+            data: function (params) {
+                return {
+                    search: params.term, // search term 请求参数 ， 请求框中输入的参数
+                    page: params.page
+                };
+            },
+            processResults: function (data, params) {
+                //let data = [{ id: 0, text: 'enhancement' }, { id: 1, text: 'bug' }, { id: 2, text: 'duplicate' }, { id: 3, text: 'invalid' }, { id: 4, text: 'wontfix' }];
+                let itemList = [];
+                let item;
+                for (let i = 0; i < data.data.length; i++) {
+                    item = {
+                        id: data.data[i].userId,
+                        text: data.data[i].lastName + ", " + data.data[i].firstName
+                    };
+                    itemList.push(item);
+                }
+
+                return {
+                    results: itemList//itemList
+                };
+            },
+            cache: true
+        },
+        placeholder: "收件人",
+        language: "zh-CN",
+        tags: false,//允许手动添加
+        allowClear: true,//允许清空
+        escapeMarkup: function (markup) {
+            return markup;
+        }, // 自定义格式化防止xss注入
+        minimumInputLength: 1,//最少输入多少个字符后开始查询
+        templateResult: formatRepo,
+        templateSelection: formatRepoSelection
+    });
+
+    let messageTable = $("#messageTable").DataTable({
+
+        "language": {
+            "aria": {
+                "sortAscending": ": activate to sort column ascending",
+                "sortDescending": ": activate to sort column descending"
+            },
+            "emptyTable": "没有数据！",
+            "info": "显示 _START_ 至 _END_ 条 ，总共_TOTAL_ 条数据",
+            "infoEmpty": "没有发现记录！",
+            "infoFiltered": "(从_MAX_条记录中搜索)",
+            "lengthMenu": "显示: _MENU_",
+            "search": "搜索:",
+            "zeroRecords": "没有找到匹配的记录！",
+            "paginate": {
+                "previous": "上一页",
+                "next": "下一页",
+                "last": "尾页",
+                "first": "首页"
+            }
+        },
+        "pagingType": "full_numbers",
+        "lengthMenu": [
+            [5, 10, 25, 50],
+            [5, 10, 25, 50]
+        ],
+        processing: true,
+        serverSide: true,
+        searching: false,
+        lengthChange: false,
+        order: [[0, "desc"]],
+        ajax: {
+            url: basePath + "/message/list",
+            data: function (d) {
+                d.box = messageVue.$data.box;
+            }
+        },
+        columns: [
+            {
+                "data": null, "title": "选择", "createdCell": function (nTd) {
+                    let htmlStr =
+                        '<div class="check-td mail-checkbox">' +
+                        '     <label class="checkbox-inline custom-checkbox nowrap">' +
+                        '       <input type="checkbox">' +
+                        '       <span></span>' +
+                        '     </label>' +
+                        '</div>';
+                    $(nTd).html(htmlStr);
+                }
+            },
+            {
+                "data": null, "title": "发件人", "createdCell": function (nTd, rowData) {
+                    let htmlStr = '<div style="float: left">' +
+                        '<img style="border-radius: 23px; margin: 7px 0 7px 7px;" class="photo-td little-human little-human-picture" ' +
+                        '   src="' + rowData.pic + '">' +
+                        '</div>';
+                    htmlStr +=
+                        '<div class="name-container" style="margin-top: 5%;float: right">' +
+                        '   <div>' +
+                        '       <span class="name">' + rowData.sender + '</span>' +
+                        '   </div>' +
+                        '   <div>' +
+                        '       <span class="tag label label-primary friend">' + rowData.tag + '</span>' +
+                        '   </div>' +
+                        '</div>';
+                    $(nTd).html(htmlStr);
+                }, "width": "250px"
+            },
+            {"data": "subject", "title": "主题"},
+            {"data": "body", "title": "内容"},
+            {"data": "date", "title": "发送时间"},
+            {
+                "data": null, "title": "操作", "createdCell": function (nTd, rowData) {
+                    if (rowData.status.toLowerCase() === "unread") {
+                        $(nTd).html('' +
+                            '<button class="btn btn-primary btn-info" style="width: 50%" onclick="viewDetail(\'' + rowData.id + '\')">查看消息</button>' +
+                            '<button class="btn btn-primary btn-danger" style="width: 50%" onclick="markAsRead(\'' + rowData.id + '\')">标为已读</button>');
+                    }
+                    if (rowData.status.toLowerCase() === "read") {
+                        $(nTd).html('' +
+                            '<button class="btn btn-primary btn-info" style="width: 50%" onclick="viewDetail(\'' + rowData.id + '\')">查看消息</button>' +
+                            '<button class="btn btn-primary btn-edit" style="width: 50%" onclick="markAsUnread(\'' + rowData.id + '\')">标为未读</button>');
+                    }
+                    if (rowData.status.toLowerCase() === "saved") {
+                        $(nTd).html('' +
+                            '<button class="btn btn-primary btn-info" style="width: 50%" onclick="viewDraft(\'' + rowData.id + '\')">查看消息</button>');
+                    }
+                    if (rowData.status.toLowerCase() === "trashed") {
+                        $(nTd).html('' +
+                            '<button class="btn btn-primary btn-info" style="width: 50%" onclick="viewDetail(\'' + rowData.id + '\')">查看消息</button>' +
+                            '<button class="btn btn-primary btn-danger" style="width: 50%" onclick="deleteMsg(\'' + rowData.id + '\')">永久删除</button>');
+                    }
+                    if (rowData.status.toLowerCase() === "sent") {
+                        $(nTd).html('' +
+                            '<button class="btn btn-primary btn-info" style="width: 50%" onclick="viewDetail(\'' + rowData.id + '\')">查看消息</button>');
+                    }
+
+                }, "width": "300px"
+            }
+        ],
+        "columnDefs": [{
+            orderable: false
+        }, {
+            "defaultContent": "",
+            "targets": "_all"
+        }]
+    });
+</script>
+</body>
+</html>

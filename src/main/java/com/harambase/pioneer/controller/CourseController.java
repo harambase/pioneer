@@ -75,6 +75,7 @@ public class CourseController {
 
         if (StringUtils.isNotEmpty(mode) && mode.equals("faculty"))
             facultyId = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));
+        search.replace("'", "");
         ResultMap message = courseService.courseList(start * length - 1, length, search, order, orderCol, facultyId, info);
         message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         return new ResponseEntity<>(message, HttpStatus.OK);

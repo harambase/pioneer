@@ -75,16 +75,16 @@ public class MessageController {
 
     //@RequiresPermissions("user")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public ResponseEntity list(@RequestParam(value = "start") Integer start,
-                               @RequestParam(value = "length") Integer length,
-                               @RequestParam(value = "search[value]") String search,
-                               @RequestParam(value = "order[0][dir]") String order,
-                               @RequestParam(value = "order[0][column]") String orderCol,
+    public ResponseEntity list(@RequestParam(value = "start", required = false, defaultValue = "0") Integer start,
+                               @RequestParam(value = "length", required = false, defaultValue = "100") Integer length,
+                               @RequestParam(value = "search", required = false, defaultValue = "") String search,
+                               @RequestParam(value = "order", required = false, defaultValue = "desc") String order,
+                               @RequestParam(value = "orderCol", required = false, defaultValue = "id") String orderCol,
                                @RequestParam(value = "box") String box,
                                HttpServletRequest request) {
 
         String userId = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));
-        ResultMap message = messageService.list(start, length, search, order, orderCol, userId, box);
+        ResultMap message = messageService.list(start * length - 1, length, search, order, orderCol, userId, box);
         message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         return new ResponseEntity<>(message, HttpStatus.OK);
     }

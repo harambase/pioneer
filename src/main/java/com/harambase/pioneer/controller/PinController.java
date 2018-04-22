@@ -91,15 +91,14 @@ public class PinController {
 
     //    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
     @RequestMapping(produces = "application/json", method = RequestMethod.GET)
-    public ResponseEntity list(@RequestParam(value = "start") Integer start,
-                               @RequestParam(value = "length") Integer length,
-                               @RequestParam(value = "draw") Integer draw,
-                               @RequestParam(value = "search[value]") String search,
-                               @RequestParam(value = "order[0][dir]") String order,
-                               @RequestParam(value = "order[0][column]") String orderCol,
+    public ResponseEntity list(@RequestParam(value = "start", required = false, defaultValue = "0") Integer start,
+                               @RequestParam(value = "length", required = false, defaultValue = "100") Integer length,
+                               @RequestParam(value = "search", required = false, defaultValue = "") String search,
+                               @RequestParam(value = "order", required = false, defaultValue = "desc") String order,
+                               @RequestParam(value = "orderCol", required = false, defaultValue = "pin") String orderCol,
                                @RequestParam(value = "info", required = false) String info) {
 
-        ResultMap message = pinService.listByInfo(start, length, search, order, orderCol, info);
+        ResultMap message = pinService.listByInfo(start * length - 1, length, search, order, orderCol, info);
         message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
