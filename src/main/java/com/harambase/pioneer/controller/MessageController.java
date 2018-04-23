@@ -8,6 +8,7 @@ import com.harambase.pioneer.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +26,7 @@ public class MessageController {
         this.messageService = messageService;
     }
 
-    //@RequiresPermissions("user")
+    @PreAuthorize("hasRole('USER')")
     @RequestMapping(produces = "application/json", method = RequestMethod.POST)
     public ResponseEntity create(@RequestBody Message message, HttpServletRequest request) {
         message.setSenderId(TokenHelper.getUserIdFromToken(TokenHelper.getToken(request)));
@@ -33,14 +34,14 @@ public class MessageController {
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
-    //@RequiresPermissions("user")
+    @PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity delete(@PathVariable(value = "id") Integer id) {
         ResultMap ResultMap = messageService.delete(id);
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
-    //@RequiresPermissions("user")
+    @PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public ResponseEntity update(@PathVariable(value = "id") Integer id,
                                  @RequestBody Message message) {
@@ -48,7 +49,7 @@ public class MessageController {
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
-    //@RequiresPermissions("user")
+    @PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/{id}/status", method = RequestMethod.PUT)
     public ResponseEntity updateStatus(@PathVariable(value = "id") Integer id,
                                        @RequestParam(value = "status") String status) {
@@ -56,14 +57,14 @@ public class MessageController {
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
-    //@RequiresPermissions("user")
+    @PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity get(@RequestParam(value = "id") Integer id) {
+    public ResponseEntity get(@PathVariable(value = "id") Integer id) {
         ResultMap ResultMap = messageService.get(id);
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
-    //@RequiresPermissions("user")
+    @PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/count", method = RequestMethod.GET)
     public ResponseEntity count(@RequestParam(value = "status") String status,
                                 @RequestParam(value = "box") String box,
@@ -73,14 +74,14 @@ public class MessageController {
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
-    //@RequiresPermissions("user")
+    @PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ResponseEntity list(@RequestParam(value = "start", required = false, defaultValue = "0") Integer start,
                                @RequestParam(value = "length", required = false, defaultValue = "100") Integer length,
                                @RequestParam(value = "search", required = false, defaultValue = "") String search,
                                @RequestParam(value = "order", required = false, defaultValue = "desc") String order,
                                @RequestParam(value = "orderCol", required = false, defaultValue = "id") String orderCol,
-                               @RequestParam(value = "box") String box,
+                               @RequestParam(value = "box", required = false, defaultValue = "inbox") String box,
                                HttpServletRequest request) {
 
         String userId = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));

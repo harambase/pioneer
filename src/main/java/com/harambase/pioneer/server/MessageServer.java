@@ -36,36 +36,36 @@ public class MessageServer {
         return messageService.getMessageView(id);
     }
 
-    public ResultMap count(String status, String box, String userId) {
+    public ResultMap count(String userId, String box, String status) {
 
         String receiverId = null;
-        String senderid = null;
+        String senderId = null;
 
         if (box.contains("inbox") || box.contains("important"))
             receiverId = userId;
         if (box.contains("sent") || box.contains("draft"))
-            senderid = userId;
+            senderId = userId;
         if (box.contains("trash")) {
             receiverId = userId;
-            senderid = userId;
+            senderId = userId;
         }
 
-        return messageService.countMessageByStatus(receiverId, senderid, box.toLowerCase(), status.toLowerCase());
+        return messageService.countMessageByStatus(receiverId, senderId, box.toLowerCase(), status.toLowerCase());
     }
 
-    public ResultMap list(Integer start, Integer length, String search, String order, String orderCol, String box, String userId) {
+    public ResultMap list(Integer start, Integer length, String search, String order, String orderCol, String userId, String box) {
         String receiverId = null;
-        String senderid = null;
+        String senderId = null;
 
         if (box.contains("inbox") || box.contains("important"))
             receiverId = userId;
         if (box.contains("sent") || box.contains("draft"))
-            senderid = userId;
+            senderId = userId;
         if (box.contains("trash")) {
             receiverId = userId;
-            senderid = userId;
+            senderId = userId;
         }
-        return messageService.list(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderCol, receiverId, senderid, box);
+        return messageService.list(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderCol, receiverId, senderId, box);
     }
 
 }
