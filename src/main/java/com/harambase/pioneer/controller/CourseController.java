@@ -20,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.LinkedHashMap;
 
 @RestController
 @CrossOrigin
@@ -33,28 +32,28 @@ public class CourseController {
         this.courseService = courseService;
     }
 
-    //    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
+    @PreAuthorize("hasAnyRole('TEACH','ADMIN')")
     @RequestMapping(produces = "application/json", method = RequestMethod.POST)
     public ResponseEntity create(@RequestBody Course course) {
         ResultMap ResultMap = courseService.create(course);
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
-    //    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
+    @PreAuthorize("hasAnyRole('TEACH','ADMIN')")
     @RequestMapping(value = "/{crn}", method = RequestMethod.DELETE)
     public ResponseEntity delete(@PathVariable(value = "crn") String crn) {
         ResultMap ResultMap = courseService.delete(crn);
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
-    //    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
+    @PreAuthorize("hasAnyRole('TEACH','ADMIN')")
     @RequestMapping(value = "/{crn}", produces = "application/json", method = RequestMethod.PUT)
     public ResponseEntity update(@PathVariable String crn, @RequestBody Course course) {
         ResultMap ResultMap = courseService.update(crn, course);
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
-    //    @RequiresPermissions("user")
+    @PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/{crn}", method = RequestMethod.GET)
     public ResponseEntity get(@PathVariable("crn") String crn) {
         ResultMap ResultMap = courseService.getCourseByCrn(crn);
@@ -81,7 +80,7 @@ public class CourseController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    //    @RequiresPermissions(value = {"admin", "teach", "student"}, logical = Logical.OR)
+    @PreAuthorize("hasAnyRole('TEACH','ADMIN','STUDENT')")
     @RequestMapping(value = "/student/{crn}", method = RequestMethod.GET)
     public ResponseEntity studentList(@PathVariable String crn,
                                       @RequestParam(required = false, defaultValue = "") String search) {
@@ -89,7 +88,7 @@ public class CourseController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    //    @RequiresPermissions("user")
+    @PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/zTree/list", method = RequestMethod.GET)
     public ResponseEntity zTreeList(@RequestParam(value = "mode", required = false) String mode,
                                     @RequestParam(value = "info", required = false) String info,
@@ -103,7 +102,7 @@ public class CourseController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    //    @RequiresPermissions("user")
+    @PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public ResponseEntity search(@RequestParam(required = false, defaultValue = "") String search,
                                  @RequestParam(required = false, defaultValue = "") String status) {
@@ -111,14 +110,14 @@ public class CourseController {
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
-    //    @RequiresPermissions("user")
+    @PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/{crn}/precourse", method = RequestMethod.GET)
     public ResponseEntity preCourseList(@PathVariable("crn") String crn) {
         ResultMap ResultMap = courseService.preCourseList(crn);
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
-    //    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
+    @PreAuthorize("hasAnyRole('TEACH','ADMIN')")
     @RequestMapping(value = "/{crn}/student/{userId}", method = RequestMethod.DELETE)
     public ResponseEntity removeStuFromCourse(@PathVariable(value = "crn") String crn,
                                               @PathVariable(value = "userId") String studentId) {
@@ -126,7 +125,7 @@ public class CourseController {
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
-    //    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
+    @PreAuthorize("hasAnyRole('TEACH','ADMIN')")
     @RequestMapping(value = "/{crn}/student/{userId}", method = RequestMethod.PUT)
     public ResponseEntity addStudent2Course(@PathVariable(value = "crn") String crn,
                                             @PathVariable(value = "userId") String studentId,
@@ -135,7 +134,7 @@ public class CourseController {
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
-    //    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
+    @PreAuthorize("hasAnyRole('TEACH','ADMIN')")
     @RequestMapping(value = "/{crn}/faculty/{userId}", produces = "application/json", method = RequestMethod.PUT)
     public ResponseEntity assignFac2Course(@PathVariable(value = "crn") String crn,
                                            @PathVariable(value = "userId") String facultyId) {
@@ -143,28 +142,28 @@ public class CourseController {
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
-    //    @RequiresPermissions(value = {"admin", "student"}, logical = Logical.OR)
+    @PreAuthorize("hasAnyRole('STUDENT','ADMIN')")
     @RequestMapping(value = "/choose", method = RequestMethod.POST)
     public ResponseEntity courseChoice(@RequestBody JSONObject choiceList, HttpServletRequest request) {
         ResultMap message = courseService.reg2Course(TokenHelper.getUserIdFromToken(TokenHelper.getToken(request)), choiceList);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    //    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
+    @PreAuthorize("hasAnyRole('TEACH','ADMIN','FACULTY')")
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     public ResponseEntity courseInfoList(@RequestParam(required = false, defaultValue = "") String search) {
         ResultMap message = courseService.courseInfoList(search);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    //    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
+    @PreAuthorize("hasAnyRole('TEACH','ADMIN','FACULTY')")
     @RequestMapping(value = "/info/{crn}", method = RequestMethod.PUT)
     public ResponseEntity uploadInfo(@RequestParam MultipartFile file, @PathVariable String crn) {
         ResultMap message = courseService.uploadInfo(crn, file);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    //    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
+    @PreAuthorize("hasAnyRole('TEACH','ADMIN','FACULTY')")
     @RequestMapping(value = "/info/{crn}", method = RequestMethod.GET)
     public void downloadCourseInfo(@PathVariable String crn, @RequestParam String token, HttpServletResponse response) {
         if (StringUtils.isNotEmpty(token)) {
@@ -181,28 +180,28 @@ public class CourseController {
         }
     }
 
-    //    @RequiresPermissions(value = {"admin", "teach", "faculty", "student"}, logical = Logical.OR)
+    @PreAuthorize("hasAnyRole('TEACH','ADMIN','FACULTY','STUDENT')")
     @RequestMapping(value = "/assignment/{crn}", method = RequestMethod.GET)
     public ResponseEntity getAssignmentList(@PathVariable String crn) {
         ResultMap message = courseService.getAssignmentList(crn);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    //    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
+    @PreAuthorize("hasAnyRole('TEACH','ADMIN','FACULTY')")
     @RequestMapping(value = "/assignment/{crn}", method = RequestMethod.PUT)
     public ResponseEntity updateAssignment(@PathVariable String crn, @RequestParam JSONArray assignment) {
         ResultMap message = courseService.updateAssignment(crn, assignment);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    //    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
+    @PreAuthorize("hasAnyRole('TEACH','ADMIN','FACULTY')")
     @RequestMapping(value = "/assignment/attachment/{crn}", method = RequestMethod.PUT)
     public ResponseEntity uploadAssignmentAttachment(@PathVariable String crn, @RequestParam MultipartFile multipartFile) {
         ResultMap message = courseService.uploadAssignmentAttachment(crn, multipartFile);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    //    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
+    @PreAuthorize("hasAnyRole('TEACH','ADMIN','FACULTY')")
     @RequestMapping(value = "/assignment/student/attachment/{crn}", method = RequestMethod.PUT)
     public ResponseEntity submitAssignment(@PathVariable String crn,
                                            @RequestParam String assignmentName,

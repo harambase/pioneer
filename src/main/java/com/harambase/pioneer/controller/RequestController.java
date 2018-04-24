@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,14 +34,14 @@ public class RequestController {
         this.requestService = requestService;
     }
 
-    //    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
+    @PreAuthorize("hasAnyRole('ADMIN', 'SYSTEM')")
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
     public ResponseEntity getUserRequest(@PathVariable Integer id) {
         ResultMap message = requestService.getTempUser(id);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    //    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
+    @PreAuthorize("hasAnyRole('ADMIN', 'SYSTEM')")
     @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT)
     public ResponseEntity updateUserRequest(@PathVariable Integer id, @RequestBody TempUser tempUser, HttpServletRequest request) {
         tempUser.setOperatorId(TokenHelper.getUserIdFromToken(TokenHelper.getToken(request)));
@@ -48,20 +49,21 @@ public class RequestController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'SYSTEM')")
     @RequestMapping(value = "/user/register", method = RequestMethod.POST)
     public ResponseEntity registerNewUser(@RequestBody JSONObject jsonObject) {
         ResultMap ResultMap = requestService.registerNewUser(jsonObject);
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
-    //    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
+    @PreAuthorize("hasAnyRole('ADMIN', 'SYSTEM')")
     @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
     public ResponseEntity deleteTempUser(@PathVariable Integer id) {
         ResultMap ResultMap = requestService.deleteTempUser(id);
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
-    //    @RequiresPermissions(value = {"admin", "system"}, logical = Logical.OR)
+    @PreAuthorize("hasAnyRole('ADMIN', 'SYSTEM')")
     @RequestMapping(value = "/user", produces = "application/json", method = RequestMethod.GET)
     public ResponseEntity userList(@RequestParam(value = "start", required = false, defaultValue = "0") Integer start,
                                    @RequestParam(value = "length", required = false, defaultValue = "100") Integer length,
@@ -75,6 +77,7 @@ public class RequestController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'SYSTEM')")
     @RequestMapping(value = "/user/profile/{id}", method = RequestMethod.PUT)
     public ResponseEntity uploadProfile(@RequestParam(value = "file", required = false) MultipartFile file,
                                         @PathVariable Integer id) {
@@ -82,6 +85,7 @@ public class RequestController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'SYSTEM')")
     @RequestMapping(value = "/user/info/{id}", method = RequestMethod.PUT)
     public ResponseEntity uploadInfo(@RequestParam(value = "file", required = false) MultipartFile file,
                                      @PathVariable Integer id) {
