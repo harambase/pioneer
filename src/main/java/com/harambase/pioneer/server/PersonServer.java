@@ -36,8 +36,8 @@ public class PersonServer {
         return personService.login(person);
     }
 
-    public ResultMap search(String search, String type, String status) {
-        return personService.listUsers(search, type, status);
+    public ResultMap search(String search, String type, String status, String role) {
+        return personService .listUsers(search, type, status, role ,"");
     }
 
     public ResultMap list(Integer start, Integer length, String search,

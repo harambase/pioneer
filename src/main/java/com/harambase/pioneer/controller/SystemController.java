@@ -137,18 +137,9 @@ public class SystemController {
 
     @RequestMapping(value = "/logout")
     public void logout(HttpServletRequest request, HttpServletResponse response) throws Exception {
-//        SecurityUtils.getSubject().logout();
         String authToken = TokenHelper.getToken(request);
-
         response.sendRedirect("/login");
     }
-
-//    @RequestMapping(value = "/swagger")
-//    @PreAuthorize("hasRole('ADMIN')")
-//    public void swagger(HttpServletResponse response) throws Exception {
-//        response.setHeader("userId", SessionUtil.getUserId());
-//        response.sendRedirect("http://localhost:8080/?userId=" + SessionUtil.getUserId());
-//    }
 
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     @PreAuthorize("hasAnyRole('SYSTEM','ADMIN')")

@@ -49,7 +49,6 @@ public class RequestController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'SYSTEM')")
     @RequestMapping(value = "/user/register", method = RequestMethod.POST)
     public ResponseEntity registerNewUser(@RequestBody JSONObject jsonObject) {
         ResultMap ResultMap = requestService.registerNewUser(jsonObject);

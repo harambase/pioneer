@@ -1,6 +1,7 @@
 package com.harambase.pioneer.server;
 
 import com.harambase.pioneer.common.ResultMap;
+import com.harambase.pioneer.helper.MessageSender;
 import com.harambase.pioneer.server.service.PinService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -9,10 +10,12 @@ import org.springframework.stereotype.Component;
 public class PinServer {
 
     private final PinService pinService;
+    private final MessageSender messageSender;
 
     @Autowired
-    public PinServer(PinService pinService) {
+    public PinServer(PinService pinService, MessageSender messageSender) {
         this.pinService = pinService;
+        this.messageSender = messageSender;
     }
 
     public ResultMap createAll(String startTime, String endTime, int role, String info, String remark) {
@@ -40,11 +43,11 @@ public class PinServer {
     }
 
     public ResultMap sendFacultyPin(String info, String senderId) {
-        return pinService.sendFacultyPin(info, senderId);
+        return messageSender.sendFacultyPin(info, senderId);
     }
 
     public ResultMap sendAdvisorPin(String info, String senderId) {
-        return pinService.sendAdvisorPin(info, senderId);
+        return messageSender.sendAdvisorPin(info, senderId);
     }
 
     public ResultMap getAllInfo() {

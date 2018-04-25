@@ -73,7 +73,6 @@ public class RequestServer {
     public ResultMap register(JSONObject jsonObject) {
         ResultMap resultMap = tempUserService.register(jsonObject);
         if(resultMap.getCode() == SystemConst.SUCCESS.getCode()){
-            //向所有系统和管理员发送
             messageSender.sendToAllSystem((TempUser) resultMap.getData());
         }
         return resultMap;

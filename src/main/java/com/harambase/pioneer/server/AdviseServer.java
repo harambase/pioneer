@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class AdviseServer {
 
-    private AdviseService adviseService;
+    private final AdviseService adviseService;
 
     @Autowired
     public AdviseServer(AdviseService adviseService) {

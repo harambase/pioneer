@@ -78,8 +78,9 @@ public class PersonController {
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public ResponseEntity search(@RequestParam(value = "search", required = false) String search,
                                  @RequestParam(value = "type", required = false) String type,
+                                 @RequestParam(value = "role", required = false) String role,
                                  @RequestParam(value = "status", required = false) String status) {
-        ResultMap message = personService.search(search, type, status);
+        ResultMap message = personService.search(search, type, status, role);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 

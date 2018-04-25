@@ -94,9 +94,9 @@ public class PersonService {
     }
 
     
-    public ResultMap search(String search, String type, String status) {
+    public ResultMap search(String search, String type, String status, String role) {
         try {
-            return personServer.search(search, type, status);
+            return personServer.search(search, type, status, role);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
