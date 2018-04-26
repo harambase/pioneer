@@ -155,7 +155,7 @@ public class MessageSender {
         Message message = new Message();
         message.setDate(DateUtil.DateToStr(new Date()));
         message.setStatus(Status.UNREAD);
-        message.setTitle("成绩录入的识别码（PIN）");
+        message.setTitle("成绩录入的识别码(PIN)的信息");
         message.setSubject("成绩录入");
         message.setSenderId(senderId);
         message.setAttachment(null);
@@ -177,7 +177,7 @@ public class MessageSender {
         Message message = new Message();
         message.setDate(DateUtil.DateToStr(new Date()));
         message.setStatus(Status.UNREAD);
-        message.setTitle("辅导学生选课识别码的信息");
+        message.setTitle("辅导学生选课识别码(PIN)的信息");
         message.setSubject("选课识别码");
         message.setSenderId(senderId);
         message.setAttachment(null);
@@ -190,7 +190,7 @@ public class MessageSender {
         String studentName = student.getLastName() + ", " + student.getFirstName();
 
         String body = "您的辅导学生" + studentName + "用于选课的PIN是：" + pin.getPin() + "，有效期为："
-                + pin.getStartTime() + "至" + pin.getEndTime() + "请及时告知，谢谢！";
+                + pin.getStartTime() + "至" + pin.getEndTime() + "。请及时告知，谢谢！";
         message.setReceiverId(facultyId);
         message.setBody(body);
         Message newMessage = (Message) messageService.createMessage(message).getData();

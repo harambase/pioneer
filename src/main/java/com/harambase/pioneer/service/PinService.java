@@ -133,4 +133,13 @@ public class PinService{
             return ReturnMsgUtil.systemError();
         }
     }
+
+    public ResultMap updateOne(Integer pinNum, Pin pin) {
+        try {
+            return pinServer.updateOne(pinNum, pin);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
+    }
 }

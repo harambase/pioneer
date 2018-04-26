@@ -58,4 +58,8 @@ public class PinServer {
     public ResultMap resend(Pin pin, String userId) {
         return messageSender.resendPin(pin, userId);
     }
+
+    public ResultMap updateOne(Integer pinNum, Pin pin) {
+        return pinService.updateOne(pinNum, pin);
+    }
 }

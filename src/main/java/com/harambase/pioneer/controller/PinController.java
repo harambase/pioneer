@@ -62,7 +62,7 @@ public class PinController {
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
-    //    @RequiresPermissions("user")
+    @PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/{pin}", method = RequestMethod.GET)
     public ResponseEntity validate(@PathVariable(value = "pin") Integer pin, HttpServletRequest request) {
         ResultMap ResultMap = pinService.validate(pin, TokenHelper.getUserIdFromToken(TokenHelper.getToken(request)));
@@ -111,5 +111,11 @@ public class PinController {
         message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
-    //todo:updatePerson
+
+    @PreAuthorize("hasAnyRole('TEACH','ADMIN')")
+    @RequestMapping(value = "/{pinNum}", method = RequestMethod.PUT)
+    public ResponseEntity updateOne(@PathVariable Integer pinNum, @RequestBody Pin pin){
+        ResultMap resultMap = pinService.updateOne(pinNum, pin);
+        return new ResponseEntity<>(resultMap, HttpStatus.OK);
+    }
 }
