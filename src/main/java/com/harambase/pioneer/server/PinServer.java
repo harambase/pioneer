@@ -23,7 +23,7 @@ public class PinServer {
         return pinService.generateAll(startTime, endTime, role, info, remark);
     }
 
-    public ResultMap createOne(String startTime, String endTime, int role, String info, String remark, String userId) {
+    public ResultMap createOne(String startTime, String endTime, String role, String info, String remark, String userId) {
         return pinService.generateOne(startTime, endTime, role, info, remark, userId);
     }
 

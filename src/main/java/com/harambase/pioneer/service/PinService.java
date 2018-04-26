@@ -46,7 +46,7 @@ public class PinService{
     }
 
     
-    public ResultMap generateOne(String startTime, String endTime, int role, String info, String remark, String userId) {
+    public ResultMap generateOne(String startTime, String endTime, String role, String info, String remark, String userId) {
         try {
             return pinServer.createOne(startTime, endTime, role, info, remark, userId);
         } catch (Exception e) {

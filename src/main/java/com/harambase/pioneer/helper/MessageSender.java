@@ -169,7 +169,7 @@ public class MessageSender {
         message.setBody(body);
         Message newMessage = (Message) messageService.createMessage(message).getData();
 
-        return newMessage == null ? ReturnMsgUtil.success(null) : ReturnMsgUtil.fail();
+        return newMessage != null ? ReturnMsgUtil.success(null) : ReturnMsgUtil.fail();
     }
 
     private ResultMap sendAdvisorPin(Pin pin, String senderId) {
@@ -195,7 +195,7 @@ public class MessageSender {
         message.setBody(body);
         Message newMessage = (Message) messageService.createMessage(message).getData();
 
-        return newMessage == null ? ReturnMsgUtil.success(null) : ReturnMsgUtil.fail();
+        return newMessage != null ? ReturnMsgUtil.success(null) : ReturnMsgUtil.fail();
 
     }
 

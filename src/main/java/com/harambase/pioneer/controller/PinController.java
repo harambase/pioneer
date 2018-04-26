@@ -40,7 +40,7 @@ public class PinController {
     @RequestMapping(value = "/{userId}", method = RequestMethod.POST)
     public ResponseEntity createOne(@RequestParam(value = "startTime") String startTime,
                                     @RequestParam(value = "endTime") String endTime,
-                                    @RequestParam(value = "role") int role,
+                                    @RequestParam(value = "role") String role,
                                     @RequestParam(value = "info") String info,
                                     @RequestParam(value = "remark") String remark,
                                     @PathVariable(value = "userId") String userId) {
