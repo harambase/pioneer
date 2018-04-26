@@ -2,6 +2,7 @@ package com.harambase.pioneer.server;
 
 import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.helper.MessageSender;
+import com.harambase.pioneer.server.pojo.base.Pin;
 import com.harambase.pioneer.server.service.PinService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -43,14 +44,18 @@ public class PinServer {
     }
 
     public ResultMap sendFacultyPin(String info, String senderId) {
-        return messageSender.sendFacultyPin(info, senderId);
+        return messageSender.sendFacultyPinByInfo(info, senderId);
     }
 
     public ResultMap sendAdvisorPin(String info, String senderId) {
-        return messageSender.sendAdvisorPin(info, senderId);
+        return messageSender.sendAdvisorPinByInfo(info, senderId);
     }
 
     public ResultMap getAllInfo() {
         return pinService.getAllInfo();
+    }
+
+    public ResultMap resend(Pin pin, String userId) {
+        return messageSender.resendPin(pin, userId);
     }
 }

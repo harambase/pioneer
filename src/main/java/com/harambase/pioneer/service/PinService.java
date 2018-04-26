@@ -4,6 +4,7 @@ import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.common.constant.SystemConst;
 import com.harambase.pioneer.server.PinServer;
 import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
+import com.harambase.pioneer.server.pojo.base.Pin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,6 +119,15 @@ public class PinService{
     public ResultMap sendAdvisorPin(String info, String senderId) {
         try {
             return pinServer.sendAdvisorPin(info, senderId);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
+    }
+
+    public ResultMap resend(Pin pin, String userId) {
+        try {
+            return pinServer.resend(pin, userId);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();

@@ -88,31 +88,14 @@ public class MessageSender {
 
     }
 
-    public ResultMap sendFacultyPin(String info, String senderId) {
+    public ResultMap sendFacultyPinByInfo(String info, String senderId) {
         try {
             List<Pin> pinInfoList = (List<Pin>) pinService.listByInfo("0", String.valueOf(Integer.MAX_VALUE), "", "desc", "pin", info).getData();
-
-            String date = DateUtil.DateToStr(new Date());
 
             for (Pin pin : pinInfoList) {
                 if (pin.getRole() == 2) {
-                    Message message = new Message();
-                    message.setDate(date);
-                    message.setStatus(Status.UNREAD);
-                    message.setTitle("成绩录入的识别码（PIN）");
-                    message.setSubject("成绩录入");
-                    message.setSenderId(senderId);
-                    message.setAttachment(null);
-                    message.setLabels(Labels.URGENT);
-                    message.setTag(Tags.TEACH);
-
-                    String facultyId = pin.getFacultyId();
-                    String body = "您收到一条来自教务的信息：您用于本学期成绩录入的识别码（PIN）为：" + pin.getPin() + "，有效期为："
-                            + pin.getStartTime() + "至" + pin.getEndTime() + ", 如有问题请与教务人员联系！";
-                    message.setReceiverId(facultyId);
-                    message.setBody(body);
-                    Message newMessage = (Message) messageService.createMessage(message).getData();
-                    if (newMessage == null)
+                    ResultMap resultMap = sendFacultyPin(pin, senderId);
+                    if (resultMap.getCode() != 2001)
                         throw new RuntimeException("信息插入失败!");
                 }
             }
@@ -125,36 +108,14 @@ public class MessageSender {
         }
     }
 
-    public ResultMap sendAdvisorPin(String info, String senderId) {
+    public ResultMap sendAdvisorPinByInfo(String info, String senderId) {
         try {
             List<Pin> pinInfoList = (List<Pin>) pinService.listByInfo("0", String.valueOf(Integer.MAX_VALUE), "", "desc", "pin", info).getData();
 
-            String date = DateUtil.DateToStr(new Date());
-
             for (Pin pin : pinInfoList) {
                 if (pin.getRole() == 1) {
-
-                    Message message = new Message();
-                    message.setDate(date);
-                    message.setStatus(Status.UNREAD);
-                    message.setTitle("辅导学生选课识别码的信息");
-                    message.setSubject("选课识别码");
-                    message.setSenderId(senderId);
-                    message.setAttachment(null);
-                    message.setLabels(Labels.URGENT);
-                    message.setTag(Tags.TEACH);
-
-                    String studentId = pin.getStudentId();
-                    String facultyId = ((Advise) adviseService.getAdviseByStudentId(studentId).getData()).getFacultyId();
-                    Person student = (Person) personService.getUser(studentId).getData();
-                    String studentName = student.getLastName() + ", " + student.getFirstName();
-
-                    String body = "您的辅导学生" + studentName + "用于选课的PIN是：" + pin.getPin() + "，有效期为："
-                            + pin.getStartTime() + "至" + pin.getEndTime() + "请及时告知，谢谢！";
-                    message.setReceiverId(facultyId);
-                    message.setBody(body);
-                    Message newMessage = (Message) messageService.createMessage(message).getData();
-                    if (newMessage == null)
+                    ResultMap resultMap = sendAdvisorPin(pin, senderId);
+                    if (resultMap.getCode() != 2001)
                         throw new RuntimeException("信息插入失败!");
                 }
             }
@@ -167,4 +128,76 @@ public class MessageSender {
         }
 
     }
+
+    public ResultMap resendPin(Pin pin, String senderId) {
+        ResultMap resultMap = new ResultMap();
+        try {
+            switch (pin.getRole()) {
+                case 1:
+                    resultMap = sendAdvisorPin(pin, senderId);
+                    break;
+                case 2:
+                    resultMap = sendFacultyPin(pin, senderId);
+                    break;
+                default:
+                    throw new RuntimeException("识别码信息错误!");
+            }
+
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
+        return resultMap.getCode() != 2001 ? ReturnMsgUtil.success(null) : ReturnMsgUtil.fail();
+    }
+
+    private ResultMap sendFacultyPin(Pin pin, String senderId) {
+
+        Message message = new Message();
+        message.setDate(DateUtil.DateToStr(new Date()));
+        message.setStatus(Status.UNREAD);
+        message.setTitle("成绩录入的识别码（PIN）");
+        message.setSubject("成绩录入");
+        message.setSenderId(senderId);
+        message.setAttachment(null);
+        message.setLabels(Labels.URGENT);
+        message.setTag(Tags.TEACH);
+
+        String facultyId = pin.getFacultyId();
+        String body = "您收到一条来自教务的信息：您用于本学期成绩录入的识别码（PIN）为：" + pin.getPin() + "，有效期为："
+                + pin.getStartTime() + "至" + pin.getEndTime() + ", 如有问题请与教务人员联系！";
+        message.setReceiverId(facultyId);
+        message.setBody(body);
+        Message newMessage = (Message) messageService.createMessage(message).getData();
+
+        return newMessage == null ? ReturnMsgUtil.success(null) : ReturnMsgUtil.fail();
+    }
+
+    private ResultMap sendAdvisorPin(Pin pin, String senderId) {
+
+        Message message = new Message();
+        message.setDate(DateUtil.DateToStr(new Date()));
+        message.setStatus(Status.UNREAD);
+        message.setTitle("辅导学生选课识别码的信息");
+        message.setSubject("选课识别码");
+        message.setSenderId(senderId);
+        message.setAttachment(null);
+        message.setLabels(Labels.URGENT);
+        message.setTag(Tags.TEACH);
+
+        String studentId = pin.getStudentId();
+        String facultyId = ((Advise) adviseService.getAdviseByStudentId(studentId).getData()).getFacultyId();
+        Person student = (Person) personService.getUser(studentId).getData();
+        String studentName = student.getLastName() + ", " + student.getFirstName();
+
+        String body = "您的辅导学生" + studentName + "用于选课的PIN是：" + pin.getPin() + "，有效期为："
+                + pin.getStartTime() + "至" + pin.getEndTime() + "请及时告知，谢谢！";
+        message.setReceiverId(facultyId);
+        message.setBody(body);
+        Message newMessage = (Message) messageService.createMessage(message).getData();
+
+        return newMessage == null ? ReturnMsgUtil.success(null) : ReturnMsgUtil.fail();
+
+    }
+
+
 }
