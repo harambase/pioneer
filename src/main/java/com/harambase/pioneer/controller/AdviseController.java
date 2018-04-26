@@ -8,10 +8,10 @@ import com.harambase.pioneer.service.AdviseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.LinkedHashMap;
 
 @RestController
 @CrossOrigin
@@ -25,21 +25,21 @@ public class AdviseController {
         this.adviseService = adviseService;
     }
 
-    //    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
+    @PreAuthorize("hasAnyRole('TEACH','ADMIN')")
     @RequestMapping(produces = "application/json", method = RequestMethod.POST)
     public ResponseEntity create(@RequestBody Advise advise, @RequestHeader String token) {
         ResultMap message = adviseService.assignMentor(advise);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    //    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
+    @PreAuthorize("hasAnyRole('TEACH','ADMIN')")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity delete(@PathVariable(value = "id") Integer id) {
         ResultMap message = adviseService.removeMentor(id);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    //    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
+    @PreAuthorize("hasAnyRole('TEACH','ADMIN')")
     @RequestMapping(value = "/{id}", produces = "application/json", method = RequestMethod.PUT)
     public ResponseEntity update(@PathVariable Integer id,
                                  @RequestParam(value = "studentId") String studentId,
@@ -48,28 +48,28 @@ public class AdviseController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    //    @RequiresPermissions(value = {"admin", "teach", "student", "faculty"}, logical = Logical.OR)
+    @PreAuthorize("hasAnyRole('TEACH','ADMIN','STUDENT','ADVISOR')")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity get(@RequestParam(value = "id") Integer id) {
         ResultMap message = adviseService.getMentor(id);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    //    @RequiresPermissions(value = {"admin", "teach", "student", "faculty"}, logical = Logical.OR)
-    @RequestMapping(value = "/list", produces = "application/json", method = RequestMethod.GET)
-    public ResponseEntity list(@RequestParam(value = "start") Integer start,
-                               @RequestParam(value = "length") Integer length,
-                               @RequestParam(value = "search[value]") String search,
-                               @RequestParam(value = "order[0][dir]") String order,
-                               @RequestParam(value = "order[0][column]") String orderCol,
-                               @RequestParam(value = "studentid", required = false) String studentid,
-                               @RequestParam(value = "facultyid", required = false) String facultyid,
+    @PreAuthorize("hasAnyRole('TEACH','ADMIN','STUDENT','ADVISOR')")
+    @RequestMapping(produces = "application/json", method = RequestMethod.GET)
+    public ResponseEntity list(@RequestParam(value = "start", required = false, defaultValue = "0") Integer start,
+                               @RequestParam(value = "length", required = false, defaultValue = "100") Integer length,
+                               @RequestParam(value = "search", required = false, defaultValue = "") String search,
+                               @RequestParam(value = "order", required = false, defaultValue = "desc") String order,
+                               @RequestParam(value = "orderCol", required = false, defaultValue = "id") String orderCol,
+                               @RequestParam(value = "studentId", required = false) String studentId,
+                               @RequestParam(value = "facultyId", required = false) String facultyId,
                                @RequestParam(value = "mode", required = false) String mode,
                                HttpServletRequest request) {
 
         if (mode != null && mode.equals("faculty"))
-            facultyid = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));
-        ResultMap message = adviseService.advisingList(start, length, search, order, orderCol, studentid, facultyid);
+            facultyId = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));
+        ResultMap message = adviseService.advisingList(start * length - 1, length, search, order, orderCol, studentId, facultyId);
         message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
