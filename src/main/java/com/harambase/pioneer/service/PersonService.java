@@ -84,9 +84,9 @@ public class PersonService {
 
     
     public ResultMap list(int start, int length, String search, String order, String orderColumn,
-                             String type, String status) {
+                             String type, String status, String role) {
         try {
-            return personServer.list(start, length, search, order, orderColumn, type, status);
+            return personServer.list(start, length, search, order, orderColumn, type, status, role);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();

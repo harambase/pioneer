@@ -137,4 +137,8 @@ public class AdviseService {
         restMessage.setData(info + "导师表.csv");
         return restMessage;
     }
+
+    public ResultMap advisorList(int start, int length, String search, String order, String orderColumn, String status) {
+        return adviseServer.advisorList(start, length, search, order, orderColumn, status);
+    }
 }

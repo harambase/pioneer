@@ -74,7 +74,7 @@ public class PersonController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('SYSTEM','ADMIN')")
+    @PreAuthorize("hasAnyRole('SYSTEM','ADMIN', 'FACULTY', 'STUDENT')")
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public ResponseEntity search(@RequestParam(value = "search", required = false) String search,
                                  @RequestParam(value = "type", required = false) String type,
@@ -92,8 +92,9 @@ public class PersonController {
                                @RequestParam(value = "order", required = false, defaultValue = "desc") String order,
                                @RequestParam(value = "orderCol", required = false, defaultValue = "user_id") String orderCol,
                                @RequestParam(value = "type", required = false) String type,
+                               @RequestParam(value = "role", required = false) String role,
                                @RequestParam(value = "status", required = false) String status) {
-        ResultMap message = personService.list(start * length - 1, length, search, order, orderCol, type, status);
+        ResultMap message = personService.list(start * length - 1, length, search, order, orderCol, type, status, role);
         message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         return new ResponseEntity<>(message, HttpStatus.OK);
     }

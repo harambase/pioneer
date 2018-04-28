@@ -41,8 +41,8 @@ public class PersonServer {
     }
 
     public ResultMap list(Integer start, Integer length, String search,
-                             String order, String orderCol, String type, String status) {
-        return personService.userList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderCol, type, status);
+                             String order, String orderCol, String type, String status, String role) {
+        return personService.userList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderCol, type, status, role);
     }
 
 }

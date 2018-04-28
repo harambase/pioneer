@@ -36,4 +36,7 @@ public class AdviseServer {
         return adviseService.advisingList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderCol, studentId, facultyId, info);
     }
 
+    public ResultMap advisorList(int start, int length, String search, String order, String orderColumn, String status) {
+        return adviseService.advisorList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderColumn, status);
+    }
 }

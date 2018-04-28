@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 
 @RestController
 @CrossOrigin
@@ -69,9 +70,32 @@ public class AdviseController {
                                @RequestParam(value = "mode", required = false) String mode,
                                HttpServletRequest request) {
 
+        ResultMap message = new ResultMap();
+
         if (mode != null && mode.equals("faculty"))
             facultyId = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));
-        ResultMap message = adviseService.advisingList(start * length - 1, length, search, order, orderCol, studentId, facultyId, info);
+
+        if (StringUtils.isNotEmpty(studentId) || StringUtils.isNotEmpty(facultyId) || StringUtils.isNotEmpty(info)) {
+            message = adviseService.advisingList(start * length - 1, length, search, order, orderCol, studentId, facultyId, info);
+            message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
+        } else {
+            message = new ResultMap();
+            message.setData(new ArrayList<>());
+            message.put("recordsTotal", 0);
+        }
+
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN','STUDENT','FACULTY')")
+    @RequestMapping(value = "/advisor", method = RequestMethod.GET)
+    public ResponseEntity list(@RequestParam(value = "start", required = false, defaultValue = "0") Integer start,
+                               @RequestParam(value = "length", required = false, defaultValue = "100") Integer length,
+                               @RequestParam(value = "search", required = false, defaultValue = "") String search,
+                               @RequestParam(value = "order", required = false, defaultValue = "desc") String order,
+                               @RequestParam(value = "orderCol", required = false, defaultValue = "user_id") String orderCol,
+                               @RequestParam(value = "status", required = false) String status) {
+        ResultMap message = adviseService.advisorList(start * length - 1, length, search, order, orderCol, status);
         message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
