@@ -24,16 +24,16 @@ public class AdviseServer {
         return adviseService.removeMentor(id);
     }
 
-    public ResultMap update(Integer id, String studentId, String facultyId) {
-        return adviseService.updateAdvise(id, studentId, facultyId);
+    public ResultMap update(Integer id, Advise advise) {
+        return adviseService.updateAdvise(id, advise);
     }
 
     public ResultMap get(Integer id) {
         return adviseService.getMentor(id);
     }
 
-    public ResultMap list(Integer start, Integer length, String search, String order, String orderCol, String studentId, String facultyId) {
-        return adviseService.advisingList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderCol, studentId, facultyId);
+    public ResultMap list(Integer start, Integer length, String search, String order, String orderCol, String studentId, String facultyId, String info) {
+        return adviseService.advisingList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderCol, studentId, facultyId, info);
     }
 
 }

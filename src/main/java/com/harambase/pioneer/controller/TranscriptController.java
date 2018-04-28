@@ -1,22 +1,22 @@
 package com.harambase.pioneer.controller;
 
-import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.common.Page;
+import com.harambase.pioneer.common.ResultMap;
+import com.harambase.pioneer.common.support.util.FileUtil;
 import com.harambase.pioneer.helper.TokenHelper;
 import com.harambase.pioneer.server.pojo.base.Transcript;
-import com.harambase.pioneer.common.support.util.FileUtil;
 import com.harambase.pioneer.service.TranscriptService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 
 @Controller
 @CrossOrigin
@@ -30,7 +30,7 @@ public class TranscriptController {
         this.transcriptService = transcriptService;
     }
 
-//    @RequiresPermissions(value = {"admin", "teach"}, logical = Logical.OR)
+    @PreAuthorize("hasAnyRole('TEACH','ADMIN')")
     @RequestMapping(value = "/{id}", produces = "application/json", method = RequestMethod.PUT)
     public ResponseEntity update(@PathVariable Integer id, @RequestBody Transcript transcript, HttpServletRequest request) {
         transcript.setOperatorId(TokenHelper.getUserIdFromToken(TokenHelper.getToken(request)));
@@ -38,6 +38,7 @@ public class TranscriptController {
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('TEACH','ADMIN','STUDENT', 'FACULTY', 'ADVISOR')")
 //    @RequiresPermissions(value = {"admin", "teach", "student", "faculty"}, logical = Logical.OR)
     @RequestMapping(value = {"/list", "/course/student"}, produces = "application/json", method = RequestMethod.GET)
     public ResponseEntity listForTeach(@RequestParam(value = "start", required = false, defaultValue = "0") Integer start,
@@ -60,7 +61,7 @@ public class TranscriptController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-//    @RequiresPermissions(value = {"admin", "student"}, logical = Logical.OR)
+    @PreAuthorize("hasAnyRole('STUDENT','ADMIN')")
     @RequestMapping(produces = "application/json", method = RequestMethod.GET)
     public ResponseEntity listForStudent(@RequestParam(value = "start", required = false, defaultValue = "0") Integer start,
                                          @RequestParam(value = "length", required = false, defaultValue = "100") Integer length,
@@ -75,7 +76,7 @@ public class TranscriptController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-//    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
+    @PreAuthorize("hasAnyRole('TEACH','ADMIN','FACULTY','ADVISOR')")
     @RequestMapping(value = "/{studentId}/report", method = RequestMethod.GET)
     public void studentTranscriptReport(@PathVariable(value = "studentId") String studentId, HttpServletResponse response) {
         ResultMap ResultMap = transcriptService.studentTranscriptReport(studentId);
@@ -86,7 +87,7 @@ public class TranscriptController {
         }
     }
 
-//    @RequiresPermissions(value = {"admin", "student"}, logical = Logical.OR)
+    @PreAuthorize("hasAnyRole('STUDENT','ADMIN')")
     @RequestMapping(value = "/report", method = RequestMethod.GET)
     public void transcriptReport(@RequestParam String token, HttpServletResponse response, HttpServletRequest request) {
         if (StringUtils.isNotEmpty(token)) {
