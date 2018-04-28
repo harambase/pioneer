@@ -112,4 +112,17 @@ public class AdviseController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','TEACH')")
+    @RequestMapping(value = "/advisor/{userId}", method = RequestMethod.DELETE)
+    public ResponseEntity removeAdvisor(@PathVariable String userId) {
+        ResultMap message = adviseService.removeAdvisor(userId);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN','TEACH')")
+    @RequestMapping(value = "/advisor/{userId}", method = RequestMethod.PUT)
+    public ResponseEntity addAdvisor(@PathVariable String userId) {
+        ResultMap message = adviseService.addAdvisor(userId);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
 }

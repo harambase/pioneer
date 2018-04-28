@@ -141,4 +141,12 @@ public class AdviseService {
     public ResultMap advisorList(int start, int length, String search, String order, String orderColumn, String status) {
         return adviseServer.advisorList(start, length, search, order, orderColumn, status);
     }
+
+    public ResultMap removeAdvisor(String userId) {
+        return adviseServer.removeAdvisor(userId);
+    }
+
+    public ResultMap addAdvisor(String userId) {
+        return adviseServer.addAdvisor(userId);
+    }
 }

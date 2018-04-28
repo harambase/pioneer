@@ -39,4 +39,12 @@ public class AdviseServer {
     public ResultMap advisorList(int start, int length, String search, String order, String orderColumn, String status) {
         return adviseService.advisorList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderColumn, status);
     }
+
+    public ResultMap removeAdvisor(String userId) {
+        return adviseService.removeAdvisor(userId);
+    }
+
+    public ResultMap addAdvisor(String userId) {
+        return adviseService.addAdvisor(userId);
+    }
 }
