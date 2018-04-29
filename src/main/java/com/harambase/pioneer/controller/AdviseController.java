@@ -70,10 +70,11 @@ public class AdviseController {
                                @RequestParam(value = "mode", required = false) String mode,
                                HttpServletRequest request) {
 
-        ResultMap message = new ResultMap();
+        ResultMap message;
 
-        if (mode != null && mode.equals("faculty"))
+        if (mode != null && mode.equals("faculty")) {
             facultyId = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));
+        }
 
         if (StringUtils.isNotEmpty(studentId) || StringUtils.isNotEmpty(facultyId) || StringUtils.isNotEmpty(info)) {
             message = adviseService.advisingList(start * length - 1, length, search, order, orderCol, studentId, facultyId, info);

@@ -39,7 +39,6 @@ public class TranscriptController {
     }
 
     @PreAuthorize("hasAnyRole('TEACH','ADMIN','STUDENT', 'FACULTY', 'ADVISOR')")
-//    @RequiresPermissions(value = {"admin", "teach", "student", "faculty"}, logical = Logical.OR)
     @RequestMapping(value = {"/list", "/course/student"}, produces = "application/json", method = RequestMethod.GET)
     public ResponseEntity listForTeach(@RequestParam(value = "start", required = false, defaultValue = "0") Integer start,
                                        @RequestParam(value = "length", required = false, defaultValue = "100") Integer length,
@@ -87,9 +86,8 @@ public class TranscriptController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('STUDENT','ADMIN')")
     @RequestMapping(value = "/report", method = RequestMethod.GET)
-    public void transcriptReport(@RequestParam String token, HttpServletResponse response, HttpServletRequest request) {
+    public void transcriptReport(@RequestParam String token, HttpServletResponse response) {
         if (StringUtils.isNotEmpty(token)) {
             String studentId = TokenHelper.getUserIdFromToken(token);
             ResultMap ResultMap = transcriptService.studentTranscriptReport(studentId);
@@ -103,7 +101,7 @@ public class TranscriptController {
 
     @RequestMapping(value = "/all/report", method = RequestMethod.GET)
     public void transcriptAllReport(@RequestParam String token,
-                                    @RequestParam(required = false) String info, HttpServletResponse response, HttpServletRequest request) {
+                                    @RequestParam(required = false) String info, HttpServletResponse response) {
         if (StringUtils.isNotEmpty(token)) {
             ResultMap ResultMap = transcriptService.allTranscripts(info);
             try {
