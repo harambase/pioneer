@@ -75,14 +75,15 @@ public class TranscriptController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('TEACH','ADMIN','FACULTY','ADVISOR')")
-    @RequestMapping(value = "/{studentId}/report", method = RequestMethod.GET)
-    public void studentTranscriptReport(@PathVariable(value = "studentId") String studentId, HttpServletResponse response) {
-        ResultMap ResultMap = transcriptService.studentTranscriptReport(studentId);
-        try {
-            FileUtil.downloadFile(studentId + "_transcript_report.pdf", (String) ResultMap.getData(), response);
-        } catch (Exception e) {
-            e.printStackTrace();
+    @RequestMapping(value = "/report/{studentId}", method = RequestMethod.GET)
+    public void studentTranscriptReport(@PathVariable(value = "studentId") String studentId, @RequestParam String token, HttpServletResponse response) {
+        if (StringUtils.isNotEmpty(token)) {
+            ResultMap ResultMap = transcriptService.studentTranscriptReport(studentId);
+            try {
+                FileUtil.downloadFile(studentId + "_transcript_report.pdf", (String) ResultMap.getData(), response);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -99,7 +100,7 @@ public class TranscriptController {
         }
     }
 
-    @RequestMapping(value = "/all/report", method = RequestMethod.GET)
+    @RequestMapping(value = "/report/all", method = RequestMethod.GET)
     public void transcriptAllReport(@RequestParam String token,
                                     @RequestParam(required = false) String info, HttpServletResponse response) {
         if (StringUtils.isNotEmpty(token)) {
