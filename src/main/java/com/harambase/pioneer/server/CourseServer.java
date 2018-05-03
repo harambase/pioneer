@@ -1,5 +1,6 @@
 package com.harambase.pioneer.server;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.server.pojo.base.Course;
@@ -72,7 +73,7 @@ public class CourseServer {
         return courseService.assignFac2Cou(crn, facultyId);
     }
 
-    public ResultMap courseChoice(String studentId, JSONObject choiceList) {
+    public ResultMap courseChoice(String studentId, JSONArray choiceList) {
         return courseService.reg2Course(studentId, choiceList);
     }
 

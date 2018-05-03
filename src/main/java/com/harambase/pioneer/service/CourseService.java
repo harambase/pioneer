@@ -251,7 +251,7 @@ public class CourseService {
     }
 
     
-    public ResultMap reg2Course(String studentId, JSONObject choiceList) {
+    public ResultMap reg2Course(String studentId, JSONArray choiceList) {
         try {
             return courseServer.courseChoice(studentId, choiceList);
         } catch (Exception e) {

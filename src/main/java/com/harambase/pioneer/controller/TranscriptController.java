@@ -66,7 +66,7 @@ public class TranscriptController {
                                          @RequestParam(value = "length", required = false, defaultValue = "100") Integer length,
                                          @RequestParam(value = "search", required = false, defaultValue = "") String search,
                                          @RequestParam(value = "order", required = false, defaultValue = "") String order,
-                                         @RequestParam(value = "orderCol", required = false, defaultValue = "") String orderCol,
+                                         @RequestParam(value = "orderCol", required = false, defaultValue = "id") String orderCol,
                                          @RequestParam(value = "complete", required = false) String complete,
                                          HttpServletRequest request) {
 
