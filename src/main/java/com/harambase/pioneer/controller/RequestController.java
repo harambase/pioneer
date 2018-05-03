@@ -215,13 +215,13 @@ public class RequestController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT', 'TEACH', 'FACULTY')")
-    @RequestMapping(value = "/advise ", produces = "application/json", method = RequestMethod.GET)
+    @RequestMapping(value = "/advise", produces = "application/json", method = RequestMethod.GET)
     public ResponseEntity adviseList(@RequestParam(value = "start") Integer start,
                                      @RequestParam(value = "length") Integer length,
                                      @RequestParam(value = "search", required = false, defaultValue = "") String search,
                                      @RequestParam(value = "order", required = false, defaultValue = "desc") String order,
                                      @RequestParam(value = "orderCol", required = false, defaultValue = "0") String orderCol) {
-        ResultMap message = requestService.tempAdviseList(start, length, search, order, orderCol);
+        ResultMap message = requestService.tempAdviseList(start * length - 1, length, search, order, orderCol);
         message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
