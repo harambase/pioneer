@@ -194,9 +194,9 @@ public class RequestService {
     }
 
 
-    public ResultMap getTempAdvise(Integer id) {
+    public ResultMap getTempAdvise(String studentId) {
         try {
-            return requestServer.getAdviseRequest(id);
+            return requestServer.getAdviseRequest(studentId);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();

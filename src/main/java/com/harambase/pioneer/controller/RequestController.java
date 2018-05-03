@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.LinkedHashMap;
 
 @RestController
 @CrossOrigin
@@ -183,7 +184,7 @@ public class RequestController {
     public ResponseEntity newAdvisorRequest(@PathVariable String studentId, @RequestBody JSONArray jsonArray) {
         String facultyIds = "";
         for(Object jsonObject: jsonArray){
-            facultyIds += ((JSONObject) jsonObject).get("userId") +"/";
+            facultyIds += ((LinkedHashMap) jsonObject).get("userId") +"/";
         }
         if(StringUtils.isNotEmpty(facultyIds)) {
             ResultMap resultMap = requestService.registerTempAdvise(studentId, facultyIds);
@@ -200,9 +201,9 @@ public class RequestController {
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT', 'TEACH', 'FACULTY')")
-    @RequestMapping(value = "/advise/{id}", method = RequestMethod.GET)
-    public ResponseEntity getAdviseRequest(@PathVariable Integer id) {
-        ResultMap ResultMap = requestService.getTempAdvise(id);
+    @RequestMapping(value = "/advise/{studentId}", method = RequestMethod.GET)
+    public ResponseEntity getAdviseRequest(@PathVariable String studentId) {
+        ResultMap ResultMap = requestService.getTempAdvise(studentId);
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 

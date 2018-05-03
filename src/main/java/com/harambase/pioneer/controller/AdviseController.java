@@ -126,4 +126,11 @@ public class AdviseController {
         ResultMap message = adviseService.addAdvisor(userId);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
+
+    @PreAuthorize("hasAnyRole('ADMIN','TEACH', 'STUDENT')")
+    @RequestMapping(value = "/advisor/{userId}", method = RequestMethod.GET)
+    public ResponseEntity getAdvisor(@PathVariable String userId) {
+        ResultMap message = adviseService.getAdvisor(userId);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
 }

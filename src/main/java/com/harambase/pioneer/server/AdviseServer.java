@@ -47,4 +47,8 @@ public class AdviseServer {
     public ResultMap addAdvisor(String userId) {
         return adviseService.addAdvisor(userId);
     }
+
+    public ResultMap getAdvisor(String userId) {
+        return adviseService.getAdvisor(userId);
+    }
 }

@@ -123,8 +123,8 @@ public class RequestServer {
         return tempAdviseService.deleteTempAdviseById(id);
     }
 
-    public ResultMap getAdviseRequest(Integer id) {
-        return tempAdviseService.get(id);
+    public ResultMap getAdviseRequest(String studentId) {
+        return tempAdviseService.get(studentId);
     }
 
     public ResultMap updateAdviseRequest(Integer id, TempAdvise tempAdvise) {
