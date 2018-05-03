@@ -174,9 +174,9 @@ public class RequestService {
     }
 
 
-    public ResultMap registerTempAdvise(String studentId, JSONObject jsonObject) {
+    public ResultMap registerTempAdvise(String studentId, String facultyIds) {
         try {
-            return requestServer.newAdvisorRequest(studentId, jsonObject);
+            return requestServer.newAdvisorRequest(studentId, facultyIds);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();

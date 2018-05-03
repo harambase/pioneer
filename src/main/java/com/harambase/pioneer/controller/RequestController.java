@@ -1,5 +1,6 @@
 package com.harambase.pioneer.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.harambase.pioneer.common.Page;
 import com.harambase.pioneer.common.ResultMap;
@@ -19,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.LinkedHashMap;
 
 @RestController
 @CrossOrigin
@@ -106,7 +106,7 @@ public class RequestController {
         }
     }
 
-    //    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACH', 'FACULTY')")
     @RequestMapping(value = "/course/{id}", method = RequestMethod.PUT)
     public ResponseEntity updateCourseRequest(@PathVariable Integer id, @RequestBody TempCourse tempCourse, HttpServletRequest request) {
         tempCourse.setOperatorId(TokenHelper.getUserIdFromToken(TokenHelper.getToken(request)));
@@ -114,14 +114,14 @@ public class RequestController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    //    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACH', 'FACULTY')")
     @RequestMapping(value = "/course/{id}", method = RequestMethod.GET)
     public ResponseEntity getCourseRequest(@PathVariable Integer id) {
         ResultMap message = requestService.getTempCourse(id);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    //    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACH', 'FACULTY')")
     @RequestMapping(value = "/course/register", method = RequestMethod.POST)
     public ResponseEntity registerNewCourse(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
         String facultyId = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));
@@ -129,21 +129,20 @@ public class RequestController {
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
-    //    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACH', 'FACULTY')")
     @RequestMapping(value = "/course/info/{id}", method = RequestMethod.PUT)
     public ResponseEntity uploadCourseInfo(@RequestParam MultipartFile file, @PathVariable Integer id) {
         ResultMap message = requestService.uploadCourseInfo(id, file);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    //    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACH', 'FACULTY')")
     @RequestMapping(value = "/course/{id}", method = RequestMethod.DELETE)
     public ResponseEntity deleteTempCourse(@PathVariable Integer id) {
         ResultMap ResultMap = requestService.deleteTempCourse(id);
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
-    //    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
     @RequestMapping(value = "/course/info/{id}", method = RequestMethod.GET)
     public void downloadCourseInfo(@PathVariable Integer id, @RequestParam String token, HttpServletResponse response) {
         if (StringUtils.isNotEmpty(token)) {
@@ -160,7 +159,7 @@ public class RequestController {
         }
     }
 
-    //    @RequiresPermissions(value = {"admin", "teach", "faculty"}, logical = Logical.OR)
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACH', 'FACULTY')")
     @RequestMapping(value = "/course", produces = "application/json", method = RequestMethod.GET)
     public ResponseEntity courseList(@RequestParam(value = "start", required = false, defaultValue = "0") Integer start,
                                      @RequestParam(value = "length", required = false, defaultValue = "100") Integer length,
@@ -179,35 +178,42 @@ public class RequestController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    //    @RequiresPermissions(value = {"admin", "teach", "student"}, logical = Logical.OR)
-    @RequestMapping(value = "/advise", method = RequestMethod.POST)
-    public ResponseEntity newAdvisorRequest(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
-        ResultMap ResultMap = requestService.registerTempAdvise(TokenHelper.getUserIdFromToken(TokenHelper.getToken(request)), jsonObject);
-        return new ResponseEntity<>(ResultMap, HttpStatus.OK);
+    @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT', 'TEACH')")
+    @RequestMapping(value = "/advise/{studentId}", method = RequestMethod.POST)
+    public ResponseEntity newAdvisorRequest(@PathVariable String studentId, @RequestBody JSONArray jsonArray) {
+        String facultyIds = "";
+        for(Object jsonObject: jsonArray){
+            facultyIds += ((JSONObject) jsonObject).get("userId") +"/";
+        }
+        if(StringUtils.isNotEmpty(facultyIds)) {
+            ResultMap resultMap = requestService.registerTempAdvise(studentId, facultyIds);
+            return new ResponseEntity<>(resultMap, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new ResultMap(), HttpStatus.OK);
     }
 
-    //    @RequiresPermissions(value = {"admin", "teach", "student"}, logical = Logical.OR)
+    @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT', 'TEACH')")
     @RequestMapping(value = "/advise/{id}", method = RequestMethod.DELETE)
     public ResponseEntity removeAdvisorRequest(@PathVariable Integer id) {
         ResultMap ResultMap = requestService.deleteTempAdviseById(id);
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
-    //    @RequiresPermissions(value = {"admin", "teach", "student", "faculty"}, logical = Logical.OR)
+    @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT', 'TEACH', 'FACULTY')")
     @RequestMapping(value = "/advise/{id}", method = RequestMethod.GET)
     public ResponseEntity getAdviseRequest(@PathVariable Integer id) {
         ResultMap ResultMap = requestService.getTempAdvise(id);
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
-    //    @RequiresPermissions(value = {"admin", "teach", "faculty", "student"}, logical = Logical.OR)
+    @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT', 'TEACH', 'FACULTY')")
     @RequestMapping(value = "/advise/{id}", produces = "application/json", method = RequestMethod.PUT)
     public ResponseEntity updateAdviseRequest(@PathVariable Integer id, @RequestBody TempAdvise tempAdvise) {
         ResultMap message = requestService.updateTempAdvise(id, tempAdvise);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    //    @RequiresPermissions(value = {"admin", "teach", "faculty", "student"}, logical = Logical.OR)
+    @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT', 'TEACH', 'FACULTY')")
     @RequestMapping(value = "/advise ", produces = "application/json", method = RequestMethod.GET)
     public ResponseEntity adviseList(@RequestParam(value = "start") Integer start,
                                      @RequestParam(value = "length") Integer length,
