@@ -7,7 +7,6 @@ import com.harambase.pioneer.server.AdviseServer;
 import com.harambase.pioneer.server.pojo.base.Advise;
 import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
 import com.harambase.pioneer.server.pojo.view.AdviseView;
-import com.harambase.pioneer.server.pojo.view.AdviseView;
 import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

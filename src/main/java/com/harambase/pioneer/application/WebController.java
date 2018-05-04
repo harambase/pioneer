@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class WebController {
 
     //不需要login
-    @RequestMapping({"/", "/login"})
+    @RequestMapping({"/", "/index"})
     public String login() {
-        return "redirect: ";
+        return "index";
     }
 
     @RequestMapping("/404")

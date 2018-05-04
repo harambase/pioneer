@@ -13,12 +13,15 @@ public class ResourceController extends WebMvcConfigurerAdapter {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
-        registry.addResourceHandler("/static/styles/**").addResourceLocations("classpath:/static/styles/");
+        registry.addResourceHandler("/static/css/**").addResourceLocations("classpath:/static/css/");
         registry.addResourceHandler("/static/fonts/**").addResourceLocations("classpath:/static/fonts/");
-        registry.addResourceHandler("/static/scripts/**").addResourceLocations("classpath:/static/scripts/");
-        registry.addResourceHandler("/static/plugins/**").addResourceLocations("classpath:/static/plugins/");
+        registry.addResourceHandler("../../static/fonts/**").addResourceLocations("classpath:/static/fonts/");
+        registry.addResourceHandler("/static/js/**").addResourceLocations("classpath:/static/js/");
+        registry.addResourceHandler("/static/img/**").addResourceLocations("classpath:/static/img/");
+        registry.addResourceHandler("../../static/img/**").addResourceLocations("classpath:/static/img/");
         registry.addResourceHandler("/static/images/**").addResourceLocations("classpath:/static/images/");
-        registry.addResourceHandler("/static/data/**").addResourceLocations("classpath:/static/data/");
+        registry.addResourceHandler("/static/laydate/**").addResourceLocations("classpath:/static/laydate/");
+        registry.addResourceHandler("/static/styles/**").addResourceLocations("classpath:/static/styles/");
         registry.addResourceHandler("/pioneer/**").addResourceLocations("file:" + Config.TEMP_FILE_PATH + "/image");
 
         super.addResourceHandlers(registry);
