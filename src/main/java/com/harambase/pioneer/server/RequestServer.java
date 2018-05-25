@@ -41,7 +41,8 @@ public class RequestServer {
     public ResultMap updateRequest(Integer id, TempUser tempUser) {
         ResultMap message = new ResultMap();
         if (tempUser.getStatus().equals("1")) {
-            message = personService.addUser(JSONObject.parseObject(tempUser.getUserJson(), Person.class));
+            Person newUser = JSONObject.parseObject(tempUser.getUserJson(), Person.class);
+            message = personService.addUser(newUser);
             if (message.getCode() == SystemConst.SUCCESS.getCode()) {
                 Person person = ((Person) message.getData());
                 String info = person.getLastName() + ", " + person.getFirstName() + "(" + person.getUserId() + ")";

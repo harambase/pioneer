@@ -15,6 +15,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,6 +34,10 @@ public class RequestService {
         this.requestServer = requestServer;
     }
 
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     public ResultMap deleteTempUser(Integer id) {
         try {
@@ -44,6 +51,8 @@ public class RequestService {
 
     public ResultMap registerNewUser(JSONObject jsonObject) {
         try {
+            String password = jsonObject.getString("password");
+            jsonObject.put("password", passwordEncoder().encode(password));
             return requestServer.register(jsonObject);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
