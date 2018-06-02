@@ -1,7 +1,14 @@
-<!DOCTYPE html><html><head><title>先锋-Pioneer</title><link rel="shortcut icon" href=/static/img/logo.png><link rel=stylesheet href=/static/laydate/theme/default/laydate.css><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><script src=static/laydate/laydate.js></script><script>let token = '';
+<!DOCTYPE html><html><head><title>先锋-Pioneer</title><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><link rel="shortcut icon" href=/static/img/logo.png><script>let token = '';
       //MODIFY HERE BEFORE DEPLOY!
-      // const basePath = 'http://localhost:30000';
-      const basePath = 'http://192.168.1.6:30000';
+      const basePath = 'http://localhost:30000';
+      // const basePath = 'http://192.168.1.6:30000';
+
       function isNotEmpty (value) {
         return value !== '' && value !== undefined && value !== null
-      }</script><link href=./static/css/app.5231a39a3bde0a2b8f0cf9265171ec65.css rel=stylesheet></head><body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden"><div id=app></div><script type=text/javascript src=./static/js/manifest.19ae902de67751550e5a.js></script><script type=text/javascript src=./static/js/vendor.63ce726e76b2418b3c5b.js></script><script type=text/javascript src=./static/js/app.701a24d9a20d3d8c98c9.js></script></body></html>
+      }
+
+      function date2Str(x, y) {
+        let z = { M: x.getMonth() + 1, d: x.getDate(), h: x.getHours(), m: x.getMinutes(), s: x.getSeconds() };
+        y = y.replace(/(M+|d+|h+|m+|s+)/g, function (v) { return ((v.length > 1 ? "0" : "") + eval('z.' + v.slice(-1))).slice(-2) });
+        return y.replace(/(y+)/g, function (v) { return x.getFullYear().toString().slice(-v.length) });
+      }</script><link href=./static/css/app.156b3930efbc99a129d98e8a5f74a24f.css rel=stylesheet></head><body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden"><div id=app></div><script type=text/javascript src=./static/js/manifest.b98d93da90a9b304ea36.js></script><script type=text/javascript src=./static/js/vendor.837ccb360353b888ff26.js></script><script type=text/javascript src=./static/js/app.56e45a138add8e69dc10.js></script></body></html>
