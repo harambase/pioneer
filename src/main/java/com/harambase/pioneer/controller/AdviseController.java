@@ -104,9 +104,9 @@ public class AdviseController {
     @RequestMapping(value = "/download/{info}", method = RequestMethod.GET)
     public void downloadAdviseByInfo(@RequestParam String token, @PathVariable String info, HttpServletResponse response, HttpServletRequest request) {
         if (StringUtils.isNotEmpty(token)) {
-            ResultMap ResultMap = adviseService.downloadAdviseByInfo(info);
+            ResultMap resultMap = adviseService.downloadAdviseByInfo(info);
             try {
-                FileUtil.downloadFile(info + "导师表.csv", (String) ResultMap.getData(), response);
+                FileUtil.downloadFile(info + "导师表.csv", (String) resultMap.getData(), response);
             } catch (Exception e) {
                 e.printStackTrace();
             }
