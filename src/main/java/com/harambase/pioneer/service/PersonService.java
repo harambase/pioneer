@@ -10,6 +10,7 @@ import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
 import com.harambase.pioneer.server.PersonServer;
 import com.harambase.pioneer.server.pojo.base.Person;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.net.ftp.FTPClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -139,7 +140,7 @@ public class PersonService {
                         oldFile.delete();
                     }
 
-                    fileUri = FileUtil.uploadFileToPath(file, "/document/userInfo");
+                    fileUri = FileUtil.uploadFileToFtpServer(file,Config.FTP_SERVER, Config.FTP_USERNAME, Config.FTP_PASSWORD);
 
                     jsonObject.put("name", name);
                     jsonObject.put("size", file.getSize());
