@@ -80,33 +80,33 @@ public class StudentController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('USER')")
-    @RequestMapping(value = "/{studentId}/contract", method = RequestMethod.GET)
-    public ResponseEntity getContract(@PathVariable(value = "studentId") String studentId) {
-        ResultMap resultMap = studentService.getContract(studentId);
-        return new ResponseEntity<>(resultMap, HttpStatus.OK);
-    }
-
-    @PreAuthorize("hasRole('USER')")
-    @RequestMapping(value = "/{studentId}/contract", method = RequestMethod.POST)
-    public ResponseEntity updateContract(@PathVariable(value = "studentId") String studentId,
-                                         @RequestBody String contractString) {
-        ResultMap resultMap = studentService.updateContract(studentId, contractString);
-        return new ResponseEntity<>(resultMap, HttpStatus.OK);
-    }
-
-    @PreAuthorize("hasAnyRole('TEACH','ADMIN','FACULTY')")
-    @RequestMapping(value = {"/{studentId}/contract", "/contract"}, method = RequestMethod.GET)
-    public void downloadCourseInfo(@PathVariable String studentId, @RequestParam String token, HttpServletResponse response) {
-        if (StringUtils.isNotEmpty(token)) {
-            ResultMap resultMap = studentService.downloadContractById(studentId);
-            try {
-                FileUtil.downloadFile(studentId + "导师表.csv", (String) resultMap.getData(), response);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        }
-    }
+//    @PreAuthorize("hasRole('USER')")
+//    @RequestMapping(value = "/{studentId}/contract", method = RequestMethod.GET)
+//    public ResponseEntity getContract(@PathVariable(value = "studentId") String studentId) {
+//        ResultMap resultMap = studentService.getContract(studentId);
+//        return new ResponseEntity<>(resultMap, HttpStatus.OK);
+//    }
+//
+//    @PreAuthorize("hasRole('USER')")
+//    @RequestMapping(value = "/{studentId}/contract", method = RequestMethod.POST)
+//    public ResponseEntity updateContract(@PathVariable(value = "studentId") String studentId,
+//                                         @RequestBody String contractString) {
+//        ResultMap resultMap = studentService.updateContract(studentId, contractString);
+//        return new ResponseEntity<>(resultMap, HttpStatus.OK);
+//    }
+//
+//    @PreAuthorize("hasAnyRole('TEACH','ADMIN','FACULTY')")
+//    @RequestMapping(value = {"/{studentId}/contract", "/contract"}, method = RequestMethod.GET)
+//    public void downloadCourseInfo(@PathVariable String studentId, @RequestParam String token, HttpServletResponse response) {
+//        if (StringUtils.isNotEmpty(token)) {
+//            ResultMap resultMap = studentService.downloadContractById(studentId);
+//            try {
+//                FileUtil.downloadFile(studentId + "导师表.csv", (String) resultMap.getData(), response);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//
+//        }
+//    }
 
 }

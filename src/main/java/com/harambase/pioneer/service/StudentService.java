@@ -83,75 +83,75 @@ public class StudentService {
         }
     }
 
-    public ResultMap getContract(String studentId) {
-        try {
-            return studentServer.getContract(studentId);
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            return ReturnMsgUtil.systemError();
-        }
-    }
-
-    public ResultMap updateContract(String studentId, String contractString) {
-        try {
-            return studentServer.updateContract(studentId, contractString);
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            return ReturnMsgUtil.systemError();
-        }
-    }
-
-    public ResultMap downloadContractById(String studentId) {
-        FileOutputStream fos = null;
-        String csvPath = Config.TEMP_FILE_PATH + studentId + "合同表.csv";
-        ResultMap message = null;
-
-        try {
-            File outputFile = new File(csvPath);
-            if(outputFile.exists()) {
-                outputFile.delete();
-                outputFile = new File(csvPath);
-            }
-            fos = new FileOutputStream(outputFile, true);
-            //Solve for Chinese Character errors while using excel:
-            fos.write(new byte[]{(byte)0xEF,(byte)0xBB,(byte)0xBF});
-
-            JSONArray contractList = JSONArray.parseArray((String) studentServer.getContract(studentId).getData());
-
-            StringBuilder exportInfoSb = new StringBuilder();
-            for (int i = 0; i < contractList.size(); i++) {
-                if (i != 0) exportInfoSb.append(",");
-                exportInfoSb.append("\"" + contractList.get(0) + "\"");
-            }
-            exportInfoSb.append("\n");
-            for (int i = 0; i < adviseViewList.size(); i++) {
-                Map<String, String> tvMap = BeanUtils.describe(adviseViewList.get(i));
-                for (int j = 0; j < titleList.length; j++) {
-                    if (j != 0) exportInfoSb.append(",");
-                    exportInfoSb.append("\"" + tvMap.get(titleList[j].getName()) + "\"");
-                }
-                exportInfoSb.append("\n");
-            }
-            exportInfoSb.append("总计" + adviseViewList.size() + "条数据。");
-            fos.write(exportInfoSb.toString().getBytes("UTF-8"));
-
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-        } finally {
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    logger.error(e.getMessage(), e);
-                }
-            }
-        }
-
-        logger.info("Filing task for advise has completed.");
-        ResultMap restMessage = new ResultMap();
-        restMessage.setCode(SystemConst.SUCCESS.getCode());
-        restMessage.setData(studentId + "合同表.csv");
-        return restMessage;
-    }
+//    public ResultMap getContract(String studentId) {
+//        try {
+//            return studentServer.getContract(studentId);
+//        } catch (Exception e) {
+//            logger.error(e.getMessage(), e);
+//            return ReturnMsgUtil.systemError();
+//        }
+//    }
+//
+//    public ResultMap updateContract(String studentId, String contractString) {
+//        try {
+//            return studentServer.updateContract(studentId, contractString);
+//        } catch (Exception e) {
+//            logger.error(e.getMessage(), e);
+//            return ReturnMsgUtil.systemError();
+//        }
+//    }
+//
+//    public ResultMap downloadContractById(String studentId) {
+//        FileOutputStream fos = null;
+//        String csvPath = Config.TEMP_FILE_PATH + studentId + "合同表.csv";
+//        ResultMap message = null;
+//
+//        try {
+//            File outputFile = new File(csvPath);
+//            if(outputFile.exists()) {
+//                outputFile.delete();
+//                outputFile = new File(csvPath);
+//            }
+//            fos = new FileOutputStream(outputFile, true);
+//            //Solve for Chinese Character errors while using excel:
+//            fos.write(new byte[]{(byte)0xEF,(byte)0xBB,(byte)0xBF});
+//
+//            JSONArray contractList = JSONArray.parseArray((String) studentServer.getContract(studentId).getData());
+//
+//            StringBuilder exportInfoSb = new StringBuilder();
+//            for (int i = 0; i < contractList.size(); i++) {
+//                if (i != 0) exportInfoSb.append(",");
+//                exportInfoSb.append("\"" + contractList.get(0) + "\"");
+//            }
+//            exportInfoSb.append("\n");
+//            for (int i = 0; i < adviseViewList.size(); i++) {
+//                Map<String, String> tvMap = BeanUtils.describe(adviseViewList.get(i));
+//                for (int j = 0; j < titleList.length; j++) {
+//                    if (j != 0) exportInfoSb.append(",");
+//                    exportInfoSb.append("\"" + tvMap.get(titleList[j].getName()) + "\"");
+//                }
+//                exportInfoSb.append("\n");
+//            }
+//            exportInfoSb.append("总计" + adviseViewList.size() + "条数据。");
+//            fos.write(exportInfoSb.toString().getBytes("UTF-8"));
+//
+//        } catch (Exception e) {
+//            logger.error(e.getMessage(), e);
+//        } finally {
+//            if (fos != null) {
+//                try {
+//                    fos.close();
+//                } catch (IOException e) {
+//                    logger.error(e.getMessage(), e);
+//                }
+//            }
+//        }
+//
+//        logger.info("Filing task for advise has completed.");
+//        ResultMap restMessage = new ResultMap();
+//        restMessage.setCode(SystemConst.SUCCESS.getCode());
+//        restMessage.setData(studentId + "合同表.csv");
+//        return restMessage;
+//    }
 
 }

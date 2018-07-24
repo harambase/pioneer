@@ -30,7 +30,7 @@ public class PersonService {
         this.personServer = personServer;
     }
 
-    
+
     public ResultMap login(Person person) {
         try {
             return personServer.login(person);
@@ -40,7 +40,7 @@ public class PersonService {
         }
     }
 
-    
+
     public ResultMap createPerson(Person person) {
         try {
             return personServer.create(person);
@@ -50,7 +50,7 @@ public class PersonService {
         }
     }
 
-    
+
     public ResultMap deletePerson(String userid) {
         try {
             return personServer.delete(userid);
@@ -60,7 +60,7 @@ public class PersonService {
         }
     }
 
-    
+
     public ResultMap updatePerson(String userId, Person person) {
         try {
             return personServer.update(userId, person);
@@ -70,19 +70,34 @@ public class PersonService {
         }
     }
 
-    
+
     public ResultMap get(String userid) {
         try {
+            ResultMap resultMap = personServer.get(userid);
+            Person person = (Person) resultMap.getData();
+
+            if (StringUtils.isNotEmpty(person.getProfile())) {
+                JSONObject jsonObject = JSON.parseObject(person.getProfile());
+                String filePath = jsonObject.getString("path");
+                String fileName = FileUtil.getFileLogicalName(filePath);
+                String localPath = Config.serverPath + "/static/" + FileUtil.getFileDirPath(filePath);
+
+                File file = new File(localPath + fileName);
+                if(!file.exists())
+                    FileUtil.downloadFileFromFTPToLocal(fileName, filePath, localPath, Config.FTP_SERVER, Config.FTP_USERNAME, Config.FTP_PASSWORD);
+
+            }
             return personServer.get(userid);
+
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
         }
     }
 
-    
+
     public ResultMap list(int start, int length, String search, String order, String orderColumn,
-                             String type, String status, String role) {
+                          String type, String status, String role) {
         try {
             return personServer.list(start, length, search, order, orderColumn, type, status, role);
         } catch (Exception e) {
@@ -91,7 +106,7 @@ public class PersonService {
         }
     }
 
-    
+
     public ResultMap search(String search, String type, String status, String role) {
         try {
             return personServer.search(search, type, status, role);
@@ -101,7 +116,7 @@ public class PersonService {
         }
     }
 
-    
+
     public ResultMap upload(String userId, MultipartFile file, String mode) {
 
         ResultMap message = new ResultMap();
@@ -117,12 +132,11 @@ public class PersonService {
                 case "p":
 
                     if (StringUtils.isNotEmpty(person.getProfile())) {
-                        String oldProfilePath = (JSON.parseObject(person.getProfile())).getString("path");
-                        File oldFile = new File(Config.TEMP_FILE_PATH + oldProfilePath);
-                        oldFile.delete();
+                        String oldInfoPath = (JSON.parseObject(person.getProfile())).getString("path");
+                        FileUtil.deleteFileFromFTP(oldInfoPath, Config.FTP_SERVER, Config.FTP_USERNAME, Config.FTP_PASSWORD);
                     }
 
-                    fileUri = FileUtil.uploadFileToPath(file, "/image/profile");
+                    fileUri = FileUtil.uploadFileToFtpServer(file, Config.FTP_PATH + "/image/profile/", Config.FTP_SERVER, Config.FTP_USERNAME, Config.FTP_PASSWORD);
 
                     jsonObject.put("name", name);
                     jsonObject.put("size", file.getSize());
@@ -136,11 +150,10 @@ public class PersonService {
 
                     if (StringUtils.isNotEmpty(person.getUserInfo())) {
                         String oldInfoPath = (JSON.parseObject(person.getUserInfo())).getString("path");
-                        File oldFile = new File(Config.TEMP_FILE_PATH + oldInfoPath);
-                        oldFile.delete();
+                        FileUtil.deleteFileFromFTP(oldInfoPath, Config.FTP_SERVER, Config.FTP_USERNAME, Config.FTP_PASSWORD);
                     }
 
-                    fileUri = FileUtil.uploadFileToFtpServer(file,Config.FTP_SERVER, Config.FTP_USERNAME, Config.FTP_PASSWORD);
+                    fileUri = FileUtil.uploadFileToFtpServer(file, Config.FTP_PATH + "/document/userInfo/", Config.FTP_SERVER, Config.FTP_USERNAME, Config.FTP_PASSWORD);
 
                     jsonObject.put("name", name);
                     jsonObject.put("size", file.getSize());

@@ -36,11 +36,11 @@ public class StudentServer {
         return studentService.courseList(status, studentId);
     }
 
-    public ResultMap getContract(String studentId) {
-        return studentService.getContract(studentId);
-    }
-
-    public ResultMap updateContract(String studentId, String contractString) {
-        return studentService.updateContract(studentId, contractString);
-    }
+//    public ResultMap getContract(String studentId) {
+//        return studentService.getContract(studentId);
+//    }
+//
+//    public ResultMap updateContract(String studentId, String contractString) {
+//        return studentService.updateContract(studentId, contractString);
+//    }
 }
