@@ -109,11 +109,11 @@ public class CourseService {
             //处理老的文件
             if (StringUtils.isNotEmpty(course.getCourseInfo())) {
                 String oldInfoPath = (JSON.parseObject(course.getCourseInfo())).getString("path");
-                File oldFile = new File(Config.TEMP_FILE_PATH + oldInfoPath);
-                oldFile.delete();
+                FileUtil.deleteFileFromFTP(oldInfoPath, Config.FTP_SERVER, Config.FTP_USERNAME, Config.FTP_PASSWORD);
             }
 
-            String fileUri = FileUtil.uploadFileToPath(file, "/document/courseInfo");
+            String fileUri = FileUtil.uploadFileToFtpServer(file, Config.FTP_PATH + "/document/courseInfo",  Config.FTP_SERVER, Config.FTP_USERNAME, Config.FTP_PASSWORD);
+
             String name = file.getOriginalFilename();
 
             jsonObject.put("name", name);
