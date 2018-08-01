@@ -68,6 +68,10 @@ public class RequestServer {
             }
 
         }
+        else{
+            message = tempUserService.updateTempUser(id, tempUser);
+        }
+
         return message;
     }
 

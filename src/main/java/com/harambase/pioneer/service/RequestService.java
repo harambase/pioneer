@@ -249,12 +249,11 @@ public class RequestService {
                 case "p":
 
                     if (StringUtils.isNotEmpty(person.getString("profile"))) {
-                        String oldProfilePath = (JSON.parseObject(person.getString("profile"))).getString("path");
-                        File oldFile = new File(Config.TEMP_FILE_PATH + oldProfilePath);
-                        oldFile.delete();
+                        String oldInfoPath = (JSON.parseObject(person.getString("profile"))).getString("path");
+                        FileUtil.deleteFileFromFTP(oldInfoPath, Config.FTP_SERVER, Config.FTP_USERNAME, Config.FTP_PASSWORD);
                     }
 
-                    fileUri = FileUtil.uploadFileToPath(file, "/image/profile");
+                    fileUri = FileUtil.uploadFileToFtpServer(file, Config.FTP_PATH + "/image/profile/", Config.FTP_SERVER, Config.FTP_USERNAME, Config.FTP_PASSWORD);
 
                     jsonObject.put("name", name);
                     jsonObject.put("size", file.getSize());
@@ -264,15 +263,23 @@ public class RequestService {
                     person.put("profile", jsonObject.toJSONString());
                     tempUser.setUserJson(JSON.toJSONString(person));
 
+                    if (StringUtils.isNotEmpty(fileUri)) {
+                        String fileName = FileUtil.getFileLogicalName(fileUri);
+                        String localPath = Config.serverPath + "/static/" + FileUtil.getFileDirPath(fileUri);
+                        File localFile = new File(localPath + fileName);
+                        if (!localFile.exists())
+                            FileUtil.downloadFileFromFTPToLocal(fileName, fileUri, localPath, Config.FTP_SERVER, Config.FTP_USERNAME, Config.FTP_PASSWORD);
+                    }
+                    break;
+
                 case "f":
 
                     if (StringUtils.isNotEmpty(person.getString("userInfo"))) {
                         String oldInfoPath = (JSON.parseObject(person.getString("userInfo"))).getString("path");
-                        File oldFile = new File(Config.TEMP_FILE_PATH + oldInfoPath);
-                        oldFile.delete();
+                        FileUtil.deleteFileFromFTP(oldInfoPath, Config.FTP_SERVER, Config.FTP_USERNAME, Config.FTP_PASSWORD);
                     }
 
-                    fileUri = FileUtil.uploadFileToPath(file, "/document/userInfo");
+                    fileUri = FileUtil.uploadFileToFtpServer(file, Config.FTP_PATH + "/document/userInfo/", Config.FTP_SERVER, Config.FTP_USERNAME, Config.FTP_PASSWORD);
 
                     jsonObject.put("name", name);
                     jsonObject.put("size", file.getSize());
@@ -292,9 +299,11 @@ public class RequestService {
             message.setCode(SystemConst.FAIL.getCode());
             return message;
         }
+
         logger.info("The file task - user  mode is" + mode + " - for tempUser serial id:" + id + " has completed!");
         message.setMsg("上传成功");
         message.setData(jsonObject);
+        message.setCode(SystemConst.SUCCESS.getCode());
         return message;
     }
 }

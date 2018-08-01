@@ -60,7 +60,7 @@ public class PersonController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('SYSTEM','ADMIN')")
+    @PreAuthorize("hasAnyRole('USER')")
     @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
     public ResponseEntity get(@PathVariable(value = "userId") String userId) {
         ResultMap resultMap = personService.get(userId);

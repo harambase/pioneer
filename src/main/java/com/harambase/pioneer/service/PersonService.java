@@ -177,6 +177,7 @@ public class PersonService {
         logger.info("The file task - work mode is " + mode + " - for " + userId + " has completed!");
         message.setMsg("上传成功");
         message.setData(jsonObject);
+        message.setCode(SystemConst.SUCCESS.getCode());
         return message;
     }
 
