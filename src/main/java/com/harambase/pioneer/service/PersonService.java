@@ -79,12 +79,14 @@ public class PersonService {
             if (StringUtils.isNotEmpty(person.getProfile())) {
                 JSONObject jsonObject = JSON.parseObject(person.getProfile());
                 String filePath = jsonObject.getString("path");
-                String fileName = FileUtil.getFileLogicalName(filePath);
-                String localPath = Config.serverPath + "/static/" + FileUtil.getFileDirPath(filePath);
+                if (StringUtils.isNotEmpty(filePath)) {
+                    String fileName = FileUtil.getFileLogicalName(filePath);
+                    String localPath = Config.serverPath + "/static/" + FileUtil.getFileDirPath(filePath);
 
-                File file = new File(localPath + fileName);
-                if(!file.exists())
-                    FileUtil.downloadFileFromFTPToLocal(fileName, filePath, localPath, Config.FTP_SERVER, Config.FTP_USERNAME, Config.FTP_PASSWORD);
+                    File file = new File(localPath + fileName);
+                    if (!file.exists())
+                        FileUtil.downloadFileFromFTPToLocal(fileName, filePath, localPath, Config.FTP_SERVER, Config.FTP_USERNAME, Config.FTP_PASSWORD);
+                }
 
             }
             return personServer.get(userid);
