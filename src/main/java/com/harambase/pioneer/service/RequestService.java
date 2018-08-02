@@ -268,7 +268,7 @@ public class RequestService {
                         String localPath = Config.serverPath + "/static/" + FileUtil.getFileDirPath(fileUri);
                         File localFile = new File(localPath + fileName);
                         if (!localFile.exists())
-                            FileUtil.downloadFileFromFTPToLocal(fileName, fileUri, localPath, Config.FTP_SERVER, Config.FTP_USERNAME, Config.FTP_PASSWORD);
+                            FileUtil.saveFileToLocal(file, fileName, localPath);
                     }
                     break;
 
