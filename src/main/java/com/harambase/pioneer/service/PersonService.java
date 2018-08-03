@@ -146,6 +146,14 @@ public class PersonService {
                     jsonObject.put("path", fileUri);
 
                     person.setProfile(jsonObject.toJSONString());
+
+                    if (StringUtils.isNotEmpty(fileUri)) {
+                        String fileName = FileUtil.getFileLogicalName(fileUri);
+                        String localPath = Config.serverPath + "/static/" + FileUtil.getFileDirPath(fileUri);
+                        File localFile = new File(localPath + fileName);
+                        if (!localFile.exists())
+                            FileUtil.saveFileToLocal(file, fileName, localPath);
+                    }
                     break;
 
                 case "f":

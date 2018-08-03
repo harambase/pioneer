@@ -134,6 +134,7 @@ public class CourseService {
 
         message.setMsg("上传成功");
         message.setData(map);
+        message.setCode(SystemConst.SUCCESS.getCode());
         return message;
     }
 

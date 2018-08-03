@@ -64,8 +64,7 @@ public class CourseServer {
         return courseService.removeStuFromCou(crn, studentId);
     }
 
-    public ResultMap assignStu2Course(String crn, String studentId,
-                                         Option option) {
+    public ResultMap assignStu2Course(String crn, String studentId, Option option) {
         return courseService.addStu2Cou(crn, studentId, option);
     }
 
