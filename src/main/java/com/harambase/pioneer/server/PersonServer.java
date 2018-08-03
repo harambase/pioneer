@@ -45,4 +45,7 @@ public class PersonServer {
         return personService.userList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderCol, type, status, role);
     }
 
+    public ResultMap updateLastLoginTime(String username) {
+        return personService.updateLastLoginTime(username);
+    }
 }

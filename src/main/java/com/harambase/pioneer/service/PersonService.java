@@ -195,4 +195,13 @@ public class PersonService {
                 existUser.getBirthday().equals(user.getBirthday()) &&
                 existUser.getTel().equals(user.getTel()) ? existUser : null;
     }
+
+    public ResultMap updateLastLoginTime(String username) {
+        try {
+            return personServer.updateLastLoginTime(username);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
+    }
 }

@@ -153,7 +153,7 @@ public class RequestController {
             if (StringUtils.isNotEmpty(courseJson.getString("courseInfo"))) {
                 JSONObject info = JSONObject.parseObject(courseJson.getString("courseInfo"));
                 try {
-                    FileUtil.downloadFile(info.getString("name"), info.getString("path"), response);
+                    FileUtil.downloadFileFromFtpServer(response, info.getString("name"), info.getString("path"), Config.FTP_SERVER, Config.FTP_USERNAME, Config.FTP_PASSWORD);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -200,9 +200,9 @@ public class CourseService {
     }
 
     
-    public ResultMap getCourseBySearch(String search, String status) {
+    public ResultMap getCourseBySearch(String search, String status, String info) {
         try {
-            return courseServer.search(search, status);
+            return courseServer.search(search, status, info);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();

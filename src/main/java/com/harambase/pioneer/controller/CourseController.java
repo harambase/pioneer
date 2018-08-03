@@ -106,8 +106,9 @@ public class CourseController {
     @PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public ResponseEntity search(@RequestParam(required = false, defaultValue = "") String search,
+                                 @RequestParam(required = false, defaultValue = "") String info,
                                  @RequestParam(required = false, defaultValue = "") String status) {
-        ResultMap ResultMap = courseService.getCourseBySearch(search, status);
+        ResultMap ResultMap = courseService.getCourseBySearch(search, status, info);
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
@@ -164,7 +165,6 @@ public class CourseController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('TEACH','ADMIN','FACULTY')")
     @RequestMapping(value = "/info/{crn}", method = RequestMethod.GET)
     public void downloadCourseInfo(@PathVariable String crn, @RequestParam String token, HttpServletResponse response) {
         if (StringUtils.isNotEmpty(token)) {

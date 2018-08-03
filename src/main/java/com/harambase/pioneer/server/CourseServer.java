@@ -54,8 +54,8 @@ public class CourseServer {
         return courseService.courseTreeList(facultyId, info);
     }
 
-    public ResultMap search(String search, String status) {
-        return courseService.getCourseBySearch(search, status);
+    public ResultMap search(String search, String status, String info) {
+        return courseService.getCourseBySearch(search, status, info);
     }
 
     public ResultMap preCourseList(String crn) {

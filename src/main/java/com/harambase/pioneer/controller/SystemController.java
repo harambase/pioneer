@@ -84,9 +84,10 @@ public class SystemController {
             int expiresIn = TokenHelper.getExpiredIn(device);
 
             // Return the token
-
+            personService.updateLastLoginTime(authenticationRequest.getUsername());
             resultMap.setData(new UserTokenState(jws, expiresIn));
             resultMap.setCode(SystemConst.SUCCESS.getCode());
+
         } catch (AuthenticationException e) {
             logger.error(e.getMessage(), e);
             resultMap.setCode(SystemConst.FAIL.getCode());

@@ -182,7 +182,6 @@ public class RequestService {
         return message;
     }
 
-
     public ResultMap registerTempAdvise(String studentId, String facultyIds) {
         try {
             return requestServer.newAdvisorRequest(studentId, facultyIds);
@@ -191,7 +190,6 @@ public class RequestService {
             return ReturnMsgUtil.systemError();
         }
     }
-
 
     public ResultMap deleteTempAdviseById(Integer id) {
         try {
