@@ -97,14 +97,12 @@ public class CourseService {
     }
     
     public ResultMap uploadInfo(String crn, MultipartFile file) {
+
         ResultMap message = new ResultMap();
-        Map<String, Object> map = new HashMap<>();
         JSONObject jsonObject = new JSONObject();
 
         try {
-            LinkedHashMap courseMap = (LinkedHashMap) courseServer.get(crn).getData();
-            Course course = new Course();
-            BeanUtils.populate(course, courseMap);
+            Course course = (Course) courseServer.getCourseBase(crn).getData();
 
             //处理老的文件
             if (StringUtils.isNotEmpty(course.getCourseInfo())) {
@@ -133,7 +131,7 @@ public class CourseService {
         }
 
         message.setMsg("上传成功");
-        message.setData(map);
+        message.setData(jsonObject);
         message.setCode(SystemConst.SUCCESS.getCode());
         return message;
     }

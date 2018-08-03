@@ -9,6 +9,8 @@ import com.harambase.pioneer.server.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.awt.color.ICC_Profile;
+
 @Component
 public class CourseServer {
 
@@ -76,4 +78,7 @@ public class CourseServer {
         return courseService.reg2Course(studentId, choiceList);
     }
 
+    public ResultMap getCourseBase(String crn) {
+        return courseService.getCourseBase(crn);
+    }
 }

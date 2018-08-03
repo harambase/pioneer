@@ -2,6 +2,7 @@ package com.harambase.pioneer.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.harambase.pioneer.common.Config;
 import com.harambase.pioneer.common.Page;
 import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.common.support.util.FileUtil;
@@ -172,7 +173,7 @@ public class CourseController {
             if (StringUtils.isNotEmpty(courseInfo)) {
                 JSONObject info = JSONObject.parseObject(courseInfo);
                 try {
-                    FileUtil.downloadFile(info.getString("name"), info.getString("path"), response);
+                    FileUtil.downloadFileFromFtpServer(response, info.getString("name"), info.getString("path"), Config.FTP_SERVER, Config.FTP_USERNAME, Config.FTP_PASSWORD);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
