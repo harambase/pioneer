@@ -41,7 +41,7 @@ public class MessageServer {
         String receiverId = null;
         String senderId = null;
 
-        if (box.contains("inbox") || box.contains("important"))
+        if (box.contains("inbox") || box.contains("important") || box.contains("urgent"))
             receiverId = userId;
         if (box.contains("sent") || box.contains("draft"))
             senderId = userId;
@@ -57,7 +57,7 @@ public class MessageServer {
         String receiverId = null;
         String senderId = null;
 
-        if (box.contains("inbox") || box.contains("important"))
+        if (box.contains("inbox") || box.contains("important") || box.contains("urgent"))
             receiverId = userId;
         if (box.contains("sent") || box.contains("draft"))
             senderId = userId;
