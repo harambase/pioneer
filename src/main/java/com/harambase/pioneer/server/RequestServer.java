@@ -39,7 +39,7 @@ public class RequestServer {
     }
 
     public ResultMap updateRequest(Integer id, TempUser tempUser) {
-        ResultMap message = new ResultMap();
+        ResultMap message;
         if (tempUser.getStatus().equals("1")) {
             Person newUser = JSONObject.parseObject(tempUser.getUserJson(), Person.class);
             message = personService.addUser(newUser);

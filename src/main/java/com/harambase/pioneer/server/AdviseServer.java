@@ -51,4 +51,8 @@ public class AdviseServer {
     public ResultMap getAdvisor(String userId) {
         return adviseService.getAdvisor(userId);
     }
+
+    public ResultMap getAdvisorByStudentId(String studentId) {
+        return adviseService.getAdviseViewByStudentId(studentId);
+    }
 }

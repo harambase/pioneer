@@ -9,6 +9,7 @@ import com.harambase.pioneer.common.support.util.DateUtil;
 import com.harambase.pioneer.common.support.util.IDUtil;
 import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
 import com.harambase.pioneer.server.pojo.base.*;
+import com.harambase.pioneer.server.pojo.view.AdviseView;
 import com.harambase.pioneer.server.service.AdviseService;
 import com.harambase.pioneer.server.service.MessageService;
 import com.harambase.pioneer.server.service.PersonService;
@@ -90,7 +91,7 @@ public class MessageSender {
 
     public ResultMap sendFacultyPinByInfo(String info, String senderId) {
         try {
-            List<Pin> pinInfoList = (List<Pin>) pinService.listByInfo("0", String.valueOf(Integer.MAX_VALUE), "", "desc", "pin", info).getData();
+            List<Pin> pinInfoList = (List<Pin>) pinService.listByInfo("0", String.valueOf(Integer.MAX_VALUE), "", "desc", "pin", info, "").getData();
 
             for (Pin pin : pinInfoList) {
                 if (pin.getRole() == 2) {
@@ -110,7 +111,7 @@ public class MessageSender {
 
     public ResultMap sendAdvisorPinByInfo(String info, String senderId) {
         try {
-            List<Pin> pinInfoList = (List<Pin>) pinService.listByInfo("0", String.valueOf(Integer.MAX_VALUE), "", "desc", "pin", info).getData();
+            List<Pin> pinInfoList = (List<Pin>) pinService.listByInfo("0", String.valueOf(Integer.MAX_VALUE), "", "desc", "pin", info, "").getData();
 
             for (Pin pin : pinInfoList) {
                 if (pin.getRole() == 1) {
@@ -130,7 +131,7 @@ public class MessageSender {
     }
 
     public ResultMap resendPin(Pin pin, String senderId) {
-        ResultMap resultMap = new ResultMap();
+        ResultMap resultMap;
         try {
             switch (pin.getRole()) {
                 case 1:
@@ -147,10 +148,10 @@ public class MessageSender {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
         }
-        return resultMap.getCode() != 2001 ? ReturnMsgUtil.success(null) : ReturnMsgUtil.fail();
+        return resultMap.getCode() == 2001 ? ReturnMsgUtil.success(null) : ReturnMsgUtil.fail();
     }
 
-    private ResultMap sendFacultyPin(Pin pin, String senderId) {
+    public ResultMap sendFacultyPin(Pin pin, String senderId) {
 
         Message message = new Message();
         message.setDate(DateUtil.DateToStr(new Date()));
@@ -162,7 +163,7 @@ public class MessageSender {
         message.setLabels(Labels.URGENT);
         message.setTag(Tags.TEACH);
 
-        String facultyId = pin.getFacultyId();
+        String facultyId = pin.getOwnerId();
         String body = "您收到一条来自教务的信息：您用于本学期成绩录入的识别码（PIN）为：" + pin.getPin() + "，有效期为："
                 + pin.getStartTime() + "至" + pin.getEndTime() + ", 如有问题请与教务人员联系！";
         message.setReceiverId(facultyId);
@@ -172,7 +173,11 @@ public class MessageSender {
         return newMessage != null ? ReturnMsgUtil.success(null) : ReturnMsgUtil.fail();
     }
 
-    private ResultMap sendAdvisorPin(Pin pin, String senderId) {
+    public ResultMap sendAdvisorPin(Pin pin, String senderId) {
+
+        String studentId = pin.getOwnerId();
+
+        AdviseView adviseView = (AdviseView) adviseService.getAdviseViewByStudentId(studentId).getData();
 
         Message message = new Message();
         message.setDate(DateUtil.DateToStr(new Date()));
@@ -184,14 +189,11 @@ public class MessageSender {
         message.setLabels(Labels.URGENT);
         message.setTag(Tags.TEACH);
 
-        String studentId = pin.getStudentId();
-        String facultyId = ((Advise) adviseService.getAdviseByStudentId(studentId).getData()).getFacultyId();
-        Person student = (Person) personService.getUser(studentId).getData();
-        String studentName = student.getLastName() + ", " + student.getFirstName();
-
+        String studentName = adviseView.getSname();
         String body = "您的辅导学生" + studentName + "用于选课的PIN是：" + pin.getPin() + "，有效期为："
                 + pin.getStartTime() + "至" + pin.getEndTime() + "。请及时告知，谢谢！";
-        message.setReceiverId(facultyId);
+
+        message.setReceiverId(adviseView.getFacultyId());
         message.setBody(body);
         Message newMessage = (Message) messageService.createMessage(message).getData();
 

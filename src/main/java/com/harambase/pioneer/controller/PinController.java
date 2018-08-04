@@ -87,7 +87,7 @@ public class PinController {
     @PreAuthorize("hasAnyRole('TEACH','ADMIN')")
     @RequestMapping(value = "/send", method = RequestMethod.POST)
     public ResponseEntity resend(@RequestBody Pin pin, HttpServletRequest request) {
-        ResultMap ResultMap = pinService.resend(pin, TokenHelper.getUserIdFromToken(TokenHelper.getToken(request)));
+         ResultMap ResultMap = pinService.resend(pin, TokenHelper.getUserIdFromToken(TokenHelper.getToken(request)));
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
@@ -105,9 +105,10 @@ public class PinController {
                                @RequestParam(value = "search", required = false, defaultValue = "") String search,
                                @RequestParam(value = "order", required = false, defaultValue = "desc") String order,
                                @RequestParam(value = "orderCol", required = false, defaultValue = "pin") String orderCol,
+                               @RequestParam(value = "ownerId", required = false, defaultValue = "") String ownerId,
                                @RequestParam(value = "info", required = false) String info) {
 
-        ResultMap message = pinService.listByInfo(start * length - 1, length, search, order, orderCol, info);
+        ResultMap message = pinService.listByInfo(start * length - 1, length, search, order, orderCol, info, ownerId);
         message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
