@@ -71,12 +71,13 @@ public class CourseController {
                                @RequestParam(value = "mode", required = false) String mode,
                                @RequestParam(value = "info", required = false, defaultValue = "") String info,
                                @RequestParam(value = "facultyId", required = false, defaultValue = "") String facultyId,
+                               @RequestParam(value = "status", required = false, defaultValue = "") String status,
                                HttpServletRequest request) {
 
         if (StringUtils.isNotEmpty(mode) && mode.equals("faculty"))
             facultyId = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));
         search.replace("'", "");
-        ResultMap message = courseService.courseList(start * length - 1, length, search, order, orderCol, facultyId, info);
+        ResultMap message = courseService.courseList(start * length - 1, length, search, order, orderCol, facultyId, info, status);
         message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         return new ResponseEntity<>(message, HttpStatus.OK);
     }

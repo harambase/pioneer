@@ -38,8 +38,8 @@ public class CourseServer {
     }
 
     public ResultMap list(Integer start, Integer length, String search, String order,
-                             String orderCol, String facultyId, String info) {
-        return courseService.courseList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderCol, facultyId, info);
+                             String orderCol, String facultyId, String info, String status) {
+        return courseService.courseList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderCol, facultyId, info, status);
     }
 
     public ResultMap studentList(String crn, String search) {

@@ -30,7 +30,7 @@ public class TranscriptController {
         this.transcriptService = transcriptService;
     }
 
-    @PreAuthorize("hasAnyRole('TEACH','ADMIN')")
+    @PreAuthorize("hasAnyRole('TEACH','FACULTY','ADMIN')")
     @RequestMapping(value = "/{id}", produces = "application/json", method = RequestMethod.PUT)
     public ResponseEntity update(@PathVariable Integer id, @RequestBody Transcript transcript, HttpServletRequest request) {
         transcript.setOperatorId(TokenHelper.getUserIdFromToken(TokenHelper.getToken(request)));

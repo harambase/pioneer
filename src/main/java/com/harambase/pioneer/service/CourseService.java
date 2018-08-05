@@ -77,9 +77,9 @@ public class CourseService {
     }
 
     
-    public ResultMap courseList(int start, int length, String search, String order, String orderColumn, String facultyid, String info) {
+    public ResultMap courseList(int start, int length, String search, String order, String orderColumn, String facultyId, String info, String status) {
         try {
-            return courseServer.list(start, length, search, order, orderColumn, facultyid, info);
+            return courseServer.list(start, length, search, order, orderColumn, facultyId, info, status);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -87,9 +87,9 @@ public class CourseService {
     }
 
     
-    public ResultMap courseTreeList(String facultyid, String info) {
+    public ResultMap courseTreeList(String facultyId, String info) {
         try {
-            return courseServer.zTreeList(facultyid, info);
+            return courseServer.zTreeList(facultyId, info);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
