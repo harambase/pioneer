@@ -90,6 +90,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/transcript/report/**").permitAll()
                 .antMatchers("/transcript/all/report").permitAll()
                 .antMatchers("/course/info/**").permitAll()
+                .antMatchers("/contract/info/**").permitAll()
                 .antMatchers("/user/info/**").permitAll()
                 .antMatchers("/request/course/info/**").permitAll()
                 .antMatchers("/request/user/info/**").permitAll()

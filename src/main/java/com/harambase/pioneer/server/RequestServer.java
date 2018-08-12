@@ -102,6 +102,9 @@ public class RequestServer {
             if (message.getCode() == SystemConst.SUCCESS.getCode()) {
                 return tempCourseService.updateTempCourse(id, tempCourse);
             }
+            else{
+                return message;
+            }
         }
         return tempCourseService.updateTempCourse(id, tempCourse);
     }

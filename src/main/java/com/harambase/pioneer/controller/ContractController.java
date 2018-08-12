@@ -94,15 +94,15 @@ public class ContractController {
     }
 
     @PreAuthorize("hasAnyRole('LOGISTIC','ADMIN')")
-    @RequestMapping(value = "/info/{contractId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/info/{id}", method = RequestMethod.PUT)
     public ResponseEntity uploadProfile(@RequestParam(value = "file", required = false) MultipartFile file,
                                         @PathVariable Integer id) {
         ResultMap message = contractService.upload(id, file);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/info/{contractId}", method = RequestMethod.GET)
-    public void downloadUserInfo(@PathVariable(value = "contractId") Integer id, HttpServletResponse response) {
+    @RequestMapping(value = "/info/{id}", method = RequestMethod.GET)
+    public void downloadUserInfo(@PathVariable(value = "id") Integer id, HttpServletResponse response) {
         ResultMap message = contractService.get(id);
         String contractInfo = ((Contract) message.getData()).getContractInfo();
         if (StringUtils.isNotEmpty(contractInfo)) {
