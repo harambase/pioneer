@@ -39,9 +39,9 @@ public class ContractService {
     }
 
 
-    public ResultMap deleteContract(String contractid) {
+    public ResultMap deleteContract(Integer id) {
         try {
-            return contractServer.delete(contractid);
+            return contractServer.delete(id);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -49,9 +49,9 @@ public class ContractService {
     }
 
 
-    public ResultMap updateContract(String contractId, Contract contract) {
+    public ResultMap updateContract(Integer id, Contract contract) {
         try {
-            return contractServer.update(contractId, contract);
+            return contractServer.update(id, contract);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -59,9 +59,9 @@ public class ContractService {
     }
 
 
-    public ResultMap get(String contractid) {
+    public ResultMap get(Integer id) {
         try {
-            return contractServer.get(contractid);
+            return contractServer.get(id);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -90,13 +90,13 @@ public class ContractService {
     }
 
 
-    public ResultMap upload(String contractId, MultipartFile file) {
+    public ResultMap upload(Integer id, MultipartFile file) {
 
         ResultMap message = new ResultMap();
         JSONObject jsonObject = new JSONObject();
 
         try {
-            Contract contract = (Contract) contractServer.get(contractId).getData();
+            Contract contract = (Contract) contractServer.get(id).getData();
             String name = file.getOriginalFilename();
 
             String fileUri;
@@ -116,7 +116,7 @@ public class ContractService {
 
             contract.setContractInfo(jsonObject.toJSONString());
 
-            message = contractServer.update(contractId, contract);
+            message = contractServer.update(id, contract);
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -124,7 +124,7 @@ public class ContractService {
             message.setCode(SystemConst.FAIL.getCode());
             return message;
         }
-        logger.info("The file task - " + contractId + " has completed!");
+        logger.info("The file task - " + id + " has completed!");
         message.setMsg("上传成功");
         message.setData(jsonObject);
         message.setCode(SystemConst.SUCCESS.getCode());

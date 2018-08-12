@@ -5,6 +5,7 @@ import com.harambase.pioneer.common.Config;
 import com.harambase.pioneer.common.Page;
 import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.common.support.util.FileUtil;
+import com.harambase.pioneer.helper.TokenHelper;
 import com.harambase.pioneer.server.pojo.base.Contract;
 import com.harambase.pioneer.service.ContractService;
 import org.apache.commons.lang3.StringUtils;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @CrossOrigin
@@ -39,29 +41,32 @@ public class ContractController {
 
     @PreAuthorize("hasAnyRole('LOGISTIC','ADMIN')")
     @RequestMapping(produces = "application/json", method = RequestMethod.POST)
-    public ResponseEntity create(@RequestBody Contract contract) {
+    public ResponseEntity create(HttpServletRequest request, @RequestBody Contract contract) {
+        String authToken = TokenHelper.getToken(request);
+        String userId = TokenHelper.getUserIdFromToken(authToken);
+        contract.setOperatorId(userId);
         ResultMap message = contractService.createContract(contract);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('LOGISTIC','ADMIN')")
-    @RequestMapping(value = "/{contractId}", method = RequestMethod.DELETE)
-    public ResponseEntity delete(@PathVariable("contractId") String contractid) {
-        ResultMap message = contractService.deleteContract(contractid);
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity delete(@PathVariable("id") Integer id) {
+        ResultMap message = contractService.deleteContract(id);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('LOGISTIC','ADMIN')")
     @RequestMapping(value = "/{contractId}", produces = "application/json", method = RequestMethod.PUT)
-    public ResponseEntity update(@PathVariable("contractId") String contractId, @RequestBody Contract contract) {
-        ResultMap message = contractService.updateContract(contractId, contract);
+    public ResponseEntity update(@PathVariable("contractId") Integer id, @RequestBody Contract contract) {
+        ResultMap message = contractService.updateContract(id, contract);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('LOGISTIC','ADMIN')")
-    @RequestMapping(value = "/{contractId}", method = RequestMethod.GET)
-    public ResponseEntity get(@PathVariable(value = "contractId") String contractId) {
-        ResultMap resultMap = contractService.get(contractId);
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ResponseEntity get(@PathVariable(value = "id") Integer id) {
+        ResultMap resultMap = contractService.get(id);
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 
@@ -91,14 +96,14 @@ public class ContractController {
     @PreAuthorize("hasAnyRole('LOGISTIC','ADMIN')")
     @RequestMapping(value = "/info/{contractId}", method = RequestMethod.PUT)
     public ResponseEntity uploadProfile(@RequestParam(value = "file", required = false) MultipartFile file,
-                                        @PathVariable String contractId) {
-        ResultMap message = contractService.upload(contractId, file);
+                                        @PathVariable Integer id) {
+        ResultMap message = contractService.upload(id, file);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/info/{contractId}", method = RequestMethod.GET)
-    public void downloadUserInfo(@PathVariable(value = "contractId") String contractId, HttpServletResponse response) {
-        ResultMap message = contractService.get(contractId);
+    public void downloadUserInfo(@PathVariable(value = "contractId") Integer id, HttpServletResponse response) {
+        ResultMap message = contractService.get(id);
         String contractInfo = ((Contract) message.getData()).getContractInfo();
         if (StringUtils.isNotEmpty(contractInfo)) {
             JSONObject info = JSONObject.parseObject(contractInfo);

@@ -20,16 +20,16 @@ public class ContractServer {
         return contractService.addContract(contract);
     }
 
-    public ResultMap delete(String contractId) {
-        return contractService.removeContract(contractId);
+    public ResultMap delete(Integer id) {
+        return contractService.removeContract(id);
     }
 
-    public ResultMap update(String contractId, Contract contract) {
-        return contractService.update(contractId, contract);
+    public ResultMap update(Integer id, Contract contract) {
+        return contractService.update(id, contract);
     }
 
-    public ResultMap get(String contractId) {
-        return contractService.getContract(contractId);
+    public ResultMap get(Integer id) {
+        return contractService.getContract(id);
     }
 
 
