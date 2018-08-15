@@ -101,12 +101,12 @@ public class TranscriptController {
     }
 
     @RequestMapping(value = "/report/all", method = RequestMethod.GET)
-    public void transcriptAllReport(@RequestParam String token,
+    public void transcriptAllReport(@RequestParam String token, @RequestParam(required = false) String style,
                                     @RequestParam(required = false) String info, HttpServletResponse response) {
         if (StringUtils.isNotEmpty(token)) {
-            ResultMap ResultMap = transcriptService.allTranscripts(info);
+            ResultMap ResultMap = transcriptService.allTranscripts(Integer.parseInt(style), info);
             try {
-                FileUtil.downloadFile("all_transcript_report.csv", (String) ResultMap.getData(), response);
+                FileUtil.downloadFile(info + "成绩单报告.csv", (String) ResultMap.getData(), response);
             } catch (Exception e) {
                 e.printStackTrace();
             }

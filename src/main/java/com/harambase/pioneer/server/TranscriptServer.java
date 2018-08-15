@@ -26,4 +26,7 @@ public class TranscriptServer {
         return transcriptService.transcriptList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderCol, studentId, crn, info, complete);
     }
 
+    public ResultMap getDistinctColumnByInfo(String column, String info){
+        return transcriptService.getDistinctColumnByInfo(column, info);
+    }
 }

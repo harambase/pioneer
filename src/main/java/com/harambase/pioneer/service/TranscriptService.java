@@ -10,8 +10,10 @@ import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
 import com.harambase.pioneer.server.PersonServer;
 import com.harambase.pioneer.server.StudentServer;
 import com.harambase.pioneer.server.TranscriptServer;
+import com.harambase.pioneer.server.helper.Name;
 import com.harambase.pioneer.server.pojo.base.Person;
 import com.harambase.pioneer.server.pojo.base.Transcript;
+import com.harambase.pioneer.server.pojo.dto.TranscriptReportOnly;
 import com.harambase.pioneer.server.pojo.view.TranscriptView;
 import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.util.*;
@@ -168,40 +171,81 @@ public class TranscriptService {
         return restMessage;
     }
 
-    public ResultMap allTranscripts(String info) {
+    public ResultMap allTranscripts(int style, String info) {
         FileOutputStream fos = null;
-        String csvPath = Config.TEMP_FILE_PATH + "all_transcript_report.csv";
+        String csvPath = Config.serverPath + "all_transcript_report.csv";
         ResultMap message = null;
+        StringBuilder exportInfoSb = new StringBuilder();
 
         try {
             File outputFile = new File(csvPath);
-            if(outputFile.exists()) {
+            if (outputFile.exists()) {
                 outputFile.delete();
                 outputFile = new File(csvPath);
             }
             fos = new FileOutputStream(outputFile, true);
             //Solve for Chinese Character errors while using excel:
-            fos.write(new byte[]{(byte)0xEF,(byte)0xBB,(byte)0xBF});
+            fos.write(new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF});
 
-            Field[] titleList = TranscriptView.class.getDeclaredFields();
+            Field[] titleList = TranscriptReportOnly.class.getDeclaredFields();
             List<TranscriptView> transcriptViewList = (List<TranscriptView>) transcriptServer.list(1, Integer.MAX_VALUE, "", "asc",
                     "crn", "", "", info, "").getData();
 
-            StringBuilder exportInfoSb = new StringBuilder();
-            for (int i = 0; i < titleList.length; i++) {
-                if (i != 0) exportInfoSb.append(",");
-                exportInfoSb.append("\"" + titleList[i].getName() + "\"");
+
+            switch (style) {
+                case 1:
+                    for (int i = 0; i < titleList.length; i++) {
+                        if (i != 0) exportInfoSb.append(",");
+                        Name name = titleList[i].getAnnotation(Name.class);
+                        exportInfoSb.append("\"" + name.value() + "\"");
+                    }
+                    exportInfoSb.append("\n");
+
+                    for (int i = 0; i < transcriptViewList.size(); i++) {
+                        Map<String, String> tvMap = BeanUtils.describe(transcriptViewList.get(i));
+                        for (int j = 0; j < titleList.length; j++) {
+                            if (j != 0) exportInfoSb.append(",");
+                            exportInfoSb.append("\"" + tvMap.get(titleList[j].getName()) + "\"");
+                        }
+                        exportInfoSb.append("\n");
+                    }
+                    break;
+                case 2:
+                    //标题行
+                    List<String> coursesNames = (List<String>) transcriptServer.getDistinctColumnByInfo("cname", info).getData();
+                    exportInfoSb.append(",");
+                    for (int i = 0; i < coursesNames.size(); i++) {
+                        if (i != 0) exportInfoSb.append(",");
+                        exportInfoSb.append("\"" + coursesNames.get(i) + "(成绩/学分)\"");
+                    }
+                    exportInfoSb.append("\n");
+
+                    //每列
+                    List<String> studentNames = (List<String>) transcriptServer.getDistinctColumnByInfo("sname", info).getData();
+                    for (int i = 0; i < studentNames.size(); i++) {
+
+                        String sname = studentNames.get(i);
+                        exportInfoSb.append("\"" + sname + "\"");
+                        exportInfoSb.append(",");
+
+                        for (int k = 0; k < coursesNames.size(); k++) {
+                            if (k != 0) exportInfoSb.append(",");
+                            String cname = coursesNames.get(k);
+
+                            for (int j = 0; j < transcriptViewList.size(); j++) {
+                                TranscriptView tv = transcriptViewList.get(j);
+                                if (tv.getSname().equals(sname) && tv.getCname().equals(cname)) {
+                                    exportInfoSb.append("\"" + tv.getGrade() + "/" + tv.getCredit() + "\"");
+                                }
+                            }
+                        }
+                        exportInfoSb.append("\n");
+                    }
+
+                    break;
             }
-            exportInfoSb.append("\n");
-            for (int i = 0; i < transcriptViewList.size(); i++) {
-                Map<String, String> tvMap = BeanUtils.describe(transcriptViewList.get(i));
-                for (int j = 0; j < titleList.length; j++) {
-                    if (j != 0) exportInfoSb.append(",");
-                    exportInfoSb.append("\"" + tvMap.get(titleList[j].getName()) + "\"");
-                }
-                exportInfoSb.append("\n");
-            }
-            exportInfoSb.append("total records:," + transcriptViewList.size());
+            exportInfoSb.append("成绩总数:," + transcriptViewList.size());
+            exportInfoSb.append("注释:* 正在进行、P 通过" + transcriptViewList.size());
             fos.write(exportInfoSb.toString().getBytes("UTF-8"));
 
         } catch (Exception e) {
