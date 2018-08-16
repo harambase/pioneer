@@ -34,11 +34,11 @@ public class ContractServer {
 
 
     public ResultMap search(String search, String type, String status) {
-        return contractService.listContracts(search, type, status,"5");
+        return contractService.listContracts(search, type, status, "5");
     }
 
     public ResultMap list(Integer start, Integer length, String search,
-                             String order, String orderCol, String type, String status) {
+                          String order, String orderCol, String type, String status) {
         return contractService.contractList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderCol, type, status);
     }
 

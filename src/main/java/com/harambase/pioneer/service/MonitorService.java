@@ -15,17 +15,17 @@ public class MonitorService {
         this.monitorServer = monitorServer;
     }
 
-    
+
     public ResultMap systemInfo() {
         return monitorServer.systemInfo();
     }
 
-    
+
     public ResultMap getRelationChart() {
         return monitorServer.relationChart();
     }
 
-    
+
     public ResultMap getUserChart() {
         return monitorServer.userCount();
     }

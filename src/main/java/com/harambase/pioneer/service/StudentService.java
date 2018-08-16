@@ -33,7 +33,7 @@ public class StudentService {
         this.studentServer = studentServer;
     }
 
-    
+
     public ResultMap transcriptDetail(String studentid) {
         try {
             return studentServer.getTranscriptDetail(studentid);
@@ -43,7 +43,7 @@ public class StudentService {
         }
     }
 
-    
+
     public ResultMap update(String studentId, Student student) {
         try {
             return studentServer.update(studentId, student);
@@ -53,7 +53,7 @@ public class StudentService {
         }
     }
 
-    
+
     public ResultMap studentList(int start, int length, String search, String order, String orderColumn, String status) {
         try {
             return studentServer.list(start, length, search, order, orderColumn, status);
@@ -63,7 +63,7 @@ public class StudentService {
         }
     }
 
-    
+
     public ResultMap getAvailableCredit(String studentid, String info) {
         try {
             return studentServer.getAvailableCredit(studentid, info);
@@ -73,7 +73,7 @@ public class StudentService {
         }
     }
 
-    
+
     public ResultMap courseList(String status, String studentId) {
         try {
             return studentServer.courseList(status, studentId);

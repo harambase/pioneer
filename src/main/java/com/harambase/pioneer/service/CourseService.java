@@ -36,7 +36,7 @@ public class CourseService {
         this.courseServer = courseServer;
     }
 
-    
+
     public ResultMap create(Course course) {
         try {
             return courseServer.create(course);
@@ -46,7 +46,7 @@ public class CourseService {
         }
     }
 
-    
+
     public ResultMap delete(String crn) {
         try {
             return courseServer.delete(crn);
@@ -56,7 +56,7 @@ public class CourseService {
         }
     }
 
-    
+
     public ResultMap update(String crn, Course course) {
         try {
             return courseServer.update(crn, course);
@@ -66,7 +66,7 @@ public class CourseService {
         }
     }
 
-    
+
     public ResultMap getCourseByCrn(String crn) {
         try {
             return courseServer.get(crn);
@@ -76,7 +76,7 @@ public class CourseService {
         }
     }
 
-    
+
     public ResultMap courseList(int start, int length, String search, String order, String orderColumn, String facultyId, String info, String status) {
         try {
             return courseServer.list(start, length, search, order, orderColumn, facultyId, info, status);
@@ -86,7 +86,7 @@ public class CourseService {
         }
     }
 
-    
+
     public ResultMap courseTreeList(String facultyId, String info) {
         try {
             return courseServer.zTreeList(facultyId, info);
@@ -95,7 +95,7 @@ public class CourseService {
             return ReturnMsgUtil.systemError();
         }
     }
-    
+
     public ResultMap uploadInfo(String crn, MultipartFile file) {
 
         ResultMap message = new ResultMap();
@@ -110,7 +110,7 @@ public class CourseService {
                 FileUtil.deleteFileFromFTP(oldInfoPath, Config.FTP_SERVER, Config.FTP_USERNAME, Config.FTP_PASSWORD);
             }
 
-            String fileUri = FileUtil.uploadFileToFtpServer(file, Config.FTP_PATH + "/document/courseInfo",  Config.FTP_SERVER, Config.FTP_USERNAME, Config.FTP_PASSWORD);
+            String fileUri = FileUtil.uploadFileToFtpServer(file, Config.FTP_PATH + "/document/courseInfo", Config.FTP_SERVER, Config.FTP_USERNAME, Config.FTP_PASSWORD);
 
             String name = file.getOriginalFilename();
 
@@ -136,7 +136,7 @@ public class CourseService {
         return message;
     }
 
-    
+
     public ResultMap courseInfoList(String search) {
         try {
             return courseServer.listInfo(search);
@@ -146,7 +146,7 @@ public class CourseService {
         }
     }
 
-    
+
     public ResultMap getAssignmentList(String crn) {
         ResultMap message = courseServer.get(crn);
 
@@ -164,7 +164,7 @@ public class CourseService {
         return message;
     }
 
-    
+
     public ResultMap updateAssignment(String crn, JSONArray assignment) {
         ResultMap message = courseServer.get(crn);
         LinkedHashMap courseMap = (LinkedHashMap) message.getData();
@@ -179,17 +179,17 @@ public class CourseService {
         return message;
     }
 
-    
+
     public ResultMap uploadAssignmentAttachment(String crn, MultipartFile multipartFile) {
         return null;
     }
 
-    
+
     public ResultMap submitAssignment(String crn, String assignmentName, String createTime, String studentId, MultipartFile multipartFile) {
         return null;
     }
 
-    
+
     public ResultMap studentList(String crn, String search) {
         try {
             return courseServer.studentList(crn, search);
@@ -199,7 +199,7 @@ public class CourseService {
         }
     }
 
-    
+
     public ResultMap getCourseBySearch(String search, String status, String info) {
         try {
             return courseServer.search(search, status, info);
@@ -209,7 +209,7 @@ public class CourseService {
         }
     }
 
-    
+
     public ResultMap assignFac2Cou(String crn, String facultyId) {
         try {
             return courseServer.assignFac2Course(crn, facultyId);
@@ -219,7 +219,7 @@ public class CourseService {
         }
     }
 
-    
+
     public ResultMap preCourseList(String crn) {
         try {
             return courseServer.preCourseList(crn);
@@ -229,7 +229,7 @@ public class CourseService {
         }
     }
 
-    
+
     public ResultMap addStu2Cou(String crn, String studentId, Option option) {
         try {
             return courseServer.assignStu2Course(crn, studentId, option);
@@ -239,7 +239,7 @@ public class CourseService {
         }
     }
 
-    
+
     public ResultMap removeStuFromCou(String crn, String studentId) {
         try {
             return courseServer.removeStuFromCourse(crn, studentId);
@@ -249,7 +249,7 @@ public class CourseService {
         }
     }
 
-    
+
     public ResultMap reg2Course(String studentId, JSONArray choiceList) {
         try {
             return courseServer.courseChoice(studentId, choiceList);

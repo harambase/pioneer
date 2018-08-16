@@ -20,7 +20,7 @@ public class MessageService {
     public MessageService(MessageServer messageServer) {
         this.messageServer = messageServer;
     }
-    
+
     public ResultMap create(Message message) {
         try {
             return messageServer.create(message);
@@ -30,7 +30,7 @@ public class MessageService {
         }
     }
 
-    
+
     public ResultMap delete(Integer id) {
         try {
             return messageServer.delete(id);
@@ -40,7 +40,7 @@ public class MessageService {
         }
     }
 
-    
+
     public ResultMap update(Integer id, Message message) {
         try {
             return messageServer.update(id, message);
@@ -50,7 +50,7 @@ public class MessageService {
         }
     }
 
-    
+
     public ResultMap updateStatus(Integer id, String status) {
         try {
             return messageServer.updateStatus(id, status);
@@ -60,7 +60,7 @@ public class MessageService {
         }
     }
 
-    
+
     public ResultMap get(Integer id) {
         try {
             return messageServer.get(id);
@@ -70,7 +70,7 @@ public class MessageService {
         }
     }
 
-    
+
     public ResultMap list(int start, int length, String search, String order, String orderColumn, String userId, String box) {
         try {
             return messageServer.list(start, length, search, order, orderColumn, userId, box);
@@ -80,7 +80,7 @@ public class MessageService {
         }
     }
 
-    
+
     public ResultMap countMessageByStatus(String userId, String box, String status) {
         try {
             return messageServer.count(userId, box, status);

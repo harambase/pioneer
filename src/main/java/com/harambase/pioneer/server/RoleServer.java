@@ -14,7 +14,7 @@ public class RoleServer {
     public RoleServer(RoleService roleService) {
         this.roleService = roleService;
     }
-    
+
     public ResultMap get(Integer roleId) {
         return roleService.get(roleId);
     }

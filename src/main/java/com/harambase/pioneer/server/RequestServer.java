@@ -67,8 +67,7 @@ public class RequestServer {
                         "您接收到来自系统的一条消息:来自用户 " + info + " 批准已拒绝！", "拒绝操作失败", "用户申请");
             }
 
-        }
-        else{
+        } else {
             message = tempUserService.updateTempUser(id, tempUser);
         }
 
@@ -77,7 +76,7 @@ public class RequestServer {
 
     public ResultMap register(JSONObject jsonObject) {
         ResultMap resultMap = tempUserService.register(jsonObject);
-        if(resultMap.getCode() == SystemConst.SUCCESS.getCode()){
+        if (resultMap.getCode() == SystemConst.SUCCESS.getCode()) {
             messageSender.sendToAllSystem((TempUser) resultMap.getData());
         }
         return resultMap;
@@ -101,8 +100,7 @@ public class RequestServer {
             ResultMap message = courseService.addCourse(JSONObject.parseObject(tempCourse.getCourseJson(), Course.class));
             if (message.getCode() == SystemConst.SUCCESS.getCode()) {
                 return tempCourseService.updateTempCourse(id, tempCourse);
-            }
-            else{
+            } else {
                 return message;
             }
         }

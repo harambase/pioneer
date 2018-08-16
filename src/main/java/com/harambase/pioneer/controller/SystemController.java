@@ -96,21 +96,20 @@ public class SystemController {
     }
 
     @RequestMapping(value = "/user/verify", method = RequestMethod.POST)
-    public ResponseEntity verifyUser(@RequestBody Person user){
+    public ResponseEntity verifyUser(@RequestBody Person user) {
         ResultMap resultMap = new ResultMap();
         Person p = personService.verifyUser(user);
-        if(p != null){
+        if (p != null) {
             resultMap.setData(p);
             resultMap.setCode(SystemConst.SUCCESS.getCode());
-        }
-        else
+        } else
             resultMap.setCode(SystemConst.FAIL.getCode());
 
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/user/reset/password/{userId}", method = RequestMethod.PUT)
-    public ResponseEntity passwordReset(@PathVariable String userId, @RequestBody Person user){
+    public ResponseEntity passwordReset(@PathVariable String userId, @RequestBody Person user) {
         user.setPassword(passwordEncoder().encode(user.getPassword()));
         ResultMap resultMap = personService.updatePerson(userId, user);
         return new ResponseEntity<>(resultMap, HttpStatus.OK);

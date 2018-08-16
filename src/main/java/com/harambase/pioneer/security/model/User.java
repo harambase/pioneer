@@ -105,13 +105,14 @@ public class User implements UserDetails, Serializable {
         this.type = type == null ? null : type.trim();
     }
 
-    public String[] getRoles(){
+    public String[] getRoles() {
         return this.roles;
     }
 
-    public void setRoles(String[] roles){
+    public void setRoles(String[] roles) {
         this.roles = roles;
     }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.authorities;

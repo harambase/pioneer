@@ -37,11 +37,11 @@ public class PersonServer {
     }
 
     public ResultMap search(String search, String type, String status, String role) {
-        return personService .listUsers(search, type, status, role ,"");
+        return personService.listUsers(search, type, status, role, "");
     }
 
     public ResultMap list(Integer start, Integer length, String search,
-                             String order, String orderCol, String type, String status, String role) {
+                          String order, String orderCol, String type, String status, String role) {
         return personService.userList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderCol, type, status, role);
     }
 

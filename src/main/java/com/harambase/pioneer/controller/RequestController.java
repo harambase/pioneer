@@ -73,7 +73,7 @@ public class RequestController {
                                    @RequestParam(value = "orderCol", required = false, defaultValue = "user_id") String orderCol,
                                    @RequestParam(value = "viewStatus", required = false, defaultValue = "") String viewStatus) {
 
-        ResultMap message = requestService.tempUserList(start * length -1, length, search, order, orderCol, viewStatus);
+        ResultMap message = requestService.tempUserList(start * length - 1, length, search, order, orderCol, viewStatus);
         message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
@@ -185,10 +185,10 @@ public class RequestController {
     @RequestMapping(value = "/advise/{studentId}", method = RequestMethod.POST)
     public ResponseEntity newAdvisorRequest(@PathVariable String studentId, @RequestBody JSONArray jsonArray) {
         String facultyIds = "";
-        for(Object jsonObject: jsonArray){
-            facultyIds += ((LinkedHashMap) jsonObject).get("userId") +"/";
+        for (Object jsonObject : jsonArray) {
+            facultyIds += ((LinkedHashMap) jsonObject).get("userId") + "/";
         }
-        if(StringUtils.isNotEmpty(facultyIds)) {
+        if (StringUtils.isNotEmpty(facultyIds)) {
             ResultMap resultMap = requestService.registerTempAdvise(studentId, facultyIds);
             return new ResponseEntity<>(resultMap, HttpStatus.OK);
         }

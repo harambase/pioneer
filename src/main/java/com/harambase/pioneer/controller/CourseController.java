@@ -78,7 +78,7 @@ public class CourseController {
 
         if (StringUtils.isNotEmpty(mode) && mode.equals("faculty"))
             facultyId = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));
-        if (StringUtils.isEmpty(info) && StringUtils.isEmpty(facultyId) && StringUtils.isEmpty(status)){
+        if (StringUtils.isEmpty(info) && StringUtils.isEmpty(facultyId) && StringUtils.isEmpty(status)) {
             ResultMap message = new ResultMap();
             message.setCode(SystemConst.SUCCESS.getCode());
             message.setMsg(SystemConst.SUCCESS.getMsg());

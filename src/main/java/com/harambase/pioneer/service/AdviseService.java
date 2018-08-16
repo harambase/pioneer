@@ -4,8 +4,10 @@ import com.harambase.pioneer.common.Config;
 import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.common.constant.SystemConst;
 import com.harambase.pioneer.server.AdviseServer;
+import com.harambase.pioneer.server.helper.Name;
 import com.harambase.pioneer.server.pojo.base.Advise;
 import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
+import com.harambase.pioneer.server.pojo.dto.AdviseReportOnly;
 import com.harambase.pioneer.server.pojo.view.AdviseView;
 import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
@@ -32,7 +34,7 @@ public class AdviseService {
         this.adviseServer = adviseServer;
     }
 
-    
+
     public ResultMap advisingList(int start, int length, String search, String order, String orderColumn, String studentId, String facultyId, String info) {
         try {
             return adviseServer.list(start, length, search, order, orderColumn, studentId, facultyId, info);
@@ -42,7 +44,7 @@ public class AdviseService {
         }
     }
 
-    
+
     public ResultMap updateAdvise(Integer id, Advise advise) {
         try {
             return adviseServer.update(id, advise);
@@ -52,7 +54,7 @@ public class AdviseService {
         }
     }
 
-    
+
     public ResultMap assignMentor(Advise advise) {
         try {
             return adviseServer.create(advise);
@@ -62,7 +64,7 @@ public class AdviseService {
         }
     }
 
-    
+
     public ResultMap removeMentor(Integer id) {
         try {
             return adviseServer.delete(id);
@@ -72,7 +74,7 @@ public class AdviseService {
         }
     }
 
-    
+
     public ResultMap getMentor(Integer id) {
         try {
             return adviseServer.get(id);
@@ -84,27 +86,27 @@ public class AdviseService {
 
     public ResultMap downloadAdviseByInfo(String info) {
         FileOutputStream fos = null;
-        String csvPath = Config.TEMP_FILE_PATH + info + "导师表.csv";
-        ResultMap message = null;
+        String csvPath = Config.serverPath + info + "导师表.csv";
 
         try {
             File outputFile = new File(csvPath);
-            if(outputFile.exists()) {
+            if (outputFile.exists()) {
                 outputFile.delete();
                 outputFile = new File(csvPath);
             }
             fos = new FileOutputStream(outputFile, true);
             //Solve for Chinese Character errors while using excel:
-            fos.write(new byte[]{(byte)0xEF,(byte)0xBB,(byte)0xBF});
+            fos.write(new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF});
 
-            Field[] titleList = AdviseView.class.getDeclaredFields();
+            Field[] titleList = AdviseReportOnly.class.getDeclaredFields();
             List<AdviseView> adviseViewList = (List<AdviseView>) adviseServer.list(1, Integer.MAX_VALUE, "", "asc",
                     "student_id", "", "", info).getData();
 
             StringBuilder exportInfoSb = new StringBuilder();
             for (int i = 0; i < titleList.length; i++) {
                 if (i != 0) exportInfoSb.append(",");
-                exportInfoSb.append("\"" + titleList[i].getName() + "\"");
+                Name name = titleList[i].getAnnotation(Name.class);
+                exportInfoSb.append("\"" + name.value() + "\"");
             }
             exportInfoSb.append("\n");
             for (int i = 0; i < adviseViewList.size(); i++) {
