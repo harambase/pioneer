@@ -82,7 +82,7 @@ public class MessageController {
                                @RequestParam(value = "orderCol", required = false, defaultValue = "id") String orderCol,
                                @RequestParam(value = "box", required = false, defaultValue = "inbox") String box,
                                HttpServletRequest request) {
-
+        search = search.replace("'", "");
         String userId = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));
         ResultMap message = messageService.list(start * length - 1, length, search, order, orderCol, userId, box);
         message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());

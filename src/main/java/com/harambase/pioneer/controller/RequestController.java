@@ -171,6 +171,7 @@ public class RequestController {
                                      @RequestParam(value = "viewStatus", required = false, defaultValue = "") String viewStatus,
                                      @RequestParam(value = "mode", required = false) String mode,
                                      HttpServletRequest request) {
+        search = search.replace("'", "");
         String facultyId = "";
         if (StringUtils.isNotEmpty(mode) && mode.equals("faculty"))
             facultyId = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));
@@ -222,6 +223,7 @@ public class RequestController {
                                      @RequestParam(value = "search", required = false, defaultValue = "") String search,
                                      @RequestParam(value = "order", required = false, defaultValue = "desc") String order,
                                      @RequestParam(value = "orderCol", required = false, defaultValue = "0") String orderCol) {
+        search = search.replace("'", "");
         ResultMap message = requestService.tempAdviseList(start * length - 1, length, search, order, orderCol);
         message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         return new ResponseEntity<>(message, HttpStatus.OK);

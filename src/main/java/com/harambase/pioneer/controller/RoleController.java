@@ -30,6 +30,7 @@ public class RoleController {
                                @RequestParam(value = "search", required = false, defaultValue = "") String search,
                                @RequestParam(value = "order", required = false, defaultValue = "desc") String order,
                                @RequestParam(value = "orderCol", required = false, defaultValue = "role_id") String orderCol) {
+        search = search.replace("'", "");
         ResultMap message = roleServer.list(search, order, orderCol);
         message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         return new ResponseEntity<>(message, HttpStatus.OK);

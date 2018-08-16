@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.harambase.pioneer.common.Config;
 import com.harambase.pioneer.common.Page;
 import com.harambase.pioneer.common.ResultMap;
+import com.harambase.pioneer.common.constant.SystemConst;
 import com.harambase.pioneer.common.support.util.FileUtil;
 import com.harambase.pioneer.helper.TokenHelper;
 import com.harambase.pioneer.server.pojo.base.Course;
@@ -21,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 
 @RestController
 @CrossOrigin
@@ -76,7 +78,16 @@ public class CourseController {
 
         if (StringUtils.isNotEmpty(mode) && mode.equals("faculty"))
             facultyId = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));
-        search.replace("'", "");
+        if (StringUtils.isEmpty(info) && StringUtils.isEmpty(facultyId) && StringUtils.isEmpty(status)){
+            ResultMap message = new ResultMap();
+            message.setCode(SystemConst.SUCCESS.getCode());
+            message.setMsg(SystemConst.SUCCESS.getMsg());
+            message.setData(new ArrayList<>());
+            message.put("recordsTotal", 0);
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        }
+
+        search = search.replace("'", "");
         ResultMap message = courseService.courseList(start * length - 1, length, search, order, orderCol, facultyId, info, status);
         message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         return new ResponseEntity<>(message, HttpStatus.OK);

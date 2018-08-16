@@ -16,6 +16,7 @@ import com.harambase.pioneer.server.pojo.base.Transcript;
 import com.harambase.pioneer.server.pojo.dto.TranscriptReportOnly;
 import com.harambase.pioneer.server.pojo.view.TranscriptView;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -205,11 +206,16 @@ public class TranscriptService {
                         Map<String, String> tvMap = BeanUtils.describe(transcriptViewList.get(i));
                         for (int j = 0; j < titleList.length; j++) {
                             if (j != 0) exportInfoSb.append(",");
-                            exportInfoSb.append("\"" + tvMap.get(titleList[j].getName()) + "\"");
+                            String value = tvMap.get(titleList[j].getName());
+                            if (StringUtils.isNotEmpty(value))
+                                exportInfoSb.append("\"" + value + "\"");
+                            else
+                                exportInfoSb.append("\"" + "\"");
                         }
                         exportInfoSb.append("\n");
                     }
                     break;
+
                 case 2:
                     //标题行
                     List<String> coursesNames = (List<String>) transcriptServer.getDistinctColumnByInfo("cname", info).getData();
@@ -244,7 +250,9 @@ public class TranscriptService {
 
                     break;
             }
-            exportInfoSb.append("成绩总数:," + transcriptViewList.size());
+
+            exportInfoSb.append("成绩总数:" + transcriptViewList.size());
+            exportInfoSb.append("\n");
             exportInfoSb.append("注释:* 正在进行、P 通过" + transcriptViewList.size());
             fos.write(exportInfoSb.toString().getBytes("UTF-8"));
 

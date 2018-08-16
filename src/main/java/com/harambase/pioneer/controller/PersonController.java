@@ -95,6 +95,7 @@ public class PersonController {
                                @RequestParam(value = "type", required = false) String type,
                                @RequestParam(value = "role", required = false) String role,
                                @RequestParam(value = "status", required = false) String status) {
+        search = search.replace("'", "");
         ResultMap message = personService.list(start * length - 1, length, search, order, orderCol, type, status, role);
         message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         return new ResponseEntity<>(message, HttpStatus.OK);

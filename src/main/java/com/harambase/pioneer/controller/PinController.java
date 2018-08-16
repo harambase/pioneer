@@ -107,7 +107,7 @@ public class PinController {
                                @RequestParam(value = "orderCol", required = false, defaultValue = "pin") String orderCol,
                                @RequestParam(value = "ownerId", required = false, defaultValue = "") String ownerId,
                                @RequestParam(value = "info", required = false) String info) {
-
+        search = search.replace("'", "");
         ResultMap message = pinService.listByInfo(start * length - 1, length, search, order, orderCol, info, ownerId);
         message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         return new ResponseEntity<>(message, HttpStatus.OK);

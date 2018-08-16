@@ -66,7 +66,7 @@ public class StudentController {
                                @RequestParam(value = "order", required = false, defaultValue = "desc") String order,
                                @RequestParam(value = "orderCol", required = false, defaultValue = "student_id") String orderCol,
                                @RequestParam(value = "status", required = false) String status) {
-
+        search = search.replace("'", "");
         ResultMap message = studentService.studentList(start * length - 1, length, search, order, orderCol, status);
         message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         return new ResponseEntity<>(message, HttpStatus.OK);

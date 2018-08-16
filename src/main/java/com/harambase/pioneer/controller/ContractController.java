@@ -88,6 +88,7 @@ public class ContractController {
                                @RequestParam(value = "orderCol", required = false, defaultValue = "contract_id") String orderCol,
                                @RequestParam(value = "type", required = false) String type,
                                @RequestParam(value = "status", required = false) String status) {
+        search = search.replace("'", "");
         ResultMap message = contractService.list(start * length - 1, length, search, order, orderCol, type, status);
         message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         return new ResponseEntity<>(message, HttpStatus.OK);

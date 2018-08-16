@@ -71,6 +71,7 @@ public class AdviseController {
                                HttpServletRequest request) {
 
         ResultMap message;
+        search = search.replace("'", "");
 
         if (mode != null && mode.equals("faculty")) {
             facultyId = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));
@@ -96,6 +97,7 @@ public class AdviseController {
                                @RequestParam(value = "order", required = false, defaultValue = "desc") String order,
                                @RequestParam(value = "orderCol", required = false, defaultValue = "user_id") String orderCol,
                                @RequestParam(value = "status", required = false) String status) {
+        search = search.replace("'", "");
         ResultMap message = adviseService.advisorList(start * length - 1, length, search, order, orderCol, status);
         message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         return new ResponseEntity<>(message, HttpStatus.OK);

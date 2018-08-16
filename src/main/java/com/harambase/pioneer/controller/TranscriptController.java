@@ -48,6 +48,7 @@ public class TranscriptController {
                                        @RequestParam(value = "crn", required = false) String crn,
                                        @RequestParam(value = "studentId", required = false) String studentId,
                                        @RequestParam(value = "info", required = false) String info) {
+        search = search.replace("'", "");
         ResultMap message;
         if (StringUtils.isNotEmpty(crn) || StringUtils.isNotEmpty(studentId) || StringUtils.isNotEmpty(info)) {
             message = transcriptService.transcriptList(start * length - 1, length, search, order, orderCol, studentId, crn, info, "");
@@ -69,7 +70,7 @@ public class TranscriptController {
                                          @RequestParam(value = "orderCol", required = false, defaultValue = "id") String orderCol,
                                          @RequestParam(value = "complete", required = false) String complete,
                                          HttpServletRequest request) {
-
+        search = search.replace("'", "");
         ResultMap message = transcriptService.transcriptList(start * length - 1, length, search, order, orderCol, TokenHelper.getUserIdFromToken(TokenHelper.getToken(request)), "", "", complete);
         message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         return new ResponseEntity<>(message, HttpStatus.OK);
