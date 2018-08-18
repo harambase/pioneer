@@ -9,9 +9,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class WebController {
 
     //不需要login
-    @RequestMapping({"/", "/index"})
+    @RequestMapping("/eas")
     public String login() {
-        return "index";
+        return "eas";
+    }
+
+    //不需要login
+    @RequestMapping({"/", "/index"})
+    public String homePage() {
+        return "homePage";
     }
 
     @RequestMapping("/404")
