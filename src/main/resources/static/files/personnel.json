@@ -1,0 +1,361 @@
+[
+  {
+    "id": "lxw",
+    "name": "刘晓伟",
+    "enName": " Liu Xiaowei",
+    "jobTitle": "校长、一级导师",
+    "category": "0,1,7",
+    "organization": "1",
+    "type": "f",
+    "shortDescription": "刘晓伟先生曾执教于四川大学，担任过北京先锋思维教育文化研究中心主任、美国教育资源文化研究中心主任、美国犹他州政府驻北京商务代表处首席代表、美国多飞公司教育顾问、上海市教委教改《信息科技》教材顾问。最早在中国幼儿园开展英语、信息科技和项目教学，有从幼儿园到大学各年龄段丰富的教研和教学经验。现任先锋教育学校校长。",
+    "enDescription": "Mr. Liu Xiaowei has taught at Sichuan University. He has served as Director of the Beijing Pioneer Thinking Education and Culture Research Center, Director of the American Educational Resources and Culture Research Center, Chief Representative of the Utah Government Business Office in Beijing, Education Co., Ltd. of the American Dove Company, and Education Reform of the Shanghai Education Commission. Information Technology textbook consultant. He has been teaching English projects, information technology projects in kindergartens in China. He has rich teaching and research experience from kindergarten to university. He is currently the principal of the Pioneer Education School.",
+    "moreInfo": [
+      {
+        "id": "xxxx",
+        "description": "sdafasdfasdfasfd"
+      }
+    ]
+  },
+  {
+    "id": "ct",
+    "name": "崔涛",
+    "enName": "Cui Tao",
+    "jobTitle": "副校长、导师",
+    "category": "0,1,7",
+    "organization": "1,3",
+    "type": "f",
+    "shortDescription": "中国创新教育交流会联合发起人&副理事长。毕业于中国科技大学，曾在21世纪教育研究院做项目官员。爱好广泛，在先锋开设过数学、物理、原著阅读、博弈课、游戏学院、英雄联盟、王者荣耀以及体育课等各种课。从2011年起从事家庭教育咨询至今。",
+    "enDescription": "Co-founder & Vice Chairman of Leaners' Innovation Forum On Education. He graduated from the University of Science and Technology of China and worked as a project officer in the 21st Century Institute of Education. He has a wide range of hobbies, including mathematics, physics, original reading, game lessons, game schools, League of Legends, King Glory, and physical education classes. He has been engaged in family education counseling since 2011.",
+    "moreInfo": [
+      {
+        "id": "xxxx",
+        "description": "sdafasdfasdfasfd"
+      }
+    ]
+  },
+  {
+    "id": "yy",
+    "name": "杨燕",
+    "enName": "Yang Yan",
+    "jobTitle": "副校长、财务总监",
+    "category": "0,7",
+    "organization": "1",
+    "type": "f",
+    "shortDescription": "澳洲伍伦贡大学专业会计硕士毕业，曾就职于上市公司方大集团董事局主席秘书，美国康明斯四川代理康博动力公司CEO，两个女儿的母亲。喜欢与书为伴，尤其钟爱推理小说，是“阿加莎迷”也是“奎因迷”；唯愿和孩子们待在一起，成为一个终身学习者。",
+    "enDescription": "Graduated from the University of Wollongong with a master\"s degree in professional accounting. Used to work for the chairman of the board of directors of the listed company Fangda Group, the CEO of Cummins Sichuan, and the mother of two daughters. Like to be with the book, especially the mystery novels. An \"Agatha fans\" and \"Quin fans\". Be willing to stay with the children and become a lifelong learner.",
+    "moreInfo": [
+      {
+        "id": "xxxx",
+        "description": "sdafasdfasdfasfd"
+      }
+    ]
+  },
+  {
+    "id": "hh",
+    "name": "布彦隆之",
+    "enName": "Nunohiko Takayuki",
+    "jobTitle": "导师、游学项目总监",
+    "category": "0,1,7",
+    "organization": "5,6",
+    "type": "f",
+    "shortDescription": "",
+    "enDescription": "",
+    "moreInfo": [
+      {
+        "id": "xxxx",
+        "description": "sdafasdfasdfasfd"
+      }
+    ]
+  },
+  {
+    "id": "lsl",
+    "name": "林石磊",
+    "enName": "Lin Shilei",
+    "category": "0,1,7",
+    "organization": "3,5",
+    "type": "f",
+    "jobTitle": "导师、教务总监",
+    "shortDescription": "先锋导师、教务总监，毕业于美国圣约翰大学，计算机和数学专业，先锋2013届毕业学生和学生总统。教授课程包括：基础数学、SAT&AP数学、计算机编程和英语基础等。最喜欢佛系游戏例如：城市天际线。善于帮助懒癌重度的学生，规划学习，重拾信心，帮助他们更好的适应先锋的学习生活。现任先锋教务总监",
+    "enDescription": "Mentor, Academic Director, graduated from St. John\"s University in the United States, majoring in Computer Science and Mathematics, Pioneer 2013 graduate student and former student president. Teaching courses include: Basic Mathematics, SAT&AP Mathematics, Computer Programming, and English. Favorite game is Buddist-like the Cities::Skylines. Good at helping students who are lazy and cancerous, planning and learning, regaining confidence and helping them better adapt to the Pioneer life. Current Pioneer Academic Director",
+    "moreInfo": [
+      {
+        "id": "最喜欢的游戏 Favorite Game",
+        "description": "Cities:Skylines"
+      }
+    ]
+  },
+  {
+    "id": "xg",
+    "name": "熊刚（大熊）",
+    "enName": " Xiong Gang",
+    "jobTitle": "导师",
+    "category": "0,1,7",
+    "organization": "5",
+    "type": "f",
+    "shortDescription": "毕业于北京航空航天大学，获工学学士及工学硕士学位。曾就职于中兴通讯和美国朗讯公司，从事通讯方面的研发工作。后任职于比利时Bekaert等公司，从事销售、市场等工作。2015年正式加入先锋，现为导师。希望在教育实践中去践行倾听、包容和不评判他人的理念。",
+    "enDescription": "Graduated from Beijing University of Aeronautics and Astronautics with a bachelor's and a master's degree in engineering. He has worked in ZTE and Lucent, and has been engaged in research and development of communications. Later, he worked in a Belgium company Bekaert, where he worked in sales and marketing. In 2015, he officially joined Pioneer and is now a mentor. He hopes to practice the concept of listening, tolerating and not judging others in educational practice.",
+    "moreInfo": [
+      {
+        "id": "xxxx",
+        "description": "sdafasdfasdfasfd"
+      }
+    ]
+  },
+  {
+    "id": "nwc",
+    "name": "倪伟灿（桔子）",
+    "enName": "Orange",
+    "jobTitle": "导师、校长助理",
+    "category": "0,1,7",
+    "organization": "6",
+    "type": "f",
+    "shortDescription": "主流教育资深“失败者”，前工厂打工者。对小说感兴趣，对人和人性感兴趣，心理学爱好者。热爱自由，善于并喜欢观察学生。我认为，教育是一场学会看见他人成长、学会坦然接受自己不完美的人性解放。并努力在这看见和接纳的路上与所有人一起成长。",
+    "enDescription": "Senior \"failure\" in mainstream education, a former factory worker. Interested in novels, human, human nature and psychology enthusiasts. Love freedom, and good at observing students. I believe that education is a human liberation that learns to see others grow and learn to accept their imperfections, and strive to grow with everyone on the way to see and accept.",
+    "moreInfo": [
+      {
+        "id": "xxxx",
+        "description": "sdafasdfasdfasfd"
+      }
+    ]
+  },
+  {
+    "id": "mzj",
+    "name": "马宗佳",
+    "enName": "Ma Zongjia",
+    "jobTitle": "导师",
+    "category": "0,1,7",
+    "organization": "7",
+    "type": "f",
+    "shortDescription": "",
+    "enDescription": "",
+    "moreInfo": [
+      {
+        "id": "xxxx",
+        "description": "sdafasdfasdfasfd"
+      }
+    ]
+  },
+  {
+    "id": "tzm",
+    "name": "唐振明（柿子）",
+    "enName": "Tang Zhenmin",
+    "jobTitle": "助教",
+    "category": "0,2,7",
+    "organization": "5",
+    "type": "f",
+    "shortDescription": "在先锋主要任教科学相关课程，和学生一起做理化实验，设计打印3D模型，制作Arduino作品等等。喜欢阅读英文原著，和学生一起开展原版阅读交流小组。爱好地理，对于看着地图翻山越岭乐此不疲。是个喜欢把科学史尤其是数学史当作小说一样津津有味来读的科学史八卦爱好者。",
+    "enDescription": "",
+    "moreInfo": [
+      {
+        "id": "最佩服数学家是",
+        "description": "Andrew Wiles"
+      }
+    ]
+  },
+  {
+    "id": "fm",
+    "name": "冯梅",
+    "enName": "Feng Mei",
+    "jobTitle": "助教",
+    "category": "0,2,7",
+    "organization": "0",
+    "type": "f",
+    "shortDescription": "",
+    "enDescription": "",
+    "moreInfo": [
+      {
+        "id": "xxxx",
+        "description": "sdafasdfasdfasfd"
+      }
+    ]
+  },
+  {
+    "id": "lw",
+    "name": "卢苇",
+    "enName": "Lu Wei",
+    "jobTitle": "助教",
+    "category": "0,2,7",
+    "organization": "7",
+    "type": "f",
+    "shortDescription": "",
+    "enDescription": "",
+    "moreInfo": [
+      {
+        "id": "xxxx",
+        "description": "sdafasdfasdfasfd"
+      }
+    ]
+  },
+
+  {
+    "id": "lph",
+    "name": "罗培洪（小红）",
+    "enName": "Luo Peihong",
+    "jobTitle": "实习助教",
+    "category": "0,2,7",
+    "organization": "6",
+    "type": "f",
+    "shortDescription": "17岁，先锋毕业生，体制教育体系适应者，小学为《全国中小学生优秀作文选》、《中国少年报》、《快乐历史地理》等杂志投稿，并考入当地最好初中，但随着成长带着对当时环境的失望来到了先锋学习。在先锋曾任校长助理、学生政府总统、游戏学院COO、外事委员会学生负责人、多门课程及项目助教，现半师半生转为助教投身教育行业。佛系足球迷+战术狂魔，电影动漫爱好者，内向+一讲到兴奋点收不住话匣子，在先锋和同学们的生活中燃发了对教育的热情，希望能尽自己所经历解答他们困惑，伴随他们度过这段复杂而又美好地时光~",
+    "enDescription": "a 17-year-old, Pioneer graduate. He is an adaptor of the tranditional education system. He posted article for the \"National primary and secondary school students outstanding writing selection\", \"China Youth Daily\", \"Happy Historical Geography\" and other magazines when he was in primary school. Then he was submitted to the best junior high school. But with growing disappointment of the educational environment at the time, he chose left the system but to join Pioneer. In Pioneer, he served as Assistant Principal, Former President of Student Government, COO of Game Academy, Student Leader of Foreign Affairs Committee, and teaching assistants. He has become a teaching assistant intern. He is a Buddhism football fans and tactical madmen. He loves anime movie anime and often cannot stop talking about any excitement. The life in Pioneer ignited his passion for education. He hopes to answer others' coufusion with his own experience, which will allow students to enjoy their complicated and beautiful Pioneer time~",
+    "moreInfo": [
+      {
+        "id": "xxxx",
+        "description": "sdafasdfasdfasfd"
+      }
+    ]
+  },
+  {
+    "id": "cr",
+    "name": "程蓉",
+    "enName": "Chen Rong",
+    "jobTitle": "导师、校医",
+    "category": "0,1,8",
+    "organization": "0",
+    "type": "f",
+    "shortDescription": "程蓉，华西医科大学毕业，内科副主任医师。拥有市级公立医院、私立医院、社区医院、健康管理公司的工作经历。因为孩子青春期的＂正常＂叛逆，开始反省自己，好在重启成长并不晚，系统学习心理学，现为国家二级心理咨询师，并一直在喜欢的儿童青少年精神分析方向学习，希望可以在这方面做一些事情。我以为创建一个能自由言说、充分接纳的容器，让彼此在关系这面平滑干净的镜子中看见我、看见你是一种福份。",
+    "enDescription": "Cheng Rong, graduated from Huaxi Medical University, deputy chief physician of internal medicine. She has been working at municipal public hospitals, private hospitals, community hospitals, and health management companies. Because the child's \"normal\" rebellion during adolescence, she began to introspect on herself. Luckily, it was not too late to systematically learn psychology. She is now a certificated national second-level psychological counselor, and has been continuing to learn in the direction of psychoanalysis of children and adolescents out of passion. She thinks that creating a container that can be freely spoken and fully accepted, letting her see each other in a mirror smoothly and clearly in which case seeing is a blessing.",
+    "moreInfo": [
+      {
+        "id": "xxxx",
+        "description": "sdafasdfasdfasfd"
+      }
+    ]
+  },
+  {
+    "id": "dcf",
+    "name": "丁乘风",
+    "enName": "Ding Chengfeng",
+    "jobTitle": "助教",
+    "category": "0,2,8",
+    "organization": "7",
+    "type": "f",
+    "shortDescription": "",
+    "enDescription": "",
+    "moreInfo": [
+      {
+        "id": "xxxx",
+        "description": "sdafasdfasdfasfd"
+      }
+    ]
+  },
+  {
+    "id": "hg",
+    "name": "何谷（半仙）",
+    "enName": "He Gu",
+    "jobTitle": "志愿者",
+    "category": "0,4",
+    "organization": "0",
+    "type": "f",
+    "shortDescription": "",
+    "enDescription": "",
+    "moreInfo": [
+      {
+        "id": "xxxx",
+        "description": "sdafasdfasdfasfd"
+      }
+    ]
+  },
+  {
+    "id": "hzc",
+    "name": "何子宸",
+    "enName": "He ZiChen",
+    "jobTitle": "学生会会长",
+    "category": "",
+    "organization": "2",
+    "type": "s",
+    "shortDescription": "先锋现任学生会会长，电竞寝室管理人员，3年前脱离体制内来到先锋，准备在2年后去圣约翰大学",
+    "enDescription": "",
+    "moreInfo": [
+      {
+        "id": "xxxx",
+        "description": "sdafasdfasdfasfd"
+      }
+    ]
+  },
+  {
+  "id": "ycx",
+  "name": "虞晨煦（小鱼）",
+  "enName": "Yu Chenxu",
+  "jobTitle": "生活委员会负责人",
+  "category": "",
+  "organization": "2,7",
+  "type": "s",
+  "shortDescription": "男，现15岁，2015年冬加入先锋，爱好制作美食，在生活委员会打杂两年，参加过众多项目，例如咖啡馆项目、家长教育、校园改造项目等等。现任生活委员会会长",
+  "enDescription": "",
+  "moreInfo": [
+    {
+      "id": "xxxx",
+      "description": "sdafasdfasdfasfd"
+    }
+  ]
+},
+  {
+    "id": "fty",
+    "name": "傅天煜",
+    "enName": "Fu Tianyu",
+    "jobTitle": "学术委员会负责人",
+    "category": "0",
+    "organization": "2,5",
+    "type": "s",
+    "shortDescription": "2017年秋加入先锋，原先锋学术部成员，04年的白羊座妹子，主要负责过几项问卷调查工作，也参与过几项活动的组织，如草坪音乐会等，现为重度耽美同人爱好者。",
+    "enDescription": "",
+    "moreInfo": [
+      {
+        "id": "xxxx",
+        "description": "sdafasdfasdfasfd"
+      }
+    ]
+  },
+  {
+    "id": "lyt",
+    "name": "林永泰",
+    "enName": "Lin Yongtai",
+    "jobTitle": "评议委员会负责人",
+    "category": "",
+    "organization": "2,3",
+    "type": "s",
+    "shortDescription": "",
+    "enDescription": "",
+    "moreInfo": [
+      {
+        "id": "xxxx",
+        "description": "sdafasdfasdfasfd"
+      }
+    ]
+  },
+  {
+    "id": "hhn",
+    "name": "黄昊南",
+    "enName": "Huang Haonan",
+    "jobTitle": "评议委员会负责人",
+    "category": "",
+    "organization": "2,3",
+    "type": "s",
+    "shortDescription": "",
+    "enDescription": "",
+    "moreInfo": [
+      {
+        "id": "xxxx",
+        "description": "sdafasdfasdfasfd"
+      }
+    ]
+  },
+  {
+    "id": "jx",
+    "name": "姜旭",
+    "enName": "Jiang Xu",
+    "jobTitle": "评议委员会负责人",
+    "category": "",
+    "organization": "2,3,6",
+    "type": "s",
+    "shortDescription": "生命孤独而丰富。体制内学习至初二，彼时迷茫消沉。接着来到先锋。喜欢过很多东西，坚持着的是运动、音乐、游戏，思考、感受和自我表达。",
+    "enDescription": "",
+    "moreInfo": [
+      {
+        "id": "xxxx",
+        "description": "sdafasdfasdfasfd"
+      }
+    ]
+  }
+]
+

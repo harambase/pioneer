@@ -1,7 +1,13 @@
 package com.harambase.pioneer.application;
 
+import com.harambase.pioneer.helper.DataSourceConf;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
@@ -23,5 +29,26 @@ public class ResourceController extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/static/img/**").addResourceLocations("classpath:/static/eas/img/");
 
         super.addResourceHandlers(registry);
+    }
+
+    @RequestMapping(value = "/staff", method = RequestMethod.GET)
+    public ResponseEntity faculty_staff() {
+        return new ResponseEntity<>(DataSourceConf.getDatasource("staffList"), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/school", method = RequestMethod.GET)
+    public ResponseEntity school() {
+        return new ResponseEntity<>(DataSourceConf.getDatasource("schoolList"), HttpStatus.OK);
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/wechat", method = RequestMethod.GET)
+    public ResponseEntity weChat() {
+        return new ResponseEntity<>(DataSourceConf.getDatasource("weChatList"), HttpStatus.OK);
+    }
+
+    @Scheduled(cron = "0 0 0,3,6,9,12,15,18,21 * * ? ")
+    public void refresh() {
+        DataSourceConf.init();
     }
 }
