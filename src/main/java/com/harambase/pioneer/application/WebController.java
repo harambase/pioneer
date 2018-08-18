@@ -17,13 +17,12 @@ public class WebController {
     //不需要login
     @RequestMapping({"/", "/index"})
     public String homePage() {
-        return "homePage";
+        return "homepage";
     }
 
     @RequestMapping("/404")
     public String pageNotFound() {
-        return "common/404";
+        return "404";
     }
-
 
 }

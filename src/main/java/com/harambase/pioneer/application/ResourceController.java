@@ -1,6 +1,5 @@
 package com.harambase.pioneer.application;
 
-import com.harambase.pioneer.common.Config;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -20,6 +19,8 @@ public class ResourceController extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/static/home/**").addResourceLocations("classpath:/static/home/");
         registry.addResourceHandler("/static/static/home/**").addResourceLocations("classpath:/static/home/");
         registry.addResourceHandler("/static/pioneer/**").addResourceLocations("classpath:/static/pioneer/");
+        registry.addResourceHandler("/static/images/**").addResourceLocations("classpath:/static/home/images/");
+        registry.addResourceHandler("/static/img/**").addResourceLocations("classpath:/static/eas/img/");
 
         super.addResourceHandlers(registry);
     }

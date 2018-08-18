@@ -232,7 +232,7 @@
     </dependencies>
 
     <build>
-        <finalName>pioneer_eas</finalName>
+        <finalName>pioneer</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
