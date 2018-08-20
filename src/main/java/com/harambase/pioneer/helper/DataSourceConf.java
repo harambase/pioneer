@@ -54,7 +54,8 @@ public class DataSourceConf {
             staffListInputStream = ConfigUtil.getConfFile(staffList);
             schoolInputStream = ConfigUtil.getConfFile(schoolList);
 
-            JSONObject weChatList = new JSONObject(); //initWeChatList();
+            JSONObject weChatList = initWeChatList();
+                    //new JSONObject();
 
             String staffJson = initData(staffListInputStream);
             JSONArray staffJsonArray = JSON.parseArray(staffJson);
@@ -75,7 +76,7 @@ public class DataSourceConf {
     }
 
     private static JSONObject initWeChatList() throws Exception {
-        String cmd = "python " + (ConfigUtil.getConfFolder() + "static/files/weChat.py").substring(1);
+        String cmd = "python " + (Config.serverPath + "/static/files/weChat.py").substring(1);
         Process proc = Runtime.getRuntime().exec(cmd);
 
         BufferedReader stdInput = new BufferedReader(new
