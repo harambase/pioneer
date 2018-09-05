@@ -33,7 +33,7 @@ public class AdviseController {
     @RequestMapping(produces = "application/json", method = RequestMethod.POST)
     public ResponseEntity create(@RequestBody Advise advise, HttpServletRequest request) {
         String opId = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));
-        advise.setOperator_id(opId);
+        advise.setOperatorId(opId);
         ResultMap message = adviseService.assignMentor(advise);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
@@ -49,7 +49,7 @@ public class AdviseController {
     @RequestMapping(value = "/{id}", produces = "application/json", method = RequestMethod.PUT)
     public ResponseEntity update(@PathVariable Integer id, @RequestBody Advise advise, HttpServletRequest request) {
         String opId = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));
-        advise.setOperator_id(opId);
+        advise.setOperatorId(opId);
         ResultMap message = adviseService.updateAdvise(id, advise);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }

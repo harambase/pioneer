@@ -130,6 +130,26 @@ public class MessageSender {
 
     }
 
+    public ResultMap sendStudentPinByInfo(String info, String senderId) {
+        try {
+            List<Pin> pinInfoList = (List<Pin>) pinService.listByInfo("0", String.valueOf(Integer.MAX_VALUE), "", "desc", "pin", info, "").getData();
+
+            for (Pin pin : pinInfoList) {
+                if (pin.getRole() == 3) {
+                    ResultMap resultMap = sendStudentPin(pin, senderId);
+                    if (resultMap.getCode() != 2001)
+                        throw new RuntimeException("信息插入失败!");
+                }
+            }
+
+            return ReturnMsgUtil.success(null);
+
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
+    }
+
     public ResultMap resendPin(Pin pin, String senderId) {
         ResultMap resultMap;
         try {
@@ -182,7 +202,7 @@ public class MessageSender {
         Message message = new Message();
         message.setDate(DateUtil.DateToStr(new Date()));
         message.setStatus(Status.UNREAD);
-        message.setTitle("辅导学生选课识别码(PIN)的信息");
+        message.setTitle("您所辅导的学生选课识别码(PIN)的信息");
         message.setSubject("选课识别码");
         message.setSenderId(senderId);
         message.setAttachment(null);
@@ -201,5 +221,27 @@ public class MessageSender {
 
     }
 
+
+    public ResultMap sendStudentPin(Pin pin, String root) {
+
+        Message message = new Message();
+        message.setDate(DateUtil.DateToStr(new Date()));
+        message.setStatus(Status.UNREAD);
+        message.setTitle("选导师的识别码(PIN)的信息");
+        message.setSubject("选导师");
+        message.setSenderId(root);
+        message.setAttachment(null);
+        message.setLabels(Labels.URGENT);
+        message.setTag(Tags.TEACH);
+
+        String facultyId = pin.getOwnerId();
+        String body = "您收到一条来自教务的信息：您用于本学期选导师的识别码（PIN）为：" + pin.getPin() + "，有效期为："
+                + pin.getStartTime() + "至" + pin.getEndTime() + ", 如有问题请与教务人员联系！";
+        message.setReceiverId(facultyId);
+        message.setBody(body);
+        Message newMessage = (Message) messageService.createMessage(message).getData();
+
+        return newMessage != null ? ReturnMsgUtil.success(null) : ReturnMsgUtil.fail();
+    }
 
 }

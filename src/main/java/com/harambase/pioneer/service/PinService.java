@@ -99,6 +99,14 @@ public class PinService {
         }
     }
 
+    public ResultMap sendStudentPin(String info, String senderId) {
+        try {
+            return pinServer.sendStudentPin(info, senderId);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
+    }
 
     public ResultMap sendAdvisorPin(String info, String senderId) {
         try {
@@ -126,4 +134,6 @@ public class PinService {
             return ReturnMsgUtil.systemError();
         }
     }
+
+
 }

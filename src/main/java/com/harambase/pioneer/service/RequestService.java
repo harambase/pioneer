@@ -211,9 +211,9 @@ public class RequestService {
     }
 
 
-    public ResultMap tempAdviseList(Integer start, Integer length, String search, String order, String orderCol) {
+    public ResultMap tempAdviseList(Integer start, Integer length, String search, String order, String orderCol, String viewStatus, String info, String studentId, String facultyId) {
         try {
-            return requestServer.adviseList(start, length, search, order, orderCol);
+            return requestServer.adviseList(start, length, search, order, orderCol, viewStatus, info, studentId, facultyId);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -303,5 +303,14 @@ public class RequestService {
         message.setData(jsonObject);
         message.setCode(SystemConst.SUCCESS.getCode());
         return message;
+    }
+
+    public ResultMap assignAdvisor(Integer id, TempAdvise tempAdvise, String choice) {
+        try {
+            return requestServer.assignAdvisor(id, tempAdvise, choice);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 }

@@ -5,6 +5,7 @@ import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.common.constant.SystemConst;
 import com.harambase.pioneer.common.support.util.IDUtil;
 import com.harambase.pioneer.helper.MessageSender;
+import com.harambase.pioneer.helper.TokenHelper;
 import com.harambase.pioneer.server.pojo.base.*;
 import com.harambase.pioneer.server.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,19 +20,22 @@ public class RequestServer {
     private final TempCourseService tempCourseService;
     private final CourseService courseService;
     private final TempAdviseService tempAdviseService;
+    private final AdviseService adviseService;
 
     private final MessageSender messageSender;
 
     @Autowired
     public RequestServer(TempUserService tempUserService, PersonService personService,
                          TempCourseService tempCourseService, CourseService courseService,
-                         TempAdviseService tempAdviseService, MessageSender messageSender) {
+                         TempAdviseService tempAdviseService, MessageSender messageSender,
+                         AdviseService adviseService) {
         this.tempUserService = tempUserService;
         this.personService = personService;
         this.tempCourseService = tempCourseService;
         this.courseService = courseService;
         this.tempAdviseService = tempAdviseService;
         this.messageSender = messageSender;
+        this.adviseService = adviseService;
     }
 
     public ResultMap getUserRequest(Integer id) {
@@ -137,12 +141,37 @@ public class RequestServer {
         return tempAdviseService.updateTempAdvise(id, tempAdvise);
     }
 
-    public ResultMap adviseList(@RequestParam(value = "start") Integer start,
-                                @RequestParam(value = "length") Integer length,
-                                @RequestParam(value = "search", required = false, defaultValue = "") String search,
-                                @RequestParam(value = "order", required = false, defaultValue = "desc") String order,
-                                @RequestParam(value = "orderCol", required = false, defaultValue = "0") String orderCol) {
-        return tempAdviseService.tempAdviseList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderCol);
+    public ResultMap adviseList(Integer start, Integer length, String search, String order, String orderCol,
+                                String viewStatus, String info, String studentId, String facultyId) {
+        return tempAdviseService.tempAdviseList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderCol, viewStatus, info, studentId, facultyId);
     }
 
+    public ResultMap assignAdvisor(Integer id, TempAdvise tempAdvise, String choice) {
+        Advise advise = new Advise();
+        String facultyId = "";
+        advise.setStudentId(tempAdvise.getStudentId());
+        advise.setOperatorId(tempAdvise.getOperatorId());
+        advise.setInfo(tempAdvise.getInfo());
+        advise.setStatus("1");
+
+        switch (choice) {
+            case "1":
+                facultyId = tempAdvise.getFirstId();
+                break;
+            case "2":
+                facultyId = tempAdvise.getSecondId();
+                break;
+            case "3":
+                facultyId = tempAdvise.getThirdId();
+                break;
+        }
+        advise.setFacultyId(facultyId);
+
+        ResultMap message = adviseService.assignMentor(advise);
+        if (message.getCode() == SystemConst.SUCCESS.getCode()) {
+            return tempAdviseService.updateTempAdvise(id, tempAdvise);
+        } else {
+            return message;
+        }
+    }
 }

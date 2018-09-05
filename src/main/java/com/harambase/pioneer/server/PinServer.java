@@ -37,11 +37,15 @@ public class PinServer {
             if (role == 2) {//2是 成绩录入
                 messageSender.sendFacultyPin(pin, IDUtil.ROOT);
                 messageSender.sendImportantSystemMsg(IDUtil.ROOT, IDUtil.ROOT,
-                        "您接收到来自系统的一条消息:来自用户 " + userId + " 的成绩录入识别码" + pinNum + " 已生成！", "成绩录入识别码", "识别码");
-            } else {
+                        "您接收到来自系统的一条消息:用户 " + userId + " 的成绩录入识别码" + pinNum + " 已生成！", "成绩录入识别码", "识别码");
+            } else if(role == 1){
                 messageSender.sendAdvisorPin(pin, IDUtil.ROOT);
                 messageSender.sendImportantSystemMsg(IDUtil.ROOT, IDUtil.ROOT,
-                        "您接收到来自系统的一条消息:来自用户 " + userId + " 的选课的识别码" + pinNum + " 已生成！", "选课的识别码", "识别码");
+                        "您接收到来自系统的一条消息:用户 " + userId + " 的选课的识别码" + pinNum + " 已生成！", "选课的识别码", "识别码");
+            } else {
+                messageSender.sendStudentPin(pin, IDUtil.ROOT);
+                messageSender.sendImportantSystemMsg(IDUtil.ROOT, IDUtil.ROOT,
+                        "您接收到来自系统的一条消息:用户 " + userId + " 的选导师的识别码" + pinNum + " 已生成！", "选导师的识别码", "识别码");
             }
         }
 
@@ -72,6 +76,10 @@ public class PinServer {
         return messageSender.sendAdvisorPinByInfo(info, senderId);
     }
 
+    public ResultMap sendStudentPin(String info, String senderId) {
+        return messageSender.sendStudentPinByInfo(info, senderId);
+    }
+
     public ResultMap getAllInfo() {
         return pinService.getAllInfo();
     }
@@ -83,4 +91,5 @@ public class PinServer {
     public ResultMap updateOne(Integer pinNum, Pin pin) {
         return pinService.updateOne(pinNum, pin);
     }
+
 }

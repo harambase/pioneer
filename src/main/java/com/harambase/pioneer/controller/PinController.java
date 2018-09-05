@@ -85,6 +85,13 @@ public class PinController {
     }
 
     @PreAuthorize("hasAnyRole('TEACH','ADMIN')")
+    @RequestMapping(value = "/send/student/{info}", method = RequestMethod.GET)
+    public ResponseEntity sendStudentPin(@PathVariable(value = "info") String info, HttpServletRequest request) {
+        ResultMap ResultMap = pinService.sendStudentPin(info, TokenHelper.getUserIdFromToken(TokenHelper.getToken(request)));
+        return new ResponseEntity<>(ResultMap, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('TEACH','ADMIN')")
     @RequestMapping(value = "/send", method = RequestMethod.POST)
     public ResponseEntity resend(@RequestBody Pin pin, HttpServletRequest request) {
         ResultMap ResultMap = pinService.resend(pin, TokenHelper.getUserIdFromToken(TokenHelper.getToken(request)));
