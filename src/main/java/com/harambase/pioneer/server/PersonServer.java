@@ -32,6 +32,11 @@ public class PersonServer {
         return personService.getUser(userId);
     }
 
+    //只可以登录使用，主要是登录的登录名可以多变
+    public ResultMap getByKeyword(String keyword){
+        return personService.getByKeyword(keyword);
+    }
+
     public ResultMap login(Person person) {
         return personService.login(person);
     }

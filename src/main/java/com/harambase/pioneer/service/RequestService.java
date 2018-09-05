@@ -182,9 +182,9 @@ public class RequestService {
         return message;
     }
 
-    public ResultMap registerTempAdvise(String studentId, String facultyIds) {
+    public ResultMap registerTempAdvise(TempAdvise tempAdvise) {
         try {
-            return requestServer.newAdvisorRequest(studentId, facultyIds);
+            return requestServer.newAdvisorRequest(tempAdvise);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();

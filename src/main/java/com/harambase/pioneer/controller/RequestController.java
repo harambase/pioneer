@@ -108,7 +108,7 @@ public class RequestController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'TEACH', 'FACULTY')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACH', 'ADVISOR')")
     @RequestMapping(value = "/course/{id}", method = RequestMethod.PUT)
     public ResponseEntity updateCourseRequest(@PathVariable Integer id, @RequestBody TempCourse tempCourse, HttpServletRequest request) {
         tempCourse.setOperatorId(TokenHelper.getUserIdFromToken(TokenHelper.getToken(request)));
@@ -116,29 +116,29 @@ public class RequestController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'TEACH', 'FACULTY')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACH', 'ADVISOR')")
     @RequestMapping(value = "/course/{id}", method = RequestMethod.GET)
     public ResponseEntity getCourseRequest(@PathVariable Integer id) {
         ResultMap message = requestService.getTempCourse(id);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'TEACH', 'FACULTY')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACH', 'ADVISOR')")
     @RequestMapping(value = "/course/register", method = RequestMethod.POST)
     public ResponseEntity registerNewCourse(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
-        String facultyId = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));
-        ResultMap ResultMap = requestService.registerNewCourse(facultyId, jsonObject);
+        String ADVISORId = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));
+        ResultMap ResultMap = requestService.registerNewCourse(ADVISORId, jsonObject);
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'TEACH', 'FACULTY')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACH', 'ADVISOR')")
     @RequestMapping(value = "/course/info/{id}", method = RequestMethod.PUT)
     public ResponseEntity uploadCourseInfo(@RequestParam MultipartFile file, @PathVariable Integer id) {
         ResultMap message = requestService.uploadCourseInfo(id, file);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'TEACH', 'FACULTY')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACH', 'ADVISOR')")
     @RequestMapping(value = "/course/{id}", method = RequestMethod.DELETE)
     public ResponseEntity deleteTempCourse(@PathVariable Integer id) {
         ResultMap ResultMap = requestService.deleteTempCourse(id);
@@ -161,7 +161,7 @@ public class RequestController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'TEACH', 'FACULTY')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACH', 'ADVISOR')")
     @RequestMapping(value = "/course", produces = "application/json", method = RequestMethod.GET)
     public ResponseEntity courseList(@RequestParam(value = "start", required = false, defaultValue = "0") Integer start,
                                      @RequestParam(value = "length", required = false, defaultValue = "100") Integer length,
@@ -172,51 +172,47 @@ public class RequestController {
                                      @RequestParam(value = "mode", required = false) String mode,
                                      HttpServletRequest request) {
         search = search.replace("'", "");
-        String facultyId = "";
-        if (StringUtils.isNotEmpty(mode) && mode.equals("faculty"))
-            facultyId = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));
+        String ADVISORId = "";
+        if (StringUtils.isNotEmpty(mode) && mode.equals("ADVISOR"))
+            ADVISORId = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));
 
-        ResultMap message = requestService.tempCourseList(start * length - 1, length, search, order, orderCol, viewStatus, facultyId);
+        ResultMap message = requestService.tempCourseList(start * length - 1, length, search, order, orderCol, viewStatus, ADVISORId);
         message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT', 'TEACH')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT', 'TEACH', 'ADVISOR')")
     @RequestMapping(value = "/advise/{studentId}", method = RequestMethod.POST)
-    public ResponseEntity newAdvisorRequest(@PathVariable String studentId, @RequestBody JSONArray jsonArray) {
-        String facultyIds = "";
-        for (Object jsonObject : jsonArray) {
-            facultyIds += ((LinkedHashMap) jsonObject).get("userId") + "/";
-        }
-        if (StringUtils.isNotEmpty(facultyIds)) {
-            ResultMap resultMap = requestService.registerTempAdvise(studentId, facultyIds);
-            return new ResponseEntity<>(resultMap, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(new ResultMap(), HttpStatus.OK);
+    public ResponseEntity newAdvisorRequest(@PathVariable(value = "studentId") String studentId, @RequestBody TempAdvise tempAdvise) {
+        tempAdvise.setStudentId(studentId);
+        tempAdvise.setOperatorId(studentId);
+        ResultMap resultMap = requestService.registerTempAdvise(tempAdvise);
+        return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT', 'TEACH')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'TEACH')")
     @RequestMapping(value = "/advise/{id}", method = RequestMethod.DELETE)
     public ResponseEntity removeAdvisorRequest(@PathVariable Integer id) {
         ResultMap ResultMap = requestService.deleteTempAdviseById(id);
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT', 'TEACH', 'FACULTY')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT', 'TEACH', 'ADVISOR')")
     @RequestMapping(value = "/advise/{studentId}", method = RequestMethod.GET)
     public ResponseEntity getAdviseRequest(@PathVariable String studentId) {
         ResultMap ResultMap = requestService.getTempAdvise(studentId);
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT', 'TEACH', 'FACULTY')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT', 'TEACH', 'ADVISOR')")
     @RequestMapping(value = "/advise/{id}", produces = "application/json", method = RequestMethod.PUT)
-    public ResponseEntity updateAdviseRequest(@PathVariable Integer id, @RequestBody TempAdvise tempAdvise) {
+    public ResponseEntity updateAdviseRequest(@PathVariable Integer id, @RequestBody TempAdvise tempAdvise, HttpServletRequest request) {
+        tempAdvise.setOperatorId(TokenHelper.getUserIdFromToken(TokenHelper.getToken(request)));
         ResultMap message = requestService.updateTempAdvise(id, tempAdvise);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT', 'TEACH', 'FACULTY')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT', 'TEACH', 'ADVISOR')")
     @RequestMapping(value = "/advise", produces = "application/json", method = RequestMethod.GET)
     public ResponseEntity adviseList(@RequestParam(value = "start") Integer start,
                                      @RequestParam(value = "length") Integer length,

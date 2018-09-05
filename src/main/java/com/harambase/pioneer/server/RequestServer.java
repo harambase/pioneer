@@ -120,9 +120,9 @@ public class RequestServer {
         return tempCourseService.tempCourseList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderCol, status, facultyId);
     }
 
-    public ResultMap newAdvisorRequest(String studentId, String facultyIds) {
+    public ResultMap newAdvisorRequest(TempAdvise tempAdvise) {
         //todo:向教务发送消息
-        return tempAdviseService.register(studentId, facultyIds);
+        return tempAdviseService.register(tempAdvise);
     }
 
     public ResultMap removeAdvisorRequest(Integer id) {
