@@ -10,6 +10,7 @@ import com.harambase.pioneer.security.model.UserTokenState;
 import com.harambase.pioneer.server.pojo.base.Person;
 import com.harambase.pioneer.service.MonitorService;
 import com.harambase.pioneer.service.PersonService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,6 +106,20 @@ public class SystemController {
         } else
             resultMap.setCode(SystemConst.FAIL.getCode());
 
+        return new ResponseEntity<>(resultMap, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/user/verify/{userId}", method = RequestMethod.GET)
+    public ResponseEntity getByUserId(@PathVariable String userId, @RequestParam String token) {
+        ResultMap resultMap = new ResultMap();
+        if(StringUtils.isNotEmpty(token) && userId.equals(TokenHelper.getUserIdFromToken(token))) {
+            Person p = (Person) personService.get(userId).getData();
+            if (p != null) {
+                resultMap.setData(p);
+                resultMap.setCode(SystemConst.SUCCESS.getCode());
+            } else
+                resultMap.setCode(SystemConst.FAIL.getCode());
+        }
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 
