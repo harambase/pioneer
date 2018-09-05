@@ -163,7 +163,7 @@ public class CourseController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('TEACH','ADMIN','FACULTY')")
+    @PreAuthorize("hasAnyRole('USER')")
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     public ResponseEntity courseInfoList(@RequestParam(required = false, defaultValue = "") String search) {
         ResultMap message = courseService.courseInfoList(search);

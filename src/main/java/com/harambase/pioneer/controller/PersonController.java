@@ -75,7 +75,7 @@ public class PersonController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('SYSTEM','ADMIN', 'FACULTY', 'STUDENT')")
+    @PreAuthorize("hasAnyRole('USER')")
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public ResponseEntity search(@RequestParam(value = "search", required = false) String search,
                                  @RequestParam(value = "type", required = false) String type,
