@@ -53,7 +53,7 @@ public class PersonController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('SYSTEM','ADMIN')")
+    @PreAuthorize("hasAnyRole('USER')")
     @RequestMapping(value = "/{userId}", produces = "application/json", method = RequestMethod.PUT)
     public ResponseEntity update(@PathVariable("userId") String userId, @RequestBody Person person) {
         ResultMap message = personService.updatePerson(userId, person);
@@ -85,7 +85,7 @@ public class PersonController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('SYSTEM','ADMIN')")
+    @PreAuthorize("hasAnyRole('USER')")
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity list(@RequestParam(value = "start", required = false, defaultValue = "0") Integer start,
                                @RequestParam(value = "length", required = false, defaultValue = "100") Integer length,

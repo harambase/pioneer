@@ -23,8 +23,7 @@ public class MonitorServer {
         return monitorService.getRelationChart();
     }
 
-    public ResultMap userCount() {
+    public ResultMap userChart() {
         return monitorService.userChart();
     }
-
 }

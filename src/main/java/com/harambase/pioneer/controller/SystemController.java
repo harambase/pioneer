@@ -156,8 +156,8 @@ public class SystemController {
         response.sendRedirect("/login");
     }
 
+    @PreAuthorize("hasAnyRole('USER')")
     @RequestMapping(value = "/info", method = RequestMethod.GET)
-    @PreAuthorize("hasAnyRole('SYSTEM','ADMIN')")
     public ResponseEntity systemInfo() {
         ResultMap message = monitorService.systemInfo();
         return new ResponseEntity<>(message, HttpStatus.OK);
@@ -166,14 +166,14 @@ public class SystemController {
     @RequestMapping(value = "/relation", method = RequestMethod.GET)
     @PreAuthorize("hasAnyRole('SYSTEM','ADMIN')")
     public ResponseEntity relationChart() {
-        ResultMap resultMap = monitorService.getRelationChart();
+        ResultMap resultMap = monitorService.relationChart();
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/user/count", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/chart", method = RequestMethod.GET)
     @PreAuthorize("hasAnyRole('SYSTEM','ADMIN')")
-    public ResponseEntity userCount() {
-        ResultMap resultMap = monitorService.getUserChart();
+    public ResponseEntity userChart() {
+        ResultMap resultMap = monitorService.userChart();
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 

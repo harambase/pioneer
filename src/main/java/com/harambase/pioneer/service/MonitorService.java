@@ -21,12 +21,12 @@ public class MonitorService {
     }
 
 
-    public ResultMap getRelationChart() {
+    public ResultMap relationChart() {
         return monitorServer.relationChart();
     }
 
 
-    public ResultMap getUserChart() {
-        return monitorServer.userCount();
+    public ResultMap userChart() {
+        return monitorServer.userChart();
     }
 }
