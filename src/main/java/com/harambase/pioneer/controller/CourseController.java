@@ -177,6 +177,13 @@ public class CourseController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
+//    @PreAuthorize("hasAnyRole('TEACH','ADMIN')")
+//    @RequestMapping(value = "/{info}/schedule", method = RequestMethod.PUT)
+//    public ResponseEntity uploadSchedule(@RequestParam MultipartFile file, @PathVariable String info) {
+//        ResultMap message = courseService.uploadSchedule(info, file);
+//        return new ResponseEntity<>(message, HttpStatus.OK);
+//    }
+
     @RequestMapping(value = "/info/{crn}", method = RequestMethod.GET)
     public void downloadCourseInfo(@PathVariable String crn, @RequestParam String token, HttpServletResponse response) {
         if (StringUtils.isNotEmpty(token)) {

@@ -258,4 +258,43 @@ public class CourseService {
             return ReturnMsgUtil.systemError();
         }
     }
+
+//    public ResultMap uploadSchedule(String info, MultipartFile file) {
+//        ResultMap message = new ResultMap();
+//        JSONObject jsonObject = new JSONObject();
+//
+//        try {
+//            Course course = (Course) courseServer.getCourseBase(crn).getData();
+//
+//            //处理老的文件
+//            if (StringUtils.isNotEmpty(course.getCourseInfo())) {
+//                String oldInfoPath = (JSON.parseObject(course.getCourseInfo())).getString("path");
+//                FileUtil.deleteFileFromFTP(oldInfoPath, Config.FTP_SERVER, Config.FTP_USERNAME, Config.FTP_PASSWORD);
+//            }
+//
+//            String fileUri = FileUtil.uploadFileToFtpServer(file, Config.FTP_PATH + "/document/courseInfo", Config.FTP_SERVER, Config.FTP_USERNAME, Config.FTP_PASSWORD);
+//
+//            String name = file.getOriginalFilename();
+//
+//            jsonObject.put("name", name);
+//            jsonObject.put("size", file.getSize());
+//            jsonObject.put("type", name.substring(name.lastIndexOf(".") + 1));
+//            jsonObject.put("path", fileUri);
+//
+//            course.setCourseInfo(jsonObject.toJSONString());
+//
+//            message = courseServer.update(crn, course);
+//
+//        } catch (Exception e) {
+//            logger.error(e.getMessage(), e);
+//            message.setMsg("上传失败");
+//            message.setCode(SystemConst.SYSTEM_ERROR.getCode());
+//            return message;
+//        }
+//
+//        message.setMsg("上传成功");
+//        message.setData(jsonObject);
+//        message.setCode(SystemConst.SUCCESS.getCode());
+//        return message;
+//    }
 }

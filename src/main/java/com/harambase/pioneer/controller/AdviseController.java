@@ -133,10 +133,18 @@ public class AdviseController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','TEACH', 'STUDENT')")
+    @PreAuthorize("hasAnyRole('ADMIN','TEACH','STUDENT')")
     @RequestMapping(value = "/advisor/{userId}", method = RequestMethod.GET)
     public ResponseEntity getAdvisor(@PathVariable String userId) {
         ResultMap message = adviseService.getAdvisor(userId);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
+
+    @PreAuthorize("hasAnyRole('ADMIN','TEACH','STUDENT')")
+    @RequestMapping(value = "/advisor/student/{studentId}", method = RequestMethod.GET)
+    public ResponseEntity getAdvisorByStudentId(@PathVariable String studentId) {
+        ResultMap message = adviseService.getAdvisorByStudentId(studentId);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
 }
