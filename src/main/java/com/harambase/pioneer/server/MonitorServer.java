@@ -16,11 +16,11 @@ public class MonitorServer {
     }
 
     public ResultMap systemInfo() {
-        return monitorService.getSystemCount();
+        return monitorService.systemCount();
     }
 
     public ResultMap relationChart() {
-        return monitorService.getRelationChart();
+        return monitorService.relationChart();
     }
 
     public ResultMap userChart() {
