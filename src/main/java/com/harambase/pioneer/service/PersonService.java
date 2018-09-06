@@ -51,9 +51,9 @@ public class PersonService {
     }
 
 
-    public ResultMap deletePerson(String userid) {
+    public ResultMap deletePerson(String userId) {
         try {
-            return personServer.delete(userid);
+            return personServer.delete(userId);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -71,26 +71,9 @@ public class PersonService {
     }
 
 
-    public ResultMap get(String userid) {
+    public ResultMap get(String userId) {
         try {
-            ResultMap resultMap = personServer.get(userid);
-            Person person = (Person) resultMap.getData();
-
-            if (StringUtils.isNotEmpty(person.getProfile())) {
-                JSONObject jsonObject = JSON.parseObject(person.getProfile());
-                String filePath = jsonObject.getString("path");
-                if (StringUtils.isNotEmpty(filePath)) {
-                    String fileName = FileUtil.getFileLogicalName(filePath);
-                    String localPath = Config.serverPath + "/static/" + FileUtil.getFileDirPath(filePath);
-
-                    File file = new File(localPath + fileName);
-                    if (!file.exists())
-                        FileUtil.downloadFileFromFTPToLocal(fileName, filePath, localPath, Config.FTP_SERVER, Config.FTP_USERNAME, Config.FTP_PASSWORD);
-                }
-
-            }
-            return personServer.get(userid);
-
+            return personServer.get(userId);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();

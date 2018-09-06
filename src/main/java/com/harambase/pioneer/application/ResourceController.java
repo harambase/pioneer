@@ -1,6 +1,5 @@
 package com.harambase.pioneer.application;
 
-import com.harambase.pioneer.helper.DataSourceConf;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -33,22 +32,22 @@ public class ResourceController extends WebMvcConfigurerAdapter {
 
     @RequestMapping(value = "/staff", method = RequestMethod.GET)
     public ResponseEntity faculty_staff() {
-        return new ResponseEntity<>(DataSourceConf.getDatasource("staffList"), HttpStatus.OK);
+        return new ResponseEntity<>(StartUpPrepare.getDatasource("staffList"), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/school", method = RequestMethod.GET)
     public ResponseEntity school() {
-        return new ResponseEntity<>(DataSourceConf.getDatasource("schoolList"), HttpStatus.OK);
+        return new ResponseEntity<>(StartUpPrepare.getDatasource("schoolList"), HttpStatus.OK);
     }
 
     @CrossOrigin
     @RequestMapping(value = "/wechat", method = RequestMethod.GET)
     public ResponseEntity weChat() {
-        return new ResponseEntity<>(DataSourceConf.getDatasource("weChatList"), HttpStatus.OK);
+        return new ResponseEntity<>(StartUpPrepare.getDatasource("weChatList"), HttpStatus.OK);
     }
 
     @Scheduled(cron = "0 0 0,3,6,9,12,15,18,21 * * ? ")
     public void refresh() {
-        DataSourceConf.init();
+        StartUpPrepare.initHome();
     }
 }
