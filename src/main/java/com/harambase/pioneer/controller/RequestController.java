@@ -184,7 +184,8 @@ public class RequestController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'STUDENT', 'TEACH', 'ADVISOR')")
     @RequestMapping(value = "/advise/{studentId}", method = RequestMethod.POST)
-    public ResponseEntity newAdvisorRequest(@PathVariable(value = "studentId") String studentId, @RequestBody TempAdvise tempAdvise) {
+    public ResponseEntity newAdvisorRequest(@PathVariable(value = "studentId") String studentId,
+                                            @RequestBody TempAdvise tempAdvise) {
         tempAdvise.setStudentId(studentId);
         tempAdvise.setOperatorId(studentId);
         ResultMap resultMap = requestService.registerTempAdvise(tempAdvise);
