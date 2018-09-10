@@ -6,7 +6,7 @@
 
     <groupId>com.harambase.pioneer</groupId>
     <artifactId>pioneer</artifactId>
-    <version>2.0.0</version>
+    <version>2.0.091018</version>
     <packaging>war</packaging>
     <name>Pioneer</name>
     <url>http://maven.apache.org</url>
@@ -33,17 +33,17 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>com.harambase.pioneer</groupId>
-            <artifactId>pioneer-common-package</artifactId>
-            <version>1.0</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.harambase.pioneer</groupId>-->
+            <!--<artifactId>pioneer-common-package</artifactId>-->
+            <!--<version>1.0</version>-->
+        <!--</dependency>-->
 
-        <dependency>
-            <groupId>com.harambase.pioneer</groupId>
-            <artifactId>pioneer-server</artifactId>
-            <version>1.0.0</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.harambase.pioneer</groupId>-->
+            <!--<artifactId>pioneer-server</artifactId>-->
+            <!--<version>1.0.0</version>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>it.uniroma1.dis.wsngroup.gexf4j</groupId>
