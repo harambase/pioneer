@@ -10,7 +10,7 @@ import com.harambase.pioneer.server.dao.base.TranscriptDao;
 import com.harambase.pioneer.server.dao.repository.TranscriptRepository;
 import com.harambase.pioneer.server.pojo.base.Transcript;
 import com.harambase.pioneer.server.pojo.view.TranscriptView;
-import com.harambase.pioneer.server.service.TranscriptService;
+import com.harambase.pioneer.server.service.TranscriptServerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class TranscriptServiceImpl implements TranscriptService {
+public class TranscriptServerServiceImpl implements TranscriptServerService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -30,7 +30,7 @@ public class TranscriptServiceImpl implements TranscriptService {
     private final TranscriptDao transcriptDao;
 
     @Autowired
-    public TranscriptServiceImpl(TranscriptRepository transcriptRepository, TranscriptDao transcriptDao) {
+    public TranscriptServerServiceImpl(TranscriptRepository transcriptRepository, TranscriptDao transcriptDao) {
         this.transcriptRepository = transcriptRepository;
         this.transcriptDao = transcriptDao;
     }

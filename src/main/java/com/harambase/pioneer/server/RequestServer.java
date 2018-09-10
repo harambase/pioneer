@@ -5,81 +5,43 @@ import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.common.constant.SystemConst;
 import com.harambase.pioneer.common.support.util.IDUtil;
 import com.harambase.pioneer.helper.MessageSender;
-import com.harambase.pioneer.helper.TokenHelper;
 import com.harambase.pioneer.server.pojo.base.*;
 import com.harambase.pioneer.server.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Component
 public class RequestServer {
 
-    private final TempUserService tempUserService;
-    private final PersonService personService;
-    private final TempCourseService tempCourseService;
-    private final CourseService courseService;
-    private final TempAdviseService tempAdviseService;
-    private final AdviseService adviseService;
+    private final TempUserServerService tempUserServerService;
+    private final PersonServerService personServerService;
+    private final TempCourseServerService tempCourseServerService;
+    private final CourseServerService courseServerService;
+    private final TempAdviseServerService tempAdviseServerService;
+    private final AdviseServerService adviseServerService;
 
     private final MessageSender messageSender;
 
     @Autowired
-    public RequestServer(TempUserService tempUserService, PersonService personService,
-                         TempCourseService tempCourseService, CourseService courseService,
-                         TempAdviseService tempAdviseService, MessageSender messageSender,
-                         AdviseService adviseService) {
-        this.tempUserService = tempUserService;
-        this.personService = personService;
-        this.tempCourseService = tempCourseService;
-        this.courseService = courseService;
-        this.tempAdviseService = tempAdviseService;
+    public RequestServer(TempUserServerService tempUserServerService, PersonServerService personServerService,
+                         TempCourseServerService tempCourseServerService, CourseServerService courseServerService,
+                         TempAdviseServerService tempAdviseServerService, MessageSender messageSender,
+                         AdviseServerService adviseServerService) {
+        this.tempUserServerService = tempUserServerService;
+        this.personServerService = personServerService;
+        this.tempCourseServerService = tempCourseServerService;
+        this.courseServerService = courseServerService;
+        this.tempAdviseServerService = tempAdviseServerService;
         this.messageSender = messageSender;
-        this.adviseService = adviseService;
+        this.adviseServerService = adviseServerService;
     }
 
     public ResultMap getUserRequest(Integer id) {
-        return tempUserService.get(id);
-    }
-
-    public ResultMap updateRequest(Integer id, TempUser tempUser) {
-        ResultMap message;
-        if (tempUser.getStatus().equals("1")) {
-            Person newUser = JSONObject.parseObject(tempUser.getUserJson(), Person.class);
-            message = personService.addUser(newUser);
-            if (message.getCode() == SystemConst.SUCCESS.getCode()) {
-                Person person = ((Person) message.getData());
-                String info = person.getLastName() + ", " + person.getFirstName() + "(" + person.getUserId() + ")";
-                message = tempUserService.updateTempUser(id, tempUser);
-
-                if (message.getCode() == SystemConst.SUCCESS.getCode()) {
-                    messageSender.sendImportantSystemMsg(person.getUserId(), tempUser.getOperatorId(),
-                            "您接收到来自系统的一条消息:您的账户已创建！欢迎来到先锋！", "用户创建", "用户申请");
-                    messageSender.sendImportantSystemMsg(tempUser.getOperatorId(), IDUtil.ROOT,
-                            "您接收到来自系统的一条消息:来自用户 " + info + " 批准已通过！", "批准操作成功", "用户申请");
-                }
-            }
-        } else if (tempUser.getStatus().equals("-1")) {
-            message = tempUserService.updateTempUser(id, tempUser);
-            JSONObject jsonObject = JSONObject.parseObject(tempUser.getUserJson());
-            String info = jsonObject.getString("lastName") + ", " + jsonObject.get("firstName") + "(" + tempUser.getUserId() + ")";
-            if (message.getCode() == SystemConst.SUCCESS.getCode()) {
-                messageSender.sendImportantSystemMsg(tempUser.getOperatorId(), IDUtil.ROOT,
-                        "您接收到来自系统的一条消息:来自用户 " + info + " 批准已拒绝！", "拒绝操作成功", "用户申请");
-            } else {
-                messageSender.sendImportantSystemMsg(tempUser.getOperatorId(), IDUtil.ROOT,
-                        "您接收到来自系统的一条消息:来自用户 " + info + " 批准已拒绝！", "拒绝操作失败", "用户申请");
-            }
-
-        } else {
-            message = tempUserService.updateTempUser(id, tempUser);
-        }
-
-        return message;
+        return tempUserServerService.get(id);
     }
 
     public ResultMap register(JSONObject jsonObject) {
-        ResultMap resultMap = tempUserService.register(jsonObject);
+        ResultMap resultMap = tempUserServerService.register(jsonObject);
         if (resultMap.getCode() == SystemConst.SUCCESS.getCode()) {
             messageSender.sendToAllSystem((TempUser) resultMap.getData());
         }
@@ -87,91 +49,50 @@ public class RequestServer {
     }
 
     public ResultMap removeUserRequest(Integer id) {
-        return tempUserService.deleteTempUserById(id);
+        return tempUserServerService.deleteTempUserById(id);
     }
 
     public ResultMap userList(Integer start, Integer length, String search,
                               String order, String orderCol, String status) {
-        return tempUserService.tempUserList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderCol, status);
+        return tempUserServerService.tempUserList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderCol, status);
     }
 
     public ResultMap getCourseRequest(Integer id) {
-        return tempCourseService.get(id);
-    }
-
-    public ResultMap updateCourseRequest(Integer id, TempCourse tempCourse) {
-        if (tempCourse.getStatus().equals("1")) {
-            ResultMap message = courseService.addCourse(JSONObject.parseObject(tempCourse.getCourseJson(), Course.class));
-            if (message.getCode() == SystemConst.SUCCESS.getCode()) {
-                return tempCourseService.updateTempCourse(id, tempCourse);
-            } else {
-                return message;
-            }
-        }
-        return tempCourseService.updateTempCourse(id, tempCourse);
+        return tempCourseServerService.get(id);
     }
 
     public ResultMap registerNewCourse(String facultyId, JSONObject jsonObject) {
-        return tempCourseService.register(facultyId, jsonObject);
+        return tempCourseServerService.register(facultyId, jsonObject);
     }
 
     public ResultMap removeCourseRequest(Integer id) {
-        return tempCourseService.deleteTempCourseById(id);
+        return tempCourseServerService.deleteTempCourseById(id);
     }
 
     public ResultMap courseList(Integer start, Integer length, String search,
                                 String order, String orderCol, String status, String facultyId) {
-        return tempCourseService.tempCourseList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderCol, status, facultyId);
+        return tempCourseServerService.tempCourseList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderCol, status, facultyId);
     }
 
     public ResultMap newAdvisorRequest(TempAdvise tempAdvise) {
         //todo:向教务发送消息
-        return tempAdviseService.register(tempAdvise);
+        return tempAdviseServerService.register(tempAdvise);
     }
 
     public ResultMap removeAdvisorRequest(Integer id) {
-        return tempAdviseService.deleteTempAdviseById(id);
+        return tempAdviseServerService.deleteTempAdviseById(id);
     }
 
     public ResultMap getAdviseRequest(String studentId) {
-        return tempAdviseService.get(studentId);
+        return tempAdviseServerService.get(studentId);
     }
 
     public ResultMap updateAdviseRequest(Integer id, TempAdvise tempAdvise) {
-        return tempAdviseService.updateTempAdvise(id, tempAdvise);
+        return tempAdviseServerService.updateTempAdvise(id, tempAdvise);
     }
 
     public ResultMap adviseList(Integer start, Integer length, String search, String order, String orderCol,
                                 String viewStatus, String info, String studentId, String facultyId) {
-        return tempAdviseService.tempAdviseList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderCol, viewStatus, info, studentId, facultyId);
-    }
-
-    public ResultMap assignAdvisor(Integer id, TempAdvise tempAdvise, String choice) {
-        Advise advise = new Advise();
-        String facultyId = "";
-        advise.setStudentId(tempAdvise.getStudentId());
-        advise.setOperatorId(tempAdvise.getOperatorId());
-        advise.setInfo(tempAdvise.getInfo());
-        advise.setStatus("1");
-
-        switch (choice) {
-            case "1":
-                facultyId = tempAdvise.getFirstId();
-                break;
-            case "2":
-                facultyId = tempAdvise.getSecondId();
-                break;
-            case "3":
-                facultyId = tempAdvise.getThirdId();
-                break;
-        }
-        advise.setFacultyId(facultyId);
-
-        ResultMap message = adviseService.assignMentor(advise);
-        if (message.getCode() == SystemConst.SUCCESS.getCode()) {
-            return tempAdviseService.updateTempAdvise(id, tempAdvise);
-        } else {
-            return message;
-        }
+        return tempAdviseServerService.tempAdviseList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderCol, viewStatus, info, studentId, facultyId);
     }
 }

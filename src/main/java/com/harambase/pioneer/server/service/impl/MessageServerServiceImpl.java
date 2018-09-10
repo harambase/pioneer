@@ -12,7 +12,7 @@ import com.harambase.pioneer.server.dao.repository.PersonRepository;
 import com.harambase.pioneer.server.pojo.base.Message;
 import com.harambase.pioneer.server.pojo.base.Person;
 import com.harambase.pioneer.server.pojo.view.MessageView;
-import com.harambase.pioneer.server.service.MessageService;
+import com.harambase.pioneer.server.service.MessageServerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class MessageServiceImpl implements MessageService {
+public class MessageServerServiceImpl implements MessageServerService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -33,9 +33,9 @@ public class MessageServiceImpl implements MessageService {
     private final MessageDao messageDao;
 
     @Autowired
-    public MessageServiceImpl(MessageRepository messageRepository,
-                              PersonRepository personRepository,
-                              MessageDao messageDao) {
+    public MessageServerServiceImpl(MessageRepository messageRepository,
+                                    PersonRepository personRepository,
+                                    MessageDao messageDao) {
         this.messageRepository = messageRepository;
         this.personRepository = personRepository;
         this.messageDao = messageDao;

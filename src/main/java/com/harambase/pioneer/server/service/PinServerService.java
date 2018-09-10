@@ -3,7 +3,7 @@ package com.harambase.pioneer.server.service;
 import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.server.pojo.base.Pin;
 
-public interface PinService {
+public interface PinServerService {
 
     ResultMap validate(Integer pin, String userId);
 
@@ -20,4 +20,12 @@ public interface PinService {
     ResultMap getAllInfo();
 
     ResultMap updateOne(Integer pinNum, Pin pin);
+
+    ResultMap sendFacultyPin(String info, String senderId);
+
+    ResultMap sendStudentPin(String info, String senderId);
+
+    ResultMap sendAdvisorPin(String info, String senderId);
+
+    ResultMap resend(Pin pin, String userId);
 }

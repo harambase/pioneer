@@ -12,7 +12,7 @@ import com.harambase.pioneer.server.helper.StaticGexfGraph;
 import com.harambase.pioneer.server.pojo.base.Advise;
 import com.harambase.pioneer.server.pojo.base.Person;
 import com.harambase.pioneer.server.pojo.base.Transcript;
-import com.harambase.pioneer.server.service.MonitorService;
+import com.harambase.pioneer.server.service.MonitorServerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ import java.util.*;
 
 @Service
 @Transactional
-public class MonitorServiceImpl implements MonitorService {
+public class MonitorServerServiceImpl implements MonitorServerService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -35,9 +35,9 @@ public class MonitorServiceImpl implements MonitorService {
     private final CourseDao courseDao;
 
     @Autowired
-    public MonitorServiceImpl(PersonRepository personRepository, AdviseRepository adviseRepository,
-                              CourseDao courseDao, TranscriptRepository transcriptRepository,
-                              AdvisorDao advisorDao) {
+    public MonitorServerServiceImpl(PersonRepository personRepository, AdviseRepository adviseRepository,
+                                    CourseDao courseDao, TranscriptRepository transcriptRepository,
+                                    AdvisorDao advisorDao) {
         this.personRepository = personRepository;
         this.adviseRepository = adviseRepository;
         this.transcriptRepository = transcriptRepository;

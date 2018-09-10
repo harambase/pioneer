@@ -12,7 +12,7 @@ import com.harambase.pioneer.server.dao.base.TempCourseDao;
 import com.harambase.pioneer.server.dao.repository.MessageRepository;
 import com.harambase.pioneer.server.dao.repository.TempCourseRepository;
 import com.harambase.pioneer.server.pojo.base.TempCourse;
-import com.harambase.pioneer.server.service.TempCourseService;
+import com.harambase.pioneer.server.service.TempCourseServerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class TempCourseServiceImpl implements TempCourseService {
+public class TempCourseServerServiceImpl implements TempCourseServerService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -30,8 +30,8 @@ public class TempCourseServiceImpl implements TempCourseService {
 
     private final TempCourseDao tempCourseDao;
 
-    public TempCourseServiceImpl(TempCourseRepository tempCourseRepository, MessageRepository messageRepository,
-                                 TempCourseDao tempCourseDao) {
+    public TempCourseServerServiceImpl(TempCourseRepository tempCourseRepository, MessageRepository messageRepository,
+                                       TempCourseDao tempCourseDao) {
         this.tempCourseRepository = tempCourseRepository;
         this.messageRepository = messageRepository;
         this.tempCourseDao = tempCourseDao;

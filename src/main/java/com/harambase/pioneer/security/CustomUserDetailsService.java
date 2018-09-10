@@ -1,10 +1,8 @@
 package com.harambase.pioneer.security;
 
 import com.harambase.pioneer.security.model.User;
-import com.harambase.pioneer.server.PersonServer;
+import com.harambase.pioneer.server.service.PersonServerService;
 import com.harambase.pioneer.server.pojo.base.Person;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,19 +16,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-    private final PersonServer personServer;
+    private final PersonServerService personServerService;
 
     @Autowired
-    public CustomUserDetailsService(PersonServer personServer) {
-        this.personServer = personServer;
+    public CustomUserDetailsService(PersonServerService personServerService) {
+        this.personServerService = personServerService;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        Person user = (Person) personServer.getByKeyword(username).getData();
+        Person user = (Person) personServerService.getByKeyword(username).getData();
         User userDetail = new User(user);
 
         if (user == null) {

@@ -10,10 +10,10 @@ import com.harambase.pioneer.common.support.util.IDUtil;
 import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
 import com.harambase.pioneer.server.pojo.base.*;
 import com.harambase.pioneer.server.pojo.view.AdviseView;
-import com.harambase.pioneer.server.service.AdviseService;
-import com.harambase.pioneer.server.service.MessageService;
-import com.harambase.pioneer.server.service.PersonService;
-import com.harambase.pioneer.server.service.PinService;
+import com.harambase.pioneer.server.service.AdviseServerService;
+import com.harambase.pioneer.server.service.MessageServerService;
+import com.harambase.pioneer.server.service.PersonServerService;
+import com.harambase.pioneer.server.service.PinServerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,19 +27,19 @@ public class MessageSender {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private final MessageService messageService;
-    private final PersonService personService;
-    private final PinService pinService;
-    private final AdviseService adviseService;
+    private final MessageServerService messageServerService;
+    private final PersonServerService personServerService;
+    private final PinServerService pinServerService;
+    private final AdviseServerService adviseServerService;
 
     @Autowired
-    public MessageSender(MessageService messageService,
-                         PersonService personService,
-                         PinService pinService, AdviseService adviseService) {
-        this.messageService = messageService;
-        this.personService = personService;
-        this.pinService = pinService;
-        this.adviseService = adviseService;
+    public MessageSender(MessageServerService messageServerService,
+                         PersonServerService personServerService,
+                         PinServerService pinServerService, AdviseServerService adviseServerService) {
+        this.messageServerService = messageServerService;
+        this.personServerService = personServerService;
+        this.pinServerService = pinServerService;
+        this.adviseServerService = adviseServerService;
     }
 
     public void sendImportantSystemMsg(String receiverId, String senderId, String body, String title, String subject) {
@@ -55,14 +55,14 @@ public class MessageSender {
         message.setTag(Tags.SYSTEM);
         message.setLabels(Labels.IMPORTANT);
 
-        Message newMessage = (Message) messageService.createMessage(message).getData();
+        Message newMessage = (Message) messageServerService.createMessage(message).getData();
         if (newMessage == null)
             throw new RuntimeException("信息插入失败!");
 
     }
 
     public void sendToAllSystem(TempUser tempUser) {
-        List<Person> receiverList = (List<Person>) personService.listUsers("", "", "4", "1", String.valueOf(Integer.MAX_VALUE)).getData();
+        List<Person> receiverList = (List<Person>) personServerService.listUsers("", "", "4", "1", String.valueOf(Integer.MAX_VALUE)).getData();
 
         JSONObject jsonObject = JSONObject.parseObject(tempUser.getUserJson());
         String info = jsonObject.getString("lastName") + ", " + jsonObject.get("firstName") + "(" + tempUser.getUserId() + ")";
@@ -83,7 +83,7 @@ public class MessageSender {
         }
         message.setReceiverId(receiverId);
 
-        Message newMessage = (Message) messageService.createMessage(message).getData();
+        Message newMessage = (Message) messageServerService.createMessage(message).getData();
         if (newMessage == null)
             throw new RuntimeException("信息插入失败!");
 
@@ -91,7 +91,7 @@ public class MessageSender {
 
     public ResultMap sendFacultyPinByInfo(String info, String senderId) {
         try {
-            List<Pin> pinInfoList = (List<Pin>) pinService.listByInfo("0", String.valueOf(Integer.MAX_VALUE), "", "desc", "pin", info, "").getData();
+            List<Pin> pinInfoList = (List<Pin>) pinServerService.listByInfo("0", String.valueOf(Integer.MAX_VALUE), "", "desc", "pin", info, "").getData();
 
             for (Pin pin : pinInfoList) {
                 if (pin.getRole() == 2) {
@@ -111,7 +111,7 @@ public class MessageSender {
 
     public ResultMap sendAdvisorPinByInfo(String info, String senderId) {
         try {
-            List<Pin> pinInfoList = (List<Pin>) pinService.listByInfo("0", String.valueOf(Integer.MAX_VALUE), "", "desc", "pin", info, "").getData();
+            List<Pin> pinInfoList = (List<Pin>) pinServerService.listByInfo("0", String.valueOf(Integer.MAX_VALUE), "", "desc", "pin", info, "").getData();
 
             for (Pin pin : pinInfoList) {
                 if (pin.getRole() == 1) {
@@ -132,7 +132,7 @@ public class MessageSender {
 
     public ResultMap sendStudentPinByInfo(String info, String senderId) {
         try {
-            List<Pin> pinInfoList = (List<Pin>) pinService.listByInfo("0", String.valueOf(Integer.MAX_VALUE), "", "desc", "pin", info, "").getData();
+            List<Pin> pinInfoList = (List<Pin>) pinServerService.listByInfo("0", String.valueOf(Integer.MAX_VALUE), "", "desc", "pin", info, "").getData();
 
             for (Pin pin : pinInfoList) {
                 if (pin.getRole() == 3) {
@@ -188,7 +188,7 @@ public class MessageSender {
                 + pin.getStartTime() + "至" + pin.getEndTime() + ", 如有问题请与教务人员联系！";
         message.setReceiverId(facultyId);
         message.setBody(body);
-        Message newMessage = (Message) messageService.createMessage(message).getData();
+        Message newMessage = (Message) messageServerService.createMessage(message).getData();
 
         return newMessage != null ? ReturnMsgUtil.success(null) : ReturnMsgUtil.fail();
     }
@@ -197,7 +197,7 @@ public class MessageSender {
 
         String studentId = pin.getOwnerId();
 
-        AdviseView adviseView = (AdviseView) adviseService.getAdviseViewByStudentId(studentId).getData();
+        AdviseView adviseView = (AdviseView) adviseServerService.getAdviseViewByStudentId(studentId).getData();
 
         Message message = new Message();
         message.setDate(DateUtil.DateToStr(new Date()));
@@ -215,7 +215,7 @@ public class MessageSender {
 
         message.setReceiverId(adviseView.getFacultyId());
         message.setBody(body);
-        Message newMessage = (Message) messageService.createMessage(message).getData();
+        Message newMessage = (Message) messageServerService.createMessage(message).getData();
 
         return newMessage != null ? ReturnMsgUtil.success(null) : ReturnMsgUtil.fail();
 
@@ -239,7 +239,7 @@ public class MessageSender {
                 + pin.getStartTime() + "至" + pin.getEndTime() + ", 如有问题请与教务人员联系！";
         message.setReceiverId(facultyId);
         message.setBody(body);
-        Message newMessage = (Message) messageService.createMessage(message).getData();
+        Message newMessage = (Message) messageServerService.createMessage(message).getData();
 
         return newMessage != null ? ReturnMsgUtil.success(null) : ReturnMsgUtil.fail();
     }

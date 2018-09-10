@@ -3,7 +3,7 @@ package com.harambase.pioneer.server.service;
 import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.server.pojo.base.Advise;
 
-public interface AdviseService {
+public interface AdviseServerService {
 
     ResultMap advisingList(String s, String s1, String search, String order, String orderCol, String studentId, String facultyId, String info);
 

@@ -3,7 +3,7 @@ package com.harambase.pioneer.server.service;
 import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.server.pojo.base.TempAdvise;
 
-public interface TempAdviseService {
+public interface TempAdviseServerService {
 
     ResultMap register(TempAdvise tempAdvise);
 

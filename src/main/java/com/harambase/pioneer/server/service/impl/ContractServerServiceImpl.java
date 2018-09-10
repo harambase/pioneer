@@ -10,7 +10,7 @@ import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
 import com.harambase.pioneer.server.dao.base.ContractDao;
 import com.harambase.pioneer.server.dao.repository.ContractRepository;
 import com.harambase.pioneer.server.pojo.base.Contract;
-import com.harambase.pioneer.server.service.ContractService;
+import com.harambase.pioneer.server.service.ContractServerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class ContractServiceImpl implements ContractService {
+public class ContractServerServiceImpl implements ContractServerService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -33,7 +33,7 @@ public class ContractServiceImpl implements ContractService {
     private final ContractDao contractDao;
 
     @Autowired
-    public ContractServiceImpl(ContractRepository contractRepository, ContractDao contractDao) {
+    public ContractServerServiceImpl(ContractRepository contractRepository, ContractDao contractDao) {
         this.contractRepository = contractRepository;
         this.contractDao = contractDao;
     }

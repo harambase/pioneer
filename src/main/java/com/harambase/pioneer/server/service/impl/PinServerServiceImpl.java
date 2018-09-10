@@ -5,8 +5,10 @@ import com.harambase.pioneer.common.Page;
 import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.common.constant.SystemConst;
 import com.harambase.pioneer.common.support.util.DateUtil;
+import com.harambase.pioneer.common.support.util.IDUtil;
 import com.harambase.pioneer.common.support.util.PageUtil;
 import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
+import com.harambase.pioneer.helper.MessageSender;
 import com.harambase.pioneer.server.dao.base.PersonDao;
 import com.harambase.pioneer.server.dao.base.PinDao;
 import com.harambase.pioneer.server.dao.repository.PinRepository;
@@ -14,7 +16,7 @@ import com.harambase.pioneer.server.helper.TimeValidate;
 import com.harambase.pioneer.server.pojo.base.Person;
 import com.harambase.pioneer.server.pojo.base.Pin;
 import com.harambase.pioneer.server.pojo.view.PinView;
-import com.harambase.pioneer.server.service.PinService;
+import com.harambase.pioneer.server.service.PinServerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class PinServiceImpl implements PinService {
+public class PinServerServiceImpl implements PinServerService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -36,9 +38,13 @@ public class PinServiceImpl implements PinService {
     private final PersonDao personDao;
     private final PinDao pinDao;
 
+    private final MessageSender messageSender;
+
     @Autowired
-    public PinServiceImpl(PinRepository pinRepository, PinDao pinDao, PersonDao personDao) {
+    public PinServerServiceImpl(PinRepository pinRepository, MessageSender messageSender,
+                                PinDao pinDao, PersonDao personDao) {
         this.pinRepository = pinRepository;
+        this.messageSender = messageSender;
         this.personDao = personDao;
         this.pinDao = pinDao;
     }
@@ -73,13 +79,13 @@ public class PinServiceImpl implements PinService {
 
             switch (role) {
                 case 1:
-                    personList = personDao.getPersonBySearch("", "s", "", "1", "");
+                    personList = personDao.getPersonBySearch("", "s", "1", "1", "");
                     break;
                 case 2:
-                    personList = personDao.getPersonBySearch("", "f", "", "1", "");
+                    personList = personDao.getPersonBySearch("", "f", "1", "1", "");
                     break;
                 case 3:
-                    personList = personDao.getPersonBySearch("", "s", "", "1", "");
+                    personList = personDao.getPersonBySearch("", "s", "1", "1", "");
                     break;
             }
 
@@ -167,7 +173,24 @@ public class PinServiceImpl implements PinService {
             pin.setOwnerId(userId);
 
             Pin newPin = pinRepository.save(pin);
-            return newPin != null ? ReturnMsgUtil.success(newPin) : ReturnMsgUtil.fail();
+
+            if (newPin != null) {
+                if (role == 2) {//2是 成绩录入
+                    messageSender.sendFacultyPin(pin, IDUtil.ROOT);
+                    messageSender.sendImportantSystemMsg(IDUtil.ROOT, IDUtil.ROOT,
+                            "您接收到来自系统的一条消息:用户 " + userId + " 的成绩录入识别码" + pinNum + " 已生成！", "成绩录入识别码", "识别码");
+                } else if(role == 1){
+                    messageSender.sendAdvisorPin(pin, IDUtil.ROOT);
+                    messageSender.sendImportantSystemMsg(IDUtil.ROOT, IDUtil.ROOT,
+                            "您接收到来自系统的一条消息:用户 " + userId + " 的选课的识别码" + pinNum + " 已生成！", "选课的识别码", "识别码");
+                } else {
+                    messageSender.sendStudentPin(pin, IDUtil.ROOT);
+                    messageSender.sendImportantSystemMsg(IDUtil.ROOT, IDUtil.ROOT,
+                            "您接收到来自系统的一条消息:用户 " + userId + " 的选导师的识别码" + pinNum + " 已生成！", "选导师的识别码", "识别码");
+                }
+                return ReturnMsgUtil.success(newPin);
+            }
+            return ReturnMsgUtil.fail();
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -192,6 +215,46 @@ public class PinServiceImpl implements PinService {
             pin.setPin(pinNum);
             Pin newPin = pinRepository.save(pin);
             return newPin != null ? ReturnMsgUtil.success(newPin) : ReturnMsgUtil.fail();
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
+    }
+
+    @Override
+    public ResultMap sendFacultyPin(String info, String senderId) {
+        try {
+            return messageSender.sendFacultyPinByInfo(info, senderId);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
+    }
+
+    @Override
+    public ResultMap sendStudentPin(String info, String senderId) {
+        try {
+            return messageSender.sendStudentPinByInfo(info, senderId);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
+    }
+
+    @Override
+    public ResultMap sendAdvisorPin(String info, String senderId) {
+        try {
+            return messageSender.sendAdvisorPinByInfo(info, senderId);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
+    }
+
+    @Override
+    public ResultMap resend(Pin pin, String userId) {
+        try {
+            return messageSender.resendPin(pin, userId);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();

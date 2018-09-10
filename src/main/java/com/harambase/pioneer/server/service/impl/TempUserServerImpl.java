@@ -8,11 +8,13 @@ import com.harambase.pioneer.common.support.util.DateUtil;
 import com.harambase.pioneer.common.support.util.IDUtil;
 import com.harambase.pioneer.common.support.util.PageUtil;
 import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
+import com.harambase.pioneer.helper.MessageSender;
 import com.harambase.pioneer.server.dao.base.TempUserDao;
 import com.harambase.pioneer.server.dao.repository.MessageRepository;
 import com.harambase.pioneer.server.dao.repository.TempUserRepository;
+import com.harambase.pioneer.server.pojo.base.Person;
 import com.harambase.pioneer.server.pojo.base.TempUser;
-import com.harambase.pioneer.server.service.TempUserService;
+import com.harambase.pioneer.server.service.TempUserServerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,21 +26,16 @@ import java.util.List;
 
 @Service
 @Transactional
-public class TempUserImpl implements TempUserService {
+public class TempUserServerImpl implements TempUserServerService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final TempUserRepository tempUserRepository;
-    private final MessageRepository messageRepository;
-
     private final TempUserDao tempUserDao;
 
     @Autowired
-    public TempUserImpl(TempUserRepository tempUserRepository,
-                        MessageRepository messageRepository,
-                        TempUserDao tempUserDao) {
+    public TempUserServerImpl(TempUserRepository tempUserRepository, TempUserDao tempUserDao) {
         this.tempUserRepository = tempUserRepository;
-        this.messageRepository = messageRepository;
         this.tempUserDao = tempUserDao;
     }
 
@@ -83,9 +80,11 @@ public class TempUserImpl implements TempUserService {
     @Override
     public ResultMap updateTempUser(Integer id, TempUser tempUser) {
         try {
+
             tempUser.setId(id);
             tempUser.setUpdateTime(DateUtil.DateToStr(new Date()));
             TempUser newTempUser = tempUserRepository.save(tempUser);
+
             return newTempUser != null ? ReturnMsgUtil.success(newTempUser) : ReturnMsgUtil.fail();
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

@@ -3,12 +3,12 @@ package com.harambase.pioneer.service;
 import com.harambase.pioneer.common.Config;
 import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.common.constant.SystemConst;
-import com.harambase.pioneer.server.AdviseServer;
 import com.harambase.pioneer.server.helper.Name;
 import com.harambase.pioneer.server.pojo.base.Advise;
 import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
 import com.harambase.pioneer.server.pojo.dto.AdviseReportOnly;
 import com.harambase.pioneer.server.pojo.view.AdviseView;
+import com.harambase.pioneer.server.service.AdviseServerService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,17 +27,17 @@ public class AdviseService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private final AdviseServer adviseServer;
+    private final AdviseServerService adviseServerService;
 
     @Autowired
-    public AdviseService(AdviseServer adviseServer) {
-        this.adviseServer = adviseServer;
+    public AdviseService(AdviseServerService adviseServerService) {
+        this.adviseServerService = adviseServerService;
     }
 
 
     public ResultMap advisingList(int start, int length, String search, String order, String orderColumn, String studentId, String facultyId, String info) {
         try {
-            return adviseServer.list(start, length, search, order, orderColumn, studentId, facultyId, info);
+            return adviseServerService.advisingList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderColumn, studentId, facultyId, info);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -47,7 +47,7 @@ public class AdviseService {
 
     public ResultMap updateAdvise(Integer id, Advise advise) {
         try {
-            return adviseServer.update(id, advise);
+            return adviseServerService.updateAdvise(id, advise);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -57,7 +57,7 @@ public class AdviseService {
 
     public ResultMap assignMentor(Advise advise) {
         try {
-            return adviseServer.create(advise);
+            return adviseServerService.assignMentor(advise);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -67,7 +67,7 @@ public class AdviseService {
 
     public ResultMap removeMentor(Integer id) {
         try {
-            return adviseServer.delete(id);
+            return adviseServerService.removeMentor(id);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -77,7 +77,7 @@ public class AdviseService {
 
     public ResultMap getMentor(Integer id) {
         try {
-            return adviseServer.get(id);
+            return adviseServerService.getMentor(id);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -99,7 +99,7 @@ public class AdviseService {
             fos.write(new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF});
 
             Field[] titleList = AdviseReportOnly.class.getDeclaredFields();
-            List<AdviseView> adviseViewList = (List<AdviseView>) adviseServer.list(1, Integer.MAX_VALUE, "", "asc",
+            List<AdviseView> adviseViewList = (List<AdviseView>) adviseServerService.advisingList("1", String.valueOf(Integer.MAX_VALUE), "", "asc",
                     "student_id", "", "", info).getData();
 
             StringBuilder exportInfoSb = new StringBuilder();
@@ -140,22 +140,22 @@ public class AdviseService {
     }
 
     public ResultMap advisorList(int start, int length, String search, String order, String orderColumn, String status) {
-        return adviseServer.advisorList(start, length, search, order, orderColumn, status);
+        return adviseServerService.advisorList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderColumn, status);
     }
 
     public ResultMap removeAdvisor(String userId) {
-        return adviseServer.removeAdvisor(userId);
+        return adviseServerService.removeAdvisor(userId);
     }
 
     public ResultMap addAdvisor(String userId) {
-        return adviseServer.addAdvisor(userId);
+        return adviseServerService.addAdvisor(userId);
     }
 
     public ResultMap getAdvisor(String userId) {
-        return adviseServer.getAdvisor(userId);
+        return adviseServerService.getAdvisor(userId);
     }
 
     public ResultMap getAdvisorByStudentId(String studentId) {
-        return adviseServer.getAdvisorByStudentId(studentId);
+        return adviseServerService.getAdviseViewByStudentId(studentId);
     }
 }

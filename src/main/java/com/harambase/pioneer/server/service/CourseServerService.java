@@ -8,7 +8,7 @@ import com.harambase.pioneer.server.pojo.dto.Option;
 /**
  * Created by linsh on 7/12/2017.
  */
-public interface CourseService {
+public interface CourseServerService {
 
     ResultMap addCourse(Course course);
 

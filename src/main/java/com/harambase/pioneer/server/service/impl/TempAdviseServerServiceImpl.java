@@ -10,7 +10,7 @@ import com.harambase.pioneer.server.dao.base.TempAdviseDao;
 import com.harambase.pioneer.server.dao.repository.TempAdviseRepository;
 import com.harambase.pioneer.server.pojo.base.TempAdvise;
 import com.harambase.pioneer.server.pojo.view.TempAdviseView;
-import com.harambase.pioneer.server.service.TempAdviseService;
+import com.harambase.pioneer.server.service.TempAdviseServerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class TempAdviseServiceImpl implements TempAdviseService {
+public class TempAdviseServerServiceImpl implements TempAdviseServerService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -29,8 +29,8 @@ public class TempAdviseServiceImpl implements TempAdviseService {
     private final TempAdviseDao tempAdviseDao;
 
     @Autowired
-    public TempAdviseServiceImpl(TempAdviseRepository tempAdviseRepository,
-                                 TempAdviseDao tempAdviseDao) {
+    public TempAdviseServerServiceImpl(TempAdviseRepository tempAdviseRepository,
+                                       TempAdviseDao tempAdviseDao) {
         this.tempAdviseRepository = tempAdviseRepository;
         this.tempAdviseDao = tempAdviseDao;
     }

@@ -3,7 +3,7 @@ package com.harambase.pioneer.server.service;
 import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.server.pojo.base.Contract;
 
-public interface ContractService {
+public interface ContractServerService {
 
     ResultMap addContract(Contract contract);
 

@@ -6,7 +6,7 @@ import com.harambase.pioneer.server.pojo.base.Student;
 /**
  * Created by linsh on 7/12/2017.
  */
-public interface StudentService {
+public interface StudentServerService {
 
     ResultMap transcriptDetail(String studentId);
 

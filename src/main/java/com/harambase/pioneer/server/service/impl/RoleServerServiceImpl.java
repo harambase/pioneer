@@ -8,7 +8,7 @@ import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
 import com.harambase.pioneer.server.dao.base.RoleDao;
 import com.harambase.pioneer.server.dao.repository.RoleRepository;
 import com.harambase.pioneer.server.pojo.base.Role;
-import com.harambase.pioneer.server.service.RoleService;
+import com.harambase.pioneer.server.service.RoleServerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class RoleServiceImpl implements RoleService {
+public class RoleServerServiceImpl implements RoleServerService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -26,7 +26,7 @@ public class RoleServiceImpl implements RoleService {
     private final RoleDao roleDao;
 
     @Autowired
-    public RoleServiceImpl(RoleRepository roleRepository, RoleDao roleDao) {
+    public RoleServerServiceImpl(RoleRepository roleRepository, RoleDao roleDao) {
         this.roleDao = roleDao;
         this.roleRepository = roleRepository;
     }

@@ -2,7 +2,7 @@ package com.harambase.pioneer.controller;
 
 import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.common.Page;
-import com.harambase.pioneer.server.RoleServer;
+import com.harambase.pioneer.service.RoleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/role")
 public class RoleController {
 
-    private final RoleServer roleServer;
+    private final RoleService roleService;
 
-    public RoleController(RoleServer roleServer) {
-        this.roleServer = roleServer;
+    public RoleController(RoleService roleService) {
+        this.roleService = roleService;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -31,7 +31,7 @@ public class RoleController {
                                @RequestParam(value = "order", required = false, defaultValue = "desc") String order,
                                @RequestParam(value = "orderCol", required = false, defaultValue = "role_id") String orderCol) {
         search = search.replace("'", "");
-        ResultMap message = roleServer.list(search, order, orderCol);
+        ResultMap message = roleService.list(search, order, orderCol);
         message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         return new ResponseEntity<>(message, HttpStatus.OK);
     }

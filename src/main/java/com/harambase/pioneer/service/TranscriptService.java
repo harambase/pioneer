@@ -7,9 +7,9 @@ import com.harambase.pioneer.common.support.document.jlr.JLRConverter;
 import com.harambase.pioneer.common.support.document.jlr.JLRGenerator;
 import com.harambase.pioneer.common.support.util.ReportUtil;
 import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
-import com.harambase.pioneer.server.PersonServer;
-import com.harambase.pioneer.server.StudentServer;
-import com.harambase.pioneer.server.TranscriptServer;
+import com.harambase.pioneer.server.service.PersonServerService;
+import com.harambase.pioneer.server.service.StudentServerService;
+import com.harambase.pioneer.server.service.TranscriptServerService;
 import com.harambase.pioneer.server.helper.Name;
 import com.harambase.pioneer.server.pojo.base.Person;
 import com.harambase.pioneer.server.pojo.base.Transcript;
@@ -25,7 +25,6 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.util.*;
@@ -35,21 +34,21 @@ public class TranscriptService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private final TranscriptServer transcriptServer;
-    private final PersonServer personServer;
-    private final StudentServer studentServer;
+    private final TranscriptServerService transcriptServerService;
+    private final PersonServerService personServerService;
+    private final StudentServerService studentServerService;
 
     @Autowired
-    public TranscriptService(TranscriptServer transcriptServer, PersonServer personServer, StudentServer studentServer) {
-        this.transcriptServer = transcriptServer;
-        this.studentServer = studentServer;
-        this.personServer = personServer;
+    public TranscriptService(TranscriptServerService transcriptServerService, PersonServerService personServerService, StudentServerService studentServerService) {
+        this.transcriptServerService = transcriptServerService;
+        this.studentServerService = studentServerService;
+        this.personServerService = personServerService;
     }
 
 
     public ResultMap updateGrade(int id, Transcript transcript) {
         try {
-            return transcriptServer.update(id, transcript);
+            return transcriptServerService.updateGrade(id, transcript);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -60,7 +59,7 @@ public class TranscriptService {
     public ResultMap transcriptList(int start, int length, String search, String order, String orderColumn, String studentId, String crn,
                                     String info, String complete) {
         try {
-            return transcriptServer.list(start, length, search, order, orderColumn, studentId, crn, info, complete);
+            return transcriptServerService.transcriptList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderColumn, studentId, crn, info, complete);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -86,14 +85,14 @@ public class TranscriptService {
             JLRConverter converter = new JLRConverter(workingDirectory);
 
             //学生信息TITLE
-            Person student = (Person) personServer.get(studentId).getData();
+            Person student = (Person) personServerService.getUser(studentId).getData();
             converter.replace("sname", student.getLastName() + ", " + student.getFirstName());
             converter.replace("studentId", student.getUserId());
             converter.replace("info", ReportUtil.infoConverter(student.getInfo()));
             converter.replace("address", student.getAddress());
 
             //成绩详情
-            List<TranscriptView> transcriptList = (List<TranscriptView>) transcriptServer.list(1, Integer.MAX_VALUE, "", "", "crn",
+            List<TranscriptView> transcriptList = (List<TranscriptView>) transcriptServerService.transcriptList("1", String.valueOf(Integer.MAX_VALUE), "", "", "crn",
                     studentId, "", "", "").getData();
             Map<String, List<List<Object>>> transcripts = new HashMap<>();
             Set<String> infoSet = new HashSet<>();
@@ -138,7 +137,7 @@ public class TranscriptService {
             converter.replace("transcriptList", transcripts);
 
             //学分TOTAL:
-            LinkedHashMap studentViewMap = (LinkedHashMap) studentServer.getTranscriptDetail(studentId).getData();
+            LinkedHashMap studentViewMap = (LinkedHashMap) studentServerService.transcriptDetail(studentId).getData();
             int complete = (int) studentViewMap.get("complete");
             int progress = (int) studentViewMap.get("progress");
             int incomplete = (int) studentViewMap.get("incomplete");
@@ -189,7 +188,7 @@ public class TranscriptService {
             fos.write(new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF});
 
             Field[] titleList = TranscriptReportOnly.class.getDeclaredFields();
-            List<TranscriptView> transcriptViewList = (List<TranscriptView>) transcriptServer.list(1, Integer.MAX_VALUE, "", "asc",
+            List<TranscriptView> transcriptViewList = (List<TranscriptView>) transcriptServerService.transcriptList("1", String.valueOf(Integer.MAX_VALUE), "", "asc",
                     "crn", "", "", info, "").getData();
 
 
@@ -218,7 +217,7 @@ public class TranscriptService {
 
                 case 2:
                     //标题行
-                    List<String> coursesNames = (List<String>) transcriptServer.getDistinctColumnByInfo("cname", info).getData();
+                    List<String> coursesNames = (List<String>) transcriptServerService.getDistinctColumnByInfo("cname", info).getData();
                     exportInfoSb.append(",");
                     for (int i = 0; i < coursesNames.size(); i++) {
                         if (i != 0) exportInfoSb.append(",");
@@ -227,7 +226,7 @@ public class TranscriptService {
                     exportInfoSb.append("\n");
 
                     //每列
-                    List<String> studentNames = (List<String>) transcriptServer.getDistinctColumnByInfo("sname", info).getData();
+                    List<String> studentNames = (List<String>) transcriptServerService.getDistinctColumnByInfo("sname", info).getData();
                     for (int i = 0; i < studentNames.size(); i++) {
 
                         String sname = studentNames.get(i);

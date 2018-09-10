@@ -3,7 +3,7 @@ package com.harambase.pioneer.server.service;
 import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.server.pojo.base.Transcript;
 
-public interface TranscriptService {
+public interface TranscriptServerService {
 
     ResultMap updateGrade(Integer id, Transcript transcript);
 

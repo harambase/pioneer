@@ -14,7 +14,7 @@ import com.harambase.pioneer.server.pojo.base.Advise;
 import com.harambase.pioneer.server.pojo.base.Person;
 import com.harambase.pioneer.server.pojo.view.AdviseView;
 import com.harambase.pioneer.server.pojo.view.AdvisorView;
-import com.harambase.pioneer.server.service.AdviseService;
+import com.harambase.pioneer.server.service.AdviseServerService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +27,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class AdviseServiceImpl implements AdviseService {
+public class AdviseServerServiceImpl implements AdviseServerService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -38,8 +38,8 @@ public class AdviseServiceImpl implements AdviseService {
     private final AdvisorDao advisorDao;
 
     @Autowired
-    public AdviseServiceImpl(AdviseRepository adviseRepository, AdviseDao adviseDao,
-                             AdvisorDao advisorDao, PersonRepository personRepository) {
+    public AdviseServerServiceImpl(AdviseRepository adviseRepository, AdviseDao adviseDao,
+                                   AdvisorDao advisorDao, PersonRepository personRepository) {
         this.adviseRepository = adviseRepository;
         this.personRepository = personRepository;
         this.adviseDao = adviseDao;

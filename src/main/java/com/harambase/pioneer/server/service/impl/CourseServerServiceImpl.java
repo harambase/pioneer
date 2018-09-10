@@ -17,7 +17,7 @@ import com.harambase.pioneer.server.pojo.base.Course;
 import com.harambase.pioneer.server.pojo.base.Transcript;
 import com.harambase.pioneer.server.pojo.dto.Option;
 import com.harambase.pioneer.server.pojo.view.CourseView;
-import com.harambase.pioneer.server.service.CourseService;
+import com.harambase.pioneer.server.service.CourseServerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ import java.util.*;
 
 @Service
 @Transactional
-public class CourseServiceImpl implements CourseService {
+public class CourseServerServiceImpl implements CourseServerService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -39,9 +39,9 @@ public class CourseServiceImpl implements CourseService {
     private final StudentDao studentDao;
 
     @Autowired
-    public CourseServiceImpl(CourseRepository courseRepository,
-                             TranscriptRepository transcriptRepository,
-                             CourseDao courseDao, StudentDao studentDao) {
+    public CourseServerServiceImpl(CourseRepository courseRepository,
+                                   TranscriptRepository transcriptRepository,
+                                   CourseDao courseDao, StudentDao studentDao) {
         this.transcriptRepository = transcriptRepository;
         this.courseRepository = courseRepository;
         this.courseDao = courseDao;

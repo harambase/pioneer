@@ -9,7 +9,7 @@ import com.harambase.pioneer.server.dao.repository.*;
 import com.harambase.pioneer.server.pojo.base.Course;
 import com.harambase.pioneer.server.pojo.base.Person;
 import com.harambase.pioneer.server.pojo.base.Student;
-import com.harambase.pioneer.server.service.PersonService;
+import com.harambase.pioneer.server.service.PersonServerService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +25,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class PersonServiceImpl implements PersonService {
+public class PersonServerServiceImpl implements PersonServerService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -39,9 +39,9 @@ public class PersonServiceImpl implements PersonService {
     private final PersonDao personDao;
 
     @Autowired
-    public PersonServiceImpl(PersonRepository personRepository, AdviseRepository adviseRepository,
-                             StudentRepository studentRepository, CourseRepository courseRepository,
-                             TranscriptRepository transcriptRepository, PersonDao personDao) {
+    public PersonServerServiceImpl(PersonRepository personRepository, AdviseRepository adviseRepository,
+                                   StudentRepository studentRepository, CourseRepository courseRepository,
+                                   TranscriptRepository transcriptRepository, PersonDao personDao) {
         this.personRepository = personRepository;
         this.adviseRepository = adviseRepository;
         this.transcriptRepository = transcriptRepository;

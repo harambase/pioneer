@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.server.pojo.base.TempUser;
 
-public interface TempUserService {
+public interface TempUserServerService {
 
     ResultMap deleteTempUserById(Integer id);
 

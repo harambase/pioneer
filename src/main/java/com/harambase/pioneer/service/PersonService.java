@@ -7,10 +7,9 @@ import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.common.constant.SystemConst;
 import com.harambase.pioneer.common.support.util.FileUtil;
 import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
-import com.harambase.pioneer.server.PersonServer;
+import com.harambase.pioneer.server.service.PersonServerService;
 import com.harambase.pioneer.server.pojo.base.Person;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.net.ftp.FTPClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,17 +22,17 @@ import java.io.File;
 public class PersonService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private final PersonServer personServer;
+    private final PersonServerService personServerService;
 
     @Autowired
-    public PersonService(PersonServer personServer) {
-        this.personServer = personServer;
+    public PersonService(PersonServerService personServerService) {
+        this.personServerService = personServerService;
     }
 
 
     public ResultMap login(Person person) {
         try {
-            return personServer.login(person);
+            return personServerService.login(person);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -43,7 +42,7 @@ public class PersonService {
 
     public ResultMap createPerson(Person person) {
         try {
-            return personServer.create(person);
+            return personServerService.addUser(person);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -53,7 +52,7 @@ public class PersonService {
 
     public ResultMap deletePerson(String userId) {
         try {
-            return personServer.delete(userId);
+            return personServerService.removeUser(userId);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -63,7 +62,7 @@ public class PersonService {
 
     public ResultMap updatePerson(String userId, Person person) {
         try {
-            return personServer.update(userId, person);
+            return personServerService.update(userId, person);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -73,7 +72,7 @@ public class PersonService {
 
     public ResultMap get(String userId) {
         try {
-            return personServer.get(userId);
+            return personServerService.getUser(userId);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -84,7 +83,7 @@ public class PersonService {
     public ResultMap list(int start, int length, String search, String order, String orderColumn,
                           String type, String status, String role) {
         try {
-            return personServer.list(start, length, search, order, orderColumn, type, status, role);
+            return personServerService.userList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderColumn, type, status, role);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -94,7 +93,7 @@ public class PersonService {
 
     public ResultMap search(String search, String type, String status, String role) {
         try {
-            return personServer.search(search, type, status, role);
+            return personServerService.listUsers(search, type, status, role, "5");
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -108,7 +107,7 @@ public class PersonService {
         JSONObject jsonObject = new JSONObject();
 
         try {
-            Person person = (Person) personServer.get(userId).getData();
+            Person person = (Person) personServerService.getUser(userId).getData();
             String name = file.getOriginalFilename();
 
             String fileUri;
@@ -157,7 +156,7 @@ public class PersonService {
                     break;
             }
 
-            message = personServer.update(userId, person);
+            message = personServerService.update(userId, person);
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -173,7 +172,7 @@ public class PersonService {
     }
 
     public Person verifyUser(Person user) {
-        Person existUser = (Person) personServer.get(user.getUserId()).getData();
+        Person existUser = (Person) personServerService.getUser(user.getUserId()).getData();
         return existUser != null &&
                 existUser.getBirthday().equals(user.getBirthday()) &&
                 existUser.getTel().equals(user.getTel()) ? existUser : null;
@@ -181,7 +180,7 @@ public class PersonService {
 
     public ResultMap updateLastLoginTime(String username) {
         try {
-            return personServer.updateLastLoginTime(username);
+            return personServerService.updateLastLoginTime(username);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();

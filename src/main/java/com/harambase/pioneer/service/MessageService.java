@@ -2,8 +2,8 @@ package com.harambase.pioneer.service;
 
 import com.harambase.pioneer.server.pojo.base.Message;
 import com.harambase.pioneer.common.ResultMap;
-import com.harambase.pioneer.server.MessageServer;
 import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
+import com.harambase.pioneer.server.service.MessageServerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,16 +14,16 @@ public class MessageService {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private final MessageServer messageServer;
+    private final MessageServerService messageServerService;
 
     @Autowired
-    public MessageService(MessageServer messageServer) {
-        this.messageServer = messageServer;
+    public MessageService(MessageServerService messageServerService) {
+        this.messageServerService = messageServerService;
     }
 
     public ResultMap create(Message message) {
         try {
-            return messageServer.create(message);
+            return messageServerService.createMessage(message);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -33,7 +33,7 @@ public class MessageService {
 
     public ResultMap delete(Integer id) {
         try {
-            return messageServer.delete(id);
+            return messageServerService.delete(id);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -43,7 +43,7 @@ public class MessageService {
 
     public ResultMap update(Integer id, Message message) {
         try {
-            return messageServer.update(id, message);
+            return messageServerService.update(id, message);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -53,7 +53,7 @@ public class MessageService {
 
     public ResultMap updateStatus(Integer id, String status) {
         try {
-            return messageServer.updateStatus(id, status);
+            return messageServerService.updateStatus(id, status);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -63,7 +63,7 @@ public class MessageService {
 
     public ResultMap get(Integer id) {
         try {
-            return messageServer.get(id);
+            return messageServerService.getMessageView(id);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -73,7 +73,19 @@ public class MessageService {
 
     public ResultMap list(int start, int length, String search, String order, String orderColumn, String userId, String box) {
         try {
-            return messageServer.list(start, length, search, order, orderColumn, userId, box);
+            String receiverId = null;
+            String senderId = null;
+
+            if (box.contains("inbox") || box.contains("important") || box.contains("urgent"))
+                receiverId = userId;
+            if (box.contains("sent") || box.contains("draft"))
+                senderId = userId;
+            if (box.contains("trash")) {
+                receiverId = userId;
+                senderId = userId;
+            }
+            return messageServerService.list(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderColumn, receiverId, senderId, box);
+
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -83,7 +95,20 @@ public class MessageService {
 
     public ResultMap countMessageByStatus(String userId, String box, String status) {
         try {
-            return messageServer.count(userId, box, status);
+            String receiverId = null;
+            String senderId = null;
+
+            if (box.contains("inbox") || box.contains("important") || box.contains("urgent"))
+                receiverId = userId;
+            if (box.contains("sent") || box.contains("draft"))
+                senderId = userId;
+            if (box.contains("trash")) {
+                receiverId = userId;
+                senderId = userId;
+            }
+
+            return messageServerService.countMessageByStatus(receiverId, senderId, box.toLowerCase(), status.toLowerCase());
+
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();

@@ -3,7 +3,7 @@ package com.harambase.pioneer.server.service;
 import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.server.pojo.base.Message;
 
-public interface MessageService {
+public interface MessageServerService {
 
     ResultMap list(String currentPage, String pageSize, String search, String order,
                    String orderColumn, String receiverid, String senderid, String box);
