@@ -274,8 +274,7 @@ public class PinServerServiceImpl implements PinServerService {
             page.setPageSize(PageUtil.getLimit(pageSize));
             page.setTotalRows(totalSize);
 
-            List<PinView> pinViewList = pinDao.getByMapPageSearchOrdered(search, info, ownerId,
-                    page.getCurrentIndex(), page.getPageSize(), order, orderColumn);
+            List<PinView> pinViewList = pinDao.getByMapPageSearchOrdered(page.getCurrentIndex(), page.getPageSize(), order, orderColumn, search, info, ownerId);
 
             message.setData(pinViewList);
             message.put("page", page);

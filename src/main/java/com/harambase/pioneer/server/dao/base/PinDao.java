@@ -61,8 +61,8 @@ public class PinDao {
         }
     }
 
-    public List<PinView> getByMapPageSearchOrdered(String search, String info, String ownerId, int currentIndex, int pageSize,
-                                                   String order, String orderColumn) throws Exception {
+    public List<PinView> getByMapPageSearchOrdered(int currentIndex, int pageSize, String order,
+                                                   String orderColumn, String search, String info, String ownerId) throws Exception {
         ResultSet rs = null;
         Connection connection = null;
         Statement stmt = null;

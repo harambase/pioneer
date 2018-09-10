@@ -102,20 +102,6 @@ public class CourseController {
     }
 
     @PreAuthorize("hasRole('USER')")
-    @RequestMapping(value = "/zTree/list", method = RequestMethod.GET)
-    public ResponseEntity zTreeList(@RequestParam(value = "mode", required = false) String mode,
-                                    @RequestParam(value = "info", required = false) String info,
-                                    HttpServletRequest request) {
-
-        String facultyId = "";
-        if (mode != null && mode.equals("faculty"))
-            facultyId = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));
-
-        ResultMap message = courseService.courseTreeList(facultyId, info);
-        return new ResponseEntity<>(message, HttpStatus.OK);
-    }
-
-    @PreAuthorize("hasRole('USER')")
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public ResponseEntity search(@RequestParam(required = false, defaultValue = "") String search,
                                  @RequestParam(required = false, defaultValue = "") String info,
@@ -199,37 +185,4 @@ public class CourseController {
             }
         }
     }
-
-    @PreAuthorize("hasAnyRole('TEACH','ADMIN','FACULTY','STUDENT')")
-    @RequestMapping(value = "/assignment/{crn}", method = RequestMethod.GET)
-    public ResponseEntity getAssignmentList(@PathVariable String crn) {
-        ResultMap message = courseService.getAssignmentList(crn);
-        return new ResponseEntity<>(message, HttpStatus.OK);
-    }
-
-    @PreAuthorize("hasAnyRole('TEACH','ADMIN','FACULTY')")
-    @RequestMapping(value = "/assignment/{crn}", method = RequestMethod.PUT)
-    public ResponseEntity updateAssignment(@PathVariable String crn, @RequestParam JSONArray assignment) {
-        ResultMap message = courseService.updateAssignment(crn, assignment);
-        return new ResponseEntity<>(message, HttpStatus.OK);
-    }
-
-    @PreAuthorize("hasAnyRole('TEACH','ADMIN','FACULTY')")
-    @RequestMapping(value = "/assignment/attachment/{crn}", method = RequestMethod.PUT)
-    public ResponseEntity uploadAssignmentAttachment(@PathVariable String crn, @RequestParam MultipartFile multipartFile) {
-        ResultMap message = courseService.uploadAssignmentAttachment(crn, multipartFile);
-        return new ResponseEntity<>(message, HttpStatus.OK);
-    }
-
-    @PreAuthorize("hasAnyRole('TEACH','ADMIN','FACULTY')")
-    @RequestMapping(value = "/assignment/student/attachment/{crn}", method = RequestMethod.PUT)
-    public ResponseEntity submitAssignment(@PathVariable String crn,
-                                           @RequestParam String assignmentName,
-                                           @RequestParam String createTime,
-                                           @RequestParam MultipartFile multipartFile,
-                                           HttpServletRequest request) {
-        ResultMap message = courseService.submitAssignment(crn, assignmentName, createTime, TokenHelper.getUserIdFromToken(TokenHelper.getToken(request)), multipartFile);
-        return new ResponseEntity<>(message, HttpStatus.OK);
-    }
-
 }
