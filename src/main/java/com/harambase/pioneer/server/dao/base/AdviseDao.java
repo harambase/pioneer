@@ -156,8 +156,9 @@ public class AdviseDao {
             logger.info(queryString);
 
             rs = stmt.executeQuery(queryString);
+            List<AdviseView> adviseViewList = ResultSetHelper.getObjectFor(rs, AdviseView.class);
+            return adviseViewList.size() > 0 ? adviseViewList.get(0) : null;
 
-            return ResultSetHelper.getObjectFor(rs, AdviseView.class).get(0);
         } finally {
             if (stmt != null)
                 stmt.close();

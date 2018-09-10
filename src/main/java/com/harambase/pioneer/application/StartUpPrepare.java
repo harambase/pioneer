@@ -90,8 +90,8 @@ public class StartUpPrepare {
             staffListInputStream = ConfigUtil.getConfFile(staffList);
             schoolInputStream = ConfigUtil.getConfFile(schoolList);
 
-            JSONObject weChatList = initWeChatList();
-//            new JSONObject();
+            JSONObject weChatList = //initWeChatList();
+            new JSONObject();
 
             String staffJson = initData(staffListInputStream);
             JSONArray staffJsonArray = JSON.parseArray(staffJson);

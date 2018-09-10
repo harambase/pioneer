@@ -70,9 +70,9 @@ public class PinService {
     }
 
 
-    public ResultMap listByInfo(int start, int length, String search, String order, String orderColumn, String info, String ownerId) {
+    public ResultMap listByInfo(int start, int length, String search, String order, String orderColumn, String info, String ownerId, String role) {
         try {
-            return pinServerService.listByInfo(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderColumn, info, ownerId);
+            return pinServerService.listByInfo(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderColumn, info, ownerId, role);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();

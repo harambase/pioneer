@@ -11,7 +11,6 @@ import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
 import com.harambase.pioneer.server.dao.base.AdviseDao;
 import com.harambase.pioneer.server.dao.base.PersonDao;
 import com.harambase.pioneer.server.dao.base.PinDao;
-import com.harambase.pioneer.server.dao.repository.AdviseRepository;
 import com.harambase.pioneer.server.dao.repository.MessageRepository;
 import com.harambase.pioneer.server.pojo.base.*;
 import com.harambase.pioneer.server.pojo.view.AdviseView;
@@ -105,7 +104,7 @@ public class MessageSender {
 
     public ResultMap sendFacultyPinByInfo(String info, String senderId) {
         try {
-            List<PinView> pinInfoList = pinDao.getByMapPageSearchOrdered(0, Integer.MAX_VALUE, "", "desc", "pin", info, "");
+            List<PinView> pinInfoList = pinDao.getByMapPageSearchOrdered(0, Integer.MAX_VALUE, "", "desc", "pin", info, "", "");
 
             for (PinView pin : pinInfoList) {
                 if (pin.getRole() == 2) {
@@ -125,7 +124,7 @@ public class MessageSender {
 
     public ResultMap sendAdvisorPinByInfo(String info, String senderId) {
         try {
-            List<PinView> pinInfoList = pinDao.getByMapPageSearchOrdered(0, Integer.MAX_VALUE, "", "desc", "pin", info, "");
+            List<PinView> pinInfoList = pinDao.getByMapPageSearchOrdered(0, Integer.MAX_VALUE, "", "desc", "pin", info, "", "");
 
             for (PinView pin : pinInfoList) {
                 if (pin.getRole() == 1) {
@@ -146,7 +145,7 @@ public class MessageSender {
 
     public ResultMap sendStudentPinByInfo(String info, String senderId) {
         try {
-            List<PinView> pinInfoList = pinDao.getByMapPageSearchOrdered(0, Integer.MAX_VALUE, "", "desc", "pin", info, "");
+            List<PinView> pinInfoList = pinDao.getByMapPageSearchOrdered(0, Integer.MAX_VALUE, "", "desc", "pin", info, "", "");
 
             for (PinView pin : pinInfoList) {
                 if (pin.getRole() == 3) {

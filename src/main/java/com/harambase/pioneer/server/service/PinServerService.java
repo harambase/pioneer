@@ -13,7 +13,7 @@ public interface PinServerService {
 
     ResultMap deleteAllByInfo(String info);
 
-    ResultMap listByInfo(String currentPage, String pageSize, String search, String order, String orderColumn, String info, String ownerId);
+    ResultMap listByInfo(String currentPage, String pageSize, String search, String order, String orderColumn, String info, String ownerId, String role);
 
     ResultMap deleteSingleByPin(Integer pin);
 

@@ -19,7 +19,7 @@ public class PinDao {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    public Long getCountByMapPageSearchOrdered(String search, String info, String ownerId) throws Exception {
+    public Long getCountByMapPageSearchOrdered(String search, String info, String ownerId, String role) throws Exception {
         ResultSet rs = null;
         Connection connection = null;
         Statement stmt = null;
@@ -37,10 +37,12 @@ public class PinDao {
                 queryString += "AND info = '" + info + "' ";
             if (StringUtils.isNotEmpty(ownerId))
                 queryString += "AND owner_id = '" + ownerId + "' ";
+            if (StringUtils.isNotEmpty(role))
+                queryString += "AND role = " + Integer.parseInt(role) + " ";
             if (StringUtils.isNotEmpty(search)) {
                 queryString += "AND(owner_id LIKE '%" + search + "%' OR " +
-                        "    pin      LIKE '%" + search + "%' OR " +
-                        "    oname    LIKE '%" + search + "%')";
+                        "           pin      LIKE '%" + search + "%' OR " +
+                        "           oname    LIKE '%" + search + "%')";
             }
             logger.info(queryString);
 
@@ -62,7 +64,7 @@ public class PinDao {
     }
 
     public List<PinView> getByMapPageSearchOrdered(int currentIndex, int pageSize, String order,
-                                                   String orderColumn, String search, String info, String ownerId) throws Exception {
+                                                   String orderColumn, String search, String info, String ownerId, String role) throws Exception {
         ResultSet rs = null;
         Connection connection = null;
         Statement stmt = null;
@@ -80,6 +82,8 @@ public class PinDao {
                 queryString += "AND info = '" + info + "' ";
             if (StringUtils.isNotEmpty(ownerId))
                 queryString += "AND owner_id = '" + ownerId + "' ";
+            if (StringUtils.isNotEmpty(role))
+                queryString += "AND role = " + Integer.parseInt(role) + " ";
             if (StringUtils.isNotEmpty(search)) {
                 queryString += "AND(owner_id LIKE '%" + search + "%' OR " +
                         "    pin      LIKE '%" + search + "%' OR " +
