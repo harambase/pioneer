@@ -30,7 +30,7 @@ public class TimeValidate {
 
                 //retainAll:true if this set changed as a result of the call
                 //retainAll:true if this set changed as a result of the call
-                if (c1_day.retainAll(c2_day)) {//如果包含相同天
+                if (!c1_day.retainAll(c2_day)) {//如果包含相同天
 
                     if ((c2_t_str.compareTo(c1_t_str) < 0 && c2_t_end.compareTo(c1_t_end) < 0) ||
                             (c1_t_str.compareTo(c2_t_str) < 0 && c1_t_end.compareTo(c2_t_end) < 0)) {
@@ -69,7 +69,7 @@ public class TimeValidate {
                     Set<String> c2_day = getDay(c2.getDay().split("/"));
 
                     //retainAll:true if this set changed as a result of the call
-                    if (c1_day.retainAll(c2_day)) {//如果包含相同天
+                    if (!c1_day.retainAll(c2_day)) {//如果包含相同天
 
                         if ((c2_t_str.compareTo(c1_t_str) < 0 && c2_t_end.compareTo(c1_t_end) < 0) ||
                                 (c1_t_str.compareTo(c2_t_str) < 0 && c1_t_end.compareTo(c2_t_end) < 0)) {

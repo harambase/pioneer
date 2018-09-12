@@ -222,6 +222,30 @@ public class MessageSender {
         }
     }
 
+    public ResultMap sendAdvisorPin(String senderId, String body, String receiverId) {
+        try {
+
+            Message message = new Message();
+            message.setDate(DateUtil.DateToStr(new Date()));
+            message.setStatus(Status.UNREAD);
+            message.setTitle("您所辅导的学生选课识别码(PIN)的信息");
+            message.setSubject("选课识别码");
+            message.setSenderId(senderId);
+            message.setAttachment(null);
+            message.setLabels(Labels.URGENT);
+            message.setTag(Tags.TEACH);
+            message.setReceiverId(receiverId);
+            message.setBody(body);
+            Message newMessage = messageRepository.save(message);
+
+            return newMessage != null ? ReturnMsgUtil.success(null) : ReturnMsgUtil.fail();
+
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
+    }
+
     public ResultMap sendAdvisorPin(PinView pinView, String senderId) {
         Pin pin = new Pin();
         pin.setOwnerId(pinView.getOwnerId());

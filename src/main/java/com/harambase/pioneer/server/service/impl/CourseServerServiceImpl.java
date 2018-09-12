@@ -18,6 +18,7 @@ import com.harambase.pioneer.server.pojo.base.Transcript;
 import com.harambase.pioneer.server.pojo.dto.Option;
 import com.harambase.pioneer.server.pojo.view.CourseView;
 import com.harambase.pioneer.server.service.CourseServerService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +73,7 @@ public class CourseServerServiceImpl implements CourseServerService {
 
             if (!course.getFacultyId().equals(IDUtil.ROOT)) {
                 //检查教师时间冲突
-                if (TimeValidate.isTimeConflict(courseDao.findCourseViewByFacultyId(facultyId), course)) {
+                if (TimeValidate.isTimeConflict(courseDao.findCourseViewByFacultyIdAndInfo(facultyId, info), course)) {
                     return ReturnMsgUtil.custom(SystemConst.TIME_CONFLICT);
                 }
                 course.setFacultyId(facultyId);
@@ -142,7 +143,8 @@ public class CourseServerServiceImpl implements CourseServerService {
         try {
             if (!facultyId.equals(IDUtil.ROOT)) {
                 //检查时间冲突
-                if (TimeValidate.isTimeConflict(courseDao.findCourseViewByFacultyId(facultyId), courseDao.findByCrn(crn))) {
+                CourseView course = courseDao.findByCrn(crn);
+                if (TimeValidate.isTimeConflict(courseDao.findCourseViewByFacultyIdAndInfo(facultyId, course.getInfo()), course)) {
                     return ReturnMsgUtil.custom(SystemConst.TIME_CONFLICT);
                 }
             }
@@ -184,11 +186,13 @@ public class CourseServerServiceImpl implements CourseServerService {
                 }
 
                 //检查预选
-                String[] preCrns = courseView.getPrecrn().split("/");
-                for (String preCrn : preCrns) {
-                    int count = transcriptRepository.countByStudentIdAndCrnAndComplete(studentId, preCrn, "1");
-                    if (count != 1 && !option.isPrereq()) {
-                        return ReturnMsgUtil.custom(SystemConst.UNMET_PREREQ);
+                if(StringUtils.isNotEmpty(courseView.getPrecrn())) {
+                    String[] preCrns = courseView.getPrecrn().split("/");
+                    for (String preCrn : preCrns) {
+                        int count = transcriptRepository.countByStudentIdAndCrnAndComplete(studentId, preCrn, "1");
+                        if (count != 1 && !option.isPrereq()) {
+                            return ReturnMsgUtil.custom(SystemConst.UNMET_PREREQ);
+                        }
                     }
                 }
             }

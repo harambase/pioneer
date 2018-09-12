@@ -127,8 +127,8 @@ public class RequestController {
     @PreAuthorize("hasAnyRole('ADMIN', 'TEACH', 'ADVISOR')")
     @RequestMapping(value = "/course/register", method = RequestMethod.POST)
     public ResponseEntity registerNewCourse(@RequestBody JSONObject jsonObject, HttpServletRequest request) {
-        String ADVISORId = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));
-        ResultMap ResultMap = requestService.registerNewCourse(ADVISORId, jsonObject);
+        String applicantId = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));
+        ResultMap ResultMap = requestService.registerNewCourse(applicantId, jsonObject);
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
@@ -173,11 +173,11 @@ public class RequestController {
                                      @RequestParam(value = "mode", required = false) String mode,
                                      HttpServletRequest request) {
         search = search.replace("'", "");
-        String ADVISORId = "";
+        String advisorId = "";
         if (StringUtils.isNotEmpty(mode) && mode.equals("ADVISOR"))
-            ADVISORId = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));
+            advisorId = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));
 
-        ResultMap resultMap = requestService.tempCourseList(start * length - 1, length, search, order, orderCol, viewStatus, ADVISORId);
+        ResultMap resultMap = requestService.tempCourseList(start * length - 1, length, search, order, orderCol, viewStatus, advisorId);
         resultMap.put("recordsTotal", ((Page) resultMap.get("page")).getTotalRows());
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }

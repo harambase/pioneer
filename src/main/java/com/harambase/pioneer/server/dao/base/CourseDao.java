@@ -180,7 +180,7 @@ public class CourseDao {
         }
     }
 
-    public List<CourseView> findCourseViewByFacultyId(String facultyId) throws Exception {
+    public List<CourseView> findCourseViewByFacultyIdAndInfo(String facultyId, String info) throws Exception {
         ResultSet rs = null;
         Connection connection = null;
         Statement stmt = null;
@@ -191,7 +191,7 @@ public class CourseDao {
                 return courseViews;
 
             stmt = connection.createStatement();
-            String queryString = "select * from courseview where faculty_id= '" + facultyId + "'";
+            String queryString = "select * from courseview where faculty_id= '" + facultyId + "' and  info = '" +info+ "'";
 
             logger.info(queryString);
 

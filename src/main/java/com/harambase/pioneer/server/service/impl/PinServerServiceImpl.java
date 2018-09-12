@@ -9,12 +9,14 @@ import com.harambase.pioneer.common.support.util.IDUtil;
 import com.harambase.pioneer.common.support.util.PageUtil;
 import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
 import com.harambase.pioneer.helper.MessageSender;
+import com.harambase.pioneer.server.dao.base.AdviseDao;
 import com.harambase.pioneer.server.dao.base.PersonDao;
 import com.harambase.pioneer.server.dao.base.PinDao;
 import com.harambase.pioneer.server.dao.repository.PinRepository;
 import com.harambase.pioneer.server.helper.TimeValidate;
 import com.harambase.pioneer.server.pojo.base.Person;
 import com.harambase.pioneer.server.pojo.base.Pin;
+import com.harambase.pioneer.server.pojo.view.AdviseView;
 import com.harambase.pioneer.server.pojo.view.PinView;
 import com.harambase.pioneer.server.service.PinServerService;
 import org.slf4j.Logger;
@@ -37,16 +39,20 @@ public class PinServerServiceImpl implements PinServerService {
 
     private final PersonDao personDao;
     private final PinDao pinDao;
+    private final AdviseDao adviseDao;
 
     private final MessageSender messageSender;
 
     @Autowired
-    public PinServerServiceImpl(PinRepository pinRepository, MessageSender messageSender,
-                                PinDao pinDao, PersonDao personDao) {
+    public PinServerServiceImpl(PinRepository pinRepository,
+                                MessageSender messageSender,
+                                PinDao pinDao, PersonDao personDao,
+                                AdviseDao adviseDao) {
         this.pinRepository = pinRepository;
         this.messageSender = messageSender;
         this.personDao = personDao;
         this.pinDao = pinDao;
+        this.adviseDao = adviseDao;
     }
 
     @Override
@@ -79,14 +85,51 @@ public class PinServerServiceImpl implements PinServerService {
 
             switch (role) {
                 case 1:
-                    personList = personDao.getPersonBySearch("", "s", "1", "1", "");
+                    personList = personDao.getPersonBySearch("", "f", "1", "7", String.valueOf(Integer.MAX_VALUE));
                     break;
                 case 2:
-                    personList = personDao.getPersonBySearch("", "f", "1", "1", "");
+                    personList = personDao.getPersonBySearch("", "f", "1", "0", String.valueOf(Integer.MAX_VALUE));
                     break;
                 case 3:
-                    personList = personDao.getPersonBySearch("", "s", "1", "1", "");
+                    personList = personDao.getPersonBySearch("", "s", "1", "0", String.valueOf(Integer.MAX_VALUE));
                     break;
+            }
+
+            if (role == 1) {
+                for (Person advisor : personList) {
+                    List<AdviseView> adviseViewList = adviseDao.getByMapPageSearchOrdered(advisor.getUserId(), "", info, "",
+                            0, Integer.MAX_VALUE, "desc", "fname");
+
+                    String body = "您收到一条来自教务的信息：本学期的选课时间为：" + startTime + "至" + endTime + ", " +
+                            "您的学生的选课码为：<br>";
+
+                    for (AdviseView av : adviseViewList) {
+                        Pin pin = new Pin();
+                        int pinNum;
+                        do {
+                            pinNum = (int) (Math.random() * (999999 - 100000 + 1) + 100000);
+                            count = pinRepository.countByPin(pinNum);
+                        } while (count != 0);
+
+                        pin.setPin(pinNum);
+                        pin.setStartTime(startTime);
+                        pin.setEndTime(endTime);
+                        pin.setCreateTime(DateUtil.DateToStr(new Date()));
+                        pin.setRole(role);
+                        pin.setInfo(info);
+                        pin.setRemark(remark);
+                        pin.setOwnerId(av.getStudentId());
+
+                        Pin newPin = pinRepository.save(pin);
+                        if (newPin == null)
+                            throw new RuntimeException("PIN生成失败!");
+
+                        body += "学生名：" + av.getSname() + ", 选课识别码：" + pin.getPin() + "<br>";
+                    }
+
+                    messageSender.sendAdvisorPin(IDUtil.ROOT, body, advisor.getUserId());
+                }
+                return ReturnMsgUtil.success(null);
             }
 
             for (Person person : personList) {
@@ -179,7 +222,7 @@ public class PinServerServiceImpl implements PinServerService {
                     messageSender.sendFacultyPin(pin, IDUtil.ROOT);
                     messageSender.sendImportantSystemMsg(IDUtil.ROOT, IDUtil.ROOT,
                             "您接收到来自系统的一条消息:用户 " + userId + " 的成绩录入识别码" + pinNum + " 已生成！", "成绩录入识别码", "识别码");
-                } else if(role == 1){
+                } else if (role == 1) {
                     messageSender.sendAdvisorPin(pin, IDUtil.ROOT);
                     messageSender.sendImportantSystemMsg(IDUtil.ROOT, IDUtil.ROOT,
                             "您接收到来自系统的一条消息:用户 " + userId + " 的选课的识别码" + pinNum + " 已生成！", "选课的识别码", "识别码");
