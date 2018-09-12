@@ -175,7 +175,7 @@ public class CourseServerServiceImpl implements CourseServerService {
                 }
 
                 //检查时间冲突
-                if (!option.isTime() && TimeValidate.isTimeConflict(courseDao.findCourseViewByStudentId("", studentId), courseView)) {
+                if (!option.isTime() && TimeValidate.isTimeConflict(courseDao.findCourseViewByStudentIdAndInfo("", studentId, courseView.getInfo()), courseView)) {
                     return ReturnMsgUtil.custom(SystemConst.TIME_CONFLICT);
                 }
 
@@ -274,7 +274,7 @@ public class CourseServerServiceImpl implements CourseServerService {
                     continue;
                 }
                 //检查时间冲突
-                if (TimeValidate.isTimeConflict(courseDao.findCourseViewByStudentId("", studentId), courseView)) {
+                if (TimeValidate.isTimeConflict(courseDao.findCourseViewByStudentIdAndInfo("", studentId, courseView.getInfo()), courseView)) {
                     failList.add(failInfo + SystemConst.TIME_CONFLICT.getMsg());
                     continue;
                 }
@@ -287,13 +287,16 @@ public class CourseServerServiceImpl implements CourseServerService {
 
                 //检查预选
                 boolean pre = true;
-                String[] preCrns = courseView.getPrecrn().split("/");
-                for (String preCrn : preCrns) {
-                    int count = transcriptRepository.countByStudentIdAndCrnAndComplete(studentId, preCrn, "1");
-                    if (count != 1) {
-                        failList.add(failInfo + SystemConst.UNMET_PREREQ.getMsg());
-                        pre = false;
-                        break;
+                //检查预选
+                if(StringUtils.isNotEmpty(courseView.getPrecrn())) {
+                    String[] preCrns = courseView.getPrecrn().split("/");
+                    for (String preCrn : preCrns) {
+                        int count = transcriptRepository.countByStudentIdAndCrnAndComplete(studentId, preCrn, "1");
+                        if (count != 1) {
+                            failList.add(failInfo + SystemConst.UNMET_PREREQ.getMsg());
+                            pre = false;
+                            break;
+                        }
                     }
                 }
                 if (!pre)
@@ -302,7 +305,7 @@ public class CourseServerServiceImpl implements CourseServerService {
                 //检查复选
                 int count = transcriptRepository.countByStudentIdAndCrn(studentId, crn);
                 if (count != 0) {
-                    failList.add(failInfo + SystemConst.REPEAT.getMsg());
+//                    failList.add(failInfo + SystemConst.REPEAT.getMsg());
                     continue;
                 }
 

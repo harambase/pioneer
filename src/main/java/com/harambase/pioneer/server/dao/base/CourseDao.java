@@ -242,7 +242,7 @@ public class CourseDao {
 
     }
 
-    public List<CourseView> findCourseViewByStudentId(String status, String studentId) throws Exception {
+    public List<CourseView> findCourseViewByStudentIdAndInfo(String status, String studentId, String info) throws Exception {
         ResultSet rs = null;
         Connection connection = null;
         Statement stmt = null;
@@ -253,9 +253,12 @@ public class CourseDao {
                 return courseViews;
 
             stmt = connection.createStatement();
-            String queryString = "SELECT * FROM courseview c WHERE c.crn IN (SELECT t.crn FROM transcript t WHERE t.student_id = '" + studentId + "')";
+            String queryString = "SELECT * FROM courseview c WHERE c.crn IN (SELECT t.crn FROM transcript t WHERE t.student_id = '" + studentId + "') ";
+            if(StringUtils.isNotEmpty(info))
+                queryString += "AND c.info = '"+ info + "' ";
             if (StringUtils.isNotEmpty(status))
-                queryString += " AND c.status = " + status + "";
+                queryString += "AND c.status = " + status + "";
+
             logger.info(queryString);
 
             rs = stmt.executeQuery(queryString);

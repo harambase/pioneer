@@ -93,7 +93,7 @@ public class StudentServerServiceImpl implements StudentServerService {
     public ResultMap getAvailableCredit(String studentId, String info) {
 
         try {
-            List<CourseView> courseList = courseDao.findCourseViewByStudentId("", studentId);
+            List<CourseView> courseList = courseDao.findCourseViewByStudentIdAndInfo("", studentId, info);
             LinkedHashMap sv = studentDao.findOne(studentId);
 
             int use_credits = 0;
@@ -122,7 +122,7 @@ public class StudentServerServiceImpl implements StudentServerService {
     @Override
     public ResultMap courseList(String status, String studentId) {
         try {
-            List<CourseView> courseList = courseDao.findCourseViewByStudentId(status, studentId);
+            List<CourseView> courseList = courseDao.findCourseViewByStudentIdAndInfo(status, studentId, "");
             return ReturnMsgUtil.success(courseList);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
