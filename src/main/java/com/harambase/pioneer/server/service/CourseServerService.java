@@ -5,38 +5,36 @@ import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.server.pojo.base.Course;
 import com.harambase.pioneer.server.pojo.dto.Option;
 
-/**
- * Created by linsh on 7/12/2017.
- */
 public interface CourseServerService {
+    
+    ResultMap list(String currentPage, String pageSize, String search, String order, String orderCol, String facultyId, String info, String status);
 
-    ResultMap addCourse(Course course);
+    ResultMap create(Course course);
 
     ResultMap delete(String crn);
 
     ResultMap update(String crn, Course course);
 
-    ResultMap assignFac2Cou(String crn, String facultyId);
+    ResultMap retrieveCourseView(String crn);
 
-    ResultMap addStu2Cou(String crn, String studentId, Option option);
+    ResultMap retrieveCourseBase(String crn);
 
-    ResultMap removeStuFromCou(String crn, String studentId);
+    ResultMap search(String search, String status, String info);
 
-    ResultMap getCourseBySearch(String search, String status, String info);
+    ResultMap assignFaculty(String crn, String facultyId);
 
-    ResultMap courseList(String s, String s1, String search, String order, String orderCol, String facultyId, String info, String status);
+    ResultMap addStudent(String crn, String studentId, Option option);
 
-    ResultMap preCourseList(String crn);
+    ResultMap studentRegistration(String studentId, JSONArray choiceList);
 
-    ResultMap reg2Course(String studentId, JSONArray choiceList);
+    ResultMap removeStudent(String crn, String studentId);
 
-    ResultMap getCourseByCrn(String crn);
+    ResultMap getInfoList(String search);
 
+    ResultMap getStudentList(String crn, String search);
+
+    ResultMap getPrerequisiteList(String crn);
+
+    @Deprecated
     ResultMap courseTreeList(String facultyId, String info);
-
-    ResultMap courseListInfo(String search);
-
-    ResultMap studentList(String crn, String search);
-
-    ResultMap getCourseBase(String crn);
 }

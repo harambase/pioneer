@@ -29,7 +29,7 @@ public class ContractService {
 
     public ResultMap createContract(Contract contract) {
         try {
-            return contractServerService.addContract(contract);
+            return contractServerService.create(contract);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -39,7 +39,7 @@ public class ContractService {
 
     public ResultMap deleteContract(Integer id) {
         try {
-            return contractServerService.removeContract(id);
+            return contractServerService.delete(id);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -59,7 +59,7 @@ public class ContractService {
 
     public ResultMap get(Integer id) {
         try {
-            return contractServerService.getContract(id);
+            return contractServerService.retrieve(id);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -70,7 +70,7 @@ public class ContractService {
     public ResultMap list(int start, int length, String search, String order, String orderColumn,
                           String type, String status) {
         try {
-            return contractServerService.contractList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderColumn, type, status);
+            return contractServerService.list(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderColumn, type, status);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -80,7 +80,7 @@ public class ContractService {
 
     public ResultMap search(String search, String type, String status) {
         try {
-            return contractServerService.listContracts(search, type, status, "5");
+            return contractServerService.search(search, type, status, "5");
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -94,7 +94,7 @@ public class ContractService {
         JSONObject jsonObject = new JSONObject();
 
         try {
-            Contract contract = (Contract) contractServerService.getContract(id).getData();
+            Contract contract = (Contract) contractServerService.retrieve(id).getData();
             String name = file.getOriginalFilename();
 
             String fileUri;

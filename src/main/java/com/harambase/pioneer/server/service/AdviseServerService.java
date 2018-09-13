@@ -5,18 +5,19 @@ import com.harambase.pioneer.server.pojo.base.Advise;
 
 public interface AdviseServerService {
 
-    ResultMap advisingList(String s, String s1, String search, String order, String orderCol, String studentId, String facultyId, String info);
+    ResultMap list(String s, String s1, String search, String order, String orderCol, String studentId, String facultyId, String info);
 
-    ResultMap updateAdvise(Integer id, Advise advise);
+    ResultMap update(Integer id, Advise advise);
 
-    ResultMap assignMentor(Advise advise);
+    ResultMap create(Advise advise);
 
-    ResultMap removeMentor(Integer id);
+    ResultMap remove(Integer id);
 
-    ResultMap getMentor(Integer id);
+    ResultMap retrieve(Integer id);
 
-    ResultMap getAdviseByStudentId(String studentId);
+    ResultMap getAdviseViewByStudentId(String studentId);
 
+    //Advisor相关接口
     ResultMap advisorList(String s, String s1, String search, String order, String orderCol, String status);
 
     ResultMap removeAdvisor(String userId);
@@ -25,5 +26,4 @@ public interface AdviseServerService {
 
     ResultMap getAdvisor(String userId);
 
-    ResultMap getAdviseViewByStudentId(String studentId);
 }

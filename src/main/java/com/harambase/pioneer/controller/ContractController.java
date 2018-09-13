@@ -103,7 +103,7 @@ public class ContractController {
     }
 
     @RequestMapping(value = "/info/{id}", method = RequestMethod.GET)
-    public void downloadUserInfo(@PathVariable(value = "id") Integer id, HttpServletResponse response) {
+    public void downloadContractInfo(@PathVariable(value = "id") Integer id, HttpServletResponse response) {
         ResultMap message = contractService.get(id);
         String contractInfo = ((Contract) message.getData()).getContractInfo();
         if (StringUtils.isNotEmpty(contractInfo)) {

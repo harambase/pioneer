@@ -50,7 +50,7 @@ public class CourseServerServiceImpl implements CourseServerService {
     }
 
     @Override
-    public ResultMap addCourse(Course course) {
+    public ResultMap create(Course course) {
 
         try {
             course.setCreateTime(DateUtil.DateToStr(new Date()));
@@ -116,7 +116,7 @@ public class CourseServerServiceImpl implements CourseServerService {
     }
 
     @Override
-    public ResultMap getCourseByCrn(String crn) {
+    public ResultMap retrieveCourseView(String crn) {
         try {
             CourseView courseView = courseDao.findByCrn(crn);
             return ReturnMsgUtil.success(courseView);
@@ -127,7 +127,7 @@ public class CourseServerServiceImpl implements CourseServerService {
     }
 
     @Override
-    public ResultMap getCourseBySearch(String search, String status, String info) {
+    public ResultMap search(String search, String status, String info) {
         try {
             List<CourseView> results = courseDao.findTop5ByStatusAndSearch(search, status, info);
             return ReturnMsgUtil.success(results);
@@ -138,7 +138,7 @@ public class CourseServerServiceImpl implements CourseServerService {
     }
 
     @Override
-    public ResultMap assignFac2Cou(String crn, String facultyId) {
+    public ResultMap assignFaculty(String crn, String facultyId) {
 
         try {
             if (!facultyId.equals(IDUtil.ROOT)) {
@@ -162,7 +162,7 @@ public class CourseServerServiceImpl implements CourseServerService {
     }
 
     @Override
-    public ResultMap addStu2Cou(String crn, String studentId, Option option) {
+    public ResultMap addStudent(String crn, String studentId, Option option) {
 
         try {
             CourseView courseView = courseDao.findByCrn(crn);
@@ -222,7 +222,7 @@ public class CourseServerServiceImpl implements CourseServerService {
     }
 
     @Override
-    public ResultMap removeStuFromCou(String crn, String studentId) {
+    public ResultMap removeStudent(String crn, String studentId) {
         try {
             transcriptRepository.deleteTranscriptByStudentIdAndCrn(studentId, crn);
             int count = transcriptRepository.countByStudentIdAndCrn(studentId, crn);
@@ -234,7 +234,7 @@ public class CourseServerServiceImpl implements CourseServerService {
     }
 
     @Override
-    public ResultMap preCourseList(String crn) {
+    public ResultMap getPrerequisiteList(String crn) {
 
         try {
             String[] precrns = courseDao.findByCrn(crn).getPrecrn().split("/");
@@ -255,7 +255,7 @@ public class CourseServerServiceImpl implements CourseServerService {
     }
 
     @Override
-    public ResultMap reg2Course(String studentId, JSONArray choiceList) {
+    public ResultMap studentRegistration(String studentId, JSONArray choiceList) {
 
         try {
             Map<String, Object> result = new HashMap<>();
@@ -367,7 +367,7 @@ public class CourseServerServiceImpl implements CourseServerService {
     }
 
     @Override
-    public ResultMap courseListInfo(String search) {
+    public ResultMap getInfoList(String search) {
         try {
             List<String> infoList = courseRepository.getInfoList(search);
             return ReturnMsgUtil.success(infoList);
@@ -378,7 +378,7 @@ public class CourseServerServiceImpl implements CourseServerService {
     }
 
     @Override
-    public ResultMap studentList(String crn, String search) {
+    public ResultMap getStudentList(String crn, String search) {
         try {
             List<LinkedHashMap> studentList = studentDao.getStudentList(crn, search);
             return ReturnMsgUtil.success(studentList);
@@ -389,7 +389,7 @@ public class CourseServerServiceImpl implements CourseServerService {
     }
 
     @Override
-    public ResultMap getCourseBase(String crn) {
+    public ResultMap retrieveCourseBase(String crn) {
         try {
             Course course = courseRepository.findByCrn(crn);
             return ReturnMsgUtil.success(course);
@@ -400,8 +400,8 @@ public class CourseServerServiceImpl implements CourseServerService {
     }
 
     @Override
-    public ResultMap courseList(String currentPage, String pageSize, String search, String order, String orderColumn,
-                                String facultyId, String info, String status) {
+    public ResultMap list(String currentPage, String pageSize, String search, String order, String orderColumn,
+                          String facultyId, String info, String status) {
         try {
             ResultMap message = new ResultMap();
             long totalSize = courseDao.getCountByMapPageSearchOrdered(facultyId, info, status, search);

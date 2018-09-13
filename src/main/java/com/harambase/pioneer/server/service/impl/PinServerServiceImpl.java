@@ -163,7 +163,7 @@ public class PinServerServiceImpl implements PinServerService {
     }
 
     @Override
-    public ResultMap deleteAllByInfo(String info) {
+    public ResultMap deleteByInfo(String info) {
         try {
             pinRepository.deleteByInfo(info);
             int count = pinRepository.countByInfo(info);
@@ -175,7 +175,7 @@ public class PinServerServiceImpl implements PinServerService {
     }
 
     @Override
-    public ResultMap deleteSingleByPin(Integer pin) {
+    public ResultMap deleteByPinNum(Integer pin) {
         try {
             pinRepository.deleteByPin(pin);
             int count = pinRepository.countByPin(pin);
@@ -253,7 +253,7 @@ public class PinServerServiceImpl implements PinServerService {
     }
 
     @Override
-    public ResultMap updateOne(Integer pinNum, Pin pin) {
+    public ResultMap updateByPinNum(Integer pinNum, Pin pin) {
         try {
             pin.setPin(pinNum);
             Pin newPin = pinRepository.save(pin);
@@ -295,7 +295,7 @@ public class PinServerServiceImpl implements PinServerService {
     }
 
     @Override
-    public ResultMap resend(Pin pin, String userId) {
+    public ResultMap resendPin(Pin pin, String userId) {
         try {
             return messageSender.resendPin(pin, userId);
         } catch (Exception e) {
@@ -305,8 +305,8 @@ public class PinServerServiceImpl implements PinServerService {
     }
 
     @Override
-    public ResultMap listByInfo(String currentPage, String pageSize, String search, String order, String orderColumn,
-                                String info, String ownerId, String role) {
+    public ResultMap list(String currentPage, String pageSize, String search, String order, String orderColumn,
+                          String info, String ownerId, String role) {
         try {
             ResultMap message = new ResultMap();
 

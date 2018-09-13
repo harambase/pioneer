@@ -39,7 +39,7 @@ public class ContractServerServiceImpl implements ContractServerService {
     }
 
     @Override
-    public ResultMap addContract(Contract contract) {
+    public ResultMap create(Contract contract) {
 
         try {
             String contractId;
@@ -72,7 +72,7 @@ public class ContractServerServiceImpl implements ContractServerService {
     }
 
     @Override
-    public ResultMap removeContract(Integer id) {
+    public ResultMap delete(Integer id) {
         try {
             Contract contract = contractRepository.findOne(id);
             contractRepository.delete(contract);
@@ -100,7 +100,7 @@ public class ContractServerServiceImpl implements ContractServerService {
     }
 
     @Override
-    public ResultMap getContract(Integer id) {
+    public ResultMap retrieve(Integer id) {
         try {
             Contract contract = contractRepository.findOne(id);
             return ReturnMsgUtil.success(contract);
@@ -111,8 +111,8 @@ public class ContractServerServiceImpl implements ContractServerService {
     }
 
     @Override
-    public ResultMap contractList(String currentPage, String pageSize, String search, String order, String orderColumn,
-                                  String type, String status) {
+    public ResultMap list(String currentPage, String pageSize, String search, String order, String orderColumn,
+                          String type, String status) {
         ResultMap message = new ResultMap();
         try {
 
@@ -139,7 +139,7 @@ public class ContractServerServiceImpl implements ContractServerService {
 
 
     @Override
-    public ResultMap listContracts(String search, String type, String status, String maxLength) {
+    public ResultMap search(String search, String type, String status, String maxLength) {
         try {
             List<LinkedHashMap> contracts = contractDao.getContractBySearch(search, type, status, maxLength);
             return ReturnMsgUtil.success(contracts);
@@ -150,7 +150,7 @@ public class ContractServerServiceImpl implements ContractServerService {
     }
 
     @Override
-    public ResultMap count(String type) {
+    public ResultMap countByType(String type) {
         try {
             int count = contractRepository.countByType(type);
             return ReturnMsgUtil.success(count);

@@ -42,7 +42,7 @@ public class PersonService {
 
     public ResultMap createPerson(Person person) {
         try {
-            return personServerService.addUser(person);
+            return personServerService.create(person);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -52,7 +52,7 @@ public class PersonService {
 
     public ResultMap deletePerson(String userId) {
         try {
-            return personServerService.removeUser(userId);
+            return personServerService.delete(userId);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -72,7 +72,7 @@ public class PersonService {
 
     public ResultMap get(String userId) {
         try {
-            return personServerService.getUser(userId);
+            return personServerService.retrieve(userId);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -83,7 +83,7 @@ public class PersonService {
     public ResultMap list(int start, int length, String search, String order, String orderColumn,
                           String type, String status, String role) {
         try {
-            return personServerService.userList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderColumn, type, status, role);
+            return personServerService.list(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderColumn, type, status, role);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -93,7 +93,7 @@ public class PersonService {
 
     public ResultMap search(String search, String type, String status, String role) {
         try {
-            return personServerService.listUsers(search, type, status, role, "5");
+            return personServerService.search(search, type, status, role, "5");
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -107,7 +107,7 @@ public class PersonService {
         JSONObject jsonObject = new JSONObject();
 
         try {
-            Person person = (Person) personServerService.getUser(userId).getData();
+            Person person = (Person) personServerService.retrieve(userId).getData();
             String name = file.getOriginalFilename();
 
             String fileUri;
@@ -172,7 +172,7 @@ public class PersonService {
     }
 
     public Person verifyUser(Person user) {
-        Person existUser = (Person) personServerService.getUser(user.getUserId()).getData();
+        Person existUser = (Person) personServerService.retrieve(user.getUserId()).getData();
         return existUser != null &&
                 existUser.getBirthday().equals(user.getBirthday()) &&
                 existUser.getTel().equals(user.getTel()) ? existUser : null;

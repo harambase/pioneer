@@ -42,7 +42,7 @@ public class PinService {
 
     public ResultMap deleteSingleByPin(Integer pin) {
         try {
-            return pinServerService.deleteSingleByPin(pin);
+            return pinServerService.deleteByPinNum(pin);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -52,7 +52,7 @@ public class PinService {
 
     public ResultMap deleteAllByInfo(String info) {
         try {
-            return pinServerService.deleteAllByInfo(info);
+            return pinServerService.deleteByInfo(info);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -72,7 +72,7 @@ public class PinService {
 
     public ResultMap listByInfo(int start, int length, String search, String order, String orderColumn, String info, String ownerId, String role) {
         try {
-            return pinServerService.listByInfo(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderColumn, info, ownerId, role);
+            return pinServerService.list(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderColumn, info, ownerId, role);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -119,7 +119,7 @@ public class PinService {
 
     public ResultMap resend(Pin pin, String userId) {
         try {
-            return pinServerService.resend(pin, userId);
+            return pinServerService.resendPin(pin, userId);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -128,7 +128,7 @@ public class PinService {
 
     public ResultMap updateOne(Integer pinNum, Pin pin) {
         try {
-            return pinServerService.updateOne(pinNum, pin);
+            return pinServerService.updateByPinNum(pinNum, pin);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();

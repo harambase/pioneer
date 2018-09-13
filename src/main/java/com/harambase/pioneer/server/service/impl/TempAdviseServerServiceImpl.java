@@ -36,7 +36,7 @@ public class TempAdviseServerServiceImpl implements TempAdviseServerService {
     }
 
     @Override
-    public ResultMap register(TempAdvise tempAdvise) {
+    public ResultMap create(TempAdvise tempAdvise) {
         try {
             TempAdvise newTempAdvise;
             int count = tempAdviseRepository.countByStudentIdAndInfo(tempAdvise.getStudentId(), tempAdvise.getInfo());
@@ -59,7 +59,7 @@ public class TempAdviseServerServiceImpl implements TempAdviseServerService {
     }
 
     @Override
-    public ResultMap deleteTempAdviseById(Integer id) {
+    public ResultMap delete(Integer id) {
         try {
             tempAdviseRepository.delete(id);
             int count = tempAdviseRepository.countById(id);
@@ -71,7 +71,7 @@ public class TempAdviseServerServiceImpl implements TempAdviseServerService {
     }
 
     @Override
-    public ResultMap get(String studentId) {
+    public ResultMap retrieve(String studentId) {
         try {
             TempAdvise tempAdvise = tempAdviseRepository.findByStudentId(studentId);
             return ReturnMsgUtil.success(tempAdvise);
@@ -82,8 +82,8 @@ public class TempAdviseServerServiceImpl implements TempAdviseServerService {
     }
 
     @Override
-    public ResultMap tempAdviseList(String currentPage, String pageSize, String search, String order, String orderColumn,
-                                    String viewStatus, String info, String studentId, String facultyId) {
+    public ResultMap list(String currentPage, String pageSize, String search, String order, String orderColumn,
+                          String viewStatus, String info, String studentId, String facultyId) {
         ResultMap message = new ResultMap();
         try {
 
@@ -110,7 +110,7 @@ public class TempAdviseServerServiceImpl implements TempAdviseServerService {
     }
 
     @Override
-    public ResultMap updateTempAdvise(Integer id, TempAdvise tempAdvise) {
+    public ResultMap update(Integer id, TempAdvise tempAdvise) {
         try {
             tempAdvise.setId(id);
             tempAdvise.setUpdateTime(DateUtil.DateToStr(new Date()));

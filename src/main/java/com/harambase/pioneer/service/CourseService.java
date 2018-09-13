@@ -11,15 +11,12 @@ import com.harambase.pioneer.server.pojo.dto.Option;
 import com.harambase.pioneer.common.support.util.FileUtil;
 import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
 import com.harambase.pioneer.server.service.CourseServerService;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.LinkedHashMap;
 
 @Service
 public class CourseService {
@@ -36,7 +33,7 @@ public class CourseService {
 
     public ResultMap create(Course course) {
         try {
-            return courseServerService.addCourse(course);
+            return courseServerService.create(course);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -66,7 +63,7 @@ public class CourseService {
 
     public ResultMap getCourseByCrn(String crn) {
         try {
-            return courseServerService.getCourseByCrn(crn);
+            return courseServerService.retrieveCourseView(crn);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -76,7 +73,7 @@ public class CourseService {
 
     public ResultMap courseList(int start, int length, String search, String order, String orderColumn, String facultyId, String info, String status) {
         try {
-            return courseServerService.courseList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderColumn, facultyId, info, status);
+            return courseServerService.list(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderColumn, facultyId, info, status);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -90,7 +87,7 @@ public class CourseService {
         JSONObject jsonObject = new JSONObject();
 
         try {
-            Course course = (Course) courseServerService.getCourseBase(crn).getData();
+            Course course = (Course) courseServerService.retrieveCourseBase(crn).getData();
 
             //处理老的文件
             if (StringUtils.isNotEmpty(course.getCourseInfo())) {
@@ -127,7 +124,7 @@ public class CourseService {
 
     public ResultMap courseInfoList(String search) {
         try {
-            return courseServerService.courseListInfo(search);
+            return courseServerService.getInfoList(search);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -136,7 +133,7 @@ public class CourseService {
 
     public ResultMap studentList(String crn, String search) {
         try {
-            return courseServerService.studentList(crn, search);
+            return courseServerService.getStudentList(crn, search);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -146,7 +143,7 @@ public class CourseService {
 
     public ResultMap getCourseBySearch(String search, String status, String info) {
         try {
-            return courseServerService.getCourseBySearch(search, status, info);
+            return courseServerService.search(search, status, info);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -156,7 +153,7 @@ public class CourseService {
 
     public ResultMap assignFac2Cou(String crn, String facultyId) {
         try {
-            return courseServerService.assignFac2Cou(crn, facultyId);
+            return courseServerService.assignFaculty(crn, facultyId);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -166,7 +163,7 @@ public class CourseService {
 
     public ResultMap preCourseList(String crn) {
         try {
-            return courseServerService.preCourseList(crn);
+            return courseServerService.getPrerequisiteList(crn);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -176,7 +173,7 @@ public class CourseService {
 
     public ResultMap addStu2Cou(String crn, String studentId, Option option) {
         try {
-            return courseServerService.addStu2Cou(crn, studentId, option);
+            return courseServerService.addStudent(crn, studentId, option);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -186,7 +183,7 @@ public class CourseService {
 
     public ResultMap removeStuFromCou(String crn, String studentId) {
         try {
-            return courseServerService.removeStuFromCou(crn, studentId);
+            return courseServerService.removeStudent(crn, studentId);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -196,7 +193,7 @@ public class CourseService {
 
     public ResultMap reg2Course(String studentId, JSONArray choiceList) {
         try {
-            return courseServerService.reg2Course(studentId, choiceList);
+            return courseServerService.studentRegistration(studentId, choiceList);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -208,7 +205,7 @@ public class CourseService {
 //        JSONObject jsonObject = new JSONObject();
 //
 //        try {
-//            Course course = (Course) courseServerService.getCourseBase(crn).getData();
+//            Course course = (Course) courseServerService.retrieveCourseBase(crn).getData();
 //
 //            //处理老的文件
 //            if (StringUtils.isNotEmpty(course.getCourseInfo())) {

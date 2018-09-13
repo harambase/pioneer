@@ -29,10 +29,10 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         String authToken = TokenHelper.getToken(request);
 
         if (authToken != null) {
-            // get username from token
+            // retrieveCourseView username from token
             username = TokenHelper.getUserIdFromToken(authToken);
             if (username != null) {
-                // get user
+                // retrieveCourseView user
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
                 if (TokenHelper.validateToken(authToken, userDetails)) {
                     // create authentication

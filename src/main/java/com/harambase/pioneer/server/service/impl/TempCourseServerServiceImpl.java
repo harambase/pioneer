@@ -38,7 +38,7 @@ public class TempCourseServerServiceImpl implements TempCourseServerService {
     }
 
     @Override
-    public ResultMap register(String facultyId, JSONObject jsonObject) {
+    public ResultMap create(String facultyId, JSONObject jsonObject) {
         try {
             String crn = IDUtil.genTempCRN(jsonObject.getString("info"));
 
@@ -61,7 +61,7 @@ public class TempCourseServerServiceImpl implements TempCourseServerService {
     }
 
     @Override
-    public ResultMap deleteTempCourseById(Integer id) {
+    public ResultMap delete(Integer id) {
         try {
             tempCourseRepository.delete(id);
             int count = tempCourseRepository.countById(id);
@@ -74,7 +74,7 @@ public class TempCourseServerServiceImpl implements TempCourseServerService {
     }
 
     @Override
-    public ResultMap updateTempCourse(Integer id, TempCourse tempCourse) {
+    public ResultMap update(Integer id, TempCourse tempCourse) {
         try {
             tempCourse.setId(id);
             tempCourse.setUpdateTime(DateUtil.DateToStr(new Date()));
@@ -87,7 +87,7 @@ public class TempCourseServerServiceImpl implements TempCourseServerService {
     }
 
     @Override
-    public ResultMap tempCourseList(String currentPage, String pageSize, String search, String order, String orderColumn, String status, String facultyId) {
+    public ResultMap list(String currentPage, String pageSize, String search, String order, String orderColumn, String status, String facultyId) {
         ResultMap message = new ResultMap();
 
         try {
@@ -114,7 +114,7 @@ public class TempCourseServerServiceImpl implements TempCourseServerService {
     }
 
     @Override
-    public ResultMap get(Integer id) {
+    public ResultMap retrieve(Integer id) {
         try {
             TempCourse tempCourse = tempCourseRepository.findOne(id);
             return ReturnMsgUtil.success(tempCourse);

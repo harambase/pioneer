@@ -37,7 +37,7 @@ public class AdviseService {
 
     public ResultMap advisingList(int start, int length, String search, String order, String orderColumn, String studentId, String facultyId, String info) {
         try {
-            return adviseServerService.advisingList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderColumn, studentId, facultyId, info);
+            return adviseServerService.list(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderColumn, studentId, facultyId, info);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -47,7 +47,7 @@ public class AdviseService {
 
     public ResultMap updateAdvise(Integer id, Advise advise) {
         try {
-            return adviseServerService.updateAdvise(id, advise);
+            return adviseServerService.update(id, advise);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -57,7 +57,7 @@ public class AdviseService {
 
     public ResultMap assignMentor(Advise advise) {
         try {
-            return adviseServerService.assignMentor(advise);
+            return adviseServerService.create(advise);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -67,7 +67,7 @@ public class AdviseService {
 
     public ResultMap removeMentor(Integer id) {
         try {
-            return adviseServerService.removeMentor(id);
+            return adviseServerService.remove(id);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -77,7 +77,7 @@ public class AdviseService {
 
     public ResultMap getMentor(Integer id) {
         try {
-            return adviseServerService.getMentor(id);
+            return adviseServerService.retrieve(id);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -99,7 +99,7 @@ public class AdviseService {
             fos.write(new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF});
 
             Field[] titleList = AdviseReportOnly.class.getDeclaredFields();
-            List<AdviseView> adviseViewList = (List<AdviseView>) adviseServerService.advisingList("1", String.valueOf(Integer.MAX_VALUE), "", "asc",
+            List<AdviseView> adviseViewList = (List<AdviseView>) adviseServerService.list("1", String.valueOf(Integer.MAX_VALUE), "", "asc",
                     "student_id", "", "", info).getData();
 
             StringBuilder exportInfoSb = new StringBuilder();

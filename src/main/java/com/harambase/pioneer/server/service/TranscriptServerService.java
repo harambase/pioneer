@@ -5,10 +5,9 @@ import com.harambase.pioneer.server.pojo.base.Transcript;
 
 public interface TranscriptServerService {
 
-    ResultMap updateGrade(Integer id, Transcript transcript);
+    ResultMap update(Integer id, Transcript transcript);
 
-    ResultMap transcriptList(String s, String s1, String search, String order, String orderCol,
-                             String studentId, String crn, String info, String complete);
+    ResultMap list(String currentPage, String pageSize, String search, String order, String orderCol, String studentId, String crn, String info, String complete);
 
     ResultMap getDistinctColumnByInfo(String column, String info);
 }

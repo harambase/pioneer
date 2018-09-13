@@ -70,7 +70,7 @@ public class MessageServerServiceImpl implements MessageServerService {
     }
 
     @Override
-    public ResultMap getMessageView(Integer id) {
+    public ResultMap retrieve(Integer id) {
         try {
             MessageView messageView = messageDao.findOne(id);
             String[] receiverIds = messageView.getReceiver().split("/");
@@ -88,7 +88,7 @@ public class MessageServerServiceImpl implements MessageServerService {
     }
 
     @Override
-    public ResultMap countMessageByStatus(String receiverId, String senderId, String box, String status) {
+    public ResultMap countByStatus(String receiverId, String senderId, String box, String status) {
         try {
             int count = messageDao.countMessageByStatus(receiverId, senderId, box, status);
             return ReturnMsgUtil.success(count);
@@ -124,7 +124,7 @@ public class MessageServerServiceImpl implements MessageServerService {
     }
 
     @Override
-    public ResultMap createMessage(Message message) {
+    public ResultMap create(Message message) {
         try {
             message.setDate(DateUtil.DateToStr(new Date()));
             Message newMessage = messageRepository.save(message);

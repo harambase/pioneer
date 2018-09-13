@@ -23,9 +23,9 @@ public class StudentService {
     }
 
 
-    public ResultMap transcriptDetail(String studentid) {
+    public ResultMap transcriptList(String studentId) {
         try {
-            return studentServerService.transcriptDetail(studentid);
+            return studentServerService.transcriptList(studentId);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -45,7 +45,7 @@ public class StudentService {
 
     public ResultMap studentList(int start, int length, String search, String order, String orderColumn, String status) {
         try {
-            return studentServerService.studentList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderColumn, status);
+            return studentServerService.list(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderColumn, status);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -53,9 +53,9 @@ public class StudentService {
     }
 
 
-    public ResultMap getAvailableCredit(String studentid, String info) {
+    public ResultMap getCreditInfo(String studentId, String info) {
         try {
-            return studentServerService.getAvailableCredit(studentid, info);
+            return studentServerService.getCreditInfo(studentId, info);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();

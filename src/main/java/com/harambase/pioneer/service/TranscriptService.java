@@ -48,7 +48,7 @@ public class TranscriptService {
 
     public ResultMap updateGrade(int id, Transcript transcript) {
         try {
-            return transcriptServerService.updateGrade(id, transcript);
+            return transcriptServerService.update(id, transcript);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -59,7 +59,7 @@ public class TranscriptService {
     public ResultMap transcriptList(int start, int length, String search, String order, String orderColumn, String studentId, String crn,
                                     String info, String complete) {
         try {
-            return transcriptServerService.transcriptList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderColumn, studentId, crn, info, complete);
+            return transcriptServerService.list(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderColumn, studentId, crn, info, complete);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -85,14 +85,14 @@ public class TranscriptService {
             JLRConverter converter = new JLRConverter(workingDirectory);
 
             //学生信息TITLE
-            Person student = (Person) personServerService.getUser(studentId).getData();
+            Person student = (Person) personServerService.retrieve(studentId).getData();
             converter.replace("sname", student.getLastName() + ", " + student.getFirstName());
             converter.replace("studentId", student.getUserId());
             converter.replace("info", ReportUtil.infoConverter(student.getInfo()));
             converter.replace("address", student.getAddress());
 
             //成绩详情
-            List<TranscriptView> transcriptList = (List<TranscriptView>) transcriptServerService.transcriptList("1", String.valueOf(Integer.MAX_VALUE), "", "", "crn",
+            List<TranscriptView> transcriptList = (List<TranscriptView>) transcriptServerService.list("1", String.valueOf(Integer.MAX_VALUE), "", "", "crn",
                     studentId, "", "", "").getData();
             Map<String, List<List<Object>>> transcripts = new HashMap<>();
             Set<String> infoSet = new HashSet<>();
@@ -134,10 +134,10 @@ public class TranscriptService {
 
             converter.replace("infoSet", infoSet);
             converter.replace("infoNameSet", infoNameSet);
-            converter.replace("transcriptList", transcripts);
+            converter.replace("list", transcripts);
 
             //学分TOTAL:
-            LinkedHashMap studentViewMap = (LinkedHashMap) studentServerService.transcriptDetail(studentId).getData();
+            LinkedHashMap studentViewMap = (LinkedHashMap) studentServerService.transcriptList(studentId).getData();
             int complete = (int) studentViewMap.get("complete");
             int progress = (int) studentViewMap.get("progress");
             int incomplete = (int) studentViewMap.get("incomplete");
@@ -188,7 +188,7 @@ public class TranscriptService {
             fos.write(new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF});
 
             Field[] titleList = TranscriptReportOnly.class.getDeclaredFields();
-            List<TranscriptView> transcriptViewList = (List<TranscriptView>) transcriptServerService.transcriptList("1", String.valueOf(Integer.MAX_VALUE), "", "asc",
+            List<TranscriptView> transcriptViewList = (List<TranscriptView>) transcriptServerService.list("1", String.valueOf(Integer.MAX_VALUE), "", "asc",
                     "crn", "", "", info, "").getData();
 
 

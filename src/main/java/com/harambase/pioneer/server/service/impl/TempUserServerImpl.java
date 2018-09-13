@@ -40,7 +40,7 @@ public class TempUserServerImpl implements TempUserServerService {
     }
 
     @Override
-    public ResultMap deleteTempUserById(Integer id) {
+    public ResultMap delete(Integer id) {
 
         try {
             tempUserRepository.delete(id);
@@ -54,7 +54,7 @@ public class TempUserServerImpl implements TempUserServerService {
     }
 
     @Override
-    public ResultMap register(JSONObject jsonObject) {
+    public ResultMap create(JSONObject jsonObject) {
 
         try {
             String userId = IDUtil.genTempUserID(jsonObject.getString("info"));
@@ -78,7 +78,7 @@ public class TempUserServerImpl implements TempUserServerService {
     }
 
     @Override
-    public ResultMap updateTempUser(Integer id, TempUser tempUser) {
+    public ResultMap update(Integer id, TempUser tempUser) {
         try {
 
             tempUser.setId(id);
@@ -93,7 +93,7 @@ public class TempUserServerImpl implements TempUserServerService {
     }
 
     @Override
-    public ResultMap tempUserList(String currentPage, String pageSize, String search, String order, String orderColumn, String status) {
+    public ResultMap list(String currentPage, String pageSize, String search, String order, String orderColumn, String status) {
         ResultMap message = new ResultMap();
         try {
 
@@ -119,7 +119,7 @@ public class TempUserServerImpl implements TempUserServerService {
     }
 
     @Override
-    public ResultMap get(Integer id) {
+    public ResultMap retrieve(Integer id) {
         try {
             TempUser tempUser = tempUserRepository.findOne(id);
             return ReturnMsgUtil.success(tempUser);

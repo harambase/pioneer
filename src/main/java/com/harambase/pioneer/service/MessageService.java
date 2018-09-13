@@ -23,7 +23,7 @@ public class MessageService {
 
     public ResultMap create(Message message) {
         try {
-            return messageServerService.createMessage(message);
+            return messageServerService.create(message);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -63,7 +63,7 @@ public class MessageService {
 
     public ResultMap get(Integer id) {
         try {
-            return messageServerService.getMessageView(id);
+            return messageServerService.retrieve(id);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -107,7 +107,7 @@ public class MessageService {
                 senderId = userId;
             }
 
-            return messageServerService.countMessageByStatus(receiverId, senderId, box.toLowerCase(), status.toLowerCase());
+            return messageServerService.countByStatus(receiverId, senderId, box.toLowerCase(), status.toLowerCase());
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

@@ -64,7 +64,7 @@ public class PersonServerServiceImpl implements PersonServerService {
     }
 
     @Override
-    public ResultMap getByKeyword(String keyword) {
+    public ResultMap retrieveByKeyword(String keyword) {
         try {
             Person user = personRepository.findByQqOrUserIdOrUsername(keyword).get(0);
             return user != null ? ReturnMsgUtil.success(user) : ReturnMsgUtil.fail();
@@ -96,7 +96,7 @@ public class PersonServerServiceImpl implements PersonServerService {
     }
 
     @Override
-    public ResultMap addUser(Person person) {
+    public ResultMap create(Person person) {
 
         try {
             String userId, password;
@@ -151,7 +151,7 @@ public class PersonServerServiceImpl implements PersonServerService {
     }
 
     @Override
-    public ResultMap removeUser(String userId) {
+    public ResultMap delete(String userId) {
 
         try {
             if (userId.equals(IDUtil.ROOT))
@@ -220,7 +220,7 @@ public class PersonServerServiceImpl implements PersonServerService {
     }
 
     @Override
-    public ResultMap getUser(String userId) {
+    public ResultMap retrieve(String userId) {
         try {
             Person person = personRepository.findOne(userId);
             return ReturnMsgUtil.success(person);
@@ -231,8 +231,8 @@ public class PersonServerServiceImpl implements PersonServerService {
     }
 
     @Override
-    public ResultMap userList(String currentPage, String pageSize, String search, String order, String orderColumn,
-                              String type, String status, String role) {
+    public ResultMap list(String currentPage, String pageSize, String search, String order, String orderColumn,
+                          String type, String status, String role) {
         ResultMap message = new ResultMap();
         try {
 
@@ -259,7 +259,7 @@ public class PersonServerServiceImpl implements PersonServerService {
 
 
     @Override
-    public ResultMap listUsers(String search, String type, String status, String role, String maxLength) {
+    public ResultMap search(String search, String type, String status, String role, String maxLength) {
         try {
             List<Person> users = personDao.getPersonBySearch(search, type, status, role, maxLength);
             return ReturnMsgUtil.success(users);
@@ -270,7 +270,7 @@ public class PersonServerServiceImpl implements PersonServerService {
     }
 
     @Override
-    public ResultMap countActivePerson(String type) {
+    public ResultMap countActivePersonByType(String type) {
         try {
             int count = personRepository.countByTypeAndStatus(type, "1");
             return ReturnMsgUtil.success(count);

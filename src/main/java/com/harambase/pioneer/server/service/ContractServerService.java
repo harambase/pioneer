@@ -5,18 +5,18 @@ import com.harambase.pioneer.server.pojo.base.Contract;
 
 public interface ContractServerService {
 
-    ResultMap addContract(Contract contract);
+    ResultMap list(String s, String s1, String search, String order, String orderCol, String type, String status);
 
-    ResultMap contractList(String s, String s1, String search, String order, String orderCol, String type, String status);
+    ResultMap create(Contract contract);
 
-    ResultMap getContract(Integer id);
+    ResultMap delete(Integer id);
 
     ResultMap update(Integer id, Contract contract);
 
-    ResultMap listContracts(String search, String type, String status, String maxLength);
+    ResultMap retrieve(Integer id);
 
-    ResultMap count(String type);
+    ResultMap search(String search, String type, String status, String maxLength);
 
-    ResultMap removeContract(Integer id);
+    ResultMap countByType(String type);
 
 }

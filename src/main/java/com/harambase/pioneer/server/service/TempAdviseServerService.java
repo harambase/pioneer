@@ -5,13 +5,13 @@ import com.harambase.pioneer.server.pojo.base.TempAdvise;
 
 public interface TempAdviseServerService {
 
-    ResultMap register(TempAdvise tempAdvise);
+    ResultMap list(String currentPage, String pageSize, String search, String order, String orderCol, String viewStatus, String info, String studentId, String facultyId);
 
-    ResultMap deleteTempAdviseById(Integer id);
+    ResultMap create(TempAdvise tempAdvise);
 
-    ResultMap get(String studentId);
+    ResultMap delete(Integer id);
 
-    ResultMap tempAdviseList(String s, String s1, String search, String order, String orderCol, String viewStatus, String info, String studentId, String facultyId);
-
-    ResultMap updateTempAdvise(Integer id, TempAdvise tempAdvise);
+    ResultMap update(Integer id, TempAdvise tempAdvise);
+    
+    ResultMap retrieve(String studentId);
 }

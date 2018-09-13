@@ -6,13 +6,14 @@ import com.harambase.pioneer.server.pojo.base.TempUser;
 
 public interface TempUserServerService {
 
-    ResultMap deleteTempUserById(Integer id);
+    ResultMap list(String currentPage, String pageSize, String search, String order, String orderCol, String status);
 
-    ResultMap register(JSONObject jsonObject);
+    ResultMap create(JSONObject jsonObject);
 
-    ResultMap updateTempUser(Integer id, TempUser tempUser);
+    ResultMap delete(Integer id);
 
-    ResultMap tempUserList(String s, String s1, String search, String order, String orderCol, String status);
+    ResultMap update(Integer id, TempUser tempUser);
 
-    ResultMap get(Integer id);
+    ResultMap retrieve(Integer id);
+
 }

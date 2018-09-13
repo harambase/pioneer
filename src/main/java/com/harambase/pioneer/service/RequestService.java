@@ -57,7 +57,7 @@ public class RequestService {
 
     public ResultMap deleteTempUser(Integer id) {
         try {
-            return tempUserServerService.deleteTempUserById(id);
+            return tempUserServerService.delete(id);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -69,7 +69,7 @@ public class RequestService {
         try {
             String password = jsonObject.getString("password");
             jsonObject.put("password", passwordEncoder().encode(password));
-            return tempUserServerService.register(jsonObject);
+            return tempUserServerService.create(jsonObject);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -82,11 +82,11 @@ public class RequestService {
             ResultMap resultMap;
             if (tempUser.getStatus().equals("1")) {
                 Person newUser = JSONObject.parseObject(tempUser.getUserJson(), Person.class);
-                resultMap = personServerService.addUser(newUser);
+                resultMap = personServerService.create(newUser);
                 if (resultMap.getCode() == SystemConst.SUCCESS.getCode()) {
                     Person person = ((Person) resultMap.getData());
                     String info = person.getLastName() + ", " + person.getFirstName() + "(" + person.getUserId() + ")";
-                    resultMap = tempUserServerService.updateTempUser(id, tempUser);
+                    resultMap = tempUserServerService.update(id, tempUser);
 
                     if (resultMap.getCode() == SystemConst.SUCCESS.getCode()) {
                         messageSender.sendImportantSystemMsg(person.getUserId(), tempUser.getOperatorId(),
@@ -96,7 +96,7 @@ public class RequestService {
                     }
                 }
             } else if (tempUser.getStatus().equals("-1")) {
-                resultMap = tempUserServerService.updateTempUser(id, tempUser);
+                resultMap = tempUserServerService.update(id, tempUser);
                 JSONObject jsonObject = JSONObject.parseObject(tempUser.getUserJson());
                 String info = jsonObject.getString("lastName") + ", " + jsonObject.get("firstName") + "(" + tempUser.getUserId() + ")";
                 if (resultMap.getCode() == SystemConst.SUCCESS.getCode()) {
@@ -108,7 +108,7 @@ public class RequestService {
                 }
 
             } else {
-                resultMap = tempUserServerService.updateTempUser(id, tempUser);
+                resultMap = tempUserServerService.update(id, tempUser);
             }
             return resultMap;
         } catch (Exception e) {
@@ -120,7 +120,7 @@ public class RequestService {
 
     public ResultMap tempUserList(int start, int length, String search, String order, String orderColumn, String viewStatus) {
         try {
-            return tempUserServerService.tempUserList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderColumn, viewStatus);
+            return tempUserServerService.list(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderColumn, viewStatus);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -131,14 +131,14 @@ public class RequestService {
     public ResultMap updateTempCourse(Integer id, TempCourse tempCourse) {
         try {
             if (tempCourse.getStatus().equals("1")) {
-                ResultMap message = courseServerService.addCourse(JSONObject.parseObject(tempCourse.getCourseJson(), Course.class));
+                ResultMap message = courseServerService.create(JSONObject.parseObject(tempCourse.getCourseJson(), Course.class));
                 if (message.getCode() == SystemConst.SUCCESS.getCode()) {
-                    return tempCourseServerService.updateTempCourse(id, tempCourse);
+                    return tempCourseServerService.update(id, tempCourse);
                 } else {
                     return message;
                 }
             }
-            return tempCourseServerService.updateTempCourse(id, tempCourse);
+            return tempCourseServerService.update(id, tempCourse);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -148,7 +148,7 @@ public class RequestService {
 
     public ResultMap registerNewCourse(String facultyId, JSONObject jsonObject) {
         try {
-            return tempCourseServerService.register(facultyId, jsonObject);
+            return tempCourseServerService.create(facultyId, jsonObject);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -158,7 +158,7 @@ public class RequestService {
 
     public ResultMap deleteTempCourse(Integer id) {
         try {
-            return tempCourseServerService.deleteTempCourseById(id);
+            return tempCourseServerService.delete(id);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -168,7 +168,7 @@ public class RequestService {
 
     public ResultMap tempCourseList(Integer start, Integer length, String search, String order, String orderCol, String viewStatus, String facultyId) {
         try {
-            return tempCourseServerService.tempCourseList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderCol, viewStatus, facultyId);
+            return tempCourseServerService.list(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderCol, viewStatus, facultyId);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -178,7 +178,7 @@ public class RequestService {
 
     public ResultMap getTempUser(Integer id) {
         try {
-            return tempUserServerService.get(id);
+            return tempUserServerService.retrieve(id);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -188,7 +188,7 @@ public class RequestService {
 
     public ResultMap getTempCourse(Integer id) {
         try {
-            return tempCourseServerService.get(id);
+            return tempCourseServerService.retrieve(id);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -201,7 +201,7 @@ public class RequestService {
         JSONObject jsonObject = new JSONObject();
 
         try {
-            TempCourse tempCourse = (TempCourse) tempCourseServerService.get(id).getData();
+            TempCourse tempCourse = (TempCourse) tempCourseServerService.retrieve(id).getData();
 
             //处理老的文件
             JSONObject courseJson = JSONObject.parseObject(tempCourse.getCourseJson());
@@ -222,7 +222,7 @@ public class RequestService {
             courseJson.put("courseInfo", jsonObject.toJSONString());
 
             tempCourse.setCourseJson(courseJson.toJSONString());
-            message = tempCourseServerService.updateTempCourse(id, tempCourse);
+            message = tempCourseServerService.update(id, tempCourse);
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -239,7 +239,7 @@ public class RequestService {
 
     public ResultMap registerTempAdvise(TempAdvise tempAdvise) {
         try {
-            return tempAdviseServerService.register(tempAdvise);
+            return tempAdviseServerService.create(tempAdvise);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -248,7 +248,7 @@ public class RequestService {
 
     public ResultMap deleteTempAdviseById(Integer id) {
         try {
-            return tempAdviseServerService.deleteTempAdviseById(id);
+            return tempAdviseServerService.delete(id);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -258,7 +258,7 @@ public class RequestService {
 
     public ResultMap getTempAdvise(String studentId) {
         try {
-            return tempAdviseServerService.get(studentId);
+            return tempAdviseServerService.retrieve(studentId);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -268,7 +268,7 @@ public class RequestService {
 
     public ResultMap tempAdviseList(Integer start, Integer length, String search, String order, String orderCol, String viewStatus, String info, String studentId, String facultyId) {
         try {
-            return tempAdviseServerService.tempAdviseList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderCol, viewStatus, info, studentId, facultyId);
+            return tempAdviseServerService.list(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderCol, viewStatus, info, studentId, facultyId);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -278,7 +278,7 @@ public class RequestService {
 
     public ResultMap updateTempAdvise(Integer id, TempAdvise tempAdvise) {
         try {
-            return tempAdviseServerService.updateTempAdvise(id, tempAdvise);
+            return tempAdviseServerService.update(id, tempAdvise);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -291,7 +291,7 @@ public class RequestService {
         JSONObject jsonObject = new JSONObject();
 
         try {
-            TempUser tempUser = (TempUser) tempUserServerService.get(id).getData();
+            TempUser tempUser = (TempUser) tempUserServerService.retrieve(id).getData();
             JSONObject person = JSON.parseObject(tempUser.getUserJson());
 
             String name = file.getOriginalFilename();
@@ -344,7 +344,7 @@ public class RequestService {
                     break;
             }
 
-            message = tempUserServerService.updateTempUser(id, tempUser);
+            message = tempUserServerService.update(id, tempUser);
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -382,9 +382,9 @@ public class RequestService {
             }
             advise.setFacultyId(facultyId);
 
-            ResultMap message = adviseServerService.assignMentor(advise);
+            ResultMap message = adviseServerService.create(advise);
             if (message.getCode() == SystemConst.SUCCESS.getCode()) {
-                return tempAdviseServerService.updateTempAdvise(id, tempAdvise);
+                return tempAdviseServerService.update(id, tempAdvise);
             } else {
                 return message;
             }

@@ -47,8 +47,8 @@ public class AdviseServerServiceImpl implements AdviseServerService {
     }
 
     @Override
-    public ResultMap advisingList(String currentPage, String pageSize, String search, String order, String orderColumn,
-                                  String studentId, String facultyId, String info) {
+    public ResultMap list(String currentPage, String pageSize, String search, String order, String orderColumn,
+                          String studentId, String facultyId, String info) {
         try {
             ResultMap message = new ResultMap();
 
@@ -77,7 +77,7 @@ public class AdviseServerServiceImpl implements AdviseServerService {
     }
 
     @Override
-    public ResultMap assignMentor(Advise advise) {
+    public ResultMap create(Advise advise) {
         try {
 
             int count = adviseRepository.countByFacultyIdAndStudentId(advise.getFacultyId(), advise.getStudentId());
@@ -103,7 +103,7 @@ public class AdviseServerServiceImpl implements AdviseServerService {
     }
 
     @Override
-    public ResultMap removeMentor(Integer id) {
+    public ResultMap remove(Integer id) {
         try {
             adviseRepository.delete(id);
             int count = adviseRepository.countById(id);
@@ -115,7 +115,7 @@ public class AdviseServerServiceImpl implements AdviseServerService {
     }
 
     @Override
-    public ResultMap updateAdvise(Integer id, Advise advise) {
+    public ResultMap update(Integer id, Advise advise) {
 
         try {
             advise.setId(id);
@@ -129,20 +129,9 @@ public class AdviseServerServiceImpl implements AdviseServerService {
     }
 
     @Override
-    public ResultMap getMentor(Integer id) {
+    public ResultMap retrieve(Integer id) {
         try {
             AdviseView advise = adviseDao.findOne(id);
-            return ReturnMsgUtil.success(advise);
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            return ReturnMsgUtil.systemError();
-        }
-    }
-
-    @Override
-    public ResultMap getAdviseByStudentId(String studentId) {
-        try {
-            Advise advise = adviseRepository.findOneByStudentId(studentId);
             return ReturnMsgUtil.success(advise);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

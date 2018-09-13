@@ -36,7 +36,7 @@ public class TranscriptServerServiceImpl implements TranscriptServerService {
     }
 
     @Override
-    public ResultMap updateGrade(Integer id, Transcript transcript) {
+    public ResultMap update(Integer id, Transcript transcript) {
         try {
             transcript.setId(id);
             transcript.setAssignTime(DateUtil.DateToStr(new Date()));
@@ -49,8 +49,8 @@ public class TranscriptServerServiceImpl implements TranscriptServerService {
     }
 
     @Override
-    public ResultMap transcriptList(String currentPage, String pageSize, String search, String order,
-                                    String orderColumn, String studentId, String crn, String info, String complete) {
+    public ResultMap list(String currentPage, String pageSize, String search, String order,
+                          String orderColumn, String studentId, String crn, String info, String complete) {
 
         ResultMap message = new ResultMap();
         try {

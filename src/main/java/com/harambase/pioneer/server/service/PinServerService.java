@@ -11,21 +11,22 @@ public interface PinServerService {
 
     ResultMap generateOne(String startTime, String endTime, int role, String info, String remark, String userId);
 
-    ResultMap deleteAllByInfo(String info);
+    ResultMap deleteByInfo(String info);
 
-    ResultMap listByInfo(String currentPage, String pageSize, String search, String order, String orderColumn, String info, String ownerId, String role);
+    ResultMap deleteByPinNum(Integer pin);
 
-    ResultMap deleteSingleByPin(Integer pin);
+    ResultMap updateByPinNum(Integer pinNum, Pin pin);
+
+    ResultMap list(String currentPage, String pageSize, String search, String order, String orderColumn, String info, String ownerId, String role);
 
     ResultMap getAllInfo();
 
-    ResultMap updateOne(Integer pinNum, Pin pin);
-
+    //发送识别码： Send Pin
     ResultMap sendFacultyPin(String info, String senderId);
 
     ResultMap sendStudentPin(String info, String senderId);
 
     ResultMap sendAdvisorPin(String info, String senderId);
 
-    ResultMap resend(Pin pin, String userId);
+    ResultMap resendPin(Pin pin, String userId);
 }

@@ -5,24 +5,23 @@ import com.harambase.pioneer.server.pojo.base.Person;
 
 public interface PersonServerService {
 
-    ResultMap updateLastLoginTime(String userId);
-
     ResultMap login(Person person);
 
-    ResultMap getByKeyword(String keyword);
+    ResultMap list(String currentPage, String pageSize, String search, String order, String orderColumn, String type, String status, String role);
 
-    ResultMap addUser(Person person);
-
-    ResultMap userList(String s, String s1, String search, String order, String orderCol, String type, String status, String role);
-
-    ResultMap getUser(String userid);
+    ResultMap create(Person person);
+    
+    ResultMap delete(String userId);
 
     ResultMap update(String userId, Person person);
 
-    ResultMap listUsers(String search, String type, String status, String role, String maxLength);
+    ResultMap updateLastLoginTime(String userId);
 
-    ResultMap countActivePerson(String type);
+    ResultMap retrieve(String userId);
 
-    ResultMap removeUser(String userid);
+    ResultMap retrieveByKeyword(String keyword);
 
+    ResultMap search(String search, String type, String status, String role, String maxLength);
+
+    ResultMap countActivePersonByType(String type);
 }

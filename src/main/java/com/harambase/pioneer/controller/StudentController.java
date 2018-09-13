@@ -13,9 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-/**
- * Created by linsh on 7/12/2017.
- */
 @RestController
 @CrossOrigin
 @RequestMapping(value = "/student")
@@ -30,16 +27,16 @@ public class StudentController {
 
     @PreAuthorize("hasAnyRole('TEACH','STUDENT','ADMIN')")
     @RequestMapping(value = "/{studentId}/transcript", method = RequestMethod.GET)
-    public ResponseEntity getTranscriptDetail(@PathVariable(value = "studentId") String studentid) {
-        ResultMap resultMap = studentService.transcriptDetail(studentid);
+    public ResponseEntity getTranscriptList(@PathVariable(value = "studentId") String studentId) {
+        ResultMap resultMap = studentService.transcriptList(studentId);
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('TEACH','STUDENT','ADMIN')")
     @RequestMapping(value = "/{studentId}/available/credit", method = RequestMethod.GET)
-    public ResponseEntity getAvailableCredit(@PathVariable(value = "studentId") String studentId,
-                                             @RequestParam(value = "info") String info) {
-        ResultMap resultMap = studentService.getAvailableCredit(studentId, info);
+    public ResponseEntity getCreditInfo(@PathVariable(value = "studentId") String studentId,
+                                        @RequestParam(value = "info") String info) {
+        ResultMap resultMap = studentService.getCreditInfo(studentId, info);
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 
@@ -59,16 +56,16 @@ public class StudentController {
                                @RequestParam(value = "orderCol", required = false, defaultValue = "student_id") String orderCol,
                                @RequestParam(value = "status", required = false) String status) {
         search = search.replace("'", "");
-        ResultMap message = studentService.studentList(start * length - 1, length, search, order, orderCol, status);
-        message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
-        return new ResponseEntity<>(message, HttpStatus.OK);
+        ResultMap resultMap = studentService.studentList(start * length - 1, length, search, order, orderCol, status);
+        resultMap.put("recordsTotal", ((Page) resultMap.get("page")).getTotalRows());
+        return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('TEACH','STUDENT','ADMIN')")
     @RequestMapping(value = "/course", method = RequestMethod.GET)
     public ResponseEntity courseList(@RequestParam(value = "status", required = false, defaultValue = "") String status,
                                      HttpServletRequest request) {
-        ResultMap message = studentService.courseList(status, TokenHelper.getUserIdFromToken(TokenHelper.getToken(request)));
-        return new ResponseEntity<>(message, HttpStatus.OK);
+        ResultMap resultMap = studentService.courseList(status, TokenHelper.getUserIdFromToken(TokenHelper.getToken(request)));
+        return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 }

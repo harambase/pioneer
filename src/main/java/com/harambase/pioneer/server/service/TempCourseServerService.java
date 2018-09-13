@@ -6,14 +6,14 @@ import com.harambase.pioneer.server.pojo.base.TempCourse;
 
 public interface TempCourseServerService {
 
-    ResultMap register(String facultyId, JSONObject jsonObject);
+    ResultMap list(String currentPage, String pageSize, String search, String order, String orderCol, String status, String facultyId);
 
-    ResultMap deleteTempCourseById(Integer id);
+    ResultMap create(String facultyId, JSONObject jsonObject);
 
-    ResultMap updateTempCourse(Integer id, TempCourse tempCourse);
+    ResultMap delete(Integer id);
 
-    ResultMap tempCourseList(String s, String s1, String search, String order, String orderCol, String status, String facultyId);
+    ResultMap update(Integer id, TempCourse tempCourse);
 
-    ResultMap get(Integer id);
-
+    ResultMap retrieve(Integer id);
+    
 }

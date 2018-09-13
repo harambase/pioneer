@@ -162,7 +162,7 @@ public class JLRGenerator {
 
     private void deleteFile(File var1) {
         if (var1.isFile() && !var1.delete()) {
-            this.errorMessage = "Warning: Could not remove " + var1.getAbsolutePath() + " !";
+            this.errorMessage = "Warning: Could not delete " + var1.getAbsolutePath() + " !";
         }
 
     }

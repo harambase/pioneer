@@ -40,7 +40,7 @@ public class StudentServerServiceImpl implements StudentServerService {
     }
 
     @Override
-    public ResultMap transcriptDetail(String studentId) {
+    public ResultMap transcriptList(String studentId) {
         try {
             LinkedHashMap sv = studentDao.findOne(studentId);
             return ReturnMsgUtil.success(sv);
@@ -64,7 +64,7 @@ public class StudentServerServiceImpl implements StudentServerService {
     }
 
     @Override
-    public ResultMap studentList(String currentPage, String pageSize, String search, String order, String orderColumn, String status) {
+    public ResultMap list(String currentPage, String pageSize, String search, String order, String orderColumn, String status) {
         ResultMap message = new ResultMap();
 
         try {
@@ -90,7 +90,7 @@ public class StudentServerServiceImpl implements StudentServerService {
     }
 
     @Override
-    public ResultMap getAvailableCredit(String studentId, String info) {
+    public ResultMap getCreditInfo(String studentId, String info) {
 
         try {
             List<CourseView> courseList = courseDao.findCourseViewByStudentIdAndInfo("", studentId, info);

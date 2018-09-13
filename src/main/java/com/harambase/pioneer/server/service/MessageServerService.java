@@ -5,18 +5,18 @@ import com.harambase.pioneer.server.pojo.base.Message;
 
 public interface MessageServerService {
 
-    ResultMap list(String currentPage, String pageSize, String search, String order,
-                   String orderColumn, String receiverid, String senderid, String box);
+    ResultMap list(String currentPage, String pageSize, String search, String order, String orderColumn, String receiverId, String senderId, String box);
 
-    ResultMap getMessageView(Integer id);
-
-    ResultMap countMessageByStatus(String receiverid, String senderid, String box, String status);
-
-    ResultMap createMessage(Message message);
+    ResultMap create(Message message);
 
     ResultMap delete(Integer id);
 
     ResultMap update(Integer id, Message message);
 
     ResultMap updateStatus(Integer id, String status);
+
+    ResultMap retrieve(Integer id);
+
+    ResultMap countByStatus(String receiverId, String senderId, String box, String status);
+
 }

@@ -90,7 +90,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/index").permitAll()
                 .antMatchers("/system/login").permitAll()
                 .antMatchers("/system/user/**").permitAll()
-                .antMatchers("/request/user/register").permitAll()
+                .antMatchers("/request/user/create").permitAll()
                 .antMatchers("/transcript/report").permitAll()
                 .antMatchers("/transcript/report/**").permitAll()
                 .antMatchers("/transcript/all/report").permitAll()
@@ -111,7 +111,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         // TokenAuthenticationFilter will ignore the below paths
         web.ignoring().antMatchers(HttpMethod.POST, "/system/login");
-        web.ignoring().antMatchers(HttpMethod.POST, "/request/user/register");
+        web.ignoring().antMatchers(HttpMethod.POST, "/request/user/create");
         web.ignoring().antMatchers(
                 HttpMethod.GET,
                 "/",
