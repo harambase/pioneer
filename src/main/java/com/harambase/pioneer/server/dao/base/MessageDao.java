@@ -181,7 +181,7 @@ public class MessageDao {
             queryString += "AND receiver_id like '%" + receiver_id + "%' AND (labels LIKE '%重要%' OR labels LIKE '%紧急%') AND (status = 'read' OR status = 'unread') ";
         if (box.equals("urgent"))
             queryString += "AND receiver_id like '%" + receiver_id + "%' AND labels LIKE '%紧急%' AND (status = 'read' OR status = 'unread') ";
-        if (box.equals("draft"))
+        if (box.equals("sent"))
             queryString += "AND sender_id = '" + sender_id + "'";
         if (box.equals("trash"))
             queryString += "AND (receiver_id like '%" + receiver_id + "%' OR sender_id = '" + sender_id + "') AND status = 'trashed'";

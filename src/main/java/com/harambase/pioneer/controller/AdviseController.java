@@ -67,7 +67,7 @@ public class AdviseController {
                                @RequestParam(value = "length", required = false, defaultValue = "100") Integer length,
                                @RequestParam(value = "search", required = false, defaultValue = "") String search,
                                @RequestParam(value = "order", required = false, defaultValue = "desc") String order,
-                               @RequestParam(value = "orderCol", required = false, defaultValue = "id") String orderCol,
+                               @RequestParam(value = "orderCol", required = false, defaultValue = "fname") String orderCol,
                                @RequestParam(value = "studentId", required = false) String studentId,
                                @RequestParam(value = "facultyId", required = false) String facultyId,
                                @RequestParam(value = "info", required = false, defaultValue = "") String info,

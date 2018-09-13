@@ -100,7 +100,7 @@ public class AdviseService {
 
             Field[] titleList = AdviseReportOnly.class.getDeclaredFields();
             List<AdviseView> adviseViewList = (List<AdviseView>) adviseServerService.list("1", String.valueOf(Integer.MAX_VALUE), "", "asc",
-                    "student_id", "", "", info).getData();
+                    "fname", "", "", info).getData();
 
             StringBuilder exportInfoSb = new StringBuilder();
             for (int i = 0; i < titleList.length; i++) {
@@ -111,6 +111,7 @@ public class AdviseService {
             exportInfoSb.append("\n");
             for (int i = 0; i < adviseViewList.size(); i++) {
                 Map<String, String> tvMap = BeanUtils.describe(adviseViewList.get(i));
+                exportInfoSb.append((i + 1) + ",");
                 for (int j = 0; j < titleList.length; j++) {
                     if (j != 0) exportInfoSb.append(",");
                     exportInfoSb.append("\"" + tvMap.get(titleList[j].getName()) + "\"");

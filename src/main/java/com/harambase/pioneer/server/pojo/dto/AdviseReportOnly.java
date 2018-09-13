@@ -10,17 +10,6 @@ public class AdviseReportOnly {
     @Name("教师名")
     private String fname;
 
-    @Name("学期")
-    private String info;
-
-    public String getInfo() {
-        return info;
-    }
-
-    public void setInfo(String info) {
-        this.info = info;
-    }
-
     public String getFname() {
         return fname;
     }
