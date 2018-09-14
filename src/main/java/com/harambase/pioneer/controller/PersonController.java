@@ -130,4 +130,20 @@ public class PersonController {
             }
         }
     }
+
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public void downloadUserList(@RequestParam String token,
+                                 @RequestParam(required = false) String status,
+                                 @RequestParam(required = false) String type,
+                                 @RequestParam(required = false) String role,
+                                 HttpServletResponse response) {
+        if (StringUtils.isNotEmpty(token)) {
+            ResultMap ResultMap = personService.downloadUserList(status, type, role);
+            try {
+                FileUtil.downloadFile("先锋" + type + "-" + "人员名单.csv", (String) ResultMap.getData(), response);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

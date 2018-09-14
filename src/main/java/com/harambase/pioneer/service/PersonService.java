@@ -7,8 +7,12 @@ import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.common.constant.SystemConst;
 import com.harambase.pioneer.common.support.util.FileUtil;
 import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
+import com.harambase.pioneer.server.helper.Name;
+import com.harambase.pioneer.server.pojo.dto.PersonReportOnly;
+import com.harambase.pioneer.server.pojo.view.TranscriptView;
 import com.harambase.pioneer.server.service.PersonServerService;
 import com.harambase.pioneer.server.pojo.base.Person;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +21,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class PersonService {
@@ -185,5 +194,68 @@ public class PersonService {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
         }
+    }
+
+    public ResultMap downloadUserList(String status, String type, String role) {
+        FileOutputStream fos = null;
+        String csvPath = Config.serverPath + "user_list.csv";
+        StringBuilder exportInfoSb = new StringBuilder();
+
+        try {
+            File outputFile = new File(csvPath);
+            if (outputFile.exists()) {
+                outputFile.delete();
+                outputFile = new File(csvPath);
+            }
+            fos = new FileOutputStream(outputFile, true);
+            //Solve for Chinese Character errors while using excel:
+            fos.write(new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF});
+
+            Field[] titleList = PersonReportOnly.class.getDeclaredFields();
+            List<Person> personList = (List<Person>) personServerService.list("1", String.valueOf(Integer.MAX_VALUE), "", "asc",
+                    "user_id", type, status, role).getData();
+
+            exportInfoSb.append("序号,");
+            for (int i = 0; i < titleList.length; i++) {
+                if (i != 0) exportInfoSb.append(",");
+                Name name = titleList[i].getAnnotation(Name.class);
+                exportInfoSb.append("\"" + name.value() + "\"");
+            }
+            exportInfoSb.append("\n");
+
+            for (int i = 0; i < personList.size(); i++) {
+                Map<String, String> map = BeanUtils.describe(personList.get(i));
+                exportInfoSb.append((i + 1) + ",");
+                for (int j = 0; j < titleList.length; j++) {
+                    if (j != 0) exportInfoSb.append(",");
+                    String value = map.get(titleList[j].getName());
+                    if (StringUtils.isNotEmpty(value))
+                        exportInfoSb.append("\"" + value + "\"");
+                    else
+                        exportInfoSb.append("\"" + "\"");
+                }
+                exportInfoSb.append("\n");
+            }
+
+            exportInfoSb.append("总数:" + personList.size());
+            fos.write(exportInfoSb.toString().getBytes("UTF-8"));
+
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    logger.error(e.getMessage(), e);
+                }
+            }
+        }
+
+        logger.info("Reporting task for all students has completed.");
+        ResultMap restMessage = new ResultMap();
+        restMessage.setCode(SystemConst.SUCCESS.getCode());
+        restMessage.setData("user_list.csv");
+        return restMessage;
     }
 }
