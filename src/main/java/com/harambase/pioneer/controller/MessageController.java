@@ -1,7 +1,7 @@
 package com.harambase.pioneer.controller;
 
-import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.common.Page;
+import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.helper.TokenHelper;
 import com.harambase.pioneer.server.pojo.base.Message;
 import com.harambase.pioneer.service.MessageService;

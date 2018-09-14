@@ -1,8 +1,8 @@
 package com.harambase.pioneer.service;
 
-import com.harambase.pioneer.server.pojo.base.Message;
 import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
+import com.harambase.pioneer.server.pojo.base.Message;
 import com.harambase.pioneer.server.service.MessageServerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

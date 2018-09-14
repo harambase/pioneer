@@ -57,10 +57,29 @@ public class PersonServerServiceImpl implements PersonServerService {
 
     @Override
     public ResultMap updateLastLoginTime(String keyword) {
-        Person person = personRepository.findByQqOrUserIdOrUsername(keyword).get(0);
-        person.setLastLoginTime(DateUtil.DateToStr(new Date()));
-        Person newPerson = personRepository.save(person);
-        return newPerson != null ? ReturnMsgUtil.success(newPerson) : ReturnMsgUtil.fail();
+        try {
+            Person person = personRepository.findByQqOrUserIdOrUsername(keyword).get(0);
+            person.setLastLoginTime(DateUtil.DateToStr(new Date()));
+            Person newPerson = personRepository.save(person);
+            return newPerson != null ? ReturnMsgUtil.success(newPerson) : ReturnMsgUtil.fail();
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
+    }
+
+    @Override
+    public ResultMap updateTrailPeriod(String studentId, String trial) {
+        try {
+            Person person = personRepository.findOne(studentId);
+            person.setTrialPeriod(trial);
+            person.setUpdateTime(DateUtil.DateToStr(new Date()));
+            Person newPerson = personRepository.save(person);
+            return newPerson != null ? ReturnMsgUtil.success(newPerson) : ReturnMsgUtil.fail();
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 
     @Override

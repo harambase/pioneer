@@ -1,8 +1,8 @@
 package com.harambase.pioneer.security;
 
 import com.harambase.pioneer.security.model.User;
-import com.harambase.pioneer.server.service.PersonServerService;
 import com.harambase.pioneer.server.pojo.base.Person;
+import com.harambase.pioneer.server.service.PersonServerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

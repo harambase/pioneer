@@ -32,6 +32,9 @@ public class Person implements Serializable {
     @Column(name = "birthday")
     private String birthday;
 
+    @Column(name = "we_chat")
+    private String weChat;
+
     @Column(name = "email")
     private String email;
 
@@ -40,9 +43,6 @@ public class Person implements Serializable {
 
     @Column(name = "qq")
     private String qq;
-
-    @Column(name = "we_chat")
-    private String weChat;
 
     @Column(name = "dorm")
     private String dorm;
@@ -58,6 +58,9 @@ public class Person implements Serializable {
 
     @Column(name = "last_login_time")
     private String lastLoginTime;
+
+    @Column(name = "trial_period")
+    private String trialPeriod;
 
     @Column(name = "status")
     private String status;
@@ -79,6 +82,14 @@ public class Person implements Serializable {
 
     @Column(name = "address")
     private String address;
+
+    public String getTrialPeriod() {
+        return trialPeriod;
+    }
+
+    public void setTrialPeriod(String trialPeriod) {
+        this.trialPeriod = trialPeriod;
+    }
 
     public String getLastLoginTime() {
         return lastLoginTime;

@@ -15,5 +15,5 @@ public interface TempCourseServerService {
     ResultMap update(Integer id, TempCourse tempCourse);
 
     ResultMap retrieve(Integer id);
-    
+
 }

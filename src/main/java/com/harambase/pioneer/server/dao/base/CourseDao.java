@@ -41,8 +41,7 @@ public class CourseDao {
                 queryString += "AND info = '" + info + "' ";
 
             if (StringUtils.isNotEmpty(search)) {
-                queryString += "" +
-                        "AND (crn      LIKE '%" + search + "%' OR" +
+                queryString += "AND (crn      LIKE '%" + search + "%' OR" +
                         "     name     LIKE '%" + search + "%' OR" +
                         "     comment  LIKE '%" + search + "%')";
             }
@@ -191,7 +190,7 @@ public class CourseDao {
                 return courseViews;
 
             stmt = connection.createStatement();
-            String queryString = "select * from courseview where faculty_id= '" + facultyId + "' and  info = '" +info+ "'";
+            String queryString = "select * from courseview where faculty_id= '" + facultyId + "' and  info = '" + info + "'";
 
             logger.info(queryString);
 
@@ -254,8 +253,8 @@ public class CourseDao {
 
             stmt = connection.createStatement();
             String queryString = "SELECT * FROM courseview c WHERE c.crn IN (SELECT t.crn FROM transcript t WHERE t.student_id = '" + studentId + "') ";
-            if(StringUtils.isNotEmpty(info))
-                queryString += "AND c.info = '"+ info + "' ";
+            if (StringUtils.isNotEmpty(info))
+                queryString += "AND c.info = '" + info + "' ";
             if (StringUtils.isNotEmpty(status))
                 queryString += "AND c.status = " + status + "";
 

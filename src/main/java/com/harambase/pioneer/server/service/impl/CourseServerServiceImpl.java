@@ -186,7 +186,7 @@ public class CourseServerServiceImpl implements CourseServerService {
                 }
 
                 //检查预选
-                if(StringUtils.isNotEmpty(courseView.getPrecrn())) {
+                if (StringUtils.isNotEmpty(courseView.getPrecrn())) {
                     String[] preCrns = courseView.getPrecrn().split("/");
                     for (String preCrn : preCrns) {
                         int count = transcriptRepository.countByStudentIdAndCrnAndComplete(studentId, preCrn, "1");
@@ -288,7 +288,7 @@ public class CourseServerServiceImpl implements CourseServerService {
                 //检查预选
                 boolean pre = true;
                 //检查预选
-                if(StringUtils.isNotEmpty(courseView.getPrecrn())) {
+                if (StringUtils.isNotEmpty(courseView.getPrecrn())) {
                     String[] preCrns = courseView.getPrecrn().split("/");
                     for (String preCrn : preCrns) {
                         int count = transcriptRepository.countByStudentIdAndCrnAndComplete(studentId, preCrn, "1");

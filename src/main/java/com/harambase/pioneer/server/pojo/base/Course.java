@@ -54,6 +54,9 @@ public class Course implements Serializable {
     @Column(name = "faculty_id")
     private String facultyId;
 
+    @Column(name = "selectable")
+    private String selectable;
+
     @Column(name = "info")
     private String info;
 
@@ -71,6 +74,14 @@ public class Course implements Serializable {
 
     @Column(name = "assignment", columnDefinition = "text")
     private String assignment;
+
+    public String getSelectable() {
+        return selectable;
+    }
+
+    public void setSelectable(String selectable) {
+        this.selectable = selectable;
+    }
 
     public String getCourseInfo() {
         return courseInfo;

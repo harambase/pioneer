@@ -31,6 +31,83 @@ public class StudentView implements Serializable {
     @Column(name = "incomplete")
     private Double incomplete;
 
+    @Column(name = "info")
+    private String info;
+
+    @Column(name = "profile")
+    private String profile;
+
+    @Column(name = "trial_period")
+    private String trialPeriod;
+
+    @Column(name = "tel")
+    private String tel;
+
+    @Column(name = "qq")
+    private String qq;
+
+    @Column(name = "dorm")
+    private String dorm;
+
+    @Column(name = "gender")
+    private String gender;
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    public String getProfile() {
+        return profile;
+    }
+
+    public void setProfile(String profile) {
+        this.profile = profile;
+    }
+
+    public String getTrialPeriod() {
+        return trialPeriod;
+    }
+
+    public void setTrialPeriod(String trialPeriod) {
+        this.trialPeriod = trialPeriod;
+    }
+
+    public String getTel() {
+        return tel;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel;
+    }
+
+    public String getQq() {
+        return qq;
+    }
+
+    public void setQq(String qq) {
+        this.qq = qq;
+    }
+
+    public String getDorm() {
+        return dorm;
+    }
+
+    public void setDorm(String dorm) {
+        this.dorm = dorm;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
     public String getSname() {
         return sname;
     }

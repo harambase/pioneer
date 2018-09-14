@@ -20,7 +20,6 @@ public class Student implements Serializable {
     @Column(name = "update_time")
     private String updateTime;
 
-
     public String getStudentId() {
         return studentId;
     }

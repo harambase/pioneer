@@ -1,9 +1,10 @@
 package com.harambase.pioneer.service;
 
 import com.harambase.pioneer.common.ResultMap;
-import com.harambase.pioneer.server.service.StudentServerService;
-import com.harambase.pioneer.server.pojo.base.Student;
 import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
+import com.harambase.pioneer.server.pojo.base.Student;
+import com.harambase.pioneer.server.service.PersonServerService;
+import com.harambase.pioneer.server.service.StudentServerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,13 @@ public class StudentService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final StudentServerService studentServerService;
+    private final PersonServerService personServerService;
 
     @Autowired
-    public StudentService(StudentServerService studentServerService) {
+    public StudentService(StudentServerService studentServerService,
+                          PersonServerService personServerService) {
         this.studentServerService = studentServerService;
+        this.personServerService = personServerService;
     }
 
 
@@ -72,4 +76,12 @@ public class StudentService {
         }
     }
 
+    public ResultMap updateTrailPeriod(String studentId, String trial) {
+        try {
+            return personServerService.updateTrailPeriod(studentId, trial);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
+    }
 }

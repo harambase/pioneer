@@ -12,6 +12,6 @@ public interface TempAdviseServerService {
     ResultMap delete(Integer id);
 
     ResultMap update(Integer id, TempAdvise tempAdvise);
-    
+
     ResultMap retrieve(String studentId);
 }

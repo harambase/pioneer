@@ -40,6 +40,14 @@ public class StudentController {
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('TEACH','STUDENT','ADMIN','LOGISTIC')")
+    @RequestMapping(value = "/{studentId}/trial", method = RequestMethod.PUT)
+    public ResponseEntity updateTrailPeriod(@PathVariable(value = "studentId") String studentId,
+                                            @RequestParam(value = "trial") String trial) {
+        ResultMap resultMap = studentService.updateTrailPeriod(studentId, trial);
+        return new ResponseEntity<>(resultMap, HttpStatus.OK);
+    }
+
     @PreAuthorize("hasAnyRole('TEACH','STUDENT','ADMIN')")
     @RequestMapping(value = "/{studentId}", method = RequestMethod.PUT)
     public ResponseEntity update(@PathVariable String studentId, @RequestBody Student student) {

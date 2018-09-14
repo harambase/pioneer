@@ -95,7 +95,7 @@ public class TempAdviseServerServiceImpl implements TempAdviseServerService {
             page.setTotalRows(totalSize);
 
             List<TempAdviseView> tempAdvise = tempAdviseDao.getByMapPageSearchOrdered(page.getCurrentIndex(), page.getPageSize(), search, order, orderColumn,
-                   viewStatus, info, studentId, facultyId);
+                    viewStatus, info, studentId, facultyId);
 
             message.setData(tempAdvise);
             message.put("page", page);

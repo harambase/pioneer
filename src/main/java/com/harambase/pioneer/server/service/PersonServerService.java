@@ -10,7 +10,7 @@ public interface PersonServerService {
     ResultMap list(String currentPage, String pageSize, String search, String order, String orderColumn, String type, String status, String role);
 
     ResultMap create(Person person);
-    
+
     ResultMap delete(String userId);
 
     ResultMap update(String userId, Person person);
@@ -24,4 +24,6 @@ public interface PersonServerService {
     ResultMap search(String search, String type, String status, String role, String maxLength);
 
     ResultMap countActivePersonByType(String type);
+
+    ResultMap updateTrailPeriod(String userId, String period);
 }

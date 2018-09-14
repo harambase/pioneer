@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.harambase.pioneer.common.Config;
-import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.common.support.util.FileUtil;
 import com.harambase.pioneer.helper.ConfigUtil;
 import com.harambase.pioneer.server.dao.base.PersonDao;
@@ -17,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
-import javax.annotation.Resource;
 import java.io.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -40,7 +38,7 @@ public class StartUpPrepare {
     @Autowired
     private final PersonDao personDao;
 
-    public StartUpPrepare(PersonDao personDao){
+    public StartUpPrepare(PersonDao personDao) {
         this.personDao = personDao;
     }
 
@@ -91,7 +89,7 @@ public class StartUpPrepare {
             schoolInputStream = ConfigUtil.getConfFile(schoolList);
 
             JSONObject weChatList = //initWeChatList();
-            new JSONObject();
+                    new JSONObject();
 
             String staffJson = initData(staffListInputStream);
             JSONArray staffJsonArray = JSON.parseArray(staffJson);

@@ -7,7 +7,7 @@ import org.springframework.mobile.device.Device;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.Date;
 
 public class TokenHelper {
 

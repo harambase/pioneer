@@ -11,10 +11,10 @@ public class PersonReportOnly implements Serializable {
 
     @Name("姓")
     private String lastName;
-    
+
     @Name("名")
     private String firstName;
-    
+
     @Name("生日")
     private String birthday;
 

@@ -6,7 +6,7 @@ import com.harambase.pioneer.server.pojo.base.Course;
 import com.harambase.pioneer.server.pojo.dto.Option;
 
 public interface CourseServerService {
-    
+
     ResultMap list(String currentPage, String pageSize, String search, String order, String orderCol, String facultyId, String info, String status);
 
     ResultMap create(Course course);
