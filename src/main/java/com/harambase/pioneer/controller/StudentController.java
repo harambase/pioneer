@@ -41,9 +41,9 @@ public class StudentController {
     }
 
     @PreAuthorize("hasAnyRole('TEACH','STUDENT','ADMIN','LOGISTIC')")
-    @RequestMapping(value = "/{studentId}/trial", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{studentId}/trial", method = RequestMethod.POST)
     public ResponseEntity updateTrailPeriod(@PathVariable(value = "studentId") String studentId,
-                                            @RequestParam(value = "trial") String trial) {
+                                            @RequestBody String trial) {
         ResultMap resultMap = studentService.updateTrailPeriod(studentId, trial);
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
