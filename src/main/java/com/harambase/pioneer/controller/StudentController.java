@@ -26,17 +26,17 @@ public class StudentController {
     }
 
     @PreAuthorize("hasAnyRole('TEACH','STUDENT','ADMIN')")
-    @RequestMapping(value = "/{studentId}/transcript", method = RequestMethod.GET)
-    public ResponseEntity getTranscriptList(@PathVariable(value = "studentId") String studentId) {
-        ResultMap resultMap = studentService.transcriptList(studentId);
-        return new ResponseEntity<>(resultMap, HttpStatus.OK);
-    }
-
-    @PreAuthorize("hasAnyRole('TEACH','STUDENT','ADMIN')")
     @RequestMapping(value = "/{studentId}/available/credit", method = RequestMethod.GET)
     public ResponseEntity getCreditInfo(@PathVariable(value = "studentId") String studentId,
                                         @RequestParam(value = "info") String info) {
         ResultMap resultMap = studentService.getCreditInfo(studentId, info);
+        return new ResponseEntity<>(resultMap, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('TEACH','STUDENT','ADMIN','FACULTY')")
+    @RequestMapping(value = "/{studentId}", method = RequestMethod.GET)
+    public ResponseEntity getStudent(@PathVariable(value = "studentId") String studentId) {
+        ResultMap resultMap = studentService.getStudent(studentId);
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 

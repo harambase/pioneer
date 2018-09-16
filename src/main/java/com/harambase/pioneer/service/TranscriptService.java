@@ -137,7 +137,7 @@ public class TranscriptService {
             converter.replace("list", transcripts);
 
             //学分TOTAL:
-            LinkedHashMap studentViewMap = (LinkedHashMap) studentServerService.transcriptList(studentId).getData();
+            LinkedHashMap studentViewMap = (LinkedHashMap) studentServerService.retrieve(studentId).getData();
             int complete = (int) studentViewMap.get("complete");
             int progress = (int) studentViewMap.get("progress");
             int incomplete = (int) studentViewMap.get("incomplete");
@@ -149,7 +149,6 @@ public class TranscriptService {
             converter.replace("total", total);
             converter.replace("complete", complete);
             converter.replace("points", qualityPoints);
-            converter.replace("gpa", df.format(gpa));
 
             //输出
             converter.parse(template, reportTex);

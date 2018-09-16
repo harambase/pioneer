@@ -69,7 +69,6 @@ public class PinController {
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
-
     @PreAuthorize("hasAnyRole('TEACH','ADMIN')")
     @RequestMapping(value = "/send/faculty/{info}", method = RequestMethod.GET)
     public ResponseEntity sendFacultyPin(@PathVariable(value = "info") String info, HttpServletRequest request) {

@@ -40,7 +40,7 @@ public class StudentServerServiceImpl implements StudentServerService {
     }
 
     @Override
-    public ResultMap transcriptList(String studentId) {
+    public ResultMap retrieve(String studentId) {
         try {
             LinkedHashMap sv = studentDao.findOne(studentId);
             return ReturnMsgUtil.success(sv);

@@ -144,8 +144,12 @@ public class CourseController {
 
     @PreAuthorize("hasAnyRole('STUDENT','ADMIN')")
     @RequestMapping(value = "/choose", method = RequestMethod.POST)
-    public ResponseEntity courseChoice(@RequestBody JSONArray choiceList, HttpServletRequest request) {
-        ResultMap message = courseService.reg2Course(TokenHelper.getUserIdFromToken(TokenHelper.getToken(request)), choiceList);
+    public ResponseEntity courseChoice(@RequestBody JSONArray choiceList,
+                                       @RequestParam(required = false)String studentId,
+                                       HttpServletRequest request) {
+        if(StringUtils.isEmpty(studentId))
+            studentId = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));
+        ResultMap message = courseService.reg2Course(studentId, choiceList);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 

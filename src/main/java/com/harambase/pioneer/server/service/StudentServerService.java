@@ -13,6 +13,5 @@ public interface StudentServerService {
 
     ResultMap courseList(String status, String studentId);
 
-    ResultMap transcriptList(String studentId);
-
+    ResultMap retrieve(String studentId);
 }

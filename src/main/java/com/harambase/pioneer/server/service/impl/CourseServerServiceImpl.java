@@ -314,6 +314,7 @@ public class CourseServerServiceImpl implements CourseServerService {
                 transcript.setComplete("0");
                 transcript.setGrade("*");
                 transcript.setCrn(crn);
+                transcript.setCredit(0.0);
                 transcript.setStudentId(studentId);
                 transcript.setOperatorId(IDUtil.ROOT);
 

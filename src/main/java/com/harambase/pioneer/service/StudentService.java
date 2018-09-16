@@ -26,17 +26,6 @@ public class StudentService {
         this.personServerService = personServerService;
     }
 
-
-    public ResultMap transcriptList(String studentId) {
-        try {
-            return studentServerService.transcriptList(studentId);
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            return ReturnMsgUtil.systemError();
-        }
-    }
-
-
     public ResultMap update(String studentId, Student student) {
         try {
             return studentServerService.update(studentId, student);
@@ -79,6 +68,15 @@ public class StudentService {
     public ResultMap updateTrailPeriod(String studentId, String trial) {
         try {
             return personServerService.updateTrailPeriod(studentId, trial);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
+    }
+
+    public ResultMap getStudent(String studentId) {
+        try {
+            return studentServerService.retrieve(studentId);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
