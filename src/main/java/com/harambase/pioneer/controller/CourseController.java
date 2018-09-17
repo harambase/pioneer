@@ -146,10 +146,11 @@ public class CourseController {
     @RequestMapping(value = "/choose", method = RequestMethod.POST)
     public ResponseEntity courseChoice(@RequestBody JSONArray choiceList,
                                        @RequestParam(required = false)String studentId,
+                                       @RequestParam String info,
                                        HttpServletRequest request) {
         if(StringUtils.isEmpty(studentId))
             studentId = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));
-        ResultMap message = courseService.reg2Course(studentId, choiceList);
+        ResultMap message = courseService.reg2Course(studentId, choiceList, info);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 

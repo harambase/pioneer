@@ -25,7 +25,7 @@ public interface CourseServerService {
 
     ResultMap addStudent(String crn, String studentId, Option option);
 
-    ResultMap studentRegistration(String studentId, JSONArray choiceList);
+    ResultMap studentRegistration(String studentId, JSONArray choiceList, String info);
 
     ResultMap removeStudent(String crn, String studentId);
 

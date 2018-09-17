@@ -4,6 +4,8 @@ import com.harambase.pioneer.server.pojo.base.Transcript;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface TranscriptRepository extends JpaRepository<Transcript, Integer> {
 
@@ -15,4 +17,7 @@ public interface TranscriptRepository extends JpaRepository<Transcript, Integer>
 
     void deleteTranscriptByStudentId(String userId);
 
+    void deleteTranscriptByStudentIdAndInfo(String studentId, String info);
+
+    List<Transcript> findByStudentIdAndInfo(String studentId, String info);
 }

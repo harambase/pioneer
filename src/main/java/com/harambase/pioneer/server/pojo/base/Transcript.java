@@ -37,6 +37,17 @@ public class Transcript implements Serializable {
     @Column(name = "remark")
     private String remark;
 
+    @Column(name = "info")
+    private String info;
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
     public String getRemark() {
         return remark;
     }

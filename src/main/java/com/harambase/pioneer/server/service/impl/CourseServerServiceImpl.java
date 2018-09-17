@@ -201,6 +201,7 @@ public class CourseServerServiceImpl implements CourseServerService {
             transcript.setComplete("0");
             transcript.setGrade("*");
             transcript.setCrn(crn);
+            transcript.setInfo(courseView.getInfo());
             transcript.setStudentId(studentId);
             transcript.setOperatorId(IDUtil.ROOT);
             transcript.setCredit(0.0);
@@ -255,11 +256,14 @@ public class CourseServerServiceImpl implements CourseServerService {
     }
 
     @Override
-    public ResultMap studentRegistration(String studentId, JSONArray choiceList) {
+    public ResultMap studentRegistration(String studentId, JSONArray choiceList, String info) {
 
         try {
             Map<String, Object> result = new HashMap<>();
             List<String> failList = new ArrayList<>();
+
+            //todo:这里全部删除可能有数据安全问题：
+            transcriptRepository.deleteTranscriptByStudentIdAndInfo(studentId, info);
 
             for (Object crnList : choiceList) {
 
@@ -305,7 +309,7 @@ public class CourseServerServiceImpl implements CourseServerService {
                 //检查复选
                 int count = transcriptRepository.countByStudentIdAndCrn(studentId, crn);
                 if (count != 0) {
-//                    failList.add(failInfo + SystemConst.REPEAT.getMsg());
+
                     continue;
                 }
 
@@ -315,6 +319,7 @@ public class CourseServerServiceImpl implements CourseServerService {
                 transcript.setGrade("*");
                 transcript.setCrn(crn);
                 transcript.setCredit(0.0);
+                transcript.setInfo(courseView.getInfo());
                 transcript.setStudentId(studentId);
                 transcript.setOperatorId(IDUtil.ROOT);
 

@@ -191,9 +191,9 @@ public class CourseService {
     }
 
 
-    public ResultMap reg2Course(String studentId, JSONArray choiceList) {
+    public ResultMap reg2Course(String studentId, JSONArray choiceList, String info) {
         try {
-            return courseServerService.studentRegistration(studentId, choiceList);
+            return courseServerService.studentRegistration(studentId, choiceList, info);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
