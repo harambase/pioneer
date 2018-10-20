@@ -11,8 +11,8 @@
     "enDescription": "Mr. Liu Xiaowei has taught at Sichuan University. He has served as Director of the Beijing Pioneer Thinking Education and Culture Research Center, Director of the American Educational Resources and Culture Research Center, Chief Representative of the Utah Government Business Office in Beijing, Education Co., Ltd. of the American Dove Company, and Education Reform of the Shanghai Education Commission. Information Technology textbook consultant. He has been teaching English projects, information technology projects in kindergartens in China. He has rich teaching and research experience from kindergarten to university. He is currently the principal of the Pioneer Education School.",
     "moreInfo": [
       {
-        "id": "xxxx",
-        "description": "sdafasdfasdfasfd"
+        "id": "教授的课程",
+        "description": "项目式英语"
       }
     ]
   },
@@ -28,8 +28,8 @@
     "enDescription": "Co-founder & Vice Chairman of Leaners' Innovation Forum On Education. He graduated from the University of Science and Technology of China and worked as a project officer in the 21st Century Institute of Education. He has a wide range of hobbies, including mathematics, physics, original reading, game lessons, game schools, League of Legends, King Glory, and physical education classes. He has been engaged in family education counseling since 2011.",
     "moreInfo": [
       {
-        "id": "xxxx",
-        "description": "sdafasdfasdfasfd"
+        "id": "曾经的课程 Past Course",
+        "description": "王者荣耀"
       }
     ]
   },
@@ -37,7 +37,7 @@
     "id": "yy",
     "name": "杨燕",
     "enName": "Yang Yan",
-    "jobTitle": "副校长、财务总监",
+    "jobTitle": "财务总监",
     "category": "0,7",
     "organization": "1",
     "type": "f",
@@ -54,7 +54,7 @@
     "id": "hh",
     "name": "布彦隆之",
     "enName": "Nunohiko Takayuki",
-    "jobTitle": "导师、游学项目总监",
+    "jobTitle": "导师、传播总监",
     "category": "0,1,7",
     "organization": "5,6",
     "type": "f",
@@ -79,8 +79,42 @@
     "enDescription": "Mentor, Academic Director, graduated from St. John\"s University in the United States, majoring in Computer Science and Mathematics, Pioneer 2013 graduate student and former student president. Teaching courses include: Basic Mathematics, SAT&AP Mathematics, Computer Programming, and English. Favorite game is Buddist-like the Cities::Skylines. Good at helping students who are lazy and cancerous, planning and learning, regaining confidence and helping them better adapt to the Pioneer life. Current Pioneer Academic Director",
     "moreInfo": [
       {
-        "id": "最喜欢的游戏 Favorite Game",
-        "description": "Cities:Skylines"
+        "id": "教授的课程 Courses",
+        "description": "数学、计算机、英语等"
+      }
+    ]
+  },
+  {
+    "id": "nwc",
+    "name": "倪伟灿（桔子）",
+    "enName": "Orange",
+    "jobTitle": "导师、外事总监",
+    "category": "0,1,7",
+    "organization": "6",
+    "type": "f",
+    "shortDescription": "主流教育资深“失败者”，前工厂打工者。对小说感兴趣，对人和人性感兴趣，心理学爱好者。热爱自由，善于并喜欢观察学生。我认为，教育是一场学会看见他人成长、学会坦然接受自己不完美的人性解放。并努力在这看见和接纳的路上与所有人一起成长。",
+    "enDescription": "Senior \"failure\" in mainstream education, a former factory worker. Interested in novels, human, human nature and psychology enthusiasts. Love freedom, and good at observing students. I believe that education is a human liberation that learns to see others grow and learn to accept their imperfections, and strive to grow with everyone on the way to see and accept.",
+    "moreInfo": [
+      {
+        "id": "xxxx",
+        "description": "sdafasdfasdfasfd"
+      }
+    ]
+  },
+  {
+    "id": "mzj",
+    "name": "马宗佳",
+    "enName": "Ma Zongjia",
+    "jobTitle": "行政总监",
+    "category": "0,1",
+    "organization": "7",
+    "type": "f",
+    "shortDescription": "毕业于四川工业科技学院，会计专业。在一商贸公司实习不到半年就到了先锋，算是一个“跨界者”，喜欢做手工，对心理学感兴趣。现正在成长的路上，希望在这样一个自由与包容的环境里和你们一起探索、学习，成为自己。",
+    "enDescription": "",
+    "moreInfo": [
+      {
+        "id": "xxxx",
+        "description": "sdafasdfasdfasfd"
       }
     ]
   },
@@ -102,32 +136,15 @@
     ]
   },
   {
-    "id": "nwc",
-    "name": "倪伟灿（桔子）",
-    "enName": "Orange",
-    "jobTitle": "导师、校长助理",
-    "category": "0,1,7",
-    "organization": "6",
+    "id": "cr",
+    "name": "程蓉",
+    "enName": "Chen Rong",
+    "jobTitle": "导师、校医",
+    "category": "0,1,8",
+    "organization": "0",
     "type": "f",
-    "shortDescription": "主流教育资深“失败者”，前工厂打工者。对小说感兴趣，对人和人性感兴趣，心理学爱好者。热爱自由，善于并喜欢观察学生。我认为，教育是一场学会看见他人成长、学会坦然接受自己不完美的人性解放。并努力在这看见和接纳的路上与所有人一起成长。",
-    "enDescription": "Senior \"failure\" in mainstream education, a former factory worker. Interested in novels, human, human nature and psychology enthusiasts. Love freedom, and good at observing students. I believe that education is a human liberation that learns to see others grow and learn to accept their imperfections, and strive to grow with everyone on the way to see and accept.",
-    "moreInfo": [
-      {
-        "id": "xxxx",
-        "description": "sdafasdfasdfasfd"
-      }
-    ]
-  },
-  {
-    "id": "mzj",
-    "name": "马宗佳",
-    "enName": "Ma Zongjia",
-    "jobTitle": "导师",
-    "category": "0,1,7",
-    "organization": "7",
-    "type": "f",
-    "shortDescription": "",
-    "enDescription": "",
+    "shortDescription": "程蓉，华西医科大学毕业，内科副主任医师。拥有市级公立医院、私立医院、社区医院、健康管理公司的工作经历。因为孩子青春期的＂正常＂叛逆，开始反省自己，好在重启成长并不晚，系统学习心理学，现为国家二级心理咨询师，并一直在喜欢的儿童青少年精神分析方向学习，希望可以在这方面做一些事情。我以为创建一个能自由言说、充分接纳的容器，让彼此在关系这面平滑干净的镜子中看见我、看见你是一种福份。",
+    "enDescription": "Cheng Rong, graduated from Huaxi Medical University, deputy chief physician of internal medicine. She has been working at municipal public hospitals, private hospitals, community hospitals, and health management companies. Because the child's \"normal\" rebellion during adolescence, she began to introspect on herself. Luckily, it was not too late to systematically learn psychology. She is now a certificated national second-level psychological counselor, and has been continuing to learn in the direction of psychoanalysis of children and adolescents out of passion. She thinks that creating a container that can be freely spoken and fully accepted, letting her see each other in a mirror smoothly and clearly in which case seeing is a blessing.",
     "moreInfo": [
       {
         "id": "xxxx",
@@ -186,7 +203,6 @@
       }
     ]
   },
-
   {
     "id": "lph",
     "name": "罗培洪（小红）",
@@ -205,43 +221,9 @@
     ]
   },
   {
-    "id": "cr",
-    "name": "程蓉",
-    "enName": "Chen Rong",
-    "jobTitle": "导师、校医",
-    "category": "0,1,8",
-    "organization": "0",
-    "type": "f",
-    "shortDescription": "程蓉，华西医科大学毕业，内科副主任医师。拥有市级公立医院、私立医院、社区医院、健康管理公司的工作经历。因为孩子青春期的＂正常＂叛逆，开始反省自己，好在重启成长并不晚，系统学习心理学，现为国家二级心理咨询师，并一直在喜欢的儿童青少年精神分析方向学习，希望可以在这方面做一些事情。我以为创建一个能自由言说、充分接纳的容器，让彼此在关系这面平滑干净的镜子中看见我、看见你是一种福份。",
-    "enDescription": "Cheng Rong, graduated from Huaxi Medical University, deputy chief physician of internal medicine. She has been working at municipal public hospitals, private hospitals, community hospitals, and health management companies. Because the child's \"normal\" rebellion during adolescence, she began to introspect on herself. Luckily, it was not too late to systematically learn psychology. She is now a certificated national second-level psychological counselor, and has been continuing to learn in the direction of psychoanalysis of children and adolescents out of passion. She thinks that creating a container that can be freely spoken and fully accepted, letting her see each other in a mirror smoothly and clearly in which case seeing is a blessing.",
-    "moreInfo": [
-      {
-        "id": "xxxx",
-        "description": "sdafasdfasdfasfd"
-      }
-    ]
-  },
-  {
-    "id": "dcf",
-    "name": "丁乘风",
-    "enName": "Ding Chengfeng",
-    "jobTitle": "助教",
-    "category": "0,2,8",
-    "organization": "7",
-    "type": "f",
-    "shortDescription": "",
-    "enDescription": "",
-    "moreInfo": [
-      {
-        "id": "xxxx",
-        "description": "sdafasdfasdfasfd"
-      }
-    ]
-  },
-  {
-    "id": "hg",
-    "name": "何谷（半仙）",
-    "enName": "He Gu",
+    "id": "zz",
+    "name": "左众（左左）",
+    "enName": "Zuo Zhong",
     "jobTitle": "志愿者",
     "category": "0,4",
     "organization": "0",
@@ -256,31 +238,14 @@
     ]
   },
   {
-    "id": "hzc",
-    "name": "何子宸",
-    "enName": "He ZiChen",
-    "jobTitle": "学生会会长",
-    "category": "",
-    "organization": "2",
-    "type": "s",
-    "shortDescription": "先锋现任学生会会长，电竞寝室管理人员，3年前脱离体制内来到先锋，准备在2年后去圣约翰大学",
-    "enDescription": "",
-    "moreInfo": [
-      {
-        "id": "xxxx",
-        "description": "sdafasdfasdfasfd"
-      }
-    ]
-  },
-  {
   "id": "ycx",
   "name": "虞晨煦（小鱼）",
   "enName": "Yu Chenxu",
-  "jobTitle": "生活委员会负责人",
+  "jobTitle": "学生会会长",
   "category": "",
   "organization": "2,7",
   "type": "s",
-  "shortDescription": "男，现15岁，2015年冬加入先锋，爱好制作美食，在生活委员会打杂两年，参加过众多项目，例如咖啡馆项目、家长教育、校园改造项目等等。现任生活委员会会长",
+  "shortDescription": "先锋现任学生会会长，男，现15岁，2015年冬加入先锋，爱好制作美食，在生活委员会打杂两年，参加过众多项目，例如咖啡馆项目、家长教育、校园改造项目等等。现任生活委员会会长",
   "enDescription": "",
   "moreInfo": [
     {
