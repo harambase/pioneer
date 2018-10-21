@@ -17,7 +17,7 @@ public class WebController {
     //不需要login
     @RequestMapping({"/", "/index"})
     public String homePage() {
-        return "homepage";
+        return "index";
     }
 
     @RequestMapping("/404")

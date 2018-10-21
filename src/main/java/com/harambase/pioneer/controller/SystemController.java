@@ -2,7 +2,6 @@ package com.harambase.pioneer.controller;
 
 import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.common.constant.SystemConst;
-import com.harambase.pioneer.helper.DeviceHelper;
 import com.harambase.pioneer.helper.TokenHelper;
 import com.harambase.pioneer.security.auth.JwtAuthenticationRequest;
 import com.harambase.pioneer.security.model.User;
@@ -18,7 +17,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mobile.device.Device;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -43,17 +41,14 @@ public class SystemController {
     private final MonitorService monitorService;
     private final PersonService personService;
     private final AuthenticationManager authenticationManager;
-    private final DeviceHelper deviceHelper;
 
     @Autowired
     public SystemController(MonitorService monitorService,
                             PersonService personService,
-                            AuthenticationManager authenticationManager,
-                            DeviceHelper deviceHelper) {
+                            AuthenticationManager authenticationManager) {
 
         this.monitorService = monitorService;
         this.authenticationManager = authenticationManager;
-        this.deviceHelper = deviceHelper;
         this.personService = personService;
     }
 
@@ -63,7 +58,7 @@ public class SystemController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest, Device device) {
+    public ResponseEntity createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest) {
 
         ResultMap resultMap = new ResultMap();
         try {
@@ -81,8 +76,8 @@ public class SystemController {
 
             // token creation
             User user = (User) authentication.getPrincipal();
-            String jws = TokenHelper.generateToken(user.getUserId(), user.getRoles(), device);
-            int expiresIn = TokenHelper.getExpiredIn(device);
+            String jws = TokenHelper.generateToken(user.getUserId(), user.getRoles());
+            int expiresIn = TokenHelper.getExpiredIn();
 
             // Return the token
             personService.updateLastLoginTime(authenticationRequest.getUsername());
@@ -136,11 +131,10 @@ public class SystemController {
         ResultMap resultMap = new ResultMap();
 
         String authToken = TokenHelper.getToken(request);
-        Device device = deviceHelper.getCurrentDevice(request);
 
         if (authToken != null && principal != null) {
-            String refreshedToken = TokenHelper.refreshToken(authToken, device);
-            int expiresIn = TokenHelper.getExpiredIn(device);
+            String refreshedToken = TokenHelper.refreshToken(authToken);
+            int expiresIn = TokenHelper.getExpiredIn();
             resultMap.setData(new UserTokenState(refreshedToken, expiresIn));
         } else {
             resultMap.setData(new UserTokenState());

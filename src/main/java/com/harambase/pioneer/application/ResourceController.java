@@ -20,12 +20,13 @@ public class ResourceController extends WebMvcConfigurationSupport {
         registry.addResourceHandler("./static/eas/**").addResourceLocations("classpath:/static/eas/");
         registry.addResourceHandler("/static/eas/**").addResourceLocations("classpath:/static/eas/");
         registry.addResourceHandler("/static/static/eas/**").addResourceLocations("classpath:/static/eas/");
-        registry.addResourceHandler("./static/home/**").addResourceLocations("classpath:/static/home/");
-        registry.addResourceHandler("/static/home/**").addResourceLocations("classpath:/static/home/");
-        registry.addResourceHandler("/static/static/home/**").addResourceLocations("classpath:/static/home/");
         registry.addResourceHandler("/static/pioneer/**").addResourceLocations("classpath:/static/pioneer/");
         registry.addResourceHandler("/static/images/**").addResourceLocations("classpath:/static/home/images/");
         registry.addResourceHandler("/static/img/**").addResourceLocations("classpath:/static/eas/img/");
+        registry.addResourceHandler("/js/**").addResourceLocations("classpath:/static/home/js/");
+        registry.addResourceHandler("/css/**").addResourceLocations("classpath:/static/home/css/");
+        registry.addResourceHandler("/img/**").addResourceLocations("classpath:/static/home/img/");
+        registry.addResourceHandler("/images/**").addResourceLocations("classpath:/static/home/images/");
 
         super.addResourceHandlers(registry);
     }
