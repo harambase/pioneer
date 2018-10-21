@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -71,7 +72,8 @@ public class PersonServerServiceImpl implements PersonServerService {
     @Override
     public ResultMap updateTrailPeriod(String studentId, String trial) {
         try {
-            Person person = personRepository.findOne(studentId);
+            Optional<Person> p = personRepository.findById(studentId);
+            Person person = p.get();
             person.setTrialPeriod(trial);
             person.setUpdateTime(DateUtil.DateToStr(new Date()));
             Person newPerson = personRepository.save(person);
@@ -176,32 +178,35 @@ public class PersonServerServiceImpl implements PersonServerService {
             if (userId.equals(IDUtil.ROOT))
                 return ReturnMsgUtil.custom(SystemConst.DELETE_BLOCK);
 
-            Person person = personRepository.findOne(userId);
-            if (person == null) {
-                return ReturnMsgUtil.fail();
-            }
+            Optional<Person> p = personRepository.findById(userId);
+            p.ifPresent(person -> {
 
-            if (person.getType().contains("s")) {
-                studentRepository.delete(userId);
-                transcriptRepository.deleteTranscriptByStudentId(person.getUserId());
-            }
-
-            adviseRepository.deleteByStudentIdOrFacultyId(person.getUserId(), person.getUserId());
-
-            if (person.getType().contains("f")) {
-                List<Course> courseList = courseRepository.findCourseByFacultyId(person.getUserId());
-
-                for (Course c : courseList) {
-                    String opTime = DateUtil.DateToStr(new Date());
-                    c.setFacultyId(IDUtil.ROOT);
-                    c.setComment(person.getLastName() + "," + person.getFirstName() + "老师被删除, 删除时间：" + opTime);
-                    c.setUpdateTime(DateUtil.DateToStr(new Date()));
-                    courseRepository.save(c);
+                if (person.getType().contains("s")) {
+                    studentRepository.deleteById(userId);
+                    transcriptRepository.deleteTranscriptByStudentId(person.getUserId());
                 }
-            }
-            personRepository.delete(person);
-            int count = personRepository.countByUserId(userId);
-            return count == 0 ? ReturnMsgUtil.success(null) : ReturnMsgUtil.fail();
+                if (person.getType().contains("s")) {
+                    studentRepository.deleteById(userId);
+                    transcriptRepository.deleteTranscriptByStudentId(person.getUserId());
+                }
+
+                adviseRepository.deleteByStudentIdOrFacultyId(person.getUserId(), person.getUserId());
+
+                if (person.getType().contains("f")) {
+                    List<Course> courseList = courseRepository.findCourseByFacultyId(person.getUserId());
+
+                    courseList.forEach(c -> {
+                        String opTime = DateUtil.DateToStr(new Date());
+                        c.setFacultyId(IDUtil.ROOT);
+                        c.setComment(person.getLastName() + "," + person.getFirstName() + "老师被删除, 删除时间：" + opTime);
+                        c.setUpdateTime(DateUtil.DateToStr(new Date()));
+                        courseRepository.save(c);
+                    });
+                }
+                personRepository.delete(person);
+            });
+
+            return !personRepository.existsById(userId) ? ReturnMsgUtil.success(null) : ReturnMsgUtil.fail();
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -224,7 +229,7 @@ public class PersonServerServiceImpl implements PersonServerService {
             }
 
             if (!type.contains("s") && count != 0) {
-                studentRepository.delete(userId);
+                studentRepository.deleteById(userId);
             }
 
             person.setUserId(userId);
@@ -241,8 +246,8 @@ public class PersonServerServiceImpl implements PersonServerService {
     @Override
     public ResultMap retrieve(String userId) {
         try {
-            Person person = personRepository.findOne(userId);
-            return ReturnMsgUtil.success(person);
+            Optional<Person> person = personRepository.findById(userId);
+            return ReturnMsgUtil.success(person.orElse(null));
         } catch (Exception e) {
             logger.error(e.toString());
             return ReturnMsgUtil.systemError();

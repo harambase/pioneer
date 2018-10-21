@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-
 @Repository
 public interface ContractRepository extends JpaRepository<Contract, Integer> {
 
@@ -16,7 +15,4 @@ public interface ContractRepository extends JpaRepository<Contract, Integer> {
 
     List<Contract> findByInitDate(String initDate);
 
-    int countById(Integer id);
-
-    Contract findByContractId(String contractId);
 }

@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TempCourseServerServiceImpl implements TempCourseServerService {
@@ -63,9 +64,8 @@ public class TempCourseServerServiceImpl implements TempCourseServerService {
     @Override
     public ResultMap delete(Integer id) {
         try {
-            tempCourseRepository.delete(id);
-            int count = tempCourseRepository.countById(id);
-            return count == 0 ? ReturnMsgUtil.success(null) : ReturnMsgUtil.fail();
+            tempCourseRepository.deleteById(id);
+            return !tempCourseRepository.existsById(id) ? ReturnMsgUtil.success(null) : ReturnMsgUtil.fail();
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -116,8 +116,8 @@ public class TempCourseServerServiceImpl implements TempCourseServerService {
     @Override
     public ResultMap retrieve(Integer id) {
         try {
-            TempCourse tempCourse = tempCourseRepository.findOne(id);
-            return ReturnMsgUtil.success(tempCourse);
+            Optional<TempCourse> tempCourse = tempCourseRepository.findById(id);
+            return ReturnMsgUtil.success(tempCourse.orElse(null));
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();

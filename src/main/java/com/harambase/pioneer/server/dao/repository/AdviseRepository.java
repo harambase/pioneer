@@ -18,5 +18,4 @@ public interface AdviseRepository extends JpaRepository<Advise, Integer> {
 
     int countByFacultyIdAndStudentId(String facultyId, String studentId);
 
-    int countById(Integer id);
 }

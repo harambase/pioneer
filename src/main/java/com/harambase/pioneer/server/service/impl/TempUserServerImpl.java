@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -38,12 +39,9 @@ public class TempUserServerImpl implements TempUserServerService {
 
     @Override
     public ResultMap delete(Integer id) {
-
         try {
-            tempUserRepository.delete(id);
-            int count = tempUserRepository.countById(id);
-            return count == 0 ? ReturnMsgUtil.success(null) : ReturnMsgUtil.fail();
-
+            tempUserRepository.deleteById(id);
+            return !tempUserRepository.existsById(id) ? ReturnMsgUtil.success(null) : ReturnMsgUtil.fail();
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -118,8 +116,8 @@ public class TempUserServerImpl implements TempUserServerService {
     @Override
     public ResultMap retrieve(Integer id) {
         try {
-            TempUser tempUser = tempUserRepository.findOne(id);
-            return ReturnMsgUtil.success(tempUser);
+            Optional<TempUser> tempUser = tempUserRepository.findById(id);
+            return ReturnMsgUtil.success(tempUser.orElse(null));
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();

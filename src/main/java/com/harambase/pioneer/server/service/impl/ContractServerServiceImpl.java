@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -74,11 +75,8 @@ public class ContractServerServiceImpl implements ContractServerService {
     @Override
     public ResultMap delete(Integer id) {
         try {
-            Contract contract = contractRepository.findOne(id);
-            contractRepository.delete(contract);
-            int count = contractRepository.countById(id);
-            return count == 0 ? ReturnMsgUtil.success(null) : ReturnMsgUtil.fail();
-
+            contractRepository.deleteById(id);
+            return !contractRepository.existsById(id) ? ReturnMsgUtil.success(null) : ReturnMsgUtil.fail();
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -102,8 +100,8 @@ public class ContractServerServiceImpl implements ContractServerService {
     @Override
     public ResultMap retrieve(Integer id) {
         try {
-            Contract contract = contractRepository.findOne(id);
-            return ReturnMsgUtil.success(contract);
+            Optional<Contract> contract = contractRepository.findById(id);
+            return ReturnMsgUtil.success(contract.orElse(null));
         } catch (Exception e) {
             logger.error(e.toString());
             return ReturnMsgUtil.systemError();

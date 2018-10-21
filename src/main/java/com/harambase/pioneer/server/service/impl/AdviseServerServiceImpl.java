@@ -105,9 +105,8 @@ public class AdviseServerServiceImpl implements AdviseServerService {
     @Override
     public ResultMap remove(Integer id) {
         try {
-            adviseRepository.delete(id);
-            int count = adviseRepository.countById(id);
-            return count == 0 ? ReturnMsgUtil.success(null) : ReturnMsgUtil.fail();
+            adviseRepository.deleteById(id);
+            return !adviseRepository.existsById(id) ? ReturnMsgUtil.success(null) : ReturnMsgUtil.fail();
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();

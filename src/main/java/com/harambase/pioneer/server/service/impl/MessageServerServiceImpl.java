@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -76,8 +77,9 @@ public class MessageServerServiceImpl implements MessageServerService {
             String[] receiverIds = messageView.getReceiver().split("/");
             String receiverNames = "";
             for (String receiverId : receiverIds) {
-                Person receiver = personRepository.findOne(receiverId);
-                receiverNames += receiver.getLastName() + ", " + receiver.getFirstName() + "/";
+                Optional<Person> receiver = personRepository.findById(receiverId);
+                receiverNames += receiver.map(person -> person.getLastName()).orElse("") + ", "
+                        + receiver.map(person -> person.getFirstName()).orElse("") + "/";
             }
             messageView.setReceiver(receiverNames);
             return ReturnMsgUtil.success(messageView);
@@ -113,10 +115,10 @@ public class MessageServerServiceImpl implements MessageServerService {
     @Override
     public ResultMap updateStatus(Integer id, String status) {
         try {
-            Message message = messageRepository.findOne(id);
-            message.setStatus(status);
-            Message newMessage = messageRepository.save(message);
-            return newMessage != null ? ReturnMsgUtil.success(newMessage) : ReturnMsgUtil.fail();
+            Optional<Message> message = messageRepository.findById(id);
+            Message msg = message.orElseThrow(RuntimeException::new);
+            Message newMessage = messageRepository.save(msg);
+            return ReturnMsgUtil.success(newMessage);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -138,9 +140,8 @@ public class MessageServerServiceImpl implements MessageServerService {
     @Override
     public ResultMap delete(Integer id) {
         try {
-            messageRepository.delete(id);
-            int count = messageRepository.countById(id);
-            return count == 0 ? ReturnMsgUtil.success(null) : ReturnMsgUtil.fail();
+            messageRepository.deleteById(id);
+            return messageRepository.existsById(id) ? ReturnMsgUtil.fail() : ReturnMsgUtil.success(null);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();

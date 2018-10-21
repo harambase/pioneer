@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TempAdviseRepository extends JpaRepository<TempAdvise, Integer> {
-    int countById(Integer id);
 
     TempAdvise findByStudentId(String studentId);
 

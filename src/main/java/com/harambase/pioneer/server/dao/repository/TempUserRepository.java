@@ -5,5 +5,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TempUserRepository extends JpaRepository<TempUser, Integer> {
 
-    int countById(Integer id);
 }

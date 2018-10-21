@@ -61,9 +61,8 @@ public class TempAdviseServerServiceImpl implements TempAdviseServerService {
     @Override
     public ResultMap delete(Integer id) {
         try {
-            tempAdviseRepository.delete(id);
-            int count = tempAdviseRepository.countById(id);
-            return count == 0 ? ReturnMsgUtil.success(null) : ReturnMsgUtil.fail();
+            tempAdviseRepository.deleteById(id);
+            return !tempAdviseRepository.existsById(id) ? ReturnMsgUtil.success(null) : ReturnMsgUtil.fail();
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();

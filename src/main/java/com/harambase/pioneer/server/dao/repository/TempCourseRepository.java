@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TempCourseRepository extends JpaRepository<TempCourse, Integer> {
-    int countById(Integer id);
+
 }
