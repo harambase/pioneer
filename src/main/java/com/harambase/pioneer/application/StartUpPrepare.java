@@ -33,7 +33,7 @@ public class StartUpPrepare {
     private static final Logger LOGGER = LoggerFactory.getLogger("StartUpPrepare");
 
     private static Map<String, Object> dataMap = new HashMap<>();
-    private static InputStream staffListInputStream, schoolInputStream;
+    private static InputStream staffListInputStream, schoolInputStream, articleInputStream;
 
     @Autowired
     private final PersonDao personDao;
@@ -84,9 +84,11 @@ public class StartUpPrepare {
         try {
             String staffList = "/static/files/personnel.json";
             String schoolList = "/static/files/school.json";
+            String articleList = "/static/files/articles.json";
 
             staffListInputStream = ConfigUtil.getConfFile(staffList);
             schoolInputStream = ConfigUtil.getConfFile(schoolList);
+            articleInputStream = ConfigUtil.getConfFile(articleList);
 
             JSONObject weChatList = //initWeChatList();
                     new JSONObject();
@@ -97,11 +99,17 @@ public class StartUpPrepare {
             String schoolJson = initData(schoolInputStream);
             JSONArray schoolJsonArray = JSON.parseArray(schoolJson);
 
+            String articleJson = initData(articleInputStream);
+            JSONArray articleJsonArray = JSON.parseArray(articleJson);
+
+
             LOGGER.info("STAFF: " + staffJson);
             LOGGER.info("SCHOOL: " + schoolJson);
+            LOGGER.info("ARTICLE: " + articleJsonArray);
 
             dataMap.put("staffList", staffJsonArray);
             dataMap.put("schoolList", schoolJsonArray);
+            dataMap.put("articleList", articleJsonArray);
             dataMap.put("weChatList", weChatList);
 
         } catch (Exception e) {
