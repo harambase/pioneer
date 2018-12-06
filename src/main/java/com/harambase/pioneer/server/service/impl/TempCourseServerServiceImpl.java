@@ -51,7 +51,7 @@ public class TempCourseServerServiceImpl implements TempCourseServerService {
             tempCourse.setUpdateTime(DateUtil.DateToStr(new Date()));
             tempCourse.setStatus("0");
 
-            TempCourse newTempCourse = tempCourseRepository.save(tempCourse);
+            TempCourse newTempCourse = tempCourseRepository.saveAndFlush(tempCourse);
 
             return newTempCourse == null ? ReturnMsgUtil.fail() : ReturnMsgUtil.success(newTempCourse);
 
