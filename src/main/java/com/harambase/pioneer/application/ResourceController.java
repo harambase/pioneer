@@ -26,6 +26,7 @@ public class ResourceController extends WebMvcConfigurationSupport {
         registry.addResourceHandler("/js/**").addResourceLocations("classpath:/static/home/js/");
         registry.addResourceHandler("/css/**").addResourceLocations("classpath:/static/home/css/");
         registry.addResourceHandler("/img/**").addResourceLocations("classpath:/static/home/img/");
+        registry.addResourceHandler("/fonts/**").addResourceLocations("classpath:/static/home/fonts/");
         registry.addResourceHandler("/images/**").addResourceLocations("classpath:/static/home/images/");
 
         super.addResourceHandlers(registry);
@@ -44,6 +45,11 @@ public class ResourceController extends WebMvcConfigurationSupport {
     @RequestMapping(value = "/article", method = RequestMethod.GET)
     public ResponseEntity article() {
         return new ResponseEntity<>(StartUpPrepare.getDatasource("articleList"), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/article/course", method = RequestMethod.GET)
+    public ResponseEntity course() {
+        return new ResponseEntity<>(StartUpPrepare.getDatasource("courseArticleList"), HttpStatus.OK);
     }
 
     @CrossOrigin

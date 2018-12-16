@@ -99,17 +99,16 @@ public class StartUpPrepare {
             String schoolJson = initData(schoolInputStream);
             JSONArray schoolJsonArray = JSON.parseArray(schoolJson);
 
-            String articleJson = initData(articleInputStream);
-            JSONArray articleJsonArray = JSON.parseArray(articleJson);
-
+            String articleJsonString = initData(articleInputStream);
+            JSON articleJson = JSON.parseObject(articleJsonString);
 
             LOGGER.info("STAFF: " + staffJson);
             LOGGER.info("SCHOOL: " + schoolJson);
-            LOGGER.info("ARTICLE: " + articleJsonArray);
+            LOGGER.info("ARTICLE: " + articleJson);
 
             dataMap.put("staffList", staffJsonArray);
             dataMap.put("schoolList", schoolJsonArray);
-            dataMap.put("articleList", articleJsonArray);
+            dataMap.put("articleList", articleJson);
             dataMap.put("weChatList", weChatList);
 
         } catch (Exception e) {

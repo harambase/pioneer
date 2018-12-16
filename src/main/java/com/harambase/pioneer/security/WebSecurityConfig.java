@@ -88,6 +88,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/school").permitAll()
                 .antMatchers("/wechat").permitAll()
                 .antMatchers("/article").permitAll()
+                .antMatchers("/article/course").permitAll()
                 .antMatchers("/index").permitAll()
                 .antMatchers("/system/login").permitAll()
                 .antMatchers("/system/user/**").permitAll()
@@ -102,6 +103,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/request/user/info/**").permitAll()
                 .antMatchers("/advise/download/**").permitAll()
                 .antMatchers("/static/**").permitAll()
+                .antMatchers("/fonts/**").permitAll()
                 .antMatchers("/user/list/**").permitAll()
                 .anyRequest().authenticated().and()
                 .addFilterBefore(new TokenAuthenticationFilter(jwtUserDetailsService), BasicAuthenticationFilter.class);
