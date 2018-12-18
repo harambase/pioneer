@@ -84,6 +84,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.js"
                 ).permitAll()
                 .antMatchers("/eas").permitAll()
+                .antMatchers("/js").permitAll()
                 .antMatchers("/staff").permitAll()
                 .antMatchers("/school").permitAll()
                 .antMatchers("/wechat").permitAll()

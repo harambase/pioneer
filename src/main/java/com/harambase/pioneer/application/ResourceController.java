@@ -47,11 +47,6 @@ public class ResourceController extends WebMvcConfigurationSupport {
         return new ResponseEntity<>(StartUpPrepare.getDatasource("articleList"), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/article/course", method = RequestMethod.GET)
-    public ResponseEntity course() {
-        return new ResponseEntity<>(StartUpPrepare.getDatasource("courseArticleList"), HttpStatus.OK);
-    }
-
     @CrossOrigin
     @RequestMapping(value = "/wechat", method = RequestMethod.GET)
     public ResponseEntity weChat() {
