@@ -5,8 +5,6 @@ import com.harambase.pioneer.server.pojo.base.Advise;
 import com.harambase.pioneer.server.pojo.base.Feedback;
 
 public interface FeedbackServerService {
-    
-    ResultMap create(Feedback feedback);
 
     ResultMap delete(Integer id);
 
@@ -15,4 +13,8 @@ public interface FeedbackServerService {
     ResultMap retrieve(Integer id);
 
     ResultMap list(String s, String s1, String search, String order, String orderCol, String facultyId, String info);
+
+    ResultMap generateAll(String info, String opId);
+
+    ResultMap generateOne(String info, String userId, String opId);
 }

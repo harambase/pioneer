@@ -7,8 +7,10 @@ import com.harambase.pioneer.common.support.util.DateUtil;
 import com.harambase.pioneer.common.support.util.PageUtil;
 import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
 import com.harambase.pioneer.server.dao.base.FeedbackDao;
+import com.harambase.pioneer.server.dao.base.PersonDao;
 import com.harambase.pioneer.server.dao.repository.FeedbackRepository;
 import com.harambase.pioneer.server.pojo.base.Feedback;
+import com.harambase.pioneer.server.pojo.base.Person;
 import com.harambase.pioneer.server.pojo.view.FeedbackView;
 import com.harambase.pioneer.server.service.FeedbackServerService;
 import org.slf4j.Logger;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,31 +32,16 @@ public class FeedbackServerServiceImpl implements FeedbackServerService {
     private final FeedbackRepository feedbackRepository;
 
     private final FeedbackDao feedbackDao;
+    private final PersonDao personDao;
 
     @Autowired
-    public FeedbackServerServiceImpl(FeedbackRepository feedbackRepository, FeedbackDao feedbackDao) {
+    public FeedbackServerServiceImpl(FeedbackRepository feedbackRepository, FeedbackDao feedbackDao,
+                                     PersonDao personDao) {
         this.feedbackRepository = feedbackRepository;
         this.feedbackDao = feedbackDao;
+        this.personDao = personDao;
     }
 
-    @Override
-    public ResultMap create(Feedback feedback) {
-        try {
-
-            int count = feedbackRepository.countByFacultyIdAndInfo(feedback.getFacultyId(), feedback.getInfo());
-            if (count != 0)
-                return ReturnMsgUtil.custom(SystemConst.FEEDBACK_DUPLICATE);
-
-            feedback.setUpdateTime(DateUtil.DateToStr(new Date()));
-
-            Feedback newFeedback = feedbackRepository.save(feedback);
-            return newFeedback != null ? ReturnMsgUtil.success(newFeedback) : ReturnMsgUtil.fail();
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            return ReturnMsgUtil.systemError();
-        }
-
-    }
 
     @Override
     public ResultMap delete(Integer id) {
@@ -115,6 +103,68 @@ public class FeedbackServerServiceImpl implements FeedbackServerService {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
 
+        }
+    }
+
+    @Override
+    public ResultMap generateAll(String info, String opId) {
+
+        try {
+
+            int count = feedbackRepository.countByInfo(info);
+            if (count != 0) {
+                return ReturnMsgUtil.custom(SystemConst.FEEDBACK_DUPLICATE);
+            }
+
+            List<Person> facultyList = personDao.getPersonBySearch("", "f", "1", "0", String.valueOf(Integer.MAX_VALUE));
+
+            for (Person f : facultyList) {
+                Feedback feedback = new Feedback();
+
+                feedback.setFacultyId(f.getUserId());
+                feedback.setOperatorId(opId);
+                feedback.setUpdateTime(DateUtil.DateToStr(new Date()));
+                feedback.setInfo(info);
+
+                Feedback newFeedback = feedbackRepository.save(feedback);
+                if (newFeedback == null)
+                    throw new RuntimeException("评价生成失败!");
+            }
+            return ReturnMsgUtil.success(null);
+
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
+
+    }
+
+    @Override
+    public ResultMap generateOne(String info, String userId, String opId) {
+        try {
+
+            //检查是否存在该类型的feedback
+            int count = feedbackRepository.countByFacultyIdAndInfo(userId, info);
+
+            if (count != 0) {
+                return ReturnMsgUtil.custom(SystemConst.FEEDBACK_DUPLICATE);
+            }
+
+            //生成feedback
+            Feedback feedback = new Feedback();
+
+            feedback.setFacultyId(userId);
+            feedback.setOperatorId(opId);
+            feedback.setUpdateTime(DateUtil.DateToStr(new Date()));
+            feedback.setInfo(info);
+
+            Feedback newFeedback = feedbackRepository.save(feedback);
+
+            return newFeedback != null ? ReturnMsgUtil.success(newFeedback): ReturnMsgUtil.fail();
+
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
         }
     }
 }

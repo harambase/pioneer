@@ -39,6 +39,17 @@ public class FeedbackView implements Serializable {
     @Column(name = "oname")
     private String oname;
 
+    @Column(name = "profile")
+    private String profile;
+
+    public String getProfile() {
+        return profile;
+    }
+
+    public void setProfile(String profile) {
+        this.profile = profile;
+    }
+
     public String getInfo() {
         return info;
     }

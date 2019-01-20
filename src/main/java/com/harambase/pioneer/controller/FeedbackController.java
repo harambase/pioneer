@@ -30,13 +30,23 @@ public class FeedbackController {
     }
 
     @PreAuthorize("hasAnyRole('FACULTY', 'LOGISTIC', 'ADMIN')")
-    @RequestMapping(produces = "application/json", method = RequestMethod.POST)
-    public ResponseEntity create(@RequestBody Feedback feedback, HttpServletRequest request) {
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity create(@RequestParam(value = "info") String info, HttpServletRequest request) {
         String opId = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));
-        feedback.setOperatorId(opId);
-        ResultMap message = feedbackService.addFeedback(feedback);
-        return new ResponseEntity<>(message, HttpStatus.OK);
+        ResultMap ResultMap = feedbackService.generateAll(info, opId);
+        return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
+
+    @PreAuthorize("hasAnyRole('FACULTY', 'LOGISTIC', 'ADMIN')")
+    @RequestMapping(value = "/{userId}", method = RequestMethod.POST)
+    public ResponseEntity createOne(@RequestParam(value = "info") String info,
+                                    @PathVariable(value = "userId") String userId,
+                                    HttpServletRequest request) {
+        String opId = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));
+        ResultMap ResultMap = feedbackService.generateOne(info, userId, opId);
+        return new ResponseEntity<>(ResultMap, HttpStatus.OK);
+    }
+
 
     @PreAuthorize("hasAnyRole('FACULTY', 'LOGISTIC', 'ADMIN')")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
@@ -69,16 +79,10 @@ public class FeedbackController {
                                @RequestParam(value = "order", required = false, defaultValue = "desc") String order,
                                @RequestParam(value = "orderCol", required = false, defaultValue = "fname") String orderCol,
                                @RequestParam(value = "facultyId", required = false) String facultyId,
-                               @RequestParam(value = "info", required = false, defaultValue = "") String info,
-                               @RequestParam(value = "mode", required = false) String mode,
-                               HttpServletRequest request) {
+                               @RequestParam(value = "info", required = false, defaultValue = "") String info) {
 
         ResultMap message;
         search = search.replace("'", "");
-
-        if (mode != null && mode.equals("faculty")) {
-            facultyId = TokenHelper.getUserIdFromToken(TokenHelper.getToken(request));
-        }
 
         if (StringUtils.isNotEmpty(info)) {
             message = feedbackService.feedbackList(start, length, search, order, orderCol, facultyId, info);

@@ -33,15 +33,6 @@ public class FeedbackService {
     public FeedbackService(FeedbackServerService feedbackServerService) {
         this.feedbackServerService = feedbackServerService;
     }
-    
-    public ResultMap addFeedback(Feedback feedback) {
-        try {
-            return feedbackServerService.create(feedback);
-        } catch (Exception e) {
-            logger.error(e.getMessage(), e);
-            return ReturnMsgUtil.systemError();
-        }
-    }
 
     public ResultMap removeFeedback(Integer id) {
         try {
@@ -133,5 +124,23 @@ public class FeedbackService {
         restMessage.setCode(SystemConst.SUCCESS.getCode());
         restMessage.setData(info + "导师表.csv");
         return restMessage;
+    }
+
+    public ResultMap generateAll(String info, String opId) {
+        try {
+            return feedbackServerService.generateAll(info, opId);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
+    }
+
+    public ResultMap generateOne(String info, String userId, String opId) {
+        try {
+            return feedbackServerService.generateOne(info, userId, opId);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
     }
 }
