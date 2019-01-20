@@ -14,7 +14,8 @@ public enum SystemConst {
     MAX_CAPACITY("课程容量达到上限", 2010),
     TIME_CONFLICT("时间冲突", 2011),
     PIN_EXISTS("该时段识别码已生成", 2012),
-    WRONG_INFO("选课的时间有问题", 2012);
+    WRONG_INFO("选课的时间有问题", 2012),
+    FEEDBACK_DUPLICATE("重复评价", 2012);
 
     private String msg;
     private int code;

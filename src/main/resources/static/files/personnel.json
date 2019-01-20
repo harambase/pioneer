@@ -48,12 +48,12 @@
   {
     "id": "hh",
     "name": "布彦隆之",
-    "enName": "Nunohiko Takayuki",
+    "enName": "Nunohiko Tayuki",
     "jobTitle": "导师、传播总监",
     "category": "0,1,7",
     "organization": "5,6",
     "type": "f",
-    "shortDescription": "曾任四川省社会科学院中华文化学会办公室主任、门里集团图书事业部--执行主编，完成撰写、编著《河洛曦光-青铜古韵》、《舆地至白-德化瓷》等五部文博图书的出版工作，以及大型历史文化纪录片《文明的归途》的制片、撰稿工作，受到了来自文化部、福建省领导的表彰。",
+    "shortDescription": "先锋教育学校资深导师，东亚史学者，满族彦扎氏后人。曾任四川省社会科学院中华文化学会主任、门里集团文博图书主编。服膺京都学派的史学理论，擅长东亚古代政治结构与王权研究，尤精于日本安土桃山时代史。 十年间踏遍日本100座古代遗址都市，对“明智光秀”以及安土桃山时代近畿地方聚落进行了深入研究。",
     "enDescription": "Served as the Director of the Chinese Culture in Sichuan Academy of Social Sciences Institute, executive editor of Menli Corp Book Division, completed the writing \"by the hilo-systems the sunrise light - bronze relics\", and \"ground to white - dehua porcelain\" and other five books, and participate in the large production of historical documentary \"the way of civilization\", which has received the recognition from the ministry of culture, the Fujian Provincical Government.",
     "moreInfo": [
       {
@@ -107,23 +107,6 @@
     "shortDescription": "毕业于四川工业科技学院，会计专业。在一商贸公司实习不到半年就到了先锋，算是一个“跨界者”，喜欢做手工，对心理学感兴趣。现正在成长的路上，希望在这样一个自由与包容的环境里和你们一起探索、学习，成为自己。",
     "enDescription": "",
     "moreInfo": []
-  },
-  {
-    "id": "xg",
-    "name": "熊刚（大熊）",
-    "enName": " Xiong Gang",
-    "jobTitle": "导师",
-    "category": "0,1,7",
-    "organization": "5",
-    "type": "f",
-    "shortDescription": "毕业于北京航空航天大学，获工学学士及工学硕士学位。曾就职于中兴通讯和美国朗讯公司，从事通讯方面的研发工作。后任职于比利时Bekaert等公司，从事销售、市场等工作。2015年正式加入先锋，现为导师。希望在教育实践中去践行倾听、包容和不评判他人的理念。",
-    "enDescription": "Graduated from Beijing University of Aeronautics and Astronautics with a bachelor's and a master's degree in engineering. He has worked in ZTE and Lucent, and has been engaged in research and development of communications. Later, he worked in a Belgium company Bekaert, where he worked in sales and marketing. In 2015, he officially joined Pioneer and is now a mentor. He hopes to practice the concept of listening, tolerating and not judging others in educational practice.",
-    "moreInfo": [
-      {
-        "id": "开设课程 Courses",
-        "description": "旅行课"
-      }
-    ]
   },
   {
     "id": "cr",
