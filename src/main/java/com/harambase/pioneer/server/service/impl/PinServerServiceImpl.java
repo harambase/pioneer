@@ -93,6 +93,9 @@ public class PinServerServiceImpl implements PinServerService {
                 case 3:
                     personList = personDao.getPersonBySearch("", "s", "1", "0", String.valueOf(Integer.MAX_VALUE));
                     break;
+                case 4:
+                    personList = personDao.getPersonBySearch("", "f", "1", "0", String.valueOf(Integer.MAX_VALUE));
+                    break;
             }
 
             if (role == 1) {

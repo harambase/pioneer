@@ -17,4 +17,6 @@ public interface FeedbackServerService {
     ResultMap generateAll(String info, String opId);
 
     ResultMap generateOne(String info, String userId, String opId);
+
+    ResultMap find(String facultyId);
 }

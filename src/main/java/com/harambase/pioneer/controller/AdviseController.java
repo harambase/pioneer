@@ -82,7 +82,7 @@ public class AdviseController {
         }
 
         if (StringUtils.isNotEmpty(studentId) || StringUtils.isNotEmpty(facultyId) || StringUtils.isNotEmpty(info)) {
-            message = adviseService.advisingList(start, length, search, order, orderCol, studentId, facultyId, info);
+            message = adviseService.advisingList(start * length - 1, length, search, order, orderCol, studentId, facultyId, info);
             message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         } else {
             message = new ResultMap();
@@ -102,7 +102,7 @@ public class AdviseController {
                                @RequestParam(value = "orderCol", required = false, defaultValue = "user_id") String orderCol,
                                @RequestParam(value = "status", required = false) String status) {
         search = search.replace("'", "");
-        ResultMap message = adviseService.advisorList(start, length, search, order, orderCol, status);
+        ResultMap message = adviseService.advisorList(start * length - 1, length, search, order, orderCol, status);
         message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         return new ResponseEntity<>(message, HttpStatus.OK);
     }

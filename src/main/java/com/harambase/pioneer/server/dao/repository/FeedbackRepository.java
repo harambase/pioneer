@@ -10,4 +10,6 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Integer> {
     int countByFacultyIdAndInfo(String facultyId, String info);
 
     int countByInfo(String info);
+
+    Feedback getByFacultyId(String facultyId);
 }

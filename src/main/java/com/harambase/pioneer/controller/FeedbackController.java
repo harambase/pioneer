@@ -72,6 +72,13 @@ public class FeedbackController {
     }
 
     @PreAuthorize("hasAnyRole('FACULTY', 'LOGISTIC', 'ADMIN')")
+    @RequestMapping(value = "/find/{facultyId}", method = RequestMethod.GET)
+    public ResponseEntity find(@PathVariable(value = "facultyId") String facultyId) {
+        ResultMap message = feedbackService.find(facultyId);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('FACULTY', 'LOGISTIC', 'ADMIN')")
     @RequestMapping(produces = "application/json", method = RequestMethod.GET)
     public ResponseEntity list(@RequestParam(value = "start", required = false, defaultValue = "0") Integer start,
                                @RequestParam(value = "length", required = false, defaultValue = "100") Integer length,
@@ -85,7 +92,7 @@ public class FeedbackController {
         search = search.replace("'", "");
 
         if (StringUtils.isNotEmpty(info)) {
-            message = feedbackService.feedbackList(start, length, search, order, orderCol, facultyId, info);
+            message = feedbackService.feedbackList(start * length - 1, length, search, order, orderCol, facultyId, info);
             message.put("recordsTotal", ((Page) message.get("page")).getTotalRows());
         } else {
             message = new ResultMap();

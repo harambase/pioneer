@@ -167,4 +167,15 @@ public class FeedbackServerServiceImpl implements FeedbackServerService {
             return ReturnMsgUtil.systemError();
         }
     }
+
+    @Override
+    public ResultMap find(String facultyId) {
+        try {
+            Feedback feedback = feedbackRepository.getByFacultyId(facultyId);
+            return ReturnMsgUtil.success(feedback);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
+    }
 }

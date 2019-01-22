@@ -143,4 +143,13 @@ public class FeedbackService {
             return ReturnMsgUtil.systemError();
         }
     }
+
+    public ResultMap find(String facultyId) {
+        try {
+            return feedbackServerService.find(facultyId);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
+    }
 }
