@@ -106,14 +106,12 @@ public class MessageSender {
 
     public ResultMap sendFacultyPinByInfo(String info, String senderId) {
         try {
-            List<PinView> pinInfoList = pinDao.getByMapPageSearchOrdered(0, Integer.MAX_VALUE, "", "desc", "pin", info, "", "");
+            List<PinView> pinInfoList = pinDao.getByMapPageSearchOrdered(0, Integer.MAX_VALUE, "", "desc", "pin", info, "", "2");
 
             for (PinView pin : pinInfoList) {
-                if (pin.getRole() == 2) {
-                    ResultMap resultMap = sendFacultyPin(pin, senderId);
-                    if (resultMap.getCode() != 2001)
-                        throw new RuntimeException("信息插入失败!");
-                }
+                ResultMap resultMap = sendFacultyPin(pin, senderId);
+                if (resultMap.getCode() != 2001)
+                    throw new RuntimeException("信息插入失败!");
             }
 
             return ReturnMsgUtil.success(null);
@@ -126,14 +124,12 @@ public class MessageSender {
 
     public ResultMap sendAdvisorPinByInfo(String info, String senderId) {
         try {
-            List<PinView> pinInfoList = pinDao.getByMapPageSearchOrdered(0, Integer.MAX_VALUE, "", "desc", "pin", info, "", "");
+            List<PinView> pinInfoList = pinDao.getByMapPageSearchOrdered(0, Integer.MAX_VALUE, "", "desc", "pin", info, "", "1");
 
             for (PinView pin : pinInfoList) {
-                if (pin.getRole() == 1) {
-                    ResultMap resultMap = sendAdvisorPin(pin, senderId);
-                    if (resultMap.getCode() != 2001)
-                        throw new RuntimeException("信息插入失败!");
-                }
+                ResultMap resultMap = sendAdvisorPin(pin, senderId);
+                if (resultMap.getCode() != 2001)
+                    throw new RuntimeException("信息插入失败!");
             }
 
             return ReturnMsgUtil.success(null);
@@ -147,14 +143,49 @@ public class MessageSender {
 
     public ResultMap sendStudentPinByInfo(String info, String senderId) {
         try {
-            List<PinView> pinInfoList = pinDao.getByMapPageSearchOrdered(0, Integer.MAX_VALUE, "", "desc", "pin", info, "", "");
+            List<PinView> pinInfoList = pinDao.getByMapPageSearchOrdered(0, Integer.MAX_VALUE, "", "desc", "pin", info, "", "3");
 
             for (PinView pin : pinInfoList) {
-                if (pin.getRole() == 3) {
-                    ResultMap resultMap = sendStudentPin(pin, senderId);
-                    if (resultMap.getCode() != 2001)
-                        throw new RuntimeException("信息插入失败!");
-                }
+                ResultMap resultMap = sendStudentPin(pin, senderId);
+                if (resultMap.getCode() != 2001)
+                    throw new RuntimeException("信息插入失败!");
+            }
+
+            return ReturnMsgUtil.success(null);
+
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
+    }
+
+    public ResultMap sendSelfFeedbackPin(String info, String senderId) {
+        try {
+            List<PinView> pinInfoList = pinDao.getByMapPageSearchOrdered(0, Integer.MAX_VALUE, "", "desc", "pin", info, "", "4");
+
+            for (PinView pin : pinInfoList) {
+                ResultMap resultMap = sendSelfFeedbackPin(pin, senderId);
+                if (resultMap.getCode() != 2001)
+                    throw new RuntimeException("信息插入失败!");
+
+            }
+            return ReturnMsgUtil.success(null);
+
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
+    }
+
+    public ResultMap sendOtherFeedbackPin(String info, String senderId) {
+        try {
+            List<PinView> pinInfoList = pinDao.getByMapPageSearchOrdered(0, Integer.MAX_VALUE, "", "desc", "pin", info, "", "5");
+
+            for (PinView pin : pinInfoList) {
+                ResultMap resultMap = sendOtherFeedbackPin(pin, senderId);
+                if (resultMap.getCode() != 2001)
+                    throw new RuntimeException("信息插入失败!");
+
             }
 
             return ReturnMsgUtil.success(null);
@@ -329,4 +360,79 @@ public class MessageSender {
         }
     }
 
+    public ResultMap sendSelfFeedbackPin(PinView pinView, String senderId) {
+        Pin pin = new Pin();
+        pin.setOwnerId(pinView.getOwnerId());
+        pin.setPin(pinView.getPin());
+        pin.setRole(pinView.getRole());
+        pin.setStartTime(pinView.getStartTime());
+        pin.setEndTime(pinView.getEndTime());
+        return this.sendSelfFeedbackPin(pin, senderId);
+    }
+
+    public ResultMap sendSelfFeedbackPin(Pin pin, String senderId) {
+
+        try {
+            Message message = new Message();
+            message.setDate(DateUtil.DateToStr(new Date()));
+            message.setStatus(Status.UNREAD);
+            message.setTitle("自评识别码(PIN)的信息");
+            message.setSubject("自评");
+            message.setSenderId(senderId);
+            message.setAttachment(null);
+            message.setLabels(Labels.URGENT);
+            message.setTag(Tags.TEACH);
+
+            String facultyId = pin.getOwnerId();
+            String body = "您收到一条来自行政的信息：您用于本学期自评的识别码（PIN）为：" + pin.getPin() + "，有效期为："
+                    + pin.getStartTime() + "至" + pin.getEndTime() + ", 如有问题请与行政人员联系！";
+            message.setReceiverId(facultyId);
+            message.setBody(body);
+            Message newMessage = messageRepository.save(message);
+
+            return newMessage != null ? ReturnMsgUtil.success(null) : ReturnMsgUtil.fail();
+
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
+    }
+
+    public ResultMap sendOtherFeedbackPin(PinView pinView, String senderId) {
+        Pin pin = new Pin();
+        pin.setOwnerId(pinView.getOwnerId());
+        pin.setPin(pinView.getPin());
+        pin.setRole(pinView.getRole());
+        pin.setStartTime(pinView.getStartTime());
+        pin.setEndTime(pinView.getEndTime());
+        return this.sendOtherFeedbackPin(pin, senderId);
+    }
+
+    public ResultMap sendOtherFeedbackPin(Pin pin, String senderId) {
+
+        try {
+            Message message = new Message();
+            message.setDate(DateUtil.DateToStr(new Date()));
+            message.setStatus(Status.UNREAD);
+            message.setTitle("他评识别码(PIN)的信息");
+            message.setSubject("他评");
+            message.setSenderId(senderId);
+            message.setAttachment(null);
+            message.setLabels(Labels.URGENT);
+            message.setTag(Tags.TEACH);
+
+            String facultyId = pin.getOwnerId();
+            String body = "您收到一条来自行政的信息：您用于本学期他评的识别码（PIN）为：" + pin.getPin() + "，有效期为："
+                    + pin.getStartTime() + "至" + pin.getEndTime() + ", 如有问题请与行政人员联系！";
+            message.setReceiverId(facultyId);
+            message.setBody(body);
+            Message newMessage = messageRepository.save(message);
+
+            return newMessage != null ? ReturnMsgUtil.success(null) : ReturnMsgUtil.fail();
+
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
+    }
 }

@@ -29,4 +29,8 @@ public interface PinServerService {
     ResultMap sendAdvisorPin(String info, String senderId);
 
     ResultMap resendPin(Pin pin, String userId);
+
+    ResultMap sendSelfFeedbackPin(String info, String senderId);
+
+    ResultMap sendOtherFeedbackPin(String info, String senderId);
 }

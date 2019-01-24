@@ -6,6 +6,7 @@ import com.harambase.pioneer.common.constant.SystemConst;
 import com.harambase.pioneer.common.support.util.*;
 import com.harambase.pioneer.server.dao.base.PersonDao;
 import com.harambase.pioneer.server.dao.repository.*;
+import com.harambase.pioneer.server.pojo.base.Advise;
 import com.harambase.pioneer.server.pojo.base.Course;
 import com.harambase.pioneer.server.pojo.base.Person;
 import com.harambase.pioneer.server.pojo.base.Student;
@@ -190,9 +191,9 @@ public class PersonServerServiceImpl implements PersonServerService {
                     transcriptRepository.deleteTranscriptByStudentId(person.getUserId());
                 }
 
-                adviseRepository.deleteByStudentIdOrFacultyId(person.getUserId(), person.getUserId());
-
                 if (person.getType().contains("f")) {
+                    //todo: delete advise
+
                     List<Course> courseList = courseRepository.findCourseByFacultyId(person.getUserId());
 
                     courseList.forEach(c -> {

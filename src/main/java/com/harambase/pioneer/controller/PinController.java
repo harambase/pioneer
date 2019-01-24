@@ -25,7 +25,7 @@ public class PinController {
         this.pinService = pinService;
     }
 
-    @PreAuthorize("hasAnyRole('TEACH','ADMIN')")
+    @PreAuthorize("hasAnyRole('LOGISTIC', 'TEACH','ADMIN')")
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity create(@RequestParam(value = "startTime") String startTime,
                                  @RequestParam(value = "endTime") String endTime,
@@ -36,7 +36,7 @@ public class PinController {
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('TEACH','ADMIN')")
+    @PreAuthorize("hasAnyRole('LOGISTIC', 'TEACH','ADMIN')")
     @RequestMapping(value = "/{userId}", method = RequestMethod.POST)
     public ResponseEntity createOne(@RequestParam(value = "startTime") String startTime,
                                     @RequestParam(value = "endTime") String endTime,
@@ -48,14 +48,14 @@ public class PinController {
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('TEACH','ADMIN')")
+    @PreAuthorize("hasAnyRole('LOGISTIC', 'TEACH','ADMIN')")
     @RequestMapping(value = "/{pin}", method = RequestMethod.DELETE)
     public ResponseEntity delete(@PathVariable(value = "pin") Integer pin) {
         ResultMap ResultMap = pinService.deleteSingleByPin(pin);
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('TEACH','ADMIN')")
+    @PreAuthorize("hasAnyRole('LOGISTIC', 'TEACH','ADMIN')")
     @RequestMapping(value = "/{info}/all", method = RequestMethod.DELETE)
     public ResponseEntity deleteAll(@PathVariable(value = "info") String info) {
         ResultMap ResultMap = pinService.deleteAllByInfo(info);
@@ -69,42 +69,56 @@ public class PinController {
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('TEACH','ADMIN')")
+    @PreAuthorize("hasAnyRole('LOGISTIC', 'TEACH','ADMIN')")
+    @RequestMapping(value = "/send/feedback/self/{info}", method = RequestMethod.GET)
+    public ResponseEntity sendSelfFeedbackPin(@PathVariable(value = "info") String info, HttpServletRequest request) {
+        ResultMap ResultMap = pinService.sendSelfFeedbackPin(info, TokenHelper.getUserIdFromToken(TokenHelper.getToken(request)));
+        return new ResponseEntity<>(ResultMap, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('LOGISTIC', 'TEACH','ADMIN')")
+    @RequestMapping(value = "/send/feedback/other/{info}", method = RequestMethod.GET)
+    public ResponseEntity sendOtherFeedbackPin(@PathVariable(value = "info") String info, HttpServletRequest request) {
+        ResultMap ResultMap = pinService.sendOtherFeedbackPin(info, TokenHelper.getUserIdFromToken(TokenHelper.getToken(request)));
+        return new ResponseEntity<>(ResultMap, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('LOGISTIC', 'TEACH','ADMIN')")
     @RequestMapping(value = "/send/faculty/{info}", method = RequestMethod.GET)
     public ResponseEntity sendFacultyPin(@PathVariable(value = "info") String info, HttpServletRequest request) {
         ResultMap ResultMap = pinService.sendFacultyPin(info, TokenHelper.getUserIdFromToken(TokenHelper.getToken(request)));
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('TEACH','ADMIN')")
+    @PreAuthorize("hasAnyRole('LOGISTIC', 'TEACH','ADMIN')")
     @RequestMapping(value = "/send/advisor/{info}", method = RequestMethod.GET)
     public ResponseEntity sendAdvisorPin(@PathVariable(value = "info") String info, HttpServletRequest request) {
         ResultMap ResultMap = pinService.sendAdvisorPin(info, TokenHelper.getUserIdFromToken(TokenHelper.getToken(request)));
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('TEACH','ADMIN')")
+    @PreAuthorize("hasAnyRole('LOGISTIC', 'TEACH','ADMIN')")
     @RequestMapping(value = "/send/student/{info}", method = RequestMethod.GET)
     public ResponseEntity sendStudentPin(@PathVariable(value = "info") String info, HttpServletRequest request) {
         ResultMap ResultMap = pinService.sendStudentPin(info, TokenHelper.getUserIdFromToken(TokenHelper.getToken(request)));
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('TEACH','ADMIN')")
+    @PreAuthorize("hasAnyRole('LOGISTIC', 'TEACH','ADMIN')")
     @RequestMapping(value = "/send", method = RequestMethod.POST)
     public ResponseEntity resend(@RequestBody Pin pin, HttpServletRequest request) {
         ResultMap ResultMap = pinService.resend(pin, TokenHelper.getUserIdFromToken(TokenHelper.getToken(request)));
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('TEACH','ADMIN')")
+    @PreAuthorize("hasAnyRole('LOGISTIC', 'TEACH','ADMIN')")
     @RequestMapping(value = "/info", method = RequestMethod.GET)
     public ResponseEntity getAllInfo() {
         ResultMap ResultMap = pinService.getAllInfo();
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('TEACH','ADMIN')")
+    @PreAuthorize("hasAnyRole('LOGISTIC', 'TEACH','ADMIN')")
     @RequestMapping(produces = "application/json", method = RequestMethod.GET)
     public ResponseEntity list(@RequestParam(value = "start", required = false, defaultValue = "0") Integer start,
                                @RequestParam(value = "length", required = false, defaultValue = "100") Integer length,
@@ -120,7 +134,7 @@ public class PinController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('TEACH','ADMIN')")
+    @PreAuthorize("hasAnyRole('LOGISTIC', 'TEACH','ADMIN')")
     @RequestMapping(value = "/{pinNum}", method = RequestMethod.PUT)
     public ResponseEntity updateOne(@PathVariable Integer pinNum, @RequestBody Pin pin) {
         ResultMap resultMap = pinService.updateOne(pinNum, pin);

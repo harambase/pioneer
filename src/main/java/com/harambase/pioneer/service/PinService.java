@@ -136,4 +136,21 @@ public class PinService {
     }
 
 
+    public ResultMap sendSelfFeedbackPin(String info, String senderId) {
+        try {
+            return pinServerService.sendSelfFeedbackPin(info, senderId);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
+    }
+
+    public ResultMap sendOtherFeedbackPin(String info, String senderId) {
+        try {
+            return pinServerService.sendOtherFeedbackPin(info, senderId);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
+    }
 }

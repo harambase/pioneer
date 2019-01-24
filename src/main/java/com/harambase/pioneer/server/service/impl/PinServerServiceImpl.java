@@ -94,7 +94,8 @@ public class PinServerServiceImpl implements PinServerService {
                     personList = personDao.getPersonBySearch("", "s", "1", "0", String.valueOf(Integer.MAX_VALUE));
                     break;
                 case 4:
-                    personList = personDao.getPersonBySearch("", "f", "1", "0", String.valueOf(Integer.MAX_VALUE));
+                case 5:
+                    personList = personDao.getPersonBySearch("", "ff", "1", "0", String.valueOf(Integer.MAX_VALUE));
                     break;
             }
 
@@ -155,6 +156,29 @@ public class PinServerServiceImpl implements PinServerService {
                 Pin newPin = pinRepository.save(pin);
                 if (newPin == null)
                     throw new RuntimeException("PIN生成失败!");
+
+                switch (role){
+                    case 2:
+                        messageSender.sendFacultyPin(pin, IDUtil.ROOT);
+                        messageSender.sendImportantSystemMsg(IDUtil.ROOT, IDUtil.ROOT,
+                                "您接收到来自系统的一条消息:用户 " + person.getUserId() + " 的成绩录入识别码" + pinNum + " 已生成！", "成绩录入识别码", "识别码");
+                        break;
+                    case 3:
+                        messageSender.sendStudentPin(pin, IDUtil.ROOT);
+                        messageSender.sendImportantSystemMsg(IDUtil.ROOT, IDUtil.ROOT,
+                                "您接收到来自系统的一条消息:用户 " + person.getUserId() + " 的选导师的识别码" + pinNum + " 已生成！", "选导师的识别码", "识别码");
+                        break;
+                    case 4:
+                        messageSender.sendSelfFeedbackPin(pin, IDUtil.ROOT);
+                        messageSender.sendImportantSystemMsg(IDUtil.ROOT, IDUtil.ROOT,
+                                "您接收到来自系统的一条消息:用户 " + person.getUserId() + " 的自评识别码" + pinNum + " 已生成！", "自评识别码", "识别码");
+                        break;
+                    case 5:
+                        messageSender.sendOtherFeedbackPin(pin, IDUtil.ROOT);
+                        messageSender.sendImportantSystemMsg(IDUtil.ROOT, IDUtil.ROOT,
+                                "您接收到来自系统的一条消息:用户 " + person.getUserId() + " 的他评识别码" + pinNum + " 已生成！", "他评识别码", "识别码");
+                        break;
+                }
             }
             return ReturnMsgUtil.success(null);
 
@@ -220,20 +244,36 @@ public class PinServerServiceImpl implements PinServerService {
 
             Pin newPin = pinRepository.save(pin);
 
+
             if (newPin != null) {
-                if (role == 2) {//2是 成绩录入
-                    messageSender.sendFacultyPin(pin, IDUtil.ROOT);
-                    messageSender.sendImportantSystemMsg(IDUtil.ROOT, IDUtil.ROOT,
-                            "您接收到来自系统的一条消息:用户 " + userId + " 的成绩录入识别码" + pinNum + " 已生成！", "成绩录入识别码", "识别码");
-                } else if (role == 1) {
-                    messageSender.sendAdvisorPin(pin, IDUtil.ROOT);
-                    messageSender.sendImportantSystemMsg(IDUtil.ROOT, IDUtil.ROOT,
-                            "您接收到来自系统的一条消息:用户 " + userId + " 的选课的识别码" + pinNum + " 已生成！", "选课的识别码", "识别码");
-                } else {
-                    messageSender.sendStudentPin(pin, IDUtil.ROOT);
-                    messageSender.sendImportantSystemMsg(IDUtil.ROOT, IDUtil.ROOT,
-                            "您接收到来自系统的一条消息:用户 " + userId + " 的选导师的识别码" + pinNum + " 已生成！", "选导师的识别码", "识别码");
+                switch (role){
+                    case 1:
+                        messageSender.sendAdvisorPin(pin, IDUtil.ROOT);
+                        messageSender.sendImportantSystemMsg(IDUtil.ROOT, IDUtil.ROOT,
+                                "您接收到来自系统的一条消息:用户 " + userId + " 的选课的识别码" + pinNum + " 已生成！", "选课的识别码", "识别码");
+                        break;
+                    case 2:
+                        messageSender.sendFacultyPin(pin, IDUtil.ROOT);
+                        messageSender.sendImportantSystemMsg(IDUtil.ROOT, IDUtil.ROOT,
+                                "您接收到来自系统的一条消息:用户 " + userId + " 的成绩录入识别码" + pinNum + " 已生成！", "成绩录入识别码", "识别码");
+                        break;
+                    case 3:
+                        messageSender.sendStudentPin(pin, IDUtil.ROOT);
+                        messageSender.sendImportantSystemMsg(IDUtil.ROOT, IDUtil.ROOT,
+                                "您接收到来自系统的一条消息:用户 " + userId + " 的选导师的识别码" + pinNum + " 已生成！", "选导师的识别码", "识别码");
+                        break;
+                    case 4:
+                        messageSender.sendSelfFeedbackPin(pin, IDUtil.ROOT);
+                        messageSender.sendImportantSystemMsg(IDUtil.ROOT, IDUtil.ROOT,
+                                "您接收到来自系统的一条消息:用户 " + userId + " 的自评识别码" + pinNum + " 已生成！", "自评识别码", "识别码");
+                        break;
+                    case 5:
+                        messageSender.sendOtherFeedbackPin(pin, IDUtil.ROOT);
+                        messageSender.sendImportantSystemMsg(IDUtil.ROOT, IDUtil.ROOT,
+                                "您接收到来自系统的一条消息:用户 " + userId + " 的他评识别码" + pinNum + " 已生成！", "他评识别码", "识别码");
+                        break;
                 }
+
                 return ReturnMsgUtil.success(newPin);
             }
             return ReturnMsgUtil.fail();
@@ -301,6 +341,26 @@ public class PinServerServiceImpl implements PinServerService {
     public ResultMap resendPin(Pin pin, String userId) {
         try {
             return messageSender.resendPin(pin, userId);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
+    }
+
+    @Override
+    public ResultMap sendSelfFeedbackPin(String info, String senderId) {
+        try {
+            return messageSender.sendSelfFeedbackPin(info, senderId);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
+    }
+
+    @Override
+    public ResultMap sendOtherFeedbackPin(String info, String senderId) {
+        try {
+            return messageSender.sendOtherFeedbackPin(info, senderId);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
