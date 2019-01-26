@@ -134,10 +134,17 @@ public class PinController {
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('LOGISTIC', 'TEACH','ADMIN')")
+    @PreAuthorize("hasAnyRole('LOGISTIC','TEACH','FACULTY','ADMIN')")
     @RequestMapping(value = "/{pinNum}", method = RequestMethod.PUT)
     public ResponseEntity updateOne(@PathVariable Integer pinNum, @RequestBody Pin pin) {
         ResultMap resultMap = pinService.updateOne(pinNum, pin);
+        return new ResponseEntity<>(resultMap, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAnyRole('LOGISTIC','TEACH','FACULTY','ADMIN')")
+    @RequestMapping(value = "/comment/{pinNum}", method = RequestMethod.PUT)
+    public ResponseEntity updateComment(@PathVariable Integer pinNum, @RequestParam String comment) {
+        ResultMap resultMap = pinService.updateComment(pinNum, comment);
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 }

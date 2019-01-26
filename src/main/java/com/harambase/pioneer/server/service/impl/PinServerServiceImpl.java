@@ -28,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -299,6 +300,19 @@ public class PinServerServiceImpl implements PinServerService {
     public ResultMap updateByPinNum(Integer pinNum, Pin pin) {
         try {
             pin.setPin(pinNum);
+            Pin newPin = pinRepository.save(pin);
+            return newPin != null ? ReturnMsgUtil.success(newPin) : ReturnMsgUtil.fail();
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
+    }
+
+    @Override
+    public ResultMap updateComment(Integer pinNum, String comment) {
+        try {
+            Pin pin = pinRepository.findByPin(pinNum);
+            pin.setRemark(comment);
             Pin newPin = pinRepository.save(pin);
             return newPin != null ? ReturnMsgUtil.success(newPin) : ReturnMsgUtil.fail();
         } catch (Exception e) {

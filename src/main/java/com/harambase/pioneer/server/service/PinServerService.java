@@ -17,6 +17,8 @@ public interface PinServerService {
 
     ResultMap updateByPinNum(Integer pinNum, Pin pin);
 
+    ResultMap updateComment(Integer pinNum, String comment);
+
     ResultMap list(String currentPage, String pageSize, String search, String order, String orderColumn, String info, String ownerId, String role);
 
     ResultMap getAllInfo();

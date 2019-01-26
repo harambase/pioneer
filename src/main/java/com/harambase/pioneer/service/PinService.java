@@ -153,4 +153,13 @@ public class PinService {
             return ReturnMsgUtil.systemError();
         }
     }
+
+    public ResultMap updateComment(Integer pinNum, String comment) {
+        try {
+            return pinServerService.updateComment(pinNum, comment);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
+    }
 }
