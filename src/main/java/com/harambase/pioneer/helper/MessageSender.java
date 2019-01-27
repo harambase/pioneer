@@ -381,7 +381,7 @@ public class MessageSender {
             message.setSenderId(senderId);
             message.setAttachment(null);
             message.setLabels(Labels.URGENT);
-            message.setTag(Tags.TEACH);
+            message.setTag(Tags.LOGISTIC);
 
             String facultyId = pin.getOwnerId();
             String body = "您收到一条来自行政的信息：您用于本学期自评的识别码（PIN）为：" + pin.getPin() + "，有效期为："
@@ -419,7 +419,7 @@ public class MessageSender {
             message.setSenderId(senderId);
             message.setAttachment(null);
             message.setLabels(Labels.URGENT);
-            message.setTag(Tags.TEACH);
+            message.setTag(Tags.LOGISTIC);
 
             String facultyId = pin.getOwnerId();
             String body = "您收到一条来自行政的信息：您用于本学期他评的识别码（PIN）为：" + pin.getPin() + "，有效期为："

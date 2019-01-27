@@ -6,4 +6,5 @@ public class Tags {
     public final static String TEACH = "教务";
     public final static String STUDENT = "学生";
     public final static String SYSTEM = "系统";
+    public final static String LOGISTIC = "行政";
 }

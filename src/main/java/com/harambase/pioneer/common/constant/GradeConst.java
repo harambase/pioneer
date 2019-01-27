@@ -9,6 +9,7 @@ public enum GradeConst {
     C("C", 2.0),
     CD("CD", 1.5),
     D("D", 1.0),
+    P("P", 0.0),
     F("F", 0);
 
 

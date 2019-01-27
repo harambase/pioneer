@@ -5,6 +5,7 @@ import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.common.constant.SystemConst;
 import com.harambase.pioneer.common.support.document.jlr.JLRConverter;
 import com.harambase.pioneer.common.support.document.jlr.JLRGenerator;
+import com.harambase.pioneer.common.support.util.FileUtil;
 import com.harambase.pioneer.common.support.util.ReportUtil;
 import com.harambase.pioneer.common.support.util.ReturnMsgUtil;
 import com.harambase.pioneer.server.helper.Name;
@@ -78,7 +79,7 @@ public class TranscriptService {
         File template = new File(workingDirectory.getAbsolutePath() + "/transcriptTemplate.tex");
 
         String dirPath = "/document/studentReport/" + studentId + "/";
-        String inputTexPath = Config.TEMP_FILE_PATH + dirPath + studentId + ".tex";
+        String inputTexPath = Config.serverPath + dirPath + studentId + ".tex";
         File reportTex = new File(inputTexPath);
 
         try {
@@ -134,7 +135,7 @@ public class TranscriptService {
 
             converter.replace("infoSet", infoSet);
             converter.replace("infoNameSet", infoNameSet);
-            converter.replace("list", transcripts);
+            converter.replace("transcriptList", transcripts);
 
             //学分TOTAL:
             LinkedHashMap studentViewMap = (LinkedHashMap) studentServerService.retrieve(studentId).getData();
@@ -152,7 +153,7 @@ public class TranscriptService {
 
             //输出
             converter.parse(template, reportTex);
-            File projectDir = new File(Config.TEMP_FILE_PATH + dirPath);
+            File projectDir = new File(Config.serverPath + dirPath);
 
             //PDF生成
             JLRGenerator pdfGen = new JLRGenerator();
