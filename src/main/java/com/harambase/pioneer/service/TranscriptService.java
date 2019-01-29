@@ -78,7 +78,7 @@ public class TranscriptService {
 
         File template = new File(workingDirectory.getAbsolutePath() + "/transcriptTemplate.tex");
 
-        String dirPath = "/document/studentReport/" + studentId;
+        String dirPath = "document/studentReport/" + studentId + "/";
         String inputTexPath = Config.serverPath + dirPath + studentId + ".tex";
         File reportTex = new File(inputTexPath);
 
@@ -90,7 +90,11 @@ public class TranscriptService {
             converter.replace("sname", student.getLastName() + ", " + student.getFirstName());
             converter.replace("studentId", student.getUserId());
             converter.replace("info", ReportUtil.infoConverter(student.getInfo()));
-            converter.replace("address", student.getAddress());
+
+            if(StringUtils.isNotEmpty(student.getAddress()))
+                converter.replace("address", student.getAddress());
+
+            converter.replace("address", "");
 
             logger.info("Reporting task for " + "student name:" + student.getLastName() + ", " + student.getFirstName());
             logger.info("Tex file store at:" + inputTexPath);

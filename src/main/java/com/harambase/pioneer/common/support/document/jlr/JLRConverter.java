@@ -31,14 +31,14 @@ public class JLRConverter {
 
     public JLRConverter(File file, String var2) {
         this.errorMessage = "No errors occurred!";
-        this.defaultCharsetName = "GBK"; //Charset.defaultCharset().name();
+        this.defaultCharsetName = "UTF-8"; //Charset.defaultCharset().name();
 
         Properties p = new Properties();
         p.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, file.getAbsolutePath());
         p.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, var2);
-        p.setProperty(Velocity.ENCODING_DEFAULT, "GBK");
-        p.setProperty(Velocity.INPUT_ENCODING, "GBK");
-        p.setProperty(Velocity.OUTPUT_ENCODING, "GBK");
+        p.setProperty(Velocity.ENCODING_DEFAULT, "UTF-8");
+        p.setProperty(Velocity.INPUT_ENCODING, "UTF-8");
+        p.setProperty(Velocity.OUTPUT_ENCODING, "UTF-8");
 
         this.velocityEngine = new VelocityEngine();
         this.velocityEngine.init(p);
@@ -47,7 +47,7 @@ public class JLRConverter {
     }
 
     public void replace(String key, Object var2) {
-        logger.info("Replace:" + key + " to "+ var2);
+        logger.info("Replace: " + key + " to "+ var2);
         this.contextData.put(key, var2);
     }
 
@@ -88,29 +88,29 @@ public class JLRConverter {
         }
     }
 
-    public boolean parse(File var1, File var2) throws IOException {
+    public boolean parse(File template, File tex) throws IOException {
         try {
-            return this.parse(var1, var2, this.defaultCharsetName);
+            return this.parse(template, tex, this.defaultCharsetName);
         } catch (UnsupportedEncodingException var4) {
             this.errorMessage = var4.toString();
             return false;
         }
     }
 
-    public boolean parse(File var1, File var2, String var3) throws IOException {
-        if (var2.getParentFile() != null && !var2.getParentFile().isDirectory() && !var2.getParentFile().mkdirs()) {
-            this.errorMessage = "Could not createPerson directory: " + var2.getParentFile().getAbsolutePath();
+    public boolean parse(File template, File tex, String charsetName) throws IOException {
+        if (template.getParentFile() != null && !tex.getParentFile().isDirectory() && !tex.getParentFile().mkdirs()) {
+            this.errorMessage = "Could not createPerson directory: " + tex.getParentFile().getAbsolutePath();
             return false;
         } else {
-            BufferedWriter var4 = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(var2), var3));
-            if (!this.velocityEngine.mergeTemplate(var1.getName(), var3, this.contextData, var4)) {
+            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(tex), charsetName));
+            if (!this.velocityEngine.mergeTemplate(template.getName(), charsetName, this.contextData, bufferedWriter)) {
                 this.errorMessage = "Errors occurred and logged to velocity log";
-                var4.flush();
-                var4.close();
+                bufferedWriter.flush();
+                bufferedWriter.close();
                 return false;
             } else {
-                var4.flush();
-                var4.close();
+                bufferedWriter.flush();
+                bufferedWriter.close();
                 return true;
             }
         }
