@@ -1,5 +1,8 @@
 package com.harambase.pioneer.service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONAware;
 import com.alibaba.fastjson.JSONObject;
 import com.harambase.pioneer.common.Config;
 import com.harambase.pioneer.common.ResultMap;
@@ -11,6 +14,7 @@ import com.harambase.pioneer.server.pojo.dto.FeedbackReportOnly;
 import com.harambase.pioneer.server.pojo.view.FeedbackView;
 import com.harambase.pioneer.server.service.FeedbackServerService;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,23 +100,42 @@ public class FeedbackService {
 
             Field[] titleList = FeedbackReportOnly.class.getDeclaredFields();
 
-
             List<FeedbackView> feedbackViewList = (List<FeedbackView>) feedbackServerService.decryptList("1", String.valueOf(Integer.MAX_VALUE), "", "asc",
                     "fname", "", password, info).getData();
 
             StringBuilder exportInfoSb = new StringBuilder();
+            exportInfoSb.append("序号,");
             for (int i = 0; i < titleList.length; i++) {
                 if (i != 0) exportInfoSb.append(",");
                 Name name = titleList[i].getAnnotation(Name.class);
                 exportInfoSb.append("\"" + name.value() + "\"");
             }
+
             exportInfoSb.append("\n");
             for (int i = 0; i < feedbackViewList.size(); i++) {
-                Map<String, String> tvMap = BeanUtils.describe(feedbackViewList.get(i));
+                Map<String, String> fvMap = BeanUtils.describe(feedbackViewList.get(i));
                 exportInfoSb.append((i + 1) + ",");
                 for (int j = 0; j < titleList.length; j++) {
                     if (j != 0) exportInfoSb.append(",");
-                    exportInfoSb.append("\"" + tvMap.get(titleList[j].getName()) + "\"");
+                    if (j == 2) {
+                        String titleName = titleList[j].getName();
+                        String value = fvMap.get(titleName);
+                        if(StringUtils.isNotEmpty(value)) {
+                            JSONArray rateArray = JSONArray.parseArray(value);
+                            for (int k = 0; k < rateArray.size(); k++) {
+                                JSONObject rate = rateArray.getJSONObject(k);
+                                exportInfoSb.append("\"" + "评分:" + "\"").append(",")
+                                        .append("\"" + rate.get("star") + ",\"").append(",")
+                                        .append("\"评价：\"").append(",")
+                                        .append("\"" + rate.get("comment") + "\"");
+                                exportInfoSb.append("\n,,,");
+                            }
+                        }
+                        continue;
+                    }
+                    String titleName = titleList[j].getName();
+                    String value = fvMap.get(titleName).replace("\n", "\t");
+                    exportInfoSb.append("\"" + value + "\"");
                 }
                 exportInfoSb.append("\n");
             }

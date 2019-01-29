@@ -1,6 +1,7 @@
 package com.harambase.pioneer.server.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.harambase.pioneer.common.Page;
 import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.common.constant.SystemConst;
@@ -209,7 +210,7 @@ public class FeedbackServerServiceImpl implements FeedbackServerService {
 
                     //添加进入解密后的评价中
                     JSONArray rateJA = JSONArray.parseArray(deRate);
-                    rateJA.add(feedback.getRate());
+                    rateJA.add(JSONObject.parseObject(feedback.getRate()));
 
                     //重新加密
                     String enRate = ed.encrypt(JSONArray.toJSONString(rateJA));
