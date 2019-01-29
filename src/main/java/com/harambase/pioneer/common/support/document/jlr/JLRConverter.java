@@ -7,32 +7,47 @@
 package com.harambase.pioneer.common.support.document.jlr;
 
 import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.charset.Charset;
+import java.util.Properties;
 
 public class JLRConverter {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     private String errorMessage;
     private String defaultCharsetName;
     private VelocityContext contextData;
     private VelocityEngine velocityEngine;
 
-    public JLRConverter(File var1) {
-        this(var1, "org.apache.velocity.runtime.log.NullLogChute");
+    public JLRConverter(File file) {
+        this(file, "org.apache.velocity.runtime.log.Log4JLogChute");
     }
 
-    public JLRConverter(File var1, String var2) {
+    public JLRConverter(File file, String var2) {
         this.errorMessage = "No errors occurred!";
-        this.defaultCharsetName = Charset.defaultCharset().name();
+        this.defaultCharsetName = "GBK"; //Charset.defaultCharset().name();
+
+        Properties p = new Properties();
+        p.setProperty(Velocity.FILE_RESOURCE_LOADER_PATH, file.getAbsolutePath());
+        p.setProperty(Velocity.RUNTIME_LOG_LOGSYSTEM_CLASS, var2);
+        p.setProperty(Velocity.ENCODING_DEFAULT, "GBK");
+        p.setProperty(Velocity.INPUT_ENCODING, "GBK");
+        p.setProperty(Velocity.OUTPUT_ENCODING, "GBK");
+
         this.velocityEngine = new VelocityEngine();
-        this.velocityEngine.setProperty("file.resource.loader.path", var1.getAbsolutePath());
-        this.velocityEngine.setProperty("runtime.log.logsystem.class", var2);
-        this.velocityEngine.init();
+        this.velocityEngine.init(p);
+
         this.contextData = new VelocityContext();
     }
 
     public void replace(String key, Object var2) {
+        logger.info("Replace:" + key + " to "+ var2);
         this.contextData.put(key, var2);
     }
 

@@ -14,8 +14,11 @@ public enum SystemConst {
     MAX_CAPACITY("课程容量达到上限", 2010),
     TIME_CONFLICT("时间冲突", 2011),
     PIN_EXISTS("该时段识别码已生成", 2012),
-    WRONG_INFO("选课的时间有问题", 2012),
-    FEEDBACK_DUPLICATE("重复评价", 2012);
+    WRONG_INFO("选课的时间有问题", 2013),
+    WRONG_OLD_PASSWORD("旧密码有问题", 2014),
+    FEEDBACK_DUPLICATE("重复评价", 2015);
+
+    public static final String DEFAULT_SALT = "$2a$10$Vgi8tZLxvUdtt9pMj7ZEguBoOYohts.RGeQxcKqvf7PIKoeXQzmea";
 
     private String msg;
     private int code;

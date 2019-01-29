@@ -78,7 +78,7 @@ public class TranscriptService {
 
         File template = new File(workingDirectory.getAbsolutePath() + "/transcriptTemplate.tex");
 
-        String dirPath = "/document/studentReport/" + studentId + "/";
+        String dirPath = "/document/studentReport/" + studentId;
         String inputTexPath = Config.serverPath + dirPath + studentId + ".tex";
         File reportTex = new File(inputTexPath);
 
@@ -91,6 +91,9 @@ public class TranscriptService {
             converter.replace("studentId", student.getUserId());
             converter.replace("info", ReportUtil.infoConverter(student.getInfo()));
             converter.replace("address", student.getAddress());
+
+            logger.info("Reporting task for " + "student name:" + student.getLastName() + ", " + student.getFirstName());
+            logger.info("Tex file store at:" + inputTexPath);
 
             //成绩详情
             List<TranscriptView> transcriptList = (List<TranscriptView>) transcriptServerService.list("1", String.valueOf(Integer.MAX_VALUE), "", "", "crn",
@@ -146,6 +149,7 @@ public class TranscriptService {
 
             double gpa = (double) qualityPoints / (double) (complete + incomplete);
             DecimalFormat df = new DecimalFormat("######0.00");
+
 
             converter.replace("total", total);
             converter.replace("complete", complete);

@@ -1,5 +1,6 @@
 package com.harambase.pioneer.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.harambase.pioneer.common.Config;
 import com.harambase.pioneer.common.ResultMap;
 import com.harambase.pioneer.common.constant.SystemConst;
@@ -70,9 +71,18 @@ public class FeedbackService {
         }
     }
 
-    public ResultMap downloadFeedbackByInfo(String info) {
+    public ResultMap decryptList(Integer start, Integer length, String search, String order, String orderCol, String facultyId, String password, String info) {
+        try {
+            return feedbackServerService.decryptList(String.valueOf(start / length + 1), String.valueOf(length), search, order, orderCol, facultyId, password, info);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
+    }
+
+    public ResultMap downloadFeedbackByInfo(String info, String password) {
         FileOutputStream fos = null;
-        String csvPath = Config.serverPath + info + "评价表.csv";
+        String csvPath = Config.serverPath + info + "年度评价表.csv";
 
         try {
             File outputFile = new File(csvPath);
@@ -85,8 +95,10 @@ public class FeedbackService {
             fos.write(new byte[]{(byte) 0xEF, (byte) 0xBB, (byte) 0xBF});
 
             Field[] titleList = FeedbackReportOnly.class.getDeclaredFields();
-            List<FeedbackView> feedbackViewList = (List<FeedbackView>) feedbackServerService.list("1", String.valueOf(Integer.MAX_VALUE), "", "asc",
-                    "fname", "", info).getData();
+
+
+            List<FeedbackView> feedbackViewList = (List<FeedbackView>) feedbackServerService.decryptList("1", String.valueOf(Integer.MAX_VALUE), "", "asc",
+                    "fname", "", password, info).getData();
 
             StringBuilder exportInfoSb = new StringBuilder();
             for (int i = 0; i < titleList.length; i++) {
@@ -104,6 +116,7 @@ public class FeedbackService {
                 }
                 exportInfoSb.append("\n");
             }
+
             exportInfoSb.append("总计" + feedbackViewList.size() + "条数据。");
             fos.write(exportInfoSb.toString().getBytes("UTF-8"));
 
@@ -122,22 +135,22 @@ public class FeedbackService {
         logger.info("Filing task for feedback has completed.");
         ResultMap restMessage = new ResultMap();
         restMessage.setCode(SystemConst.SUCCESS.getCode());
-        restMessage.setData(info + "导师表.csv");
+        restMessage.setData(info + "年度评价表.csv");
         return restMessage;
     }
 
-    public ResultMap generateAll(String info, String opId) {
+    public ResultMap generateAll(String info, String password, String opId) {
         try {
-            return feedbackServerService.generateAll(info, opId);
+            return feedbackServerService.generateAll(info, password, opId);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
         }
     }
 
-    public ResultMap generateOne(String info, String userId, String opId) {
+    public ResultMap generateOne(String info, String userId, String password, String opId) {
         try {
-            return feedbackServerService.generateOne(info, userId, opId);
+            return feedbackServerService.generateOne(info, userId, password, opId);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
             return ReturnMsgUtil.systemError();
@@ -152,4 +165,32 @@ public class FeedbackService {
             return ReturnMsgUtil.systemError();
         }
     }
+
+    public ResultMap updateFeedbackOther(Integer id, Feedback feedback) {
+        try {
+            return feedbackServerService.updateFeedbackOther(id, feedback);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
+    }
+
+    public ResultMap encrypt(String info, String password, String oldPassword, String opId) {
+        try {
+            return feedbackServerService.encrypt(info, password, oldPassword, opId);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
+    }
+
+    public ResultMap validate(String info, String password) {
+        try {
+            return feedbackServerService.validate(info, password);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
+    }
+
 }

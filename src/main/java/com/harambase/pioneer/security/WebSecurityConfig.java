@@ -102,6 +102,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/info/**").permitAll()
                 .antMatchers("/request/course/info/**").permitAll()
                 .antMatchers("/request/user/info/**").permitAll()
+                .antMatchers("/feedback/info/**").permitAll()
                 .antMatchers("/advise/download/**").permitAll()
                 .antMatchers("/static/**").permitAll()
                 .antMatchers("/fonts/**").permitAll()

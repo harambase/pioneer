@@ -30,8 +30,20 @@ public class Feedback implements Serializable {
     @Column(name = "comment")
     private String comment;
 
+    @Column(name = "password")
+    private String password;
+
     @Column(name = "operator_id")
     private String operatorId;
+
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public String getInfo() {
         return info;
