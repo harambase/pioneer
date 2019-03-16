@@ -26,4 +26,6 @@ public interface PersonServerService {
     ResultMap countActivePersonByType(String type);
 
     ResultMap updateTrailPeriod(String userId, String period);
+
+    ResultMap getUserByOpenId(String openId);
 }

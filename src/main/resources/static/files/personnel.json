@@ -100,8 +100,8 @@
     "id": "mzj",
     "name": "马宗佳",
     "enName": "Ma Zongjia",
-    "jobTitle": "行政总监",
-    "category": "0,1",
+    "jobTitle": "导师、行政总监",
+    "category": "0,1,7",
     "organization": "7",
     "type": "f",
     "shortDescription": "毕业于四川工业科技学院，会计专业。在一商贸公司实习不到半年就到了先锋，算是一个“跨界者”，喜欢做手工，对心理学感兴趣。现正在成长的路上，希望在这样一个自由与包容的环境里和你们一起探索、学习，成为自己。",
@@ -119,23 +119,6 @@
     "shortDescription": "程蓉，华西医科大学毕业，内科副主任医师。拥有市级公立医院、私立医院、社区医院、健康管理公司的工作经历。因为孩子青春期的＂正常＂叛逆，开始反省自己，好在重启成长并不晚，系统学习心理学，现为国家二级心理咨询师，并一直在喜欢的儿童青少年精神分析方向学习，希望可以在这方面做一些事情。我以为创建一个能自由言说、充分接纳的容器，让彼此在关系这面平滑干净的镜子中看见我、看见你是一种福份。",
     "enDescription": "Cheng Rong, graduated from Huaxi Medical University, deputy chief physician of internal medicine. She has been working at municipal public hospitals, private hospitals, community hospitals, and health management companies. Because the child's \"normal\" rebellion during adolescence, she began to introspect on herself. Luckily, it was not too late to systematically learn psychology. She is now a certificated national second-level psychological counselor, and has been continuing to learn in the direction of psychoanalysis of children and adolescents out of passion. She thinks that creating a container that can be freely spoken and fully accepted, letting her see each other in a mirror smoothly and clearly in which case seeing is a blessing.",
     "moreInfo": []
-  },
-  {
-    "id": "tzm",
-    "name": "唐振明（柿子）",
-    "enName": "Tang Zhenmin",
-    "jobTitle": "助教",
-    "category": "0,2,7",
-    "organization": "5",
-    "type": "f",
-    "shortDescription": "在先锋主要任教科学相关课程，和学生一起做理化实验，设计打印3D模型，制作Arduino作品等等。喜欢阅读英文原著，和学生一起开展原版阅读交流小组。爱好地理，对于看着地图翻山越岭乐此不疲。是个喜欢把科学史尤其是数学史当作小说一样津津有味来读的科学史八卦爱好者。",
-    "enDescription": "In pioneer, I mainly teach science-related courses, conduct physical and chemical experiments with students, design and print 3D models, and make Arduino works. I like to read the original English novels, and have students to communicate with their original reading. I also love geography, for looking at the map over the mountains. I am a gossip who likes to read the history of science, especially the history of mathematics, as if it were a novel.",
-    "moreInfo": [
-      {
-        "id": "开设课程 Courses",
-        "description": "末日求生、理化实验、阅读课等"
-      }
-    ]
   },
   {
     "id": "fm",
@@ -164,22 +147,22 @@
     ]
   },
   {
-    "id": "lph",
-    "name": "罗培洪（小红）",
-    "enName": "Luo Peihong",
-    "jobTitle": "实习助教",
-    "category": "0,2,7",
-    "organization": "6",
+    "id": "dcf",
+    "name": "丁乘风",
+    "enName": "Ding Chengfeng",
+    "jobTitle": "兼职导师",
+    "category": "0,1,7",
+    "organization": "",
     "type": "f",
-    "shortDescription": "17岁，先锋毕业生，体制教育体系适应者，小学为《全国中小学生优秀作文选》、《中国少年报》、《快乐历史地理》等杂志投稿，并考入当地最好初中，但随着成长带着对当时环境的失望来到了先锋学习。在先锋曾任校长助理、学生政府总统、游戏学院COO、外事委员会学生负责人、多门课程及项目助教，现半师半生转为助教投身教育行业。佛系足球迷+战术狂魔，电影动漫爱好者，内向+一讲到兴奋点收不住话匣子，在先锋和同学们的生活中燃发了对教育的热情，希望能尽自己所经历解答他们困惑，伴随他们度过这段复杂而又美好地时光~",
-    "enDescription": "a 17-year-old, Pioneer graduate. He is an adaptor of the tranditional education system. He posted article for the \"National primary and secondary school students outstanding writing selection\", \"China Youth Daily\", \"Happy Historical Geography\" and other magazines when he was in primary school. Then he was submitted to the best junior high school. But with growing disappointment of the educational environment at the time, he chose left the system but to join Pioneer. In Pioneer, he served as Assistant Principal, Former President of Student Government, COO of Game Academy, Student Leader of Foreign Affairs Committee, and teaching assistants. He has become a teaching assistant intern. He is a Buddhism football fans and tactical madmen. He loves anime movie anime and often cannot stop talking about any excitement. The life in Pioneer ignited his passion for education. He hopes to answer others' coufusion with his own experience, which will allow students to enjoy their complicated and beautiful Pioneer time~",
+    "shortDescription": "暂无",
+    "enDescription": "Sorry, we don't have it right now",
     "moreInfo": [
     ]
   },
   {
-    "id": "zz",
-    "name": "左众（左左）",
-    "enName": "Zuo Zhong",
+    "id": "wcy",
+    "name": "汪彩荧",
+    "enName": "Wang Caiying",
     "jobTitle": "志愿者",
     "category": "0,4",
     "organization": "0",
@@ -205,40 +188,6 @@
       "description": "做饭"
     }
   ]
-},
-  {
-    "id": "lyt",
-    "name": "林永泰",
-    "enName": "Lin Yongtai",
-    "jobTitle": "评议委员会负责人",
-    "category": "",
-    "organization": "2,3",
-    "type": "s",
-    "shortDescription": "暂无",
-    "enDescription": "Sorry, we don't have it right now",
-    "moreInfo": [
-      {
-        "id": "最喜欢的游戏",
-        "description": "炉石传说"
-      }
-    ]
-  },
-  {
-    "id": "hhn",
-    "name": "黄昊南",
-    "enName": "Huang Haonan",
-    "jobTitle": "评议委员会负责人",
-    "category": "",
-    "organization": "2,3",
-    "type": "s",
-    "shortDescription": "暂无",
-    "enDescription": "Sorry, we don't have it right now",
-    "moreInfo": [
-      {
-        "id": "最喜欢的事情",
-        "description": "玩PS4"
-      }
-    ]
-  }
+}
 ]
 

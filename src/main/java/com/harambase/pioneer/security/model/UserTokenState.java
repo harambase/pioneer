@@ -32,4 +32,8 @@ public class UserTokenState {
     public void setExpires_in(Long expires_in) {
         this.expires_in = expires_in;
     }
+
+    public String toString() {
+        return "{\"access_token\":" + access_token + ", \"expires_in\"：" + expires_in + "}";
+    }
 }

@@ -6,7 +6,7 @@
 
     <groupId>com.harambase.pioneer</groupId>
     <artifactId>pioneer</artifactId>
-    <version>2.1.20190130</version>
+    <version>2.1.20190314</version>
     <packaging>war</packaging>
     <name>Pioneer</name>
     <url>http://maven.apache.org</url>

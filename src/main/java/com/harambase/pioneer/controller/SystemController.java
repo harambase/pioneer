@@ -9,6 +9,7 @@ import com.harambase.pioneer.security.model.UserTokenState;
 import com.harambase.pioneer.server.pojo.base.Person;
 import com.harambase.pioneer.service.MonitorService;
 import com.harambase.pioneer.service.PersonService;
+import com.harambase.pioneer.social.QQAuthService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,14 +41,17 @@ public class SystemController {
 
     private final MonitorService monitorService;
     private final PersonService personService;
+    private final QQAuthService qqAuthService;
     private final AuthenticationManager authenticationManager;
 
     @Autowired
     public SystemController(MonitorService monitorService,
                             PersonService personService,
+                            QQAuthService qqAuthService,
                             AuthenticationManager authenticationManager) {
 
         this.monitorService = monitorService;
+        this.qqAuthService = qqAuthService;
         this.authenticationManager = authenticationManager;
         this.personService = personService;
     }
@@ -55,6 +59,51 @@ public class SystemController {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    //访问登陆页面，然后会跳转到 QQ 的登陆页面
+    @RequestMapping(value = "/login/qq", method = RequestMethod.GET)
+    public ResponseEntity qqLogin() throws Exception {
+        String uri = qqAuthService.getAuthorizationUrl();
+        ResultMap resultMap = new ResultMap();
+        resultMap.setData(uri);
+        return new ResponseEntity<>(resultMap, HttpStatus.OK);
+    }
+
+    //qq授权后会回调此方法，并将code传过来
+    @RequestMapping(value = "/login/qq/response", method = RequestMethod.GET)
+    public void getQQCode(@RequestParam String code, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        try {
+            //根据code获取token
+            String accessToken = qqAuthService.getAccessToken(code);
+            //根据openId判断用户是否已经绑定过
+            String openId = qqAuthService.getOpenId(accessToken);
+
+            ResultMap rsMap = personService.getUserByOpenId(openId);
+            if (rsMap.getCode() == SystemConst.SUCCESS.getCode()) {
+                User user = new User((Person) rsMap.getData());
+
+                final Authentication authentication = new UsernamePasswordAuthenticationToken(user.getUserId(), user.getPassword(), user.getAuthorities());
+                // Inject into auth context
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                String jws = TokenHelper.generateToken(user.getUserId(), user.getRoles());
+                int expiresIn = TokenHelper.getExpiredIn();
+
+                // Return the token
+                personService.updateLastLoginTime(user.getUsername());
+                UserTokenState token = new UserTokenState(jws, expiresIn);
+                response.sendRedirect("http://www.xianfengedu.cn/eas#/login?token=" + token.getAccess_token());
+
+            } else {
+//                resultMap.setCode(SystemConst.NEEDREG.getCode());
+//                resultMap.setData(openId);
+            }
+        } catch (AuthenticationException e) {
+            logger.error(e.getMessage(), e);
+//            resultMap.setCode(SystemConst.FAIL.getCode());
+        }
+
+//        return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)

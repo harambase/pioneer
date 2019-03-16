@@ -71,6 +71,9 @@ public class CourseServerServiceImpl implements CourseServerService {
             }
             course.setCrn(crn);
 
+            if (StringUtils.isEmpty(course.getFacultyId())) {
+                course.setFacultyId(IDUtil.ROOT);
+            }
             if (!course.getFacultyId().equals(IDUtil.ROOT)) {
                 //检查教师时间冲突
                 if (TimeValidate.isTimeConflict(courseDao.findCourseViewByFacultyIdAndInfo(facultyId, info), course)) {

@@ -27,4 +27,6 @@ public interface PersonRepository extends JpaRepository<Person, String> {
 
     @Query(value = "select get_name(?1)", nativeQuery = true)
     String getName(String userId);
+
+    Person findByOpenId(String openId);
 }

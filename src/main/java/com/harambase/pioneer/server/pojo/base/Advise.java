@@ -27,7 +27,7 @@ public class Advise implements Serializable {
     @Column(name = "status")
     private String status;
 
-    @Column(name = "operatorId")
+    @Column(name = "operator_id")
     private String operatorId;
 
     public String getInfo() {

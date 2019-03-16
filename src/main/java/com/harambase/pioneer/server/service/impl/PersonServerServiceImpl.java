@@ -86,6 +86,17 @@ public class PersonServerServiceImpl implements PersonServerService {
     }
 
     @Override
+    public ResultMap getUserByOpenId(String openId) {
+        try {
+            Person user = personRepository.findByOpenId(openId);
+            return user != null ? ReturnMsgUtil.success(user) : ReturnMsgUtil.fail();
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
+    }
+
+    @Override
     public ResultMap retrieveByKeyword(String keyword) {
         try {
             Person user = personRepository.findByQqOrUserIdOrUsername(keyword).get(0);

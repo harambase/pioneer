@@ -16,7 +16,8 @@ public enum SystemConst {
     PIN_EXISTS("该时段识别码已生成", 2012),
     WRONG_INFO("选课的时间有问题", 2013),
     WRONG_OLD_PASSWORD("旧密码有问题", 2014),
-    FEEDBACK_DUPLICATE("重复评价", 2015);
+    FEEDBACK_DUPLICATE("重复评价", 2015),
+    NEEDREG("需要注册或者找到账户", 2016);
 
     public static final String DEFAULT_SALT = "$2a$10$Vgi8tZLxvUdtt9pMj7ZEguBoOYohts.RGeQxcKqvf7PIKoeXQzmea";
 

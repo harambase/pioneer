@@ -80,8 +80,8 @@ public class AdviseServerServiceImpl implements AdviseServerService {
     public ResultMap create(Advise advise) {
         try {
 
-            int count = adviseRepository.countByFacultyIdAndStudentId(advise.getFacultyId(), advise.getStudentId());
-            if (count != 0)
+            int count = adviseRepository.countByFacultyIdAndStudentIdAndInfo(advise.getFacultyId(), advise.getStudentId(), advise.getInfo());
+            if (count != 0)//学期中重复的导师
                 return ReturnMsgUtil.custom(SystemConst.ADVISE_DUPLICATE);
 
             Advise oldAdvise = adviseRepository.findOneByStudentId(advise.getStudentId());

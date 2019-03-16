@@ -74,6 +74,9 @@ public class Person implements Serializable {
     @Column(name = "profile")
     private String profile;
 
+    @Column(name = "qq_openid")
+    private String openId;
+
     @Column(name = "role_id")
     private String roleId;
 
@@ -82,6 +85,14 @@ public class Person implements Serializable {
 
     @Column(name = "address")
     private String address;
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
+    }
 
     public String getTrialPeriod() {
         return trialPeriod;

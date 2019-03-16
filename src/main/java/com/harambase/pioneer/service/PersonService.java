@@ -257,4 +257,13 @@ public class PersonService {
         restMessage.setData("user_list.csv");
         return restMessage;
     }
+
+    public ResultMap getUserByOpenId(String openId) {
+        try {
+            return personServerService.getUserByOpenId(openId);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
+    }
 }

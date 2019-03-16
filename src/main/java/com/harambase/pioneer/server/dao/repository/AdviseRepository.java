@@ -18,8 +18,8 @@ public interface AdviseRepository extends JpaRepository<Advise, Integer> {
 
     List<Advise> findByFacultyId(String facultyId);
 
-    int countByFacultyIdAndStudentId(String facultyId, String studentId);
-
     @Query("select advise from Advise advise where advise.facultyId like concat('%',?1,'%') or advise.studentId like concat('%',?1,'%')")
     Optional<Advise> findByUserId(String userId);
+
+    int countByFacultyIdAndStudentIdAndInfo(String facultyId, String studentId, String info);
 }
