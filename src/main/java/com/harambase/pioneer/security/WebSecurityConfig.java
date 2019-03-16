@@ -83,7 +83,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.css",
                         "/**/*.js"
                 ).permitAll()
-                .antMatchers("/eas").permitAll()
+                .antMatchers("/pcp").permitAll()
                 .antMatchers("/js").permitAll()
                 .antMatchers("/staff").permitAll()
                 .antMatchers("/school").permitAll()
@@ -92,7 +92,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/article/course").permitAll()
                 .antMatchers("/index").permitAll()
                 .antMatchers("/system/login/**").permitAll()
-                .antMatchers("/eas/login").permitAll()
+                .antMatchers("/pcp/login").permitAll()
+                .antMatchers("/pcp/reset").permitAll()
                 .antMatchers("/system/user/**").permitAll()
                 .antMatchers("/request/user/register").permitAll()
                 .antMatchers("/transcript/report").permitAll()

@@ -92,18 +92,14 @@ public class SystemController {
                 // Return the token
                 personService.updateLastLoginTime(user.getUsername());
                 UserTokenState token = new UserTokenState(jws, expiresIn);
-                response.sendRedirect("http://www.xianfengedu.cn/eas#/login?token=" + token.getAccess_token());
+                response.sendRedirect("http://www.xianfengedu.cn/pcp#/login?token=" + token.getAccess_token());
 
             } else {
-//                resultMap.setCode(SystemConst.NEEDREG.getCode());
-//                resultMap.setData(openId);
+                response.sendRedirect("http://www.xianfengedu.cn/pcp#/reset?openId=" + openId);
             }
         } catch (AuthenticationException e) {
             logger.error(e.getMessage(), e);
-//            resultMap.setCode(SystemConst.FAIL.getCode());
         }
-
-//        return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -111,7 +107,7 @@ public class SystemController {
 
         ResultMap resultMap = new ResultMap();
         try {
-            //System.out.println(passwordEncoder.encode(authenticationRequest.getPassword()));
+
             // Perform the auth
             final Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -141,15 +137,8 @@ public class SystemController {
     }
 
     @RequestMapping(value = "/user/verify", method = RequestMethod.POST)
-    public ResponseEntity verifyUser(@RequestBody Person user) {
-        ResultMap resultMap = new ResultMap();
-        Person p = personService.verifyUser(user);
-        if (p != null) {
-            resultMap.setData(p);
-            resultMap.setCode(SystemConst.SUCCESS.getCode());
-        } else
-            resultMap.setCode(SystemConst.FAIL.getCode());
-
+    public ResponseEntity verifyUser(@RequestParam(required = false) String openId, @RequestBody Person user) {
+        ResultMap resultMap = personService.verifyUser(openId, user);
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 

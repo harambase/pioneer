@@ -1,0 +1,21 @@
+<!DOCTYPE html><html><head><title>PIONEER::PCP</title><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><link rel="shortcut icon" href=/static/img/logo.png><script>let token = '';
+
+    //MODIFY HERE BEFORE DEPLOY!
+    // const basePath = 'http://localhost:30000';
+
+    // const basePath = 'http://140.246.225.226';
+    const basePath = 'http://119.27.188.232';
+
+    function isNotEmpty(value) {
+      return value !== '' && value !== undefined && value !== null
+    }
+
+    function date2Str(x, y) {
+      let z = {M: x.getMonth() + 1, d: x.getDate(), h: x.getHours(), m: x.getMinutes(), s: x.getSeconds()};
+      y = y.replace(/(M+|d+|h+|m+|s+)/g, function (v) {
+        return ((v.length > 1 ? "0" : "") + eval('z.' + v.slice(-1))).slice(-2)
+      });
+      return y.replace(/(y+)/g, function (v) {
+        return x.getFullYear().toString().slice(-v.length)
+      });
+    }</script><link href=./static/pcp/css/app.5124092cf2434a425f4f951ec610d37b.css rel=stylesheet></head><body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden"><div id=app></div><script type=text/javascript src=./static/pcp/js/manifest.3c73d53a0e507baa9af2.js></script><script type=text/javascript src=./static/pcp/js/vendor.871454aec3f96bc55dd5.js></script><script type=text/javascript src=./static/pcp/js/app.f5809bde4903d1546ea9.js></script></body></html>

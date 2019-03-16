@@ -179,11 +179,33 @@ public class PersonService {
         return message;
     }
 
-    public Person verifyUser(Person user) {
-        Person existUser = (Person) personServerService.retrieve(user.getUserId()).getData();
-        return existUser != null &&
-                existUser.getBirthday().equals(user.getBirthday()) &&
-                existUser.getTel().equals(user.getTel()) ? existUser : null;
+    public ResultMap verifyUser(String openId, Person user) {
+        try {
+            ResultMap resultMap = new ResultMap();
+            Person existUser = (Person) personServerService.retrieve(user.getUserId()).getData();
+
+            if (existUser != null) {
+                if (StringUtils.isNotEmpty(openId)) {
+                    existUser.setOpenId(openId);
+                    personServerService.update(existUser.getUserId(), existUser);
+                    resultMap.setData(existUser);
+                    resultMap.setCode(SystemConst.SUCCESS.getCode());
+                    resultMap.setMsg(SystemConst.SUCCESS.getMsg());
+                }
+                if (existUser.getBirthday().equals(user.getBirthday()) && existUser.getTel().equals(user.getTel())) {
+                    resultMap.setData(existUser);
+                    resultMap.setCode(SystemConst.SUCCESS.getCode());
+                    resultMap.setMsg(SystemConst.SUCCESS.getMsg());
+                }
+            } else {
+                resultMap.setCode(SystemConst.FAIL.getCode());
+            }
+            return resultMap;
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return ReturnMsgUtil.systemError();
+        }
+
     }
 
     public ResultMap updateLastLoginTime(String username) {
