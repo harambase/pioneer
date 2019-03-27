@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class WebController {
 
     //不需要login
-    @RequestMapping("/pcp")
+    @RequestMapping({"/pcp", "/eas"})
     public String login() {
         return "pcp";
     }

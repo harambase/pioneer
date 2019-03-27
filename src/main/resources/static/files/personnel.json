@@ -173,6 +173,19 @@
     ]
   },
   {
+    "id": "zs",
+    "name": "朱姝",
+    "enName": "Zhu Shu",
+    "jobTitle": "志愿者",
+    "category": "0,4",
+    "organization": "0",
+    "type": "f",
+    "shortDescription": "暂无",
+    "enDescription": "Sorry, we don't have it right now",
+    "moreInfo": [
+    ]
+  },
+  {
   "id": "ycx",
   "name": "虞晨煦（小鱼）",
   "enName": "Yu Chenxu",

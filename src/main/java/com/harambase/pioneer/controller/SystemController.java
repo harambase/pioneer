@@ -9,7 +9,7 @@ import com.harambase.pioneer.security.model.UserTokenState;
 import com.harambase.pioneer.server.pojo.base.Person;
 import com.harambase.pioneer.service.MonitorService;
 import com.harambase.pioneer.service.PersonService;
-import com.harambase.pioneer.social.QQAuthService;
+import com.harambase.pioneer.social.qq.QQAuthService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -157,9 +157,36 @@ public class SystemController {
     }
 
     @RequestMapping(value = "/user/reset/password/{userId}", method = RequestMethod.PUT)
-    public ResponseEntity passwordReset(@PathVariable String userId, @RequestBody Person user) {
-        user.setPassword(passwordEncoder().encode(user.getPassword()));
-        ResultMap resultMap = personService.updatePerson(userId, user);
+    public ResponseEntity passwordReset(@PathVariable String userId, @RequestBody Person p) {
+        ResultMap resultMap = new ResultMap();
+        try {
+            p.setPassword(passwordEncoder().encode(p.getPassword()));
+            ResultMap rsMap = personService.updatePerson(userId, p);
+
+            if (rsMap.getCode() == SystemConst.SUCCESS.getCode()) {
+                User user = new User((Person) rsMap.getData());
+
+                final Authentication authentication = new UsernamePasswordAuthenticationToken(user.getUserId(), user.getPassword(), user.getAuthorities());
+                // Inject into auth context
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                String jws = TokenHelper.generateToken(user.getUserId(), user.getRoles());
+                int expiresIn = TokenHelper.getExpiredIn();
+
+                // Return the token
+                personService.updateLastLoginTime(user.getUsername());
+                UserTokenState token = new UserTokenState(jws, expiresIn);
+                resultMap.setData(token);
+                resultMap.setCode(SystemConst.SUCCESS.getCode());
+                resultMap.setMsg(SystemConst.SUCCESS.getMsg());
+            } else {
+                resultMap.setCode(SystemConst.FAIL.getCode());
+                resultMap.setMsg(SystemConst.FAIL.getMsg());
+            }
+        } catch (AuthenticationException e) {
+            logger.error(e.getMessage(), e);
+            resultMap.setCode(SystemConst.SYSTEM_ERROR.getCode());
+            resultMap.setMsg(SystemConst.SYSTEM_ERROR.getMsg());
+        }
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 

@@ -142,7 +142,7 @@ public class CourseController {
         return new ResponseEntity<>(ResultMap, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('STUDENT','ADMIN')")
+    @PreAuthorize("hasAnyRole('STUDENT','TEACH','ADMIN')")
     @RequestMapping(value = "/choose", method = RequestMethod.POST)
     public ResponseEntity courseChoice(@RequestBody JSONArray choiceList,
                                        @RequestParam(required = false)String studentId,
