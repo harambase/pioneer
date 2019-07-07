@@ -3,7 +3,7 @@
     "id": "lxw",
     "name": "刘晓伟",
     "enName": " Liu Xiaowei",
-    "jobTitle": "校长、一级导师",
+    "jobTitle": "导师、校长",
     "category": "0,1,7",
     "organization": "1",
     "type": "f",
@@ -12,7 +12,7 @@
     "moreInfo": [
       {
         "id": "开设课程 Courses",
-        "description": "项目式英语"
+        "description": "项目式英语等"
       }
     ]
   },
@@ -20,7 +20,7 @@
     "id": "ct",
     "name": "崔涛",
     "enName": "Cui Tao",
-    "jobTitle": "副校长、导师",
+    "jobTitle": "导师、副校长",
     "category": "0,1,7",
     "organization": "1,3",
     "type": "f",
@@ -32,18 +32,6 @@
         "description": "王者荣耀、电竞课等"
       }
     ]
-  },
-  {
-    "id": "yy",
-    "name": "杨燕",
-    "enName": "Yang Yan",
-    "jobTitle": "财务总监",
-    "category": "0,7",
-    "organization": "1",
-    "type": "f",
-    "shortDescription": "澳洲伍伦贡大学专业会计硕士毕业，曾就职于上市公司方大集团董事局主席秘书，美国康明斯四川代理康博动力公司CEO，两个女儿的母亲。喜欢与书为伴，尤其钟爱推理小说，是“阿加莎迷”也是“奎因迷”；唯愿和孩子们待在一起，成为一个终身学习者。",
-    "enDescription": "Graduated from the University of Wollongong with a master\"s degree in professional accounting. Used to work for the chairman of the board of directors of the listed company Fangda Group, the CEO of Cummins Sichuan, and the mother of two daughters. Like to be with the book, especially the mystery novels. An \"Agatha fans\" and \"Quin fans\". Be willing to stay with the children and become a lifelong learner.",
-    "moreInfo": []
   },
   {
     "id": "hh",
@@ -59,23 +47,6 @@
       {
         "id": "开设课程 Courses",
         "description": "历史课、游戏艺术、社会通识、生活美学等"
-      }
-    ]
-  },
-  {
-    "id": "lsl",
-    "name": "林石磊",
-    "enName": "Lin Shilei",
-    "category": "0,1,7",
-    "organization": "3,5",
-    "type": "f",
-    "jobTitle": "导师、教务总监",
-    "shortDescription": "先锋导师、教务总监，毕业于美国圣约翰大学，计算机和数学专业，先锋2013届毕业学生和学生总统。教授课程包括：基础数学、SAT&AP数学、计算机编程和英语基础等。最喜欢佛系游戏例如：城市天际线。善于帮助懒癌重度的学生，规划学习，重拾信心，帮助他们更好的适应先锋的学习生活。现任先锋教务总监",
-    "enDescription": "Mentor, Academic Director, graduated from St. John\"s University in the United States, majoring in Computer Science and Mathematics, Pioneer 2013 graduate student and former student president. Teaching courses include: Basic Mathematics, SAT&AP Mathematics, Computer Programming, and English. Favorite game is Buddist-like the Cities::Skylines. Good at helping students who are lazy and cancerous, planning and learning, regaining confidence and helping them better adapt to the Pioneer life. Current Pioneer Academic Director",
-    "moreInfo": [
-      {
-        "id": "开设课程 Courses",
-        "description": "数学、计算机、英语等"
       }
     ]
   },
@@ -97,6 +68,23 @@
     ]
   },
   {
+    "id": "dcf",
+    "name": "丁乘风",
+    "enName": "Ding Chengfeng",
+    "jobTitle": "导师、学务总监",
+    "category": "0,1,7",
+    "organization": "3,5",
+    "type": "f",
+    "shortDescription": "暂无",
+    "enDescription": "Sorry, it will be updated soon!",
+    "moreInfo": [
+      {
+        "id": "开设课程 Courses",
+        "description": "体育课、电影课等"
+      }
+    ]
+  },
+  {
     "id": "mzj",
     "name": "马宗佳",
     "enName": "Ma Zongjia",
@@ -105,15 +93,15 @@
     "organization": "7",
     "type": "f",
     "shortDescription": "毕业于四川工业科技学院，会计专业。在一商贸公司实习不到半年就到了先锋，算是一个“跨界者”，喜欢做手工，对心理学感兴趣。现正在成长的路上，希望在这样一个自由与包容的环境里和你们一起探索、学习，成为自己。",
-    "enDescription": "",
+    "enDescription": "Accounting major, gradated from Sichuan Institute of Industrial Technology. Joined Pioneer right after being an intern in a business with less than a half year, Technically, a 'crossover'. Like to making things, interested in psychology. On the way of my growth, I hope to explore, learn and become myself together in such a free and inclusive community.",
     "moreInfo": []
   },
   {
     "id": "cr",
     "name": "程蓉",
     "enName": "Chen Rong",
-    "jobTitle": "导师、校医",
-    "category": "0,1,8",
+    "jobTitle": "心理咨询师、校医",
+    "category": "0,8",
     "organization": "0",
     "type": "f",
     "shortDescription": "程蓉，华西医科大学毕业，内科副主任医师。拥有市级公立医院、私立医院、社区医院、健康管理公司的工作经历。因为孩子青春期的＂正常＂叛逆，开始反省自己，好在重启成长并不晚，系统学习心理学，现为国家二级心理咨询师，并一直在喜欢的儿童青少年精神分析方向学习，希望可以在这方面做一些事情。我以为创建一个能自由言说、充分接纳的容器，让彼此在关系这面平滑干净的镜子中看见我、看见你是一种福份。",
@@ -124,40 +112,25 @@
     "id": "fm",
     "name": "冯梅",
     "enName": "Feng Mei",
-    "jobTitle": "助教",
-    "category": "0,2,7",
+    "jobTitle": "会计师",
+    "category": "0,7",
     "organization": "0",
     "type": "f",
     "shortDescription": "暂无",
-    "enDescription": "Sorry, we don't have it right now",
-    "moreInfo": [
-    ]
+    "enDescription": "Sorry, it will be updated soon!",
+    "moreInfo": []
   },
   {
-    "id": "lw",
-    "name": "卢苇",
-    "enName": "Lu Wei",
-    "jobTitle": "助教",
-    "category": "0,2,7",
-    "organization": "7",
+    "id": "yy",
+    "name": "杨燕",
+    "enName": "Yang Yan",
+    "jobTitle": "财务顾问",
+    "category": "0,8",
+    "organization": "1",
     "type": "f",
-    "shortDescription": "暂无",
-    "enDescription": "Sorry, we don't have it right now",
-    "moreInfo": [
-    ]
-  },
-  {
-    "id": "dcf",
-    "name": "丁乘风",
-    "enName": "Ding Chengfeng",
-    "jobTitle": "兼职导师",
-    "category": "0,1,7",
-    "organization": "",
-    "type": "f",
-    "shortDescription": "暂无",
-    "enDescription": "Sorry, we don't have it right now",
-    "moreInfo": [
-    ]
+    "shortDescription": "澳洲伍伦贡大学专业会计硕士毕业，曾就职于上市公司方大集团董事局主席秘书，美国康明斯四川代理康博动力公司CEO，两个女儿的母亲。喜欢与书为伴，尤其钟爱推理小说，是“阿加莎迷”也是“奎因迷”；唯愿和孩子们待在一起，成为一个终身学习者。",
+    "enDescription": "Graduated from the University of Wollongong with a master\"s degree in professional accounting. Used to work for the chairman of the board of directors of the listed company Fangda Group, the CEO of Cummins Sichuan, and the mother of two daughters. Like to be with the book, especially the mystery novels. An \"Agatha fans\" and \"Quin fans\". Be willing to stay with the children and become a lifelong learner.",
+    "moreInfo": []
   },
   {
     "id": "wcy",
@@ -168,39 +141,22 @@
     "organization": "0",
     "type": "f",
     "shortDescription": "暂无",
-    "enDescription": "Sorry, we don't have it right now",
+    "enDescription": "Sorry, it will be updated soon!",
     "moreInfo": [
     ]
   },
-  {
-    "id": "zs",
-    "name": "朱姝",
-    "enName": "Zhu Shu",
-    "jobTitle": "志愿者",
-    "category": "0,4",
-    "organization": "0",
-    "type": "f",
-    "shortDescription": "暂无",
-    "enDescription": "Sorry, we don't have it right now",
-    "moreInfo": [
-    ]
-  },
-  {
-  "id": "ycx",
-  "name": "虞晨煦（小鱼）",
-  "enName": "Yu Chenxu",
-  "jobTitle": "学生会会长",
-  "category": "",
-  "organization": "2,7",
-  "type": "s",
-  "shortDescription": "先锋现任学生会会长，男，现15岁，2015年冬加入先锋，爱好制作美食，在生活委员会打杂两年，参加过众多项目，例如咖啡馆项目、家长教育、校园改造项目等等。现任生活委员会会长",
-  "enDescription": "",
-  "moreInfo": [
-    {
-      "id": "最喜欢的事情",
-      "description": "做饭"
-    }
-  ]
-}
+      {
+        "id": "zs",
+        "name": "朱姝",
+        "enName": "Zhu Shu",
+        "jobTitle": "志愿者",
+        "category": "0,4",
+        "organization": "0",
+        "type": "f",
+        "shortDescription": "暂无",
+        "enDescription": "Sorry, it will be updated soon!",
+        "moreInfo": [
+        ]
+      }
 ]
 

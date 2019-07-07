@@ -104,7 +104,8 @@ public class FileUtil {
 
             ftpClient.connect(server);
             ftpClient.login(username, password);
-            ftpClient.enterLocalActiveMode();
+            ftpClient.enterLocalPassiveMode();
+//            ftpClient.enterLocalActiveMode();
             /*
              二进制方式，首先二进制方式保证了文件内容所有数据位都是重要的。经过验证在传输文件类型为非文本内容的文件，使用ASCII传输方式造成copy的文件已经损坏。
              */
@@ -127,7 +128,8 @@ public class FileUtil {
             InputStream fis = file.getInputStream();
 
             //java中，内网用被动模式 ，外网连接时用主动模式，服务器相应改动（只用上线功能用被动模式去连接ftp报错连接不上）
-            ftpClient.enterLocalActiveMode();
+//            ftpClient.enterLocalActiveMode();
+            ftpClient.enterLocalPassiveMode();
             ftpClient.storeFile(fileLogicalName, fis);
 
             ftpClient.logout();
@@ -175,7 +177,8 @@ public class FileUtil {
             }
 
             //java中，内网用被动模式 ，外网连接时用主动模式，服务器相应改动（只用上线功能用被动模式去连接ftp报错连接不上）
-            ftpClient.enterLocalActiveMode();
+            ftpClient.enterLocalPassiveMode();
+//            ftpClient.enterLocalActiveMode();
 
             error = ftpClient.deleteFile(filePath);
             if (error) {
@@ -267,8 +270,8 @@ public class FileUtil {
             logger.info("FTP: FTP current working directory = " + ftpClient.printWorkingDirectory());
 
             //java中，内网用被动模式 ，外网连接时用主动模式，服务器相应改动（只用上线功能用被动模式去连接ftp报错连接不上）
-//            ftpClient.enterLocalPassiveMode();
-            ftpClient.enterLocalActiveMode();
+            ftpClient.enterLocalPassiveMode();
+//            ftpClient.enterLocalActiveMode();
 
             InputStream ftpInputStream = ftpClient.retrieveFileStream(fileLogicalName);
             bytes = IOUtils.toByteArray(ftpInputStream);
